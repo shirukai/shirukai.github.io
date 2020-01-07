@@ -1,4 +1,3 @@
-https://shirukai.github.io/blog/readme.html
 https://shirukai.github.io/blog/flink-cluster-on-kubernetes-deployment.html
 https://shirukai.github.io/blog/flink-cluster-on-yarn-deployment.html
 https://shirukai.github.io/blog/git-commonly-used-commands-and-tricks.html
@@ -198,3 +197,4 @@ https://shirukai.github.io/blog/exercise-2:-byte-stream-read-fileinputstream.htm
 https://shirukai.github.io/blog/exercise-3:-write-byte-stream-fileoutputstream.html
 https://shirukai.github.io/blog/exercise-4:-write-a-character-stream-filewriter.html
 https://shirukai.github.io/blog/exercise-5:-filereader-reads-the-character-stream.html
+https://shirukai.github.io/blog/fully-distributed-hadoop-configuration-environment-centos7.html

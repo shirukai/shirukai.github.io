@@ -130,7 +130,7 @@
             animation-duration: 2.8s;
             background-image:
                 radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.56), #100e17),
-                url(/img/covers/4.jpg);">
+                url(/img/covers/8.jpg);">
         </div>
     </div>
     
@@ -143,32 +143,32 @@
             August 20, 2018
         </p>
         <h3 class="post-title animated fadeInDown">
-            <a href="/blog/avatar-file-upload-function-server-implementation.html" title="头像文件上传服务器的功能实现" class="posttitle">头像文件上传服务器的功能实现</a></h3>
+            <a href="/blog/generate_api-jenkins_api-instructions.html" title="generate_api、jenkins_api使用说明" class="posttitle">generate_api、jenkins_api使用说明</a></h3>
         
         <p class="post-count animated fadeInDown">
             
             <span>
                 <b class="iconfont icon-text2"></b> <i>Words count</i>
-                7.4k
+                18k
             </span>
             
             
             <span>
                 <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                7 mins.
+                17 mins.
             </span>
             
             
         </p>
         
         
-        <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/notebook%E6%A1%88%E4%BE%8B/" rel="tag">notebook案例</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91%E8%AE%B0%E5%BD%95/" rel="tag">项目开发记录</a></li></ul>
+        <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE%E8%A7%84%E5%88%92%E5%B7%A5%E5%85%B7/" rel="tag">大数据集群配置规划工具</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91%E8%AE%B0%E5%BD%95/" rel="tag">项目开发记录</a></li></ul>
         
         <div class="md-content animated fadeIn">
             
-            <p>在此项目中，用户注册时，需要上传头像，这里简单的利用了几个插件，实现了头像上传服务器的功能。前端利用了一个upload的插件，后端引用了Spring 的上传文件的jar包，下面整理贴出了项目中的相关代...</p>
+            <h4 id="pip安装python-jenkins包"><a href="#pip安装python-jenkins包" class="headerlink" title="pip安装python_jenkins包"></a>pip安装python_jenkins包</h4><pre><code>pip install python-jenkins</code></pre><h4 id="复制自定义python包"><a href="#复制自定义python包" class="headerlink" title="复制自定义python包"></a>复制自定义python包</h4><p>复制项目中的indata_pack目录到python的site-packages下。...</p>
             
-            <span class="read-more"><a href="/blog/avatar-file-upload-function-server-implementation.html" title="Read article" class="posttitle">Read article</a>
+            <span class="read-more"><a href="/blog/generate_api-jenkins_api-instructions.html" title="Read article" class="posttitle">Read article</a>
                 <b class="iconfont icon-arrow-right- gradient-text"></b></span>
         </div>
     </div>
@@ -189,54 +189,6 @@
 
     <div id="primary">
         
-<div class="post" id="post">
-    <div class="post-cover animated fadeIn" style="
-            background-image:
-            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/covers/4.jpg);">
-    </div>
-    <div class="else">
-        <p class="animated fadeInDown">
-            
-                <a href="/categories/项目开发记录">
-                  <b>「 </b>项目开发记录<b> 」</b>
-                </a>
-            
-            August 20, 2018
-        </p>
-        <h3 class="post-title animated fadeInDown"><a href="/blog/avatar-file-upload-function-server-implementation.html" title="头像文件上传服务器的功能实现" class="posttitle">头像文件上传服务器的功能实现</a></h3>
-        
-            <p class="post-count animated fadeInDown">
-                
-                    <span>
-                        <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        7.4k
-                    </span>
-                
-                
-                    <span>
-                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        7 mins.
-                    </span>
-                
-                
-            </p>
-            
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/notebook%E6%A1%88%E4%BE%8B/" rel="tag">notebook案例</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91%E8%AE%B0%E5%BD%95/" rel="tag">项目开发记录</a></li></ul>
-            
-        
-        <div class="md-content animated fadeIn">
-            
-                <p>在此项目中，用户注册时，需要上传头像，这里简单的利用了几个插件，实现了头像上传服务器的功能。前端利用了一个upload的插件，后端引用了Spring 的上传文件的jar包，下面整理贴出了项目中的相关代码：</p>
-<p>需要引入js以及css文件：<br>bootstrap.css<br>ui.css<br>form.css<br>font-awesome.css</p>
-<h4 id="引入css"><a href="#引入css" class="headerlink" title="引入css"></a>引入css</h4><pre><code>&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;&lt;%=request...</code></pre>
-            
-            <span class="read-more"><a href="/blog/avatar-file-upload-function-server-implementation.html" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
-        </div>
-    </div>
-</div>
-
-
 <div class="post" id="post">
     <div class="post-cover animated fadeIn" style="
             background-image:
@@ -700,6 +652,61 @@ for _ in range(20):
 <pre><code class="python">plt.scatter(X[y==0,0],X[y==...</code></pre>
             
             <span class="read-more"><a href="/blog/logistic-regression-in-9-5-sklearn.html" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/covers/6.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="/categories/机器学习">
+                  <b>「 </b>机器学习<b> 」</b>
+                </a>
+            
+            August 20, 2018
+        </p>
+        <h3 class="post-title animated fadeInDown"><a href="/blog/9-4-wherein-logistic-regression-polynomial.html" title="9-4逻辑回归中使用多项式特征" class="posttitle">9-4逻辑回归中使用多项式特征</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>Words count</i>
+                        5k
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                        5 mins.
+                    </span>
+                
+                
+            </p>
+            
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/python3%E5%85%A5%E9%97%A8%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">python3入门机器学习</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li></ul>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                <pre><code class="python">import numpy as np
+import matplotlib.pyplot as plt</code></pre>
+<pre><code class="python">np.random.seed(666)
+X = np.random.normal(0,1,size=(200,2))
+y = np.array(X[:,0]**2+X[:,1]**2 &lt;1.5,dtype=&#39;int&#39;)</code></pre>
+<pre><code class="python">plt.scatter(X[y==0,0],X[y==0,1])
+plt.scatter(X[y==1,0],X[y==1,1])
+plt.show()</code></pre>
+<p></p>
+...
+            
+            <span class="read-more"><a href="/blog/9-4-wherein-logistic-regression-polynomial.html" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
         </div>
     </div>
 </div>

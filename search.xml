@@ -4,19 +4,6 @@
   
     
     <entry>
-      <title>README</title>
-      <link href="/blog/readme.html"/>
-      <url>/blog/readme.html</url>
-      
-        <content type="html"><![CDATA[]]></content>
-      
-      
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>Flink Cluster On Kubernetes部署</title>
       <link href="/blog/flink-cluster-on-kubernetes-deployment.html"/>
       <url>/blog/flink-cluster-on-kubernetes-deployment.html</url>

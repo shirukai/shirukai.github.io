@@ -130,7 +130,7 @@
             animation-duration: 2.8s;
             background-image:
                 radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.56), #100e17),
-                url(/img/covers/7.jpg);">
+                url(/img/covers/1.jpg);">
         </div>
     </div>
     
@@ -143,19 +143,19 @@
             August 19, 2018
         </p>
         <h3 class="post-title animated fadeInDown">
-            <a href="/blog/django-pagination-queries.html" title="django分页查询" class="posttitle">django分页查询</a></h3>
+            <a href="/blog/django-query-results-are-several-ways-to-turn-the-json.html" title="django查询结果转json的几种方法" class="posttitle">django查询结果转json的几种方法</a></h3>
         
         <p class="post-count animated fadeInDown">
             
             <span>
                 <b class="iconfont icon-text2"></b> <i>Words count</i>
-                5.9k
+                3.5k
             </span>
             
             
             <span>
                 <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                5 mins.
+                3 mins.
             </span>
             
             
@@ -166,11 +166,12 @@
         
         <div class="md-content animated fadeIn">
             
-            <p>在view.py里添加分页查询方法</p>
-<pre><code>from django.http import JsonResponse
-from django.views.decorators.http import require_http_m...</code></pre>
+            <pre><code>def json_test(request):
+    data = {}
+    book = Book.objects.all()
+    data[&#39;list&#39;] = json.loads(serializers...</code></pre>
             
-            <span class="read-more"><a href="/blog/django-pagination-queries.html" title="Read article" class="posttitle">Read article</a>
+            <span class="read-more"><a href="/blog/django-query-results-are-several-ways-to-turn-the-json.html" title="Read article" class="posttitle">Read article</a>
                 <b class="iconfont icon-arrow-right- gradient-text"></b></span>
         </div>
     </div>
@@ -191,60 +192,6 @@ from django.views.decorators.http import require_http_m...</code></pre>
 
     <div id="primary">
         
-<div class="post" id="post">
-    <div class="post-cover animated fadeIn" style="
-            background-image:
-            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/covers/7.jpg);">
-    </div>
-    <div class="else">
-        <p class="animated fadeInDown">
-            
-                <a href="/categories/Python">
-                  <b>「 </b>PYTHON<b> 」</b>
-                </a>
-            
-            August 19, 2018
-        </p>
-        <h3 class="post-title animated fadeInDown"><a href="/blog/django-pagination-queries.html" title="django分页查询" class="posttitle">django分页查询</a></h3>
-        
-            <p class="post-count animated fadeInDown">
-                
-                    <span>
-                        <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        5.9k
-                    </span>
-                
-                
-                    <span>
-                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        5 mins.
-                    </span>
-                
-                
-            </p>
-            
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/django/" rel="tag">django</a></li></ul>
-            
-        
-        <div class="md-content animated fadeIn">
-            
-                <p>在view.py里添加分页查询方法</p>
-<pre><code>from django.http import JsonResponse
-from django.views.decorators.http import require_http_methods
-from django.core import serializers
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-import json
-
-# 分页查询
-def show_page...</code></pre>
-            
-            <span class="read-more"><a href="/blog/django-pagination-queries.html" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
-        </div>
-    </div>
-</div>
-
-
 <div class="post" id="post">
     <div class="post-cover animated fadeIn" style="
             background-image:
@@ -739,6 +686,85 @@ public class Filereader {
         filereader.fileReader()...</code></pre>
             
             <span class="read-more"><a href="/blog/exercise-5:-filereader-reads-the-character-stream.html" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/covers/4.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="/categories/Hadoop">
+                  <b>「 </b>HADOOP<b> 」</b>
+                </a>
+            
+            August 19, 2018
+        </p>
+        <h3 class="post-title animated fadeInDown"><a href="/blog/fully-distributed-hadoop-configuration-environment-centos7.html" title="centos7下配置Hadoop全分布式环境" class="posttitle">centos7下配置Hadoop全分布式环境</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>Words count</i>
+                        14k
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                        13 mins.
+                    </span>
+                
+                
+            </p>
+            
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Hadoop/" rel="tag">Hadoop</a></li></ul>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                <h3 id="准备三台虚机并保证能相互ping通"><a href="#准备三台虚机并保证能相互ping通" class="headerlink" title="准备三台虚机并保证能相互ping通"></a>准备三台虚机并保证能相互ping通</h3><table>
+<thead>
+<tr>
+<th>序号</th>
+<th>IP地址</th>
+<th>主机名</th>
+<th>类型</th>
+<th>用户名</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>192.168.162.177</td>
+<td>Master.Hadoop</td>
+<td>NameNode</td>
+<td>root</td>
+</tr>
+<tr>
+<td>2</td>
+<td>192.168.162.155</td>
+<td>Slave1.Hadoop</td>
+<td>DataNode</td>
+<td>root</td>
+</tr>
+<tr>
+<td>3</td>
+<td>192.168.162.166</td>
+<td>Slave2.Hadoop</td>
+<td>DataNode</td>
+<td>root</td>
+</tr>
+</tbody></table>
+<h3 id="主机名的修改："><a href="#主机名的修改：" class="headerlink" title="主机名的修改："></a>主机名的修改：</h3><pre><code>vim /etc/hostname</code></pre><p>按照一定的格式修改三台机器的主机名。</p>
+<h3 id="配置Hosts"><a href="#配置Hosts" class="headerlink" title="配置Hosts"></a>配置Hosts</h3><pre><code>vim /etc/hosts...</code></pre>
+            
+            <span class="read-more"><a href="/blog/fully-distributed-hadoop-configuration-environment-centos7.html" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
         </div>
     </div>
 </div>
