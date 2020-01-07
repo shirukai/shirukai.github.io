@@ -130,7 +130,7 @@
             animation-duration: 2.8s;
             background-image:
                 radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.56), #100e17),
-                url(/img/covers/6.jpg);">
+                url(/img/covers/7.jpg);">
         </div>
     </div>
     
@@ -193,7 +193,7 @@
     <div class="post-cover animated fadeIn" style="
             background-image:
             radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/covers/7.jpg);">
+            url(/img/covers/3.jpg);">
     </div>
     <div class="else">
         <p class="animated fadeInDown">
@@ -297,7 +297,7 @@
     <div class="post-cover animated fadeIn" style="
             background-image:
             radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/covers/4.jpg);">
+            url(/img/covers/2.jpg);">
     </div>
     <div class="else">
         <p class="animated fadeInDown">
@@ -347,7 +347,7 @@
     <div class="post-cover animated fadeIn" style="
             background-image:
             radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/covers/8.jpg);">
+            url(/img/covers/2.jpg);">
     </div>
     <div class="else">
         <p class="animated fadeInDown">
@@ -406,7 +406,7 @@
     <div class="post-cover animated fadeIn" style="
             background-image:
             radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/covers/7.jpg);">
+            url(/img/covers/1.jpg);">
     </div>
     <div class="else">
         <p class="animated fadeInDown">
@@ -526,58 +526,6 @@ def test_response(request):
             
             August 20, 2018
         </p>
-        <h3 class="post-title animated fadeInDown"><a href="/blog/djangoajax-request.html" title="djangoAjax请求" class="posttitle">djangoAjax请求</a></h3>
-        
-            <p class="post-count animated fadeInDown">
-                
-                    <span>
-                        <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        5.7k
-                    </span>
-                
-                
-                    <span>
-                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        5 mins.
-                    </span>
-                
-                
-            </p>
-            
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/django/" rel="tag">django</a></li></ul>
-            
-        
-        <div class="md-content animated fadeIn">
-            
-                <blockquote>
-<p>Django 中自带了防止CSRF攻击的功能，所以在表单或者Ajax发送POST的请求的时候，如果没有带有<code>csrf_token</code> ，请求会被拒绝</p>
-</blockquote>
-<p>GET请求不需要csrf认证，POST请求需要认证才能得到正确的结果。一般在POST表单中加入</p>
-<pre><code>{% csrf_token%}</code></pre><pre><code>&lt;form method=&quot;POST&quot; action=&quot;/post-url/&quot;&gt;
-    {% csrf_token %}
-    &lt;input name=&#39;zqxt&#39;...</code></pre>
-            
-            <span class="read-more"><a href="/blog/djangoajax-request.html" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
-        </div>
-    </div>
-</div>
-
-
-<div class="post" id="post">
-    <div class="post-cover animated fadeIn" style="
-            background-image:
-            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/covers/1.jpg);">
-    </div>
-    <div class="else">
-        <p class="animated fadeInDown">
-            
-                <a href="/categories/Python">
-                  <b>「 </b>PYTHON<b> 」</b>
-                </a>
-            
-            August 20, 2018
-        </p>
         <h3 class="post-title animated fadeInDown"><a href="/blog/django-internationalization.html" title="Django 国际化" class="posttitle">Django 国际化</a></h3>
         
             <p class="post-count animated fadeInDown">
@@ -632,7 +580,59 @@ Python 2.7.5
     <div class="post-cover animated fadeIn" style="
             background-image:
             radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/covers/5.jpg);">
+            url(/img/covers/2.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="/categories/Python">
+                  <b>「 </b>PYTHON<b> 」</b>
+                </a>
+            
+            August 20, 2018
+        </p>
+        <h3 class="post-title animated fadeInDown"><a href="/blog/djangoajax-request.html" title="djangoAjax请求" class="posttitle">djangoAjax请求</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>Words count</i>
+                        5.7k
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                        5 mins.
+                    </span>
+                
+                
+            </p>
+            
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/django/" rel="tag">django</a></li></ul>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                <blockquote>
+<p>Django 中自带了防止CSRF攻击的功能，所以在表单或者Ajax发送POST的请求的时候，如果没有带有<code>csrf_token</code> ，请求会被拒绝</p>
+</blockquote>
+<p>GET请求不需要csrf认证，POST请求需要认证才能得到正确的结果。一般在POST表单中加入</p>
+<pre><code>{% csrf_token%}</code></pre><pre><code>&lt;form method=&quot;POST&quot; action=&quot;/post-url/&quot;&gt;
+    {% csrf_token %}
+    &lt;input name=&#39;zqxt&#39;...</code></pre>
+            
+            <span class="read-more"><a href="/blog/djangoajax-request.html" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/covers/4.jpg);">
     </div>
     <div class="else">
         <p class="animated fadeInDown">

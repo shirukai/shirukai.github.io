@@ -197,7 +197,7 @@
     <div class="post-cover animated fadeIn" style="
             background-image:
             radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/covers/4.jpg);">
+            url(/img/covers/3.jpg);">
     </div>
     <div class="else">
         <p class="animated fadeInDown">
@@ -253,7 +253,7 @@
     <div class="post-cover animated fadeIn" style="
             background-image:
             radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/covers/2.jpg);">
+            url(/img/covers/3.jpg);">
     </div>
     <div class="else">
         <p class="animated fadeInDown">
@@ -309,7 +309,7 @@ npm run dev</code></pre><p>MVVM框架</p>
     <div class="post-cover animated fadeIn" style="
             background-image:
             radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/covers/6.jpg);">
+            url(/img/covers/8.jpg);">
     </div>
     <div class="else">
         <p class="animated fadeInDown">
@@ -320,19 +320,19 @@ npm run dev</code></pre><p>MVVM框架</p>
             
             August 19, 2018
         </p>
-        <h3 class="post-title animated fadeInDown"><a href="/blog/vue-knowledge-points-record.html" title="Vue知识点记录" class="posttitle">Vue知识点记录</a></h3>
+        <h3 class="post-title animated fadeInDown"><a href="/blog/construction-android-application-vue-+-cordova.html" title="vue+cordova构建安卓应用" class="posttitle">vue+cordova构建安卓应用</a></h3>
         
             <p class="post-count animated fadeInDown">
                 
                     <span>
                         <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        7.7k
+                        3.9k
                     </span>
                 
                 
                     <span>
                         <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        7 mins.
+                        4 mins.
                     </span>
                 
                 
@@ -343,14 +343,13 @@ npm run dev</code></pre><p>MVVM框架</p>
         
         <div class="md-content animated fadeIn">
             
-                <h3 id="1-安装vue-resource"><a href="#1-安装vue-resource" class="headerlink" title="1.安装vue-resource"></a>1.安装vue-resource</h3><h4 id="cnpm安装依赖"><a href="#cnpm安装依赖" class="headerlink" title="cnpm安装依赖"></a>cnpm安装依赖</h4><pre><code>cnpm install vue-resource</code></pre><h4 id="安装完成后在项目中全局引入"><a href="#安装完成后在项目中全局引入" class="headerlink" title="安装完成后在项目中全局引入"></a>安装完成后在项目中全局引入</h4><p>修改main.js文件</p>
-<pre><code>import VueResource from &#39;vue-resource&#39;
-Vue.use(VueResource);</code></pre><h4 id="vue-resource使用"><a href="#vue-resource使用" class="headerlink" title="vue-resource使用"></a>vue-resource使用</h4><pre><code>// 传统写法
-this.$http.get(&#39;/someUrl&#39;, [options]).then(function(response){    
-    // 响应成功回调
-}, function...</code></pre>
+                <p>java、安卓sdk(安装Android Studio)、Node.js、cordova。</p>
+<h3 id="安装-cordova"><a href="#安装-cordova" class="headerlink" title="安装 cordova"></a>安装 cordova</h3><pre><code>npm install -g cordova</code></pre><p>在自己的源码目录下运行命令行，创建cordova项目。创建名字为shoppingmall的项目</p>
+<pre><code class="\\">cordova create shoppingmall com.inspur.shoppingmall shoppingmall</code></pre>
+<p>执行完成后，切换到项目里</p>
+<pre><code>cd shoppingmall</code></pre><p>给App添加目标平台，这里我们添加android平台，并确保他...</p>
             
-            <span class="read-more"><a href="/blog/vue-knowledge-points-record.html" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+            <span class="read-more"><a href="/blog/construction-android-application-vue-+-cordova.html" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
         </div>
     </div>
 </div>
@@ -360,7 +359,107 @@ this.$http.get(&#39;/someUrl&#39;, [options]).then(function(response){
     <div class="post-cover animated fadeIn" style="
             background-image:
             radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/covers/6.jpg);">
+            url(/img/covers/7.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="/categories/Vue">
+                  <b>「 </b>VUE<b> 」</b>
+                </a>
+            
+            August 19, 2018
+        </p>
+        <h3 class="post-title animated fadeInDown"><a href="/blog/elementui-the-button.html" title="ElementUI之button" class="posttitle">ElementUI之button</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>Words count</i>
+                        2.8k
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                        3 mins.
+                    </span>
+                
+                
+            </p>
+            
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/ElementUI/" rel="tag">ElementUI</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Vue/" rel="tag">Vue</a></li></ul>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                <pre><code>        &lt;el-button type=&quot;primary&quot;&gt;primary&lt;/el-button&gt;
+        &lt;el-button type=&quot;success&quot;&gt;success&lt;/el-button&gt;
+        &lt;el-button type=&quot;warning&quot;&gt;warning&lt;/el-button&gt;
+        &lt;el-button type=&quot;danger&quot;&gt;danger...</code></pre>
+            
+            <span class="read-more"><a href="/blog/elementui-the-button.html" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/covers/8.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="/categories/Vue">
+                  <b>「 </b>VUE<b> 」</b>
+                </a>
+            
+            August 19, 2018
+        </p>
+        <h3 class="post-title animated fadeInDown"><a href="/blog/introducing-element-ui-in-the-vue.html" title="在vue里引入element-ui" class="posttitle">在vue里引入element-ui</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>Words count</i>
+                        484
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                        1 mins.
+                    </span>
+                
+                
+            </p>
+            
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/ElementUI/" rel="tag">ElementUI</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Vue/" rel="tag">Vue</a></li></ul>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                <p>在项目路径下安装element-ui，运行命令：</p>
+<pre><code>npm install element-ui -s</code></pre><p>修改main.js文件</p>
+<pre><code>import ElementUI from &#39;element-ui&#39;
+import &#39;element-ui/lib/theme-default/index.css&#39;
+
+Vue.use(ElementUI)</code></pre>
+            
+            <span class="read-more"><a href="/blog/introducing-element-ui-in-the-vue.html" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/covers/7.jpg);">
     </div>
     <div class="else">
         <p class="animated fadeInDown">
@@ -412,162 +511,7 @@ new webpack.ProvidePlugin...</code></pre>
     <div class="post-cover animated fadeIn" style="
             background-image:
             radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/covers/5.jpg);">
-    </div>
-    <div class="else">
-        <p class="animated fadeInDown">
-            
-                <a href="/categories/Vue">
-                  <b>「 </b>VUE<b> 」</b>
-                </a>
-            
-            August 19, 2018
-        </p>
-        <h3 class="post-title animated fadeInDown"><a href="/blog/vue-router-to-control-the-use-of-user-logon-rights.html" title="利用vue-router来控制用户登录权限" class="posttitle">利用vue-router来控制用户登录权限</a></h3>
-        
-            <p class="post-count animated fadeInDown">
-                
-                    <span>
-                        <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        1.2k
-                    </span>
-                
-                
-                    <span>
-                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        1 mins.
-                    </span>
-                
-                
-            </p>
-            
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Vue/" rel="tag">Vue</a></li></ul>
-            
-        
-        <div class="md-content animated fadeIn">
-            
-                <p>用vue-router来控制用户登录权限的原理，实际上就是应用了vue-router提供的router.beforeEach来注册一个全局钩子。<a href="https://router.vuejs.org/zh-cn/advanced/navigation-guards.html" target="_blank" rel="noopener">具体用法</a></p>
-<p>根据判断是否具有登录权限来设置路由跳转，如果没有全选统一跳转到登录页面。</p>
-<pre><code>import router from &#39;./router&#39;
-import NProgress from &#39;nprogress&#39; // Progress 进度条
-import &#39;nprogress/nprogress.css&#39;...</code></pre>
-            
-            <span class="read-more"><a href="/blog/vue-router-to-control-the-use-of-user-logon-rights.html" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
-        </div>
-    </div>
-</div>
-
-
-<div class="post" id="post">
-    <div class="post-cover animated fadeIn" style="
-            background-image:
-            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/covers/1.jpg);">
-    </div>
-    <div class="else">
-        <p class="animated fadeInDown">
-            
-                <a href="/categories/Vue">
-                  <b>「 </b>VUE<b> 」</b>
-                </a>
-            
-            August 19, 2018
-        </p>
-        <h3 class="post-title animated fadeInDown"><a href="/blog/construction-android-application-vue-+-cordova.html" title="vue+cordova构建安卓应用" class="posttitle">vue+cordova构建安卓应用</a></h3>
-        
-            <p class="post-count animated fadeInDown">
-                
-                    <span>
-                        <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        3.9k
-                    </span>
-                
-                
-                    <span>
-                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        4 mins.
-                    </span>
-                
-                
-            </p>
-            
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Vue/" rel="tag">Vue</a></li></ul>
-            
-        
-        <div class="md-content animated fadeIn">
-            
-                <p>java、安卓sdk(安装Android Studio)、Node.js、cordova。</p>
-<h3 id="安装-cordova"><a href="#安装-cordova" class="headerlink" title="安装 cordova"></a>安装 cordova</h3><pre><code>npm install -g cordova</code></pre><p>在自己的源码目录下运行命令行，创建cordova项目。创建名字为shoppingmall的项目</p>
-<pre><code class="\\">cordova create shoppingmall com.inspur.shoppingmall shoppingmall</code></pre>
-<p>执行完成后，切换到项目里</p>
-<pre><code>cd shoppingmall</code></pre><p>给App添加目标平台，这里我们添加android平台，并确保他...</p>
-            
-            <span class="read-more"><a href="/blog/construction-android-application-vue-+-cordova.html" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
-        </div>
-    </div>
-</div>
-
-
-<div class="post" id="post">
-    <div class="post-cover animated fadeIn" style="
-            background-image:
-            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/covers/5.jpg);">
-    </div>
-    <div class="else">
-        <p class="animated fadeInDown">
-            
-                <a href="/categories/Vue">
-                  <b>「 </b>VUE<b> 」</b>
-                </a>
-            
-            August 19, 2018
-        </p>
-        <h3 class="post-title animated fadeInDown"><a href="/blog/subassembly-are-two-ways-to-communicate-parent-component.html" title="子组件向父组件通信的两种方式" class="posttitle">子组件向父组件通信的两种方式</a></h3>
-        
-            <p class="post-count animated fadeInDown">
-                
-                    <span>
-                        <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        808
-                    </span>
-                
-                
-                    <span>
-                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        1 mins.
-                    </span>
-                
-                
-            </p>
-            
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Vue/" rel="tag">Vue</a></li></ul>
-            
-        
-        <div class="md-content animated fadeIn">
-            
-                <p>子组件</p>
-<pre><code>methods:{
- onClickMe:function (){
-    this.$emit(&#39;functionName&#39;，Data)
-
-}
-//functionName为父组件里要绑定的方法，data为向父组件传递的数据</code></pre><p>父组件</p>
-<pre><code>&lt;compinent-a v-on:functionName=&quot;listenToMyBoy&quot;&gt;&lt;/compinent-a&gt;</code></pre><pre><code>methods:{
-    listenToMyBoy:function(data){
-        console...</code></pre>
-            
-            <span class="read-more"><a href="/blog/subassembly-are-two-ways-to-communicate-parent-component.html" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
-        </div>
-    </div>
-</div>
-
-
-<div class="post" id="post">
-    <div class="post-cover animated fadeIn" style="
-            background-image:
-            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/covers/1.jpg);">
+            url(/img/covers/4.jpg);">
     </div>
     <div class="else">
         <p class="animated fadeInDown">
@@ -628,7 +572,7 @@ import &#39;nprogress/nprogress.css&#39;...</code></pre>
     <div class="post-cover animated fadeIn" style="
             background-image:
             radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/covers/6.jpg);">
+            url(/img/covers/8.jpg);">
     </div>
     <div class="else">
         <p class="animated fadeInDown">
@@ -639,19 +583,19 @@ import &#39;nprogress/nprogress.css&#39;...</code></pre>
             
             August 19, 2018
         </p>
-        <h3 class="post-title animated fadeInDown"><a href="/blog/elementui-the-button.html" title="ElementUI之button" class="posttitle">ElementUI之button</a></h3>
+        <h3 class="post-title animated fadeInDown"><a href="/blog/radio-radio-button.html" title="Radio 单选框" class="posttitle">Radio 单选框</a></h3>
         
             <p class="post-count animated fadeInDown">
                 
                     <span>
                         <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        2.8k
+                        1.4k
                     </span>
                 
                 
                     <span>
                         <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        3 mins.
+                        1 mins.
                     </span>
                 
                 
@@ -662,12 +606,65 @@ import &#39;nprogress/nprogress.css&#39;...</code></pre>
         
         <div class="md-content animated fadeIn">
             
-                <pre><code>        &lt;el-button type=&quot;primary&quot;&gt;primary&lt;/el-button&gt;
-        &lt;el-button type=&quot;success&quot;&gt;success&lt;/el-button&gt;
-        &lt;el-button type=&quot;warning&quot;&gt;warning&lt;/el-button&gt;
-        &lt;el-button type=&quot;danger&quot;&gt;danger...</code></pre>
+                <pre><code> &lt;el-radio class=&quot;radio&quot; v-model=&quot;radio&quot; label=&quot;1&quot;&gt;备选项&lt;/el-radio&gt;
+  &lt;el-radio class=&quot;radio&quot; v-model=&quot;radio&quot; label=&quot;2&quot;&gt;备选项&lt;/el-radio&gt;</code></pre><pre><code>&lt;el-radio disabled v-model=&quot;...</code></pre>
             
-            <span class="read-more"><a href="/blog/elementui-the-button.html" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+            <span class="read-more"><a href="/blog/radio-radio-button.html" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/covers/1.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="/categories/Vue">
+                  <b>「 </b>VUE<b> 」</b>
+                </a>
+            
+            August 19, 2018
+        </p>
+        <h3 class="post-title animated fadeInDown"><a href="/blog/subassembly-are-two-ways-to-communicate-parent-component.html" title="子组件向父组件通信的两种方式" class="posttitle">子组件向父组件通信的两种方式</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>Words count</i>
+                        808
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                        1 mins.
+                    </span>
+                
+                
+            </p>
+            
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Vue/" rel="tag">Vue</a></li></ul>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                <p>子组件</p>
+<pre><code>methods:{
+ onClickMe:function (){
+    this.$emit(&#39;functionName&#39;，Data)
+
+}
+//functionName为父组件里要绑定的方法，data为向父组件传递的数据</code></pre><p>父组件</p>
+<pre><code>&lt;compinent-a v-on:functionName=&quot;listenToMyBoy&quot;&gt;&lt;/compinent-a&gt;</code></pre><pre><code>methods:{
+    listenToMyBoy:function(data){
+        console...</code></pre>
+            
+            <span class="read-more"><a href="/blog/subassembly-are-two-ways-to-communicate-parent-component.html" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
         </div>
     </div>
 </div>

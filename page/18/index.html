@@ -130,50 +130,46 @@
             animation-duration: 2.8s;
             background-image:
                 radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.56), #100e17),
-                url(/img/covers/8.jpg);">
+                url(/img/covers/5.jpg);">
         </div>
     </div>
     
     <div id="post0" class="else">
         <p class="animated fadeInDown">
             
-            <a href="/categories/Python"><b>「
-                </b>PYTHON<b> 」</b></a>
+            <a href="/categories/MySQL"><b>「
+                </b>MYSQL<b> 」</b></a>
             
             August 19, 2018
         </p>
         <h3 class="post-title animated fadeInDown">
-            <a href="/blog/python-custom-build-time-sensitive-token.html" title="python 自定义生成具有时效性的token" class="posttitle">python 自定义生成具有时效性的token</a></h3>
+            <a href="/blog/base-(iv):-operation-view.html" title="基础（四）：视图操作" class="posttitle">基础（四）：视图操作</a></h3>
         
         <p class="post-count animated fadeInDown">
             
             <span>
                 <b class="iconfont icon-text2"></b> <i>Words count</i>
-                3k
+                338
             </span>
             
             
             <span>
                 <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                3 mins.
+                1 mins.
             </span>
             
             
         </p>
         
         
-        <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/django/" rel="tag">django</a></li></ul>
+        <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/MySQL%E5%9F%BA%E7%A1%80/" rel="tag">MySQL基础</a></li></ul>
         
         <div class="md-content animated fadeIn">
             
-            <blockquote>
-<p>注意测试django版本：</p>
-</blockquote>
-<pre><code>&gt;&gt;&gt; import django
-&gt;&gt;&gt; print django.VERSION
-(1, 11, 5, u&#39;final&...</code></pre>
+            <pre><code>CREATE  VIEW  VIEW_DEPT_DNO AS SELECT DEPTNO AOC_ID,
+DNAME AOC_NAME,LOC AOC_LOC FROM DEPT WHERE LOC =&...</code></pre>
             
-            <span class="read-more"><a href="/blog/python-custom-build-time-sensitive-token.html" title="Read article" class="posttitle">Read article</a>
+            <span class="read-more"><a href="/blog/base-(iv):-operation-view.html" title="Read article" class="posttitle">Read article</a>
                 <b class="iconfont icon-arrow-right- gradient-text"></b></span>
         </div>
     </div>
@@ -198,50 +194,44 @@
     <div class="post-cover animated fadeIn" style="
             background-image:
             radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/covers/8.jpg);">
+            url(/img/covers/5.jpg);">
     </div>
     <div class="else">
         <p class="animated fadeInDown">
             
-                <a href="/categories/Python">
-                  <b>「 </b>PYTHON<b> 」</b>
+                <a href="/categories/MySQL">
+                  <b>「 </b>MYSQL<b> 」</b>
                 </a>
             
             August 19, 2018
         </p>
-        <h3 class="post-title animated fadeInDown"><a href="/blog/python-custom-build-time-sensitive-token.html" title="python 自定义生成具有时效性的token" class="posttitle">python 自定义生成具有时效性的token</a></h3>
+        <h3 class="post-title animated fadeInDown"><a href="/blog/base-(iv):-operation-view.html" title="基础（四）：视图操作" class="posttitle">基础（四）：视图操作</a></h3>
         
             <p class="post-count animated fadeInDown">
                 
                     <span>
                         <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        3k
+                        338
                     </span>
                 
                 
                     <span>
                         <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        3 mins.
+                        1 mins.
                     </span>
                 
                 
             </p>
             
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/django/" rel="tag">django</a></li></ul>
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/MySQL%E5%9F%BA%E7%A1%80/" rel="tag">MySQL基础</a></li></ul>
             
         
         <div class="md-content animated fadeIn">
             
-                <blockquote>
-<p>注意测试django版本：</p>
-</blockquote>
-<pre><code>&gt;&gt;&gt; import django
-&gt;&gt;&gt; print django.VERSION
-(1, 11, 5, u&#39;final&#39;, 0)
-</code></pre><h3 id="第一步：随机生成sha1秘钥"><a href="#第一步：随机生成sha1秘钥" class="headerlink" title="第一步：随机生成sha1秘钥"></a>第一步：随机生成sha1秘钥</h3><p>利用python里的hashlib库生成 sha1秘钥，这是一个单向加密过程，给这个sha1秘钥起名为sha1_token。</p>
-<h3 id="第二步：生成时间戳秘钥"><a href="#第二步：生成时间戳秘钥" class="headerlink" title="第二步：生成时间戳秘钥"></a>第二步：生成时间戳秘钥</h3><p>获取当前的时间戳（秒级单位），以及设置token的失效性的时间戳（秒级单位）。将两个时间戳中间用“：”拼接...</p>
+                <pre><code>CREATE  VIEW  VIEW_DEPT_DNO AS SELECT DEPTNO AOC_ID,
+DNAME AOC_NAME,LOC AOC_LOC FROM DEPT WHERE LOC =&quot;本部&quot;;</code></pre><pre><code>DROP VIEW VIEW_DEPT_DNO;</code></pre>
             
-            <span class="read-more"><a href="/blog/python-custom-build-time-sensitive-token.html" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+            <span class="read-more"><a href="/blog/base-(iv):-operation-view.html" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
         </div>
     </div>
 </div>
@@ -251,52 +241,58 @@
     <div class="post-cover animated fadeIn" style="
             background-image:
             radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/covers/6.jpg);">
+            url(/img/covers/4.jpg);">
     </div>
     <div class="else">
         <p class="animated fadeInDown">
             
-                <a href="/categories/Python">
-                  <b>「 </b>PYTHON<b> 」</b>
+                <a href="/categories/MySQL">
+                  <b>「 </b>MYSQL<b> 」</b>
                 </a>
             
             August 19, 2018
         </p>
-        <h3 class="post-title animated fadeInDown"><a href="/blog/django-query-results-are-several-ways-to-turn-the-json.html" title="django查询结果转json的几种方法" class="posttitle">django查询结果转json的几种方法</a></h3>
+        <h3 class="post-title animated fadeInDown"><a href="/blog/basis-(a):-database-operations.html" title="基础（一）：数据库操作" class="posttitle">基础（一）：数据库操作</a></h3>
         
             <p class="post-count animated fadeInDown">
                 
                     <span>
                         <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        3.5k
+                        458
                     </span>
                 
                 
                     <span>
                         <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        3 mins.
+                        1 mins.
                     </span>
                 
                 
             </p>
             
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/django/" rel="tag">django</a></li></ul>
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/MySQL%E5%9F%BA%E7%A1%80/" rel="tag">MySQL基础</a></li></ul>
             
         
         <div class="md-content animated fadeIn">
             
-                <pre><code>def json_test(request):
-    data = {}
-    book = Book.objects.all()
-    data[&#39;list&#39;] = json.loads(serializers.serialize(&quot;json&quot;, book))
-    return JsonResponse(data)</code></pre><p>得到的结果：</p>
-<pre><code>{
-  &quot;list&quot;: [
-    {
-      &quot;pk&quot;: 3,
-      &quot;model&quot;: &quot;myapp.book...</code></pre>
+                <ol>
+<li>连接服务器</li>
+</ol>
+<p>打开命令行：“开始”菜单—所有程序—MySQL—MySQL Server 5.7–MySQL 5.7 </p>
+<p>输入密码：inspur</p>
+<ol start="2">
+<li>创建数据库，指定编码为utf-8：</li>
+</ol>
+<pre><code>CREATE DATABASE `mysqltest1` DEFAULT CHARACTER SET utf8;</code></pre><p>3.查看服务器所有数据库</p>
+<pre><code>SHOW DATABASES;</code></pre><ol start="4">
+<li>切换到新创建的数据库：</li>
+</ol>
+<pre><code>use mysqltest1;</code></pre><ol start="5">
+<li>删除数据库：</li>
+</ol>
+<pre><code>DROP DATABASE mysqltest1;</code></pre>
             
-            <span class="read-more"><a href="/blog/django-query-results-are-several-ways-to-turn-the-json.html" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+            <span class="read-more"><a href="/blog/basis-(a):-database-operations.html" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
         </div>
     </div>
 </div>
@@ -311,19 +307,219 @@
     <div class="else">
         <p class="animated fadeInDown">
             
-                <a href="/categories/Python">
-                  <b>「 </b>PYTHON<b> 」</b>
+                <a href="/categories/MySQL">
+                  <b>「 </b>MYSQL<b> 」</b>
                 </a>
             
             August 19, 2018
         </p>
-        <h3 class="post-title animated fadeInDown"><a href="/blog/django-configuration-url.html" title="django配置URL" class="posttitle">django配置URL</a></h3>
+        <h3 class="post-title animated fadeInDown"><a href="/blog/basis-(three):-create-index.html" title="基础（三）：创建索引" class="posttitle">基础（三）：创建索引</a></h3>
         
             <p class="post-count animated fadeInDown">
                 
                     <span>
                         <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        1.3k
+                        2.2k
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                        2 mins.
+                    </span>
+                
+                
+            </p>
+            
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/MySQL%E5%9F%BA%E7%A1%80/" rel="tag">MySQL基础</a></li></ul>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                <h3 id="创建表的时候，创建索引"><a href="#创建表的时候，创建索引" class="headerlink" title="创建表的时候，创建索引"></a>创建表的时候，创建索引</h3><pre><code>CREATE TABLE DEPT_INDEX(
+  DEPTNO INT,
+  DNAME VARBINARY(20),
+  LOC VARBINARY(20),
+  INDEX INDEX_DEPTNO(DEPTNO)
+);</code></pre><h3 id="利用CREATE-INDEX创建索引"><a href="#利用CREATE-INDEX创建索引" class="headerlink" title="利用CREATE INDEX创建索引"></a>利用CREATE INDEX创建索引</h3><pre><code>CREATE INDEX INDEX_DNAME ON DEPT_INDEX(DNAME);</code></pre><h3 id="修改表的时候创建索引"><a href="#修改表的时候创建索引" class="headerlink" title="修改表的时候创建索引"></a>修改表的时候创建索引</h3><pre><code>ALTER TABLE DEPT_INDEX ADD  INDEX INDEX_LOC(LOC(10));</code></pre><h3 id="创建表的时候，创建唯一索引"><a href="#创建表的时候，创建唯一索引" class="headerlink" title="创建表的时候，创建唯一索引"></a>创建表的时候，...</h3>
+            
+            <span class="read-more"><a href="/blog/basis-(three):-create-index.html" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/covers/4.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="/categories/前端技术">
+                  <b>「 </b>前端技术<b> 」</b>
+                </a>
+            
+            August 19, 2018
+        </p>
+        <h3 class="post-title animated fadeInDown"><a href="/blog/bootstrap-to-upload-the-plugin.html" title="bootstrap上传插件" class="posttitle">bootstrap上传插件</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>Words count</i>
+                        2.1k
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                        2 mins.
+                    </span>
+                
+                
+            </p>
+            
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E5%89%8D%E7%AB%AF%E6%8A%80%E6%9C%AF/" rel="tag">前端技术</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E5%89%8D%E7%AB%AF%E6%8F%92%E4%BB%B6%E7%9A%84%E4%BD%BF%E7%94%A8%E8%AE%B0%E5%BD%95/" rel="tag">前端插件的使用记录</a></li></ul>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                <p>引入js</p>
+<pre><code>&lt;link rel=&quot;stylesheet&quot; href=&quot;skins/css/bootstrap.css&quot;&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;skins/css/fileinput.min.css&quot;&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;skins/css/font-awesome.css&quot;...</code></pre>
+            
+            <span class="read-more"><a href="/blog/bootstrap-to-upload-the-plugin.html" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/covers/6.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="/categories/Hadoop">
+                  <b>「 </b>HADOOP<b> 」</b>
+                </a>
+            
+            August 19, 2018
+        </p>
+        <h3 class="post-title animated fadeInDown"><a href="/blog/beeline-hive-learning-to-use.html" title="hive学习之beeline使用" class="posttitle">hive学习之beeline使用</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>Words count</i>
+                        3.8k
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                        3 mins.
+                    </span>
+                
+                
+            </p>
+            
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Hadoop/" rel="tag">Hadoop</a></li></ul>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                <p>官网文档：</p>
+<p><a href="https://cwiki.apache.org/confluence/display/Hive/HiveServer2+Clients#HiveServer2Clients-ConnectionURLs" target="_blank" rel="noopener">https://cwiki.apache.org/confluence/display/Hive/HiveServer2+Clients#HiveServer2Clients-ConnectionURLs</a></p>
+<p>HiveServer2支持与HiveServer2一起使用的命令shell Beeline。这是一个基于SQLLine CLI的JDBC客户端。</p>
+<p>Beeline shell既可以在嵌入模式下工作，也可以在远程模式下工作。在嵌入式模式下，它运行嵌入式Hive（类似于<a href="https://cwiki.apache.org/confluence/display/Hive/LanguageManual+Cli" target="_blank" rel="noopener">Hive CLI</a>）...</p>
+            
+            <span class="read-more"><a href="/blog/beeline-hive-learning-to-use.html" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/covers/3.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="/categories/环境搭建">
+                  <b>「 </b>环境搭建<b> 」</b>
+                </a>
+            
+            August 19, 2018
+        </p>
+        <h3 class="post-title animated fadeInDown"><a href="/blog/centos-install-oracle.html" title="centos安装oracle" class="posttitle">centos安装oracle</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>Words count</i>
+                        15k
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                        14 mins.
+                    </span>
+                
+                
+            </p>
+            
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" rel="tag">环境搭建</a></li></ul>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                <h3 id="1-VMware-搭建centos7-的虚机"><a href="#1-VMware-搭建centos7-的虚机" class="headerlink" title="1. VMware 搭建centos7 的虚机"></a>1. VMware 搭建centos7 的虚机</h3><p>配置好网络IP为192.168.162.155</p>
+<h3 id="2-下载Oracle11g安装文件"><a href="#2-下载Oracle11g安装文件" class="headerlink" title="2. 下载Oracle11g安装文件"></a>2. 下载Oracle11g安装文件</h3><pre><code>linux.x64_11gR2_database_1of2.zip
+linux.x64_11gR2_database_2of2.zip
+</code></pre><p>百度云：</p>
+<p>链接：<a href="http://pan.baidu.com/s/1gf1oJJH" target="_blank" rel="noopener">http://pan.baidu.com/s/1gf1oJJH</a> 密码：1ivl</p>
+<h3 id="3-通过shell工具连接虚机然后上传至-home-目录"><a href="#3-通过shell工具连接虚机然后上传至-home-目录" class="headerlink" title="3. 通过shell工具连接虚机然后上传至/home 目录"></a>3. 通过shell工具连接虚机然后上传至/home 目录</h3><pre><code>-rw-r--r--. 1 root   root     1239269270 Sep 23...</code></pre>
+            
+            <span class="read-more"><a href="/blog/centos-install-oracle.html" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/covers/6.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="/categories/Linux">
+                  <b>「 </b>LINUX<b> 」</b>
+                </a>
+            
+            August 19, 2018
+        </p>
+        <h3 class="post-title animated fadeInDown"><a href="/blog/change-the-linux-shell-login.html" title="更改Linux登录的shell" class="posttitle">更改Linux登录的shell</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>Words count</i>
+                        252
                     </span>
                 
                 
@@ -335,21 +531,23 @@
                 
             </p>
             
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/django/" rel="tag">django</a></li></ul>
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Linux/" rel="tag">Linux</a></li></ul>
             
         
         <div class="md-content animated fadeIn">
             
-                <p>之前配置url是直接修改url.py如下图：</p>
-<pre><code>from django.conf.urls import url
-from django.contrib import admin
-import blog.views as bv
-urlpatterns = [
-    url(r&#39;^admin/&#39;, admin.site.urls),
-    url(r&#39;^index/&#39;, bv.index)
-]</code></pre><p>这样是可行的，但是如果我们的网站过于庞大，会有好多应用，而且url也很多。这时候，我们写...</p>
+                <ol>
+<li>查看linux一共有哪些shell</li>
+</ol>
+<pre><code>chsh -l</code></pre><ol start="2">
+<li>查看当前用户执行的shell</li>
+</ol>
+<pre><code>echo $ SHELL //SHELL一定要大写</code></pre><ol start="3">
+<li>修改当前用户的shell为bin/sh</li>
+</ol>
+<pre><code>chsh -s /bin/sh</code></pre>
             
-            <span class="read-more"><a href="/blog/django-configuration-url.html" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+            <span class="read-more"><a href="/blog/change-the-linux-shell-login.html" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
         </div>
     </div>
 </div>
@@ -359,51 +557,51 @@ urlpatterns = [
     <div class="post-cover animated fadeIn" style="
             background-image:
             radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/covers/2.jpg);">
+            url(/img/covers/5.jpg);">
     </div>
     <div class="else">
         <p class="animated fadeInDown">
             
-                <a href="/categories/Python">
-                  <b>「 </b>PYTHON<b> 」</b>
+                <a href="/categories/Java">
+                  <b>「 </b>JAVA<b> 」</b>
                 </a>
             
             August 19, 2018
         </p>
-        <h3 class="post-title animated fadeInDown"><a href="/blog/django-crud.html" title="django增删改查" class="posttitle">django增删改查</a></h3>
+        <h3 class="post-title animated fadeInDown"><a href="/blog/collection-excuse-sub-interface-and-implementation-class.html" title="Collection借口、子接口以及实现类" class="posttitle">Collection借口、子接口以及实现类</a></h3>
         
             <p class="post-count animated fadeInDown">
                 
                     <span>
                         <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        7.2k
+                        481
                     </span>
                 
                 
                     <span>
                         <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        7 mins.
+                        1 mins.
                     </span>
                 
                 
             </p>
             
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/django/" rel="tag">django</a></li></ul>
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6/" rel="tag">集合框架</a></li></ul>
             
         
         <div class="md-content animated fadeIn">
             
-                <p>models.py</p>
-<pre><code>class Student(models.Model):
-    stu_name = models.CharField(max_length=30)
-    stu_no = models.CharField(max_length=20)
-    stu_sex = models.CharField(max_length=10)
-    stu_age = models.IntegerField()
-    stu_birth = models.DateTimeField(auto_now_add=True)
+                <ul>
+<li>是List Set 和Queue接口的父接口</li>
+<li>定义了可操作性List、Set、Queue的方法——增删改查</li>
+<li>List是元素有序并且可以重合的集合，被称为序列</li>
+<li>List可以精确的控制每个元素的插入位置，或删除某个位置元素</li>
+<li>ArrayList ——数组序列，是List 的一个重要实现类</li>
+<li>ArrayList 底层是由数组实现的</li>
+</ul>
 
-    def...</code></pre>
             
-            <span class="read-more"><a href="/blog/django-crud.html" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+            <span class="read-more"><a href="/blog/collection-excuse-sub-interface-and-implementation-class.html" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
         </div>
     </div>
 </div>
@@ -418,129 +616,19 @@ urlpatterns = [
     <div class="else">
         <p class="animated fadeInDown">
             
-                <a href="/categories/Python">
-                  <b>「 </b>PYTHON<b> 」</b>
+                <a href="/categories/项目开发记录">
+                  <b>「 </b>项目开发记录<b> 」</b>
                 </a>
             
             August 19, 2018
         </p>
-        <h3 class="post-title animated fadeInDown"><a href="/blog/django-template-component-of.html" title="django模板组件化" class="posttitle">django模板组件化</a></h3>
+        <h3 class="post-title animated fadeInDown"><a href="/blog/compile-and-install-the-linux-environment-prometheus.html" title="linux环境下编译安装prometheus" class="posttitle">linux环境下编译安装prometheus</a></h3>
         
             <p class="post-count animated fadeInDown">
                 
                     <span>
                         <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        1.7k
-                    </span>
-                
-                
-                    <span>
-                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        2 mins.
-                    </span>
-                
-                
-            </p>
-            
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/django/" rel="tag">django</a></li></ul>
-            
-        
-        <div class="md-content animated fadeIn">
-            
-                <p>Django中也有模板组件化的思想。在模板的应用中有包含、继承的概念。</p>
-<blockquote>
-<p>不难理解，包含就是指一个模板里包含另一模板里内容</p>
-</blockquote>
-<p>举个栗子</p>
-<p>比如我们要再A.html里应用B.html里的内容，也就是A里包含B，我们可以这样写：</p>
-<pre><code>&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-&lt;head&gt;
-    &lt;title&gt;title&lt;/title&gt;
-&lt;/head&gt;
-&lt;body&gt; 
-{% include 'B.html' %}
-&lt;/body...</code></pre>
-            
-            <span class="read-more"><a href="/blog/django-template-component-of.html" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
-        </div>
-    </div>
-</div>
-
-
-<div class="post" id="post">
-    <div class="post-cover animated fadeIn" style="
-            background-image:
-            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/covers/6.jpg);">
-    </div>
-    <div class="else">
-        <p class="animated fadeInDown">
-            
-                <a href="/categories/Vue">
-                  <b>「 </b>VUE<b> 」</b>
-                </a>
-            
-            August 19, 2018
-        </p>
-        <h3 class="post-title animated fadeInDown"><a href="/blog/vue-knowledge-points-record.html" title="Vue知识点记录" class="posttitle">Vue知识点记录</a></h3>
-        
-            <p class="post-count animated fadeInDown">
-                
-                    <span>
-                        <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        7.7k
-                    </span>
-                
-                
-                    <span>
-                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        7 mins.
-                    </span>
-                
-                
-            </p>
-            
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Vue/" rel="tag">Vue</a></li></ul>
-            
-        
-        <div class="md-content animated fadeIn">
-            
-                <h3 id="1-安装vue-resource"><a href="#1-安装vue-resource" class="headerlink" title="1.安装vue-resource"></a>1.安装vue-resource</h3><h4 id="cnpm安装依赖"><a href="#cnpm安装依赖" class="headerlink" title="cnpm安装依赖"></a>cnpm安装依赖</h4><pre><code>cnpm install vue-resource</code></pre><h4 id="安装完成后在项目中全局引入"><a href="#安装完成后在项目中全局引入" class="headerlink" title="安装完成后在项目中全局引入"></a>安装完成后在项目中全局引入</h4><p>修改main.js文件</p>
-<pre><code>import VueResource from &#39;vue-resource&#39;
-Vue.use(VueResource);</code></pre><h4 id="vue-resource使用"><a href="#vue-resource使用" class="headerlink" title="vue-resource使用"></a>vue-resource使用</h4><pre><code>// 传统写法
-this.$http.get(&#39;/someUrl&#39;, [options]).then(function(response){    
-    // 响应成功回调
-}, function...</code></pre>
-            
-            <span class="read-more"><a href="/blog/vue-knowledge-points-record.html" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
-        </div>
-    </div>
-</div>
-
-
-<div class="post" id="post">
-    <div class="post-cover animated fadeIn" style="
-            background-image:
-            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/covers/6.jpg);">
-    </div>
-    <div class="else">
-        <p class="animated fadeInDown">
-            
-                <a href="/categories/Vue">
-                  <b>「 </b>VUE<b> 」</b>
-                </a>
-            
-            August 19, 2018
-        </p>
-        <h3 class="post-title animated fadeInDown"><a href="/blog/jquery-introduced-in-the-vue.html" title="在vue里引入jquery" class="posttitle">在vue里引入jquery</a></h3>
-        
-            <p class="post-count animated fadeInDown">
-                
-                    <span>
-                        <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        956
+                        887
                     </span>
                 
                 
@@ -552,20 +640,18 @@ this.$http.get(&#39;/someUrl&#39;, [options]).then(function(response){
                 
             </p>
             
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Vue/" rel="tag">Vue</a></li></ul>
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Prometheus-Grafana%E5%BC%80%E5%8F%91%E8%AE%B0%E5%BD%95/" rel="tag">Prometheus+Grafana开发记录</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91%E8%AE%B0%E5%BD%95/" rel="tag">项目开发记录</a></li></ul>
             
         
         <div class="md-content animated fadeIn">
             
-                <p>在项目文件目录下运行如下命令，安装jquery</p>
-<pre><code>npm install jquery</code></pre><p>修改build/webpack.base.conf.js文件</p>
-<p>在开头加入一行代码</p>
-<pre><code> var webpack=require(&quot;webpack&quot;)</code></pre><p>然后在这个文件中的module.exports添加如下代码：</p>
-<pre><code>  plugins: [
-new webpack.optimize.CommonsChunkPlugin(&#39;common.js&#39;),
-new webpack.ProvidePlugin...</code></pre>
+                <pre><code>yum insatll go</code></pre><pre><code>export GOPATH=`pwd`
+cd $GOPATH/src/github.com/prometheus
+git clone https://github.com/prometheus/prometheus.git
+cd prometheus</code></pre><pre><code>make assets</code></pre><pre><code>make build</code></pre><p>复制prometheus.yml到目录下，然后运行</p>
+<pre><code>./prometheus</code></pre><p>promethus的前端页面在/root/src/github.com/prometheus/prometheus...</p>
             
-            <span class="read-more"><a href="/blog/jquery-introduced-in-the-vue.html" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+            <span class="read-more"><a href="/blog/compile-and-install-the-linux-environment-prometheus.html" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
         </div>
     </div>
 </div>
@@ -575,57 +661,7 @@ new webpack.ProvidePlugin...</code></pre>
     <div class="post-cover animated fadeIn" style="
             background-image:
             radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/covers/5.jpg);">
-    </div>
-    <div class="else">
-        <p class="animated fadeInDown">
-            
-                <a href="/categories/Vue">
-                  <b>「 </b>VUE<b> 」</b>
-                </a>
-            
-            August 19, 2018
-        </p>
-        <h3 class="post-title animated fadeInDown"><a href="/blog/vue-router-to-control-the-use-of-user-logon-rights.html" title="利用vue-router来控制用户登录权限" class="posttitle">利用vue-router来控制用户登录权限</a></h3>
-        
-            <p class="post-count animated fadeInDown">
-                
-                    <span>
-                        <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        1.2k
-                    </span>
-                
-                
-                    <span>
-                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        1 mins.
-                    </span>
-                
-                
-            </p>
-            
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Vue/" rel="tag">Vue</a></li></ul>
-            
-        
-        <div class="md-content animated fadeIn">
-            
-                <p>用vue-router来控制用户登录权限的原理，实际上就是应用了vue-router提供的router.beforeEach来注册一个全局钩子。<a href="https://router.vuejs.org/zh-cn/advanced/navigation-guards.html" target="_blank" rel="noopener">具体用法</a></p>
-<p>根据判断是否具有登录权限来设置路由跳转，如果没有全选统一跳转到登录页面。</p>
-<pre><code>import router from &#39;./router&#39;
-import NProgress from &#39;nprogress&#39; // Progress 进度条
-import &#39;nprogress/nprogress.css&#39;...</code></pre>
-            
-            <span class="read-more"><a href="/blog/vue-router-to-control-the-use-of-user-logon-rights.html" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
-        </div>
-    </div>
-</div>
-
-
-<div class="post" id="post">
-    <div class="post-cover animated fadeIn" style="
-            background-image:
-            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/covers/1.jpg);">
+            url(/img/covers/8.jpg);">
     </div>
     <div class="else">
         <p class="animated fadeInDown">
@@ -666,61 +702,6 @@ import &#39;nprogress/nprogress.css&#39;...</code></pre>
 <pre><code>cd shoppingmall</code></pre><p>给App添加目标平台，这里我们添加android平台，并确保他...</p>
             
             <span class="read-more"><a href="/blog/construction-android-application-vue-+-cordova.html" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
-        </div>
-    </div>
-</div>
-
-
-<div class="post" id="post">
-    <div class="post-cover animated fadeIn" style="
-            background-image:
-            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/covers/5.jpg);">
-    </div>
-    <div class="else">
-        <p class="animated fadeInDown">
-            
-                <a href="/categories/Vue">
-                  <b>「 </b>VUE<b> 」</b>
-                </a>
-            
-            August 19, 2018
-        </p>
-        <h3 class="post-title animated fadeInDown"><a href="/blog/subassembly-are-two-ways-to-communicate-parent-component.html" title="子组件向父组件通信的两种方式" class="posttitle">子组件向父组件通信的两种方式</a></h3>
-        
-            <p class="post-count animated fadeInDown">
-                
-                    <span>
-                        <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        808
-                    </span>
-                
-                
-                    <span>
-                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        1 mins.
-                    </span>
-                
-                
-            </p>
-            
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Vue/" rel="tag">Vue</a></li></ul>
-            
-        
-        <div class="md-content animated fadeIn">
-            
-                <p>子组件</p>
-<pre><code>methods:{
- onClickMe:function (){
-    this.$emit(&#39;functionName&#39;，Data)
-
-}
-//functionName为父组件里要绑定的方法，data为向父组件传递的数据</code></pre><p>父组件</p>
-<pre><code>&lt;compinent-a v-on:functionName=&quot;listenToMyBoy&quot;&gt;&lt;/compinent-a&gt;</code></pre><pre><code>methods:{
-    listenToMyBoy:function(data){
-        console...</code></pre>
-            
-            <span class="read-more"><a href="/blog/subassembly-are-two-ways-to-communicate-parent-component.html" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
         </div>
     </div>
 </div>

@@ -130,7 +130,7 @@
             animation-duration: 2.8s;
             background-image:
                 radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.56), #100e17),
-                url(/img/covers/3.jpg);">
+                url(/img/covers/5.jpg);">
         </div>
     </div>
     
@@ -143,32 +143,42 @@
             August 19, 2018
         </p>
         <h3 class="post-title animated fadeInDown">
-            <a href="/blog/mysql-modify-the-character-set-tables-fields-library.html" title="mysql修改表、字段、库的字符集" class="posttitle">mysql修改表、字段、库的字符集</a></h3>
+            <a href="/blog/base-(b):-table-operation.html" title="基础（二）：表操作" class="posttitle">基础（二）：表操作</a></h3>
         
         <p class="post-count animated fadeInDown">
             
             <span>
                 <b class="iconfont icon-text2"></b> <i>Words count</i>
-                1.5k
+                1.8k
             </span>
             
             
             <span>
                 <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                1 mins.
+                2 mins.
             </span>
             
             
         </p>
         
         
-        <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li></ul>
+        <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/MySQL%E5%9F%BA%E7%A1%80/" rel="tag">MySQL基础</a></li></ul>
         
         <div class="md-content animated fadeIn">
             
-            <pre><code>ALTER DATABASE databaseName DEFAULT CHARACTER SET utf8;</code></pre><pre><code>ALTER TABLE tableName CONVERT TO CHARACTER SET...</code></pre>
+            <h3 id="一、创建表"><a href="#一、创建表" class="headerlink" title="一、创建表"></a>一、创建表</h3><ol>
+<li>创建表</li>
+</ol>
+<pre><code>CREATE TABLE dept(
+deptino INT,
+dname VARCHAR(20),
+loc VARCHAR(20)
+)</code></pre><ol start="2">
+<li>查看表的详细定义</li>
+</ol>
+<pre><code>SHOW CREATE...</code></pre>
             
-            <span class="read-more"><a href="/blog/mysql-modify-the-character-set-tables-fields-library.html" title="Read article" class="posttitle">Read article</a>
+            <span class="read-more"><a href="/blog/base-(b):-table-operation.html" title="Read article" class="posttitle">Read article</a>
                 <b class="iconfont icon-arrow-right- gradient-text"></b></span>
         </div>
     </div>
@@ -193,7 +203,166 @@
     <div class="post-cover animated fadeIn" style="
             background-image:
             radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/covers/1.jpg);">
+            url(/img/covers/5.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="/categories/MySQL">
+                  <b>「 </b>MYSQL<b> 」</b>
+                </a>
+            
+            August 19, 2018
+        </p>
+        <h3 class="post-title animated fadeInDown"><a href="/blog/base-(iv):-operation-view.html" title="基础（四）：视图操作" class="posttitle">基础（四）：视图操作</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>Words count</i>
+                        338
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                        1 mins.
+                    </span>
+                
+                
+            </p>
+            
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/MySQL%E5%9F%BA%E7%A1%80/" rel="tag">MySQL基础</a></li></ul>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                <pre><code>CREATE  VIEW  VIEW_DEPT_DNO AS SELECT DEPTNO AOC_ID,
+DNAME AOC_NAME,LOC AOC_LOC FROM DEPT WHERE LOC =&quot;本部&quot;;</code></pre><pre><code>DROP VIEW VIEW_DEPT_DNO;</code></pre>
+            
+            <span class="read-more"><a href="/blog/base-(iv):-operation-view.html" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/covers/4.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="/categories/MySQL">
+                  <b>「 </b>MYSQL<b> 」</b>
+                </a>
+            
+            August 19, 2018
+        </p>
+        <h3 class="post-title animated fadeInDown"><a href="/blog/basis-(a):-database-operations.html" title="基础（一）：数据库操作" class="posttitle">基础（一）：数据库操作</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>Words count</i>
+                        458
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                        1 mins.
+                    </span>
+                
+                
+            </p>
+            
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/MySQL%E5%9F%BA%E7%A1%80/" rel="tag">MySQL基础</a></li></ul>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                <ol>
+<li>连接服务器</li>
+</ol>
+<p>打开命令行：“开始”菜单—所有程序—MySQL—MySQL Server 5.7–MySQL 5.7 </p>
+<p>输入密码：inspur</p>
+<ol start="2">
+<li>创建数据库，指定编码为utf-8：</li>
+</ol>
+<pre><code>CREATE DATABASE `mysqltest1` DEFAULT CHARACTER SET utf8;</code></pre><p>3.查看服务器所有数据库</p>
+<pre><code>SHOW DATABASES;</code></pre><ol start="4">
+<li>切换到新创建的数据库：</li>
+</ol>
+<pre><code>use mysqltest1;</code></pre><ol start="5">
+<li>删除数据库：</li>
+</ol>
+<pre><code>DROP DATABASE mysqltest1;</code></pre>
+            
+            <span class="read-more"><a href="/blog/basis-(a):-database-operations.html" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/covers/5.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="/categories/MySQL">
+                  <b>「 </b>MYSQL<b> 」</b>
+                </a>
+            
+            August 19, 2018
+        </p>
+        <h3 class="post-title animated fadeInDown"><a href="/blog/basis-(three):-create-index.html" title="基础（三）：创建索引" class="posttitle">基础（三）：创建索引</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>Words count</i>
+                        2.2k
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                        2 mins.
+                    </span>
+                
+                
+            </p>
+            
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/MySQL%E5%9F%BA%E7%A1%80/" rel="tag">MySQL基础</a></li></ul>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                <h3 id="创建表的时候，创建索引"><a href="#创建表的时候，创建索引" class="headerlink" title="创建表的时候，创建索引"></a>创建表的时候，创建索引</h3><pre><code>CREATE TABLE DEPT_INDEX(
+  DEPTNO INT,
+  DNAME VARBINARY(20),
+  LOC VARBINARY(20),
+  INDEX INDEX_DEPTNO(DEPTNO)
+);</code></pre><h3 id="利用CREATE-INDEX创建索引"><a href="#利用CREATE-INDEX创建索引" class="headerlink" title="利用CREATE INDEX创建索引"></a>利用CREATE INDEX创建索引</h3><pre><code>CREATE INDEX INDEX_DNAME ON DEPT_INDEX(DNAME);</code></pre><h3 id="修改表的时候创建索引"><a href="#修改表的时候创建索引" class="headerlink" title="修改表的时候创建索引"></a>修改表的时候创建索引</h3><pre><code>ALTER TABLE DEPT_INDEX ADD  INDEX INDEX_LOC(LOC(10));</code></pre><h3 id="创建表的时候，创建唯一索引"><a href="#创建表的时候，创建唯一索引" class="headerlink" title="创建表的时候，创建唯一索引"></a>创建表的时候，...</h3>
+            
+            <span class="read-more"><a href="/blog/basis-(three):-create-index.html" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/covers/4.jpg);">
     </div>
     <div class="else">
         <p class="animated fadeInDown">
@@ -239,7 +408,54 @@
     <div class="post-cover animated fadeIn" style="
             background-image:
             radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/covers/4.jpg);">
+            url(/img/covers/8.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="/categories/MySQL">
+                  <b>「 </b>MYSQL<b> 」</b>
+                </a>
+            
+            August 19, 2018
+        </p>
+        <h3 class="post-title animated fadeInDown"><a href="/blog/mysql-modify-the-character-set-tables-fields-library.html" title="mysql修改表、字段、库的字符集" class="posttitle">mysql修改表、字段、库的字符集</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>Words count</i>
+                        1.5k
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                        1 mins.
+                    </span>
+                
+                
+            </p>
+            
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li></ul>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                <pre><code>ALTER DATABASE databaseName DEFAULT CHARACTER SET utf8;</code></pre><pre><code>ALTER TABLE tableName CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;</code></pre><pre><code>ALTER TABLE tbl_name DEFAULT CHARACTER SET character_name [COLLATE...];
+如：ALTER TABLE logtest DEFAULT CHARACTER SET utf8...</code></pre>
+            
+            <span class="read-more"><a href="/blog/mysql-modify-the-character-set-tables-fields-library.html" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/covers/1.jpg);">
     </div>
     <div class="else">
         <p class="animated fadeInDown">
@@ -268,7 +484,7 @@
                 
             </p>
             
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/MySQL-xe8-xa1-xa8-xe8-xae-xb0-xe5-xbd-x95-xe6-x93-x8d-xe4-xbd-x9c/" rel="tag">MySQL\xe8\xa1\xa8\xe8\xae\xb0\xe5\xbd\x95\xe6\x93\x8d\xe4\xbd\x9c</a></li></ul>
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/MySQL%E8%A1%A8%E8%AE%B0%E5%BD%95%E6%93%8D%E4%BD%9C/" rel="tag">MySQL表记录操作</a></li></ul>
             
         
         <div class="md-content animated fadeIn">
@@ -282,230 +498,6 @@
 
             
             <span class="read-more"><a href="/blog/sql-usage-in-exists.html" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
-        </div>
-    </div>
-</div>
-
-
-<div class="post" id="post">
-    <div class="post-cover animated fadeIn" style="
-            background-image:
-            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/covers/7.jpg);">
-    </div>
-    <div class="else">
-        <p class="animated fadeInDown">
-            
-                <a href="/categories/MySQL">
-                  <b>「 </b>MYSQL<b> 」</b>
-                </a>
-            
-            August 19, 2018
-        </p>
-        <h3 class="post-title animated fadeInDown"><a href="/blog/base-(b):-table-operation.html" title="基础（二）：表操作" class="posttitle">基础（二）：表操作</a></h3>
-        
-            <p class="post-count animated fadeInDown">
-                
-                    <span>
-                        <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        1.8k
-                    </span>
-                
-                
-                    <span>
-                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        2 mins.
-                    </span>
-                
-                
-            </p>
-            
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/MySQL-xe5-x9f-xba-xe7-xa1-x80/" rel="tag">MySQL\xe5\x9f\xba\xe7\xa1\x80</a></li></ul>
-            
-        
-        <div class="md-content animated fadeIn">
-            
-                <h3 id="一、创建表"><a href="#一、创建表" class="headerlink" title="一、创建表"></a>一、创建表</h3><ol>
-<li>创建表</li>
-</ol>
-<pre><code>CREATE TABLE dept(
-deptino INT,
-dname VARCHAR(20),
-loc VARCHAR(20)
-)</code></pre><ol start="2">
-<li>查看表的详细定义</li>
-</ol>
-<pre><code>SHOW CREATE TABLE dept\G</code></pre><blockquote>
-<p>特殊说明：MySQL的命令行中，语句的结尾有三种：英文分号，\g和\G，其中\G的显示效果最好</p>
-</blockquote>
-<h3 id="二、增加字段"><a href="#二、增加字段" class="headerlink" title="二、增加字段"></a>二、增加字段</h3><ol>
-<li>在表的最后增加字段(默认是在最后添加)</li>
-</ol>
-<pre><code>ALTER TABLE dept ADD descri VARCHAR(20);</code></pre><ol start="2">
-<li>在表的第一行添加字段</li>
-</ol>
-<pre><code>ALTER...</code></pre>
-            
-            <span class="read-more"><a href="/blog/base-(b):-table-operation.html" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
-        </div>
-    </div>
-</div>
-
-
-<div class="post" id="post">
-    <div class="post-cover animated fadeIn" style="
-            background-image:
-            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/covers/3.jpg);">
-    </div>
-    <div class="else">
-        <p class="animated fadeInDown">
-            
-                <a href="/categories/MySQL">
-                  <b>「 </b>MYSQL<b> 」</b>
-                </a>
-            
-            August 19, 2018
-        </p>
-        <h3 class="post-title animated fadeInDown"><a href="/blog/basis-(three):-create-index.html" title="基础（三）：创建索引" class="posttitle">基础（三）：创建索引</a></h3>
-        
-            <p class="post-count animated fadeInDown">
-                
-                    <span>
-                        <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        2.2k
-                    </span>
-                
-                
-                    <span>
-                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        2 mins.
-                    </span>
-                
-                
-            </p>
-            
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/MySQL-xe5-x9f-xba-xe7-xa1-x80/" rel="tag">MySQL\xe5\x9f\xba\xe7\xa1\x80</a></li></ul>
-            
-        
-        <div class="md-content animated fadeIn">
-            
-                <h3 id="创建表的时候，创建索引"><a href="#创建表的时候，创建索引" class="headerlink" title="创建表的时候，创建索引"></a>创建表的时候，创建索引</h3><pre><code>CREATE TABLE DEPT_INDEX(
-  DEPTNO INT,
-  DNAME VARBINARY(20),
-  LOC VARBINARY(20),
-  INDEX INDEX_DEPTNO(DEPTNO)
-);</code></pre><h3 id="利用CREATE-INDEX创建索引"><a href="#利用CREATE-INDEX创建索引" class="headerlink" title="利用CREATE INDEX创建索引"></a>利用CREATE INDEX创建索引</h3><pre><code>CREATE INDEX INDEX_DNAME ON DEPT_INDEX(DNAME);</code></pre><h3 id="修改表的时候创建索引"><a href="#修改表的时候创建索引" class="headerlink" title="修改表的时候创建索引"></a>修改表的时候创建索引</h3><pre><code>ALTER TABLE DEPT_INDEX ADD  INDEX INDEX_LOC(LOC(10));</code></pre><h3 id="创建表的时候，创建唯一索引"><a href="#创建表的时候，创建唯一索引" class="headerlink" title="创建表的时候，创建唯一索引"></a>创建表的时候，...</h3>
-            
-            <span class="read-more"><a href="/blog/basis-(three):-create-index.html" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
-        </div>
-    </div>
-</div>
-
-
-<div class="post" id="post">
-    <div class="post-cover animated fadeIn" style="
-            background-image:
-            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/covers/3.jpg);">
-    </div>
-    <div class="else">
-        <p class="animated fadeInDown">
-            
-                <a href="/categories/MySQL">
-                  <b>「 </b>MYSQL<b> 」</b>
-                </a>
-            
-            August 19, 2018
-        </p>
-        <h3 class="post-title animated fadeInDown"><a href="/blog/basis-(a):-database-operations.html" title="基础（一）：数据库操作" class="posttitle">基础（一）：数据库操作</a></h3>
-        
-            <p class="post-count animated fadeInDown">
-                
-                    <span>
-                        <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        458
-                    </span>
-                
-                
-                    <span>
-                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        1 mins.
-                    </span>
-                
-                
-            </p>
-            
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/MySQL-xe5-x9f-xba-xe7-xa1-x80/" rel="tag">MySQL\xe5\x9f\xba\xe7\xa1\x80</a></li></ul>
-            
-        
-        <div class="md-content animated fadeIn">
-            
-                <ol>
-<li>连接服务器</li>
-</ol>
-<p>打开命令行：“开始”菜单—所有程序—MySQL—MySQL Server 5.7–MySQL 5.7 </p>
-<p>输入密码：inspur</p>
-<ol start="2">
-<li>创建数据库，指定编码为utf-8：</li>
-</ol>
-<pre><code>CREATE DATABASE `mysqltest1` DEFAULT CHARACTER SET utf8;</code></pre><p>3.查看服务器所有数据库</p>
-<pre><code>SHOW DATABASES;</code></pre><ol start="4">
-<li>切换到新创建的数据库：</li>
-</ol>
-<pre><code>use mysqltest1;</code></pre><ol start="5">
-<li>删除数据库：</li>
-</ol>
-<pre><code>DROP DATABASE mysqltest1;</code></pre>
-            
-            <span class="read-more"><a href="/blog/basis-(a):-database-operations.html" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
-        </div>
-    </div>
-</div>
-
-
-<div class="post" id="post">
-    <div class="post-cover animated fadeIn" style="
-            background-image:
-            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/covers/3.jpg);">
-    </div>
-    <div class="else">
-        <p class="animated fadeInDown">
-            
-                <a href="/categories/MySQL">
-                  <b>「 </b>MYSQL<b> 」</b>
-                </a>
-            
-            August 19, 2018
-        </p>
-        <h3 class="post-title animated fadeInDown"><a href="/blog/base-(iv):-operation-view.html" title="基础（四）：视图操作" class="posttitle">基础（四）：视图操作</a></h3>
-        
-            <p class="post-count animated fadeInDown">
-                
-                    <span>
-                        <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        338
-                    </span>
-                
-                
-                    <span>
-                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        1 mins.
-                    </span>
-                
-                
-            </p>
-            
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/MySQL-xe5-x9f-xba-xe7-xa1-x80/" rel="tag">MySQL\xe5\x9f\xba\xe7\xa1\x80</a></li></ul>
-            
-        
-        <div class="md-content animated fadeIn">
-            
-                <pre><code>CREATE  VIEW  VIEW_DEPT_DNO AS SELECT DEPTNO AOC_ID,
-DNAME AOC_NAME,LOC AOC_LOC FROM DEPT WHERE LOC =&quot;本部&quot;;</code></pre><pre><code>DROP VIEW VIEW_DEPT_DNO;</code></pre>
-            
-            <span class="read-more"><a href="/blog/base-(iv):-operation-view.html" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
         </div>
     </div>
 </div>

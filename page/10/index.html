@@ -130,7 +130,7 @@
             animation-duration: 2.8s;
             background-image:
                 radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.56), #100e17),
-                url(/img/covers/8.jpg);">
+                url(/img/covers/1.jpg);">
         </div>
     </div>
     
@@ -143,13 +143,13 @@
             August 20, 2018
         </p>
         <h3 class="post-title animated fadeInDown">
-            <a href="/blog/3-2-to-achieve-simple-linear-regression.html" title="3-2 实现 Simple Linear Regression" class="posttitle">3-2 实现 Simple Linear Regression</a></h3>
+            <a href="/blog/4-2-gradient-descent-summary-and-discussion.html" title="4-2 梯度下降法的总结以及相关讨论" class="posttitle">4-2 梯度下降法的总结以及相关讨论</a></h3>
         
         <p class="post-count animated fadeInDown">
             
             <span>
                 <b class="iconfont icon-text2"></b> <i>Words count</i>
-                3.7k
+                3.2k
             </span>
             
             
@@ -162,16 +162,16 @@
         </p>
         
         
-        <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/xe6-x9c-xba-xe5-x99-xa8-xe5-xad-xa6-xe4-xb9-xa0/" rel="tag">\xe6\x9c\xba\xe5\x99\xa8\xe5\xad\xa6\xe4\xb9\xa0</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/python3-xe5-x85-xa5-xe9-x97-xa8-xe6-x9c-xba-xe5-x99-xa8-xe5-xad-xa6-xe4-xb9-xa0/" rel="tag">python3\xe5\x85\xa5\xe9\x97\xa8\xe6\x9c\xba\xe5\x99\xa8\xe5\xad\xa6\xe4\xb9\xa0</a></li></ul>
+        <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/python3%E5%85%A5%E9%97%A8%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">python3入门机器学习</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li></ul>
         
         <div class="md-content animated fadeIn">
             
             <pre><code class="python">import numpy as np
 import matplotlib.pyplot as plt</code></pre>
-<pre><code class="python">x = np.array([1.,2.,3.,4.,5.])
-y = np.array([1.,3...</code></pre>
+<pre><code class="python">np.random.seed(666)
+X = np.random.random(size=(1000...</code></pre>
             
-            <span class="read-more"><a href="/blog/3-2-to-achieve-simple-linear-regression.html" title="Read article" class="posttitle">Read article</a>
+            <span class="read-more"><a href="/blog/4-2-gradient-descent-summary-and-discussion.html" title="Read article" class="posttitle">Read article</a>
                 <b class="iconfont icon-arrow-right- gradient-text"></b></span>
         </div>
     </div>
@@ -196,7 +196,60 @@ y = np.array([1.,3...</code></pre>
     <div class="post-cover animated fadeIn" style="
             background-image:
             radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/covers/8.jpg);">
+            url(/img/covers/1.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="/categories/机器学习">
+                  <b>「 </b>机器学习<b> 」</b>
+                </a>
+            
+            August 20, 2018
+        </p>
+        <h3 class="post-title animated fadeInDown"><a href="/blog/4-2-gradient-descent-summary-and-discussion.html" title="4-2 梯度下降法的总结以及相关讨论" class="posttitle">4-2 梯度下降法的总结以及相关讨论</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>Words count</i>
+                        3.2k
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                        3 mins.
+                    </span>
+                
+                
+            </p>
+            
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/python3%E5%85%A5%E9%97%A8%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">python3入门机器学习</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li></ul>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                <pre><code class="python">import numpy as np
+import matplotlib.pyplot as plt</code></pre>
+<pre><code class="python">np.random.seed(666)
+X = np.random.random(size=(1000,10))</code></pre>
+<pre><code class="python">true_theta = np.arange(1,12,dtype=float)</code></pre>
+<pre><code class="python">X_b = np.hstack([np.ones((len(X),1)),X])
+y = X_b.dot(true_theta) + np.random.normal(size=1000)</code></pre>
+<pre><code class="python">X.shape...</code></pre>
+            
+            <span class="read-more"><a href="/blog/4-2-gradient-descent-summary-and-discussion.html" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/covers/7.jpg);">
     </div>
     <div class="else">
         <p class="animated fadeInDown">
@@ -225,7 +278,7 @@ y = np.array([1.,3...</code></pre>
                 
             </p>
             
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/xe6-x9c-xba-xe5-x99-xa8-xe5-xad-xa6-xe4-xb9-xa0/" rel="tag">\xe6\x9c\xba\xe5\x99\xa8\xe5\xad\xa6\xe4\xb9\xa0</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/python3-xe5-x85-xa5-xe9-x97-xa8-xe6-x9c-xba-xe5-x99-xa8-xe5-xad-xa6-xe4-xb9-xa0/" rel="tag">python3\xe5\x85\xa5\xe9\x97\xa8\xe6\x9c\xba\xe5\x99\xa8\xe5\xad\xa6\xe4\xb9\xa0</a></li></ul>
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/python3%E5%85%A5%E9%97%A8%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">python3入门机器学习</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li></ul>
             
         
         <div class="md-content animated fadeIn">
@@ -259,7 +312,7 @@ for...</code></pre>
     <div class="post-cover animated fadeIn" style="
             background-image:
             radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/covers/1.jpg);">
+            url(/img/covers/5.jpg);">
     </div>
     <div class="else">
         <p class="animated fadeInDown">
@@ -288,7 +341,7 @@ for...</code></pre>
                 
             </p>
             
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/xe6-x9c-xba-xe5-x99-xa8-xe5-xad-xa6-xe4-xb9-xa0/" rel="tag">\xe6\x9c\xba\xe5\x99\xa8\xe5\xad\xa6\xe4\xb9\xa0</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/python3-xe5-x85-xa5-xe9-x97-xa8-xe6-x9c-xba-xe5-x99-xa8-xe5-xad-xa6-xe4-xb9-xa0/" rel="tag">python3\xe5\x85\xa5\xe9\x97\xa8\xe6\x9c\xba\xe5\x99\xa8\xe5\xad\xa6\xe4\xb9\xa0</a></li></ul>
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/python3%E5%85%A5%E9%97%A8%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">python3入门机器学习</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li></ul>
             
         
         <div class="md-content animated fadeIn">
@@ -313,7 +366,7 @@ for...</code></pre>
     <div class="post-cover animated fadeIn" style="
             background-image:
             radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/covers/7.jpg);">
+            url(/img/covers/3.jpg);">
     </div>
     <div class="else">
         <p class="animated fadeInDown">
@@ -342,7 +395,7 @@ for...</code></pre>
                 
             </p>
             
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/xe6-x9c-xba-xe5-x99-xa8-xe5-xad-xa6-xe4-xb9-xa0/" rel="tag">\xe6\x9c\xba\xe5\x99\xa8\xe5\xad\xa6\xe4\xb9\xa0</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/python3-xe5-x85-xa5-xe9-x97-xa8-xe6-x9c-xba-xe5-x99-xa8-xe5-xad-xa6-xe4-xb9-xa0/" rel="tag">python3\xe5\x85\xa5\xe9\x97\xa8\xe6\x9c\xba\xe5\x99\xa8\xe5\xad\xa6\xe4\xb9\xa0</a></li></ul>
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/python3%E5%85%A5%E9%97%A8%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">python3入门机器学习</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li></ul>
             
         
         <div class="md-content animated fadeIn">
@@ -372,7 +425,7 @@ for...</code></pre>
     <div class="post-cover animated fadeIn" style="
             background-image:
             radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/covers/3.jpg);">
+            url(/img/covers/6.jpg);">
     </div>
     <div class="else">
         <p class="animated fadeInDown">
@@ -401,7 +454,7 @@ for...</code></pre>
                 
             </p>
             
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/xe6-x9c-xba-xe5-x99-xa8-xe5-xad-xa6-xe4-xb9-xa0/" rel="tag">\xe6\x9c\xba\xe5\x99\xa8\xe5\xad\xa6\xe4\xb9\xa0</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/python3-xe5-x85-xa5-xe9-x97-xa8-xe6-x9c-xba-xe5-x99-xa8-xe5-xad-xa6-xe4-xb9-xa0/" rel="tag">python3\xe5\x85\xa5\xe9\x97\xa8\xe6\x9c\xba\xe5\x99\xa8\xe5\xad\xa6\xe4\xb9\xa0</a></li></ul>
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/python3%E5%85%A5%E9%97%A8%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">python3入门机器学习</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li></ul>
             
         
         <div class="md-content animated fadeIn">
@@ -427,7 +480,7 @@ x</code></pre>
     <div class="post-cover animated fadeIn" style="
             background-image:
             radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/covers/1.jpg);">
+            url(/img/covers/6.jpg);">
     </div>
     <div class="else">
         <p class="animated fadeInDown">
@@ -456,7 +509,7 @@ x</code></pre>
                 
             </p>
             
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/xe6-x9c-xba-xe5-x99-xa8-xe5-xad-xa6-xe4-xb9-xa0/" rel="tag">\xe6\x9c\xba\xe5\x99\xa8\xe5\xad\xa6\xe4\xb9\xa0</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/python3-xe5-x85-xa5-xe9-x97-xa8-xe6-x9c-xba-xe5-x99-xa8-xe5-xad-xa6-xe4-xb9-xa0/" rel="tag">python3\xe5\x85\xa5\xe9\x97\xa8\xe6\x9c\xba\xe5\x99\xa8\xe5\xad\xa6\xe4\xb9\xa0</a></li></ul>
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/python3%E5%85%A5%E9%97%A8%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">python3入门机器学习</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li></ul>
             
         
         <div class="md-content animated fadeIn">
@@ -479,7 +532,7 @@ from sklearn import datasets</code></pre>
     <div class="post-cover animated fadeIn" style="
             background-image:
             radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/covers/2.jpg);">
+            url(/img/covers/7.jpg);">
     </div>
     <div class="else">
         <p class="animated fadeInDown">
@@ -508,7 +561,7 @@ from sklearn import datasets</code></pre>
                 
             </p>
             
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/xe6-x9c-xba-xe5-x99-xa8-xe5-xad-xa6-xe4-xb9-xa0/" rel="tag">\xe6\x9c\xba\xe5\x99\xa8\xe5\xad\xa6\xe4\xb9\xa0</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/python3-xe5-x85-xa5-xe9-x97-xa8-xe6-x9c-xba-xe5-x99-xa8-xe5-xad-xa6-xe4-xb9-xa0/" rel="tag">python3\xe5\x85\xa5\xe9\x97\xa8\xe6\x9c\xba\xe5\x99\xa8\xe5\xad\xa6\xe4\xb9\xa0</a></li></ul>
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/python3%E5%85%A5%E9%97%A8%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">python3入门机器学习</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li></ul>
             
         
         <div class="md-content animated fadeIn">
@@ -531,7 +584,7 @@ from sklearn import datasets</code></pre>
     <div class="post-cover animated fadeIn" style="
             background-image:
             radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/covers/5.jpg);">
+            url(/img/covers/2.jpg);">
     </div>
     <div class="else">
         <p class="animated fadeInDown">
@@ -560,7 +613,7 @@ from sklearn import datasets</code></pre>
                 
             </p>
             
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/xe6-x9c-xba-xe5-x99-xa8-xe5-xad-xa6-xe4-xb9-xa0/" rel="tag">\xe6\x9c\xba\xe5\x99\xa8\xe5\xad\xa6\xe4\xb9\xa0</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/python3-xe5-x85-xa5-xe9-x97-xa8-xe6-x9c-xba-xe5-x99-xa8-xe5-xad-xa6-xe4-xb9-xa0/" rel="tag">python3\xe5\x85\xa5\xe9\x97\xa8\xe6\x9c\xba\xe5\x99\xa8\xe5\xad\xa6\xe4\xb9\xa0</a></li></ul>
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/python3%E5%85%A5%E9%97%A8%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">python3入门机器学习</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li></ul>
             
         
         <div class="md-content animated fadeIn">
@@ -590,7 +643,7 @@ import matplotlib.pyplot as plt</code></pre>
     <div class="post-cover animated fadeIn" style="
             background-image:
             radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/covers/8.jpg);">
+            url(/img/covers/5.jpg);">
     </div>
     <div class="else">
         <p class="animated fadeInDown">
@@ -619,7 +672,7 @@ import matplotlib.pyplot as plt</code></pre>
                 
             </p>
             
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/xe6-x9c-xba-xe5-x99-xa8-xe5-xad-xa6-xe4-xb9-xa0/" rel="tag">\xe6\x9c\xba\xe5\x99\xa8\xe5\xad\xa6\xe4\xb9\xa0</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/python3-xe5-x85-xa5-xe9-x97-xa8-xe6-x9c-xba-xe5-x99-xa8-xe5-xad-xa6-xe4-xb9-xa0/" rel="tag">python3\xe5\x85\xa5\xe9\x97\xa8\xe6\x9c\xba\xe5\x99\xa8\xe5\xad\xa6\xe4\xb9\xa0</a></li></ul>
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/python3%E5%85%A5%E9%97%A8%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">python3入门机器学习</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li></ul>
             
         
         <div class="md-content animated fadeIn">
@@ -637,7 +690,7 @@ import matplotlib.pyplot as plt</code></pre>
     <div class="post-cover animated fadeIn" style="
             background-image:
             radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/covers/3.jpg);">
+            url(/img/covers/2.jpg);">
     </div>
     <div class="else">
         <p class="animated fadeInDown">
@@ -666,7 +719,7 @@ import matplotlib.pyplot as plt</code></pre>
                 
             </p>
             
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/xe6-x9c-xba-xe5-x99-xa8-xe5-xad-xa6-xe4-xb9-xa0/" rel="tag">\xe6\x9c\xba\xe5\x99\xa8\xe5\xad\xa6\xe4\xb9\xa0</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/python3-xe5-x85-xa5-xe9-x97-xa8-xe6-x9c-xba-xe5-x99-xa8-xe5-xad-xa6-xe4-xb9-xa0/" rel="tag">python3\xe5\x85\xa5\xe9\x97\xa8\xe6\x9c\xba\xe5\x99\xa8\xe5\xad\xa6\xe4\xb9\xa0</a></li></ul>
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/python3%E5%85%A5%E9%97%A8%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">python3入门机器学习</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li></ul>
             
         
         <div class="md-content animated fadeIn">
@@ -681,58 +734,6 @@ import matplotlib.pyplot as plt</code></pre>
 
             
             <span class="read-more"><a href="/blog/10-1-accuracy-traps-and-confusion-matrix.html" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
-        </div>
-    </div>
-</div>
-
-
-<div class="post" id="post">
-    <div class="post-cover animated fadeIn" style="
-            background-image:
-            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/covers/2.jpg);">
-    </div>
-    <div class="else">
-        <p class="animated fadeInDown">
-            
-                <a href="/categories/机器学习">
-                  <b>「 </b>机器学习<b> 」</b>
-                </a>
-            
-            August 20, 2018
-        </p>
-        <h3 class="post-title animated fadeInDown"><a href="/blog/1-6-read-data-and-simple-data-exploration.html" title="1-6 读取数据和简单的数据探索" class="posttitle">1-6 读取数据和简单的数据探索</a></h3>
-        
-            <p class="post-count animated fadeInDown">
-                
-                    <span>
-                        <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        8.1k
-                    </span>
-                
-                
-                    <span>
-                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        7 mins.
-                    </span>
-                
-                
-            </p>
-            
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/xe6-x9c-xba-xe5-x99-xa8-xe5-xad-xa6-xe4-xb9-xa0/" rel="tag">\xe6\x9c\xba\xe5\x99\xa8\xe5\xad\xa6\xe4\xb9\xa0</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/python3-xe5-x85-xa5-xe9-x97-xa8-xe6-x9c-xba-xe5-x99-xa8-xe5-xad-xa6-xe4-xb9-xa0/" rel="tag">python3\xe5\x85\xa5\xe9\x97\xa8\xe6\x9c\xba\xe5\x99\xa8\xe5\xad\xa6\xe4\xb9\xa0</a></li></ul>
-            
-        
-        <div class="md-content animated fadeIn">
-            
-                <pre><code class="python">import numpy as np
-import matplotlib as mpl
-import matplotlib.pyplot as plt
-from sklearn import datasets</code></pre>
-<pre><code class="python">iris = datasets.load_iris()</code></pre>
-<pre><code class="python">iris.keys()</code></pre>
-<pre><code>dict_keys([&#39;data&#39;, &#39;target&#39;, &#39;target_names&#39;, &#39;DESCR&#39;, &#39;feature_names&...</code></pre>
-            
-            <span class="read-more"><a href="/blog/1-6-read-data-and-simple-data-exploration.html" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
         </div>
     </div>
 </div>
