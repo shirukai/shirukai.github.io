@@ -1,0 +1,751 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Flink Cluster On YARN部署 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="
+Flink版本：1.8.2
+Hadoop: 3.0.3
+
+参考文章：
+文中关于Per-Job、Session模式的描述摘自《Deploy Apache Flink® Natively on YAR,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">Flink Cluster On YARN部署</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/7.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/Flink"><b>「
+                    </b>FLINK<b> 」</b></a>
+                
+                September 21, 2020
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/flink-cluster-on-yarn-deployment.html" title="Flink Cluster On YARN部署" class="">Flink Cluster On YARN部署</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    16k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    15 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Flink/" rel="tag">Flink</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <blockquote>
+<p>Flink版本：1.8.2</p>
+<p>Hadoop: 3.0.3</p>
+</blockquote>
+<p>参考文章：</p>
+<p>文中关于Per-Job、Session模式的描述摘自《Deploy Apache Flink® Natively on YARN/Kubernetes》 <a target="_blank" rel="noopener" href="https://ververica.cn/developers/deploy-apache-flink-natively-on-yarn-kubernetes/">https://ververica.cn/developers/deploy-apache-flink-natively-on-yarn-kubernetes/</a></p>
+<p>Flink在YARN上部署有两种模式，一种是Session模式，另一种是Per-Job模式。</p>
+<p>Yarn 模式运行 Flink job 的好处有：</p>
+<ul>
+<li><p>资源按需使用，提高集群的资源利用率</p>
+</li>
+<li><p>任务有优先级，根据优先级运行作业</p>
+</li>
+<li><p>基于 Yarn 调度系统，能够自动化地处理各个角色的 Failover</p>
+<p>○ JobManager 进程和 TaskManager 进程都由 Yarn NodeManager 监控</p>
+<p>○ 如果 JobManager 进程异常退出，则 Yarn ResourceManager 会重新调度 JobManager 到其他机器</p>
+<p>○ 如果 TaskManager 进程异常退出，JobManager 会收到消息并重新向 Yarn ResourceManager 申请资源，重新启动 TaskManager</p>
+</li>
+</ul>
+<h1 id="1-准备环境"><a href="#1-准备环境" class="headerlink" title="1 准备环境"></a>1 准备环境</h1><p>为了方便演示在YARN上进行Session模式和Per-Job模式部署，我们需要进行环境准备。</p>
+<p>以下环境是前提条件：</p>
+<ul>
+<li>Hadoop版本在2.2以上</li>
+<li>安装有HDFS和YARN服务</li>
+</ul>
+<ol>
+<li><p>下载Flink</p>
+<p>官网下载页面：<a target="_blank" rel="noopener" href="https://flink.apache.org/downloads.html">https://flink.apache.org/downloads.html</a> 这里我们下载flink版本为1.8.2，scala版本为2.12的安装包。</p>
+<pre><code>wget http://mirrors.tuna.tsinghua.edu.cn/apache/flink/flink-1.8.2/flink-1.8.2-bin-scala_2.12.tgz
+</code></pre>
+</li>
+<li><p>解压</p>
+<pre><code class="scala">tar -zxvf flink-1.8.2-bin-scala_2.12.tgz
+</code></pre>
+<p>目录如下图所示：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/a81510301b4111eaaee6112233445566.png"></p>
+</li>
+<li><p>查看版本</p>
+<pre><code class="shell">./bin/flink -v
+Version: 1.8.2, Commit ID: 6322618
+</code></pre>
+</li>
+</ol>
+<p>提交客户端常用命令参数列表，使用<code>./bin/flink run -h</code>查看</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-c,–class &lt;classname&gt;</td>
+<td>带有程序入口点的类（“ main”方法或“ getPlan()”方法。仅当JAR文件未在其manifest中指定该类时才需要。</td>
+</tr>
+<tr>
+<td>-C,–classpath &lt;url&gt;</td>
+<td>将URL添加到群集中所有节点上的每个用户代码类加载器。路径必须指定协议（例如file://），并且可以在所有节点上访问（例如，通过NFS共享）。可以多次使用此选项来指定多个URL。</td>
+</tr>
+<tr>
+<td>-d,–detached</td>
+<td>以detached模式运行Job</td>
+</tr>
+<tr>
+<td>-n,–allowNonRestoredState</td>
+<td>允许跳过无法还原的保存点状态。如果在触发保存点时从程序中删除了一部算子，则需要允许此操作。</td>
+</tr>
+<tr>
+<td>-p,–parallelism &lt;parallelism&gt;</td>
+<td>运行程序的并行度。可选，用于覆盖配置中指定的默认值。</td>
+</tr>
+<tr>
+<td>-q,–sysoutLogging</td>
+<td>禁止将日志输出为标准输出</td>
+</tr>
+<tr>
+<td>-s,–fromSavepoint &lt;savepointPath&gt;</td>
+<td>指定savepoint路径，从改savepoint进行恢复</td>
+</tr>
+<tr>
+<td>-sae,–shutdownOnAttachedExit</td>
+<td>如果作业以attached模式提交，在CLI突然终止时（例如，响应用户中断，例如键入Ctrl + C），尽最大努力关闭集群。</td>
+</tr>
+</tbody></table>
+<p>YARN Cluster相关的参数</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-d,–detached</td>
+<td>以detached模式运行Job</td>
+</tr>
+<tr>
+<td>-m,–jobmanager&lt;arg&gt;</td>
+<td>要连接的JobManager(master)的地址，使用此参数连接到与配置中指定的JobManager不同的JobManager。</td>
+</tr>
+<tr>
+<td>-sae,–shutdownOnAttachedExit</td>
+<td>如果作业以attached模式提交，在CLI突然终止时（例如，响应用户中断，例如键入Ctrl + C），尽最大努力关闭集群。</td>
+</tr>
+<tr>
+<td>-yD &lt;property=value&gt;</td>
+<td>配置参数，例如-yDhostname=localhost</td>
+</tr>
+<tr>
+<td>-yd,–yarndetached</td>
+<td>以detached模式运行作业（不建议使用；使用非特定于YARN的选项）</td>
+</tr>
+<tr>
+<td>-yh,–yarnhelp</td>
+<td>帮助说明</td>
+</tr>
+<tr>
+<td>-yid,–yarnapplicationId &lt;arg&gt;</td>
+<td>访问正在运行的YARN回话，指定YARN的application id</td>
+</tr>
+<tr>
+<td>-yj,–yarnjar &lt;arg&gt;</td>
+<td>Flink jar文件的路径</td>
+</tr>
+<tr>
+<td>-yjm,–yarnjobManagerMemory &lt;arg&gt;</td>
+<td>带可选单元的JobManager容器的内存（默认值：MB）</td>
+</tr>
+<tr>
+<td>-yn,–yarncontainer &lt;arg&gt;</td>
+<td>要分配的YARN容器数（=任务管理器数）</td>
+</tr>
+<tr>
+<td>-ynl,–yarnnodeLabel &lt;arg&gt;</td>
+<td>为YARN应用程序指定YARN节点标签</td>
+</tr>
+<tr>
+<td>-ynm,–yarnname &lt;arg&gt;</td>
+<td>为YARN上的应用程序设置自定义名称</td>
+</tr>
+<tr>
+<td>-yq,–yarnquery</td>
+<td>显示可用的YARN资源（内存，核心）</td>
+</tr>
+<tr>
+<td>-yqu,–yarnqueue &lt;arg&gt;</td>
+<td>指定YARN队列</td>
+</tr>
+<tr>
+<td>-ys,–yarnslots &lt;arg&gt;</td>
+<td>每个TaskManager的slot数量</td>
+</tr>
+<tr>
+<td>-yst,–yarnstreaming</td>
+<td>以streaming模式启动flink</td>
+</tr>
+<tr>
+<td>-yt,–yarnship &lt;arg&gt;</td>
+<td>将文件发送到指定目录（用于传输）</td>
+</tr>
+<tr>
+<td>-ytm,–yarntaskManagerMemory &lt;arg&gt;</td>
+<td>每个TaskManager容器的内存，带有可选单位(默认值：MB)</td>
+</tr>
+<tr>
+<td>-yz,–yarnzookeeperNamespace &lt;arg&gt;</td>
+<td>为高可用性模式创建Zookeeper子路径的命名空间</td>
+</tr>
+<tr>
+<td>-z,–zookeeperNamespace &lt;arg&gt;</td>
+<td>为高可用性模式创建Zookeeper子路径的命名空间</td>
+</tr>
+</tbody></table>
+<h1 id="2-Per-Job模式"><a href="#2-Per-Job模式" class="headerlink" title="2 Per-Job模式"></a>2 Per-Job模式</h1><h3 id="2-1-描述"><a href="#2-1-描述" class="headerlink" title="2.1 描述"></a>2.1 描述</h3><p>Per-Job即一个Flink Job与其YARN Application(App)生命周期绑定，执行过程如下图，在提交YARN App时同时将Flink Job的file/jars通过YARN Distributed Cache分发，一次性完成提交，而且JM是根据JobGraph产生的Task的资源实际需求来向RM申请slot执行，Flink RM再动态的申请/释放YARN的Container。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/811c550a1b2911ea8de8112233445566.png"></p>
+<h2 id="2-1-使用Per-Job模式向YARN提交Job"><a href="#2-1-使用Per-Job模式向YARN提交Job" class="headerlink" title="2.1 使用Per-Job模式向YARN提交Job"></a>2.1 使用Per-Job模式向YARN提交Job</h2><p>这里以提交官方example/streaming包下提供的SocketWindowWordCount为例，需要我们提供一个socket地址和端口，我们在本地使用nc命令监听9090端口。</p>
+<pre><code class="shell">nc -lk 9090
+</code></pre>
+<p>使用命令行提交：</p>
+<pre><code class="shell">./bin/flink run -m yarn-cluster examples/streaming/SocketWindowWordCount.jar --hostname localhost --port 9090
+</code></pre>
+<p><em>注意：如果遇到错误，可以参考第四部分错误问题汇总</em></p>
+<p>如下图所示，提交成功。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/5c341aec1bb611ea8efb112233445566.png"></p>
+<p>我们可以进入YARN Web查看我们刚才提交的应用。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/baedf8b41bb611ea890a112233445566.png"></p>
+<p>点击【ApplicationMaster】进入Flink Web。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/dc91c1b21bb611ea87c2112233445566.png"></p>
+<p>在socket命令窗口，输入单词hello world</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/2053e8441bb711eaae9a112233445566.png"></p>
+<p>点击Flink Web左侧导航栏中的【Task Managers】，选择一个Task，然后点击【Stdout】查看输出。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/77dc8ee01bb711eaa7f1112233445566.gif"></p>
+<p>提交job时，我们也可以指定一些参数，详情查看第1部分的参数列表。</p>
+<h1 id="3-Session模式"><a href="#3-Session模式" class="headerlink" title="3 Session模式"></a>3 Session模式</h1><h2 id="3-1-描述"><a href="#3-1-描述" class="headerlink" title="3.1 描述"></a>3.1 描述</h2><p>Per-Job还是存在局限，YARN App的提交时资源申请和启动TM的时间较长(秒级)，尤其在交互式分析短查询等场景上，Job计算逻辑执行时间很短，那么App的启动时间占比大就严重影响了端到端的用户体验，缺少了Standalone模式上Job提交快的优点。但FLIP-6架构的威力，还是能轻松化解这个问题，如下图所示，通过预启动的YARN App来跑一个Flink Session（Master和多个TM已启动，类似Standalone可运行多个Job），再提交执行Job，这些Job就可以很快利用已有的资源来执行计算。<a href="https://link.juejin.im/?target=https://github.com/apache/flink/tree/blink">Blink</a>分支与Master具体实现有点不同（是否预起TM），后续会合并统一，并且继续开发实现Session的资源弹性——按需自动扩缩TM数量，这点是standalone无法实现的。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/29e5e1661b4211ea83c7112233445566.png"></p>
+<h2 id="3-2-Session模式下提交Job"><a href="#3-2-Session模式下提交Job" class="headerlink" title="3.2 Session模式下提交Job"></a>3.2 Session模式下提交Job</h2><ol>
+<li><p>启动Flink集群</p>
+<pre><code>./bin/yarn-session.sh -n 2 -jm 1024m -tm 2048
+</code></pre>
+<p>-n 指定container参数为2个</p>
+<p>-jm 指定jobmanager内存为1024mb</p>
+<p>-tm 指定taskmanager内存为2048</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/3e5b392e1cb511eaacdad89ef325d4fd.png"></p>
+</li>
+<li><p>根据日志信息<code>JobManager Web Interface: http://192.168.1.108:57591</code>我们通过浏览器访问该地址:</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/0b690b081cb611eab96ad89ef325d4fd.jpeg"></p>
+</li>
+<li><p>提交Flink job到Flink集群，这里还以SocketWindowWordCount为例，所以需要我们先使用<code>nc -lk 9090</code> 监听端口，然后执行如下命令提交job</p>
+<p><em>注意：这里需要从上一步的日志中找到我们再YARN上启动的Application ID，例如这里拿到的ID为：application_1576135471024_0001，我们需要通过-yid指定该参数</em></p>
+<pre><code>./bin/flink run -yid application_1576135471024_0001 examples/streaming/SocketWindowWordCount.jar --hostname localhost --port 9090
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/52e92c241cb611eab30dd89ef325d4fd.png"></p>
+</li>
+<li><p>同样在socket命令窗口，输入单词hello world，查看TaskManager里的输出。</p>
+</li>
+<li><p>停止集群</p>
+<p>有两种方式停止Session集群：</p>
+<p>方式1</p>
+<pre><code>echo stop | ./bin/yarn-serssion.sh -id &lt;application_id&gt;
+</code></pre>
+<p>方式2</p>
+<pre><code>yarn application -kill &lt;application_id&gt;
+</code></pre>
+</li>
+</ol>
+<h1 id="4-YARN模式下HighAvailability配置"><a href="#4-YARN模式下HighAvailability配置" class="headerlink" title="4 YARN模式下HighAvailability配置"></a>4 YARN模式下HighAvailability配置</h1><p>Flink在YARN模式下的高可用，并不会启动多个Jobmanager实例来实现高可用，而是依赖YARN失败重启机制。</p>
+<ol>
+<li><p>先要确保启动 Yarn 集群用的“yarn-site.xml”文件中的这个配置，这个是 Yarn 集群级别 AM 重启的上限。</p>
+<pre><code class="xml">&lt;property&gt;
+  &lt;name&gt;yarn.resourcemanager.am.max-attempts&lt;/name&gt;
+  &lt;value&gt;20&lt;/value&gt;
+  &lt;description&gt;
+    The maximum number of application master execution attempts.
+  &lt;/description&gt;
+&lt;/property&gt;
+</code></pre>
+</li>
+<li><p>在conf/flink-conf.yaml文件中配置Flink Jobmanager能够重启的数量</p>
+<pre><code class="yaml">yarn.application-attempts: 10     # 1+ 9 retries
+</code></pre>
+</li>
+<li><p>HA依赖ZK，同样需要在conf/flink-conf.yaml文件中进行zk相关的配置</p>
+<pre><code class="yaml"># The high-availability mode. Possible options are &#39;NONE&#39; or &#39;zookeeper&#39;.
+high-availability: zookeeper
+# jobmanager的元数据存放在dfs，zk里只存路径。这里要求指定所有节点都可以访问的分布式存储(like HDFS, S3, Ceph, nfs, ...)
+high-availability.storageDir: hdfs:///flink/ha/
+# zk地址
+high-availability.zookeeper.quorum: localhost:2181
+</code></pre>
+</li>
+</ol>
+<h1 id="5-错误问题汇总"><a href="#5-错误问题汇总" class="headerlink" title="5 错误问题汇总"></a>5 错误问题汇总</h1><h2 id="4-1-Could-not-identify-hostname-and-port-in-‘yarn-cluster’"><a href="#4-1-Could-not-identify-hostname-and-port-in-‘yarn-cluster’" class="headerlink" title="4.1 Could not identify hostname and port in ‘yarn-cluster’"></a>4.1 Could not identify hostname and port in ‘yarn-cluster’</h2><h3 id="错误信息："><a href="#错误信息：" class="headerlink" title="错误信息："></a>错误信息：</h3><p>在向YARN提交任务的时候报如下错误</p>
+<pre><code>------------------------------------------------------------
+ The program finished with the following exception:
+
+java.lang.RuntimeException: Could not identify hostname and port in &#39;yarn-cluster&#39;.
+    at org.apache.flink.client.ClientUtils.parseHostPortAddress(ClientUtils.java:47)
+    at org.apache.flink.client.cli.AbstractCustomCommandLine.applyCommandLineOptionsToConfiguration(AbstractCustomCommandLine.java:83)
+    at org.apache.flink.client.cli.DefaultCLI.createClusterDescriptor(DefaultCLI.java:60)
+    at org.apache.flink.client.cli.DefaultCLI.createClusterDescriptor(DefaultCLI.java:35)
+    at org.apache.flink.client.cli.CliFrontend.runProgram(CliFrontend.java:224)
+    at org.apache.flink.client.cli.CliFrontend.run(CliFrontend.java:213)
+    at org.apache.flink.client.cli.CliFrontend.parseParameters(CliFrontend.java:1050)
+    at org.apache.flink.client.cli.CliFrontend.lambda$main$11(CliFrontend.java:1126)
+    at org.apache.flink.runtime.security.NoOpSecurityContext.runSecured(NoOpSecurityContext.java:30)
+    at org.apache.flink.client.cli.CliFrontend.main(CliFrontend.java:1126)
+</code></pre>
+<h3 id="原因分析："><a href="#原因分析：" class="headerlink" title="原因分析："></a>原因分析：</h3><p>Flink客户端向YARN提交任务，需要YARN的相关依赖，通过这些依赖包，客户端会找到YARN ResourceManager的地址，并向其提交任务。由于环境中不具备这些依赖，就会报日志中所述的错误。</p>
+<h3 id="解决方法："><a href="#解决方法：" class="headerlink" title="解决方法："></a>解决方法：</h3><p>解决这个问题，有两种方法:</p>
+<ol>
+<li><p>从官网下载HADOOP相关的依赖，并将其放到FLINK_HOME/lib/目录下。</p>
+<p>地址：<a target="_blank" rel="noopener" href="https://flink.apache.org/downloads.html%EF%BC%8C%E6%8C%89%E7%85%A7%E9%9C%80%E6%B1%82%E4%B8%8B%E8%BD%BDhadoop%E4%BE%9D%E8%B5%96%EF%BC%8C%E4%BE%8B%E5%A6%82[Pre-bundled">https://flink.apache.org/downloads.html，按照需求下载hadoop依赖，例如[Pre-bundled</a> Hadoop 2.7.5](<a target="_blank" rel="noopener" href="https://repo.maven.apache.org/maven2/org/apache/flink/flink-shaded-hadoop-2-uber/2.7.5-7.0/flink-shaded-hadoop-2-uber-2.7.5-7.0.jar">https://repo.maven.apache.org/maven2/org/apache/flink/flink-shaded-hadoop-2-uber/2.7.5-7.0/flink-shaded-hadoop-2-uber-2.7.5-7.0.jar</a>) (<a target="_blank" rel="noopener" href="https://repo.maven.apache.org/maven2/org/apache/flink/flink-shaded-hadoop-2-uber/2.7.5-7.0/flink-shaded-hadoop-2-uber-2.7.5-7.0.jar.asc">asc</a>, <a target="_blank" rel="noopener" href="https://repo.maven.apache.org/maven2/org/apache/flink/flink-shaded-hadoop-2-uber/2.7.5-7.0/flink-shaded-hadoop-2-uber-2.7.5-7.0.jar.sha1">sha1</a>)</p>
+</li>
+<li><p>在环境中配置HADOOP_CLASSPATH变量</p>
+<p><a target="_blank" rel="noopener" href="https://ci.apache.org/projects/flink/flink-docs-stable/ops/deployment/hadoop.html">https://ci.apache.org/projects/flink/flink-docs-stable/ops/deployment/hadoop.html</a></p>
+<pre><code class="shell">export HADOOP_CLASSPATH=`hadoop classpath`
+</code></pre>
+</li>
+</ol>
+<h2 id="4-2-The-number-of-requested-virtual-cores-per-node-1-exceeds-the-maximum-number-of-virtual-cores-0-available-in-the-Yarn-Cluster-Please-note-that-the-number-of-virtual-cores-is-set-to-the-number-of-task-slots-by-default-unless-configured-in-the-Flink-config-with-‘yarn-containers-vcores-’"><a href="#4-2-The-number-of-requested-virtual-cores-per-node-1-exceeds-the-maximum-number-of-virtual-cores-0-available-in-the-Yarn-Cluster-Please-note-that-the-number-of-virtual-cores-is-set-to-the-number-of-task-slots-by-default-unless-configured-in-the-Flink-config-with-‘yarn-containers-vcores-’" class="headerlink" title="4.2  The number of requested virtual cores per node 1 exceeds the maximum number of virtual cores 0 available in the Yarn Cluster. Please note that the number of virtual cores is set to the number of task slots by default unless configured in the Flink config with ‘yarn.containers.vcores.’"></a>4.2  The number of requested virtual cores per node 1 exceeds the maximum number of virtual cores 0 available in the Yarn Cluster. Please note that the number of virtual cores is set to the number of task slots by default unless configured in the Flink config with ‘yarn.containers.vcores.’</h2><h3 id="错误信息：-1"><a href="#错误信息：-1" class="headerlink" title="错误信息："></a>错误信息：</h3><pre><code>------------------------------------------------------------
+ The program finished with the following exception:
+
+org.apache.flink.client.deployment.ClusterDeploymentException: Couldn&#39;t deploy Yarn session cluster
+    at org.apache.flink.yarn.AbstractYarnClusterDescriptor.deploySessionCluster(AbstractYarnClusterDescriptor.java:387)
+    at org.apache.flink.client.cli.CliFrontend.runProgram(CliFrontend.java:259)
+    at org.apache.flink.client.cli.CliFrontend.run(CliFrontend.java:213)
+    at org.apache.flink.client.cli.CliFrontend.parseParameters(CliFrontend.java:1050)
+    at org.apache.flink.client.cli.CliFrontend.lambda$main$11(CliFrontend.java:1126)
+    at java.security.AccessController.doPrivileged(Native Method)
+    at javax.security.auth.Subject.doAs(Subject.java:422)
+    at org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:1754)
+    at org.apache.flink.runtime.security.HadoopSecurityContext.runSecured(HadoopSecurityContext.java:41)
+    at org.apache.flink.client.cli.CliFrontend.main(CliFrontend.java:1126)
+Caused by: org.apache.flink.configuration.IllegalConfigurationException: The number of requested virtual cores per node 1 exceeds the maximum number of virtual cores 0 available in the Yarn Cluster. Please note that the number of virtual cores is set to the number of task slots by default unless configured in the Flink config with &#39;yarn.containers.vcores.&#39;
+    at org.apache.flink.yarn.AbstractYarnClusterDescriptor.isReadyForDeployment(AbstractYarnClusterDescriptor.java:259)
+    at org.apache.flink.yarn.AbstractYarnClusterDescriptor.deployInternal(AbstractYarnClusterDescriptor.java:459)
+    at org.apache.flink.yarn.AbstractYarnClusterDescriptor.deploySessionCluster(AbstractYarnClusterDescriptor.java:380)
+    ... 9 more
+</code></pre>
+<h3 id="原因分析：-1"><a href="#原因分析：-1" class="headerlink" title="原因分析："></a>原因分析：</h3><p>YARN虚拟核数不够导致此错误</p>
+<h3 id="解决方法：-1"><a href="#解决方法：-1" class="headerlink" title="解决方法："></a>解决方法：</h3><p><a target="_blank" rel="noopener" href="https://issues.apache.org/jira/browse/FLINK-9013">https://issues.apache.org/jira/browse/FLINK-9013</a></p>
+<pre><code>
+&lt;property&gt;
+ &lt;name&gt;yarn.nodemanager.resource.cpu-vcores&lt;/name&gt;
+ &lt;value&gt;5&lt;/value&gt;
+&lt;/property&gt;
+</code></pre>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E5%87%86%E5%A4%87%E7%8E%AF%E5%A2%83"><span class="toc-number">1.</span> <span class="toc-text">1 准备环境</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-Per-Job%E6%A8%A1%E5%BC%8F"><span class="toc-number">2.</span> <span class="toc-text">2 Per-Job模式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E6%8F%8F%E8%BF%B0"><span class="toc-number">2.0.1.</span> <span class="toc-text">2.1 描述</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-%E4%BD%BF%E7%94%A8Per-Job%E6%A8%A1%E5%BC%8F%E5%90%91YARN%E6%8F%90%E4%BA%A4Job"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 使用Per-Job模式向YARN提交Job</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-Session%E6%A8%A1%E5%BC%8F"><span class="toc-number">3.</span> <span class="toc-text">3 Session模式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-%E6%8F%8F%E8%BF%B0"><span class="toc-number">3.1.</span> <span class="toc-text">3.1 描述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-Session%E6%A8%A1%E5%BC%8F%E4%B8%8B%E6%8F%90%E4%BA%A4Job"><span class="toc-number">3.2.</span> <span class="toc-text">3.2 Session模式下提交Job</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-YARN%E6%A8%A1%E5%BC%8F%E4%B8%8BHighAvailability%E9%85%8D%E7%BD%AE"><span class="toc-number">4.</span> <span class="toc-text">4 YARN模式下HighAvailability配置</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%E9%94%99%E8%AF%AF%E9%97%AE%E9%A2%98%E6%B1%87%E6%80%BB"><span class="toc-number">5.</span> <span class="toc-text">5 错误问题汇总</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-Could-not-identify-hostname-and-port-in-%E2%80%98yarn-cluster%E2%80%99"><span class="toc-number">5.1.</span> <span class="toc-text">4.1 Could not identify hostname and port in ‘yarn-cluster’</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%94%99%E8%AF%AF%E4%BF%A1%E6%81%AF%EF%BC%9A"><span class="toc-number">5.1.1.</span> <span class="toc-text">错误信息：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E5%9B%A0%E5%88%86%E6%9E%90%EF%BC%9A"><span class="toc-number">5.1.2.</span> <span class="toc-text">原因分析：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95%EF%BC%9A"><span class="toc-number">5.1.3.</span> <span class="toc-text">解决方法：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-The-number-of-requested-virtual-cores-per-node-1-exceeds-the-maximum-number-of-virtual-cores-0-available-in-the-Yarn-Cluster-Please-note-that-the-number-of-virtual-cores-is-set-to-the-number-of-task-slots-by-default-unless-configured-in-the-Flink-config-with-%E2%80%98yarn-containers-vcores-%E2%80%99"><span class="toc-number">5.2.</span> <span class="toc-text">4.2  The number of requested virtual cores per node 1 exceeds the maximum number of virtual cores 0 available in the Yarn Cluster. Please note that the number of virtual cores is set to the number of task slots by default unless configured in the Flink config with ‘yarn.containers.vcores.’</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%94%99%E8%AF%AF%E4%BF%A1%E6%81%AF%EF%BC%9A-1"><span class="toc-number">5.2.1.</span> <span class="toc-text">错误信息：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E5%9B%A0%E5%88%86%E6%9E%90%EF%BC%9A-1"><span class="toc-number">5.2.2.</span> <span class="toc-text">原因分析：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95%EF%BC%9A-1"><span class="toc-number">5.2.3.</span> <span class="toc-text">解决方法：</span></a></li></ol></li></ol></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

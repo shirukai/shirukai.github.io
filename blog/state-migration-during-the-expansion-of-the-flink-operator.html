@@ -1,0 +1,1701 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Flink算子扩缩容过程中的状态迁移 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="根据数据量动态调整Flink应用的算子并行度，在实际业务应用中很常见。对于无状态的算子来说，更改算子并行度非常的容易。但对于有状态的算子来说，调整算子并行度时，需要考虑状态的重新分配。之前文章里提到,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">Flink算子扩缩容过程中的状态迁移</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/4.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/Flink"><b>「
+                    </b>FLINK<b> 」</b></a>
+                
+                September 20, 2020
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/state-migration-during-the-expansion-of-the-flink-operator.html" title="Flink算子扩缩容过程中的状态迁移" class="">Flink算子扩缩容过程中的状态迁移</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    38k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    35 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Flink/" rel="tag">Flink</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <p>根据数据量动态调整Flink应用的算子并行度，在实际业务应用中很常见。对于无状态的算子来说，更改算子并行度非常的容易。但对于有状态的算子来说，调整算子并行度时，需要考虑状态的重新分配。之前文章里提到，Flink中的状态分为键值分区状态、算子列表状态、算子聚合状态、广播状态，那么这些状态在并行度改变时，是如何在子任务实例间迁移的？这篇文章，将分别使用代码示例介绍这四种状态的迁移过程。</p>
+<h1 id="1-键值分区状态"><a href="#1-键值分区状态" class="headerlink" title="1 键值分区状态"></a>1 键值分区状态</h1><p>键值分区状态，是应用在KeyedStream上的算子里使用的状态，关于状态的知识，可以参考我的另一篇博客：<a target="_blank" rel="noopener" href="https://blog.csdn.net/shirukai/article/details/102505946%E3%80%82">https://blog.csdn.net/shirukai/article/details/102505946。</a></p>
+<p>带有键值分区状态的算子在扩缩容时会根据新的任务数量对键值进行重新分区。也就是说，会重新对key分区，而对应的状态会随着key的迁移而迁移。</p>
+<h2 id="1-1-Key分区的知识"><a href="#1-1-Key分区的知识" class="headerlink" title="1.1 Key分区的知识"></a>1.1 Key分区的知识</h2><p>这里补充一下key分区的知识，当一条记录被上一个算子处理完，准备发往下一个算子时，如果我们指定了keyBy，Flink计算发往哪一个算子的逻辑如下：</p>
+<ol>
+<li><p>根据key和最大并行度(maxParallelism)计算出KeyGroup的索引</p>
+<p>首先理解两个概念：</p>
+<ul>
+<li><p>最大并行度：Flink默认最大并行度为128，可以通过setMaxParallelism的方式来显式指定，关于最大并行度<a target="_blank" rel="noopener" href="https://ci.apache.org/projects/flink/flink-docs-stable/ops/production_ready.html#set-an-explicit-max-parallelism%E3%80%82">https://ci.apache.org/projects/flink/flink-docs-stable/ops/production_ready.html#set-an-explicit-max-parallelism。</a></p>
+</li>
+<li><p>KeyGroup：它是一组Key的集合，为了避免状态迁移时造成的性能影响，Flink并不是每个key都重新分区。而是先将key进行分组，之后一组一组重新分配。关于KeyGroup <a target="_blank" rel="noopener" href="https://issues.apache.org/jira/browse/FLINK-3755%E3%80%82">https://issues.apache.org/jira/browse/FLINK-3755。</a></p>
+</li>
+</ul>
+<p>Flink拿到这条记录时，会根据Key选择器拿到当前记录的Key，然后取到这个Key的HashCode，再经过Murmur Hash算法进行二次Hash，hash之后的值对最大并行度进行取余操作，所得结果就是KeyGroup的索引。</p>
+<p>源码在：org.apache.flink.runtime.state.KeyGroupRangeAssignment</p>
+<pre><code class="java">    /**
+     * Assigns the given key to a key-group index.
+     *
+     * @param key the key to assign
+     * @param maxParallelism the maximum supported parallelism, aka the number of key-groups.
+     * @return the key-group to which the given key is assigned
+     */
+    public static int assignToKeyGroup(Object key, int maxParallelism) &#123;
+        return computeKeyGroupForKeyHash(key.hashCode(), maxParallelism);
+    &#125;
+    
+        /**
+     * Assigns the given key to a key-group index.
+     *
+     * @param keyHash the hash of the key to assign
+     * @param maxParallelism the maximum supported parallelism, aka the number of key-groups.
+     * @return the key-group to which the given key is assigned
+     */
+    public static int computeKeyGroupForKeyHash(int keyHash, int maxParallelism) &#123;
+        return MathUtils.murmurHash(keyHash) % maxParallelism;
+    &#125;
+</code></pre>
+</li>
+<li><p>根据下游算子的并行度，算子最大并行度，KeyGroup索引计算下游算子的索引</p>
+<p>源码在：org.apache.flink.runtime.state.KeyGroupRangeAssignment</p>
+<pre><code class="java">    /**
+     * Computes the index of the operator to which a key-group belongs under the given parallelism and maximum
+     * parallelism.
+     *
+     * IMPORTANT: maxParallelism must be &lt;= Short.MAX_VALUE to avoid rounding problems in this method. If we ever want
+     * to go beyond this boundary, this method must perform arithmetic on long values.
+     *
+     * @param maxParallelism Maximal parallelism that the job was initially created with.
+     *                       0 &lt; parallelism &lt;= maxParallelism &lt;= Short.MAX_VALUE must hold.
+     * @param parallelism    The current parallelism under which the job runs. Must be &lt;= maxParallelism.
+     * @param keyGroupId     Id of a key-group. 0 &lt;= keyGroupID &lt; maxParallelism.
+     * @return The index of the operator to which elements from the given key-group should be routed under the given
+     * parallelism and maxParallelism.
+     */
+    public static int computeOperatorIndexForKeyGroup(int maxParallelism, int parallelism, int keyGroupId) &#123;
+        return keyGroupId * parallelism / maxParallelism;
+    &#125;
+</code></pre>
+</li>
+<li><p>拿到下游算子的索引之后，Flink就会将当前数据发送给下游算子对应的Channel中。</p>
+</li>
+</ol>
+<h2 id="1-2-键值状态迁移示意图"><a href="#1-2-键值状态迁移示意图" class="headerlink" title="1.2 键值状态迁移示意图"></a>1.2 键值状态迁移示意图</h2><p>上面啰嗦一通目的是为了说明，键值状态的迁移，并不是对key进行重新分区，而是对KeyGroup进行重新分区。讲白一点就是，相同KeyGroup的记录，不管并行度如何改变，他们最终会在同一个SubTask中被处理。如下图所示为键值状态迁移的示意图，开始时，并行度为2，12个键值状态按照键值组的方式分成6组并分配到了两个子任务中。接下来改变并行度为3，Flink只会对键值组重新分区，将六组状态按照一定的规则分配到3个子任务中，从图中可以看出，每个子任务中的键值组虽然发生了变化，但是键值组里的元素都是与之前是一致的。接下来改变并行度为1，所有键值组都会分配到一个1任务里。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200828152805.png" alt="image-20200828152759588"></p>
+<h2 id="1-3-代码验证"><a href="#1-3-代码验证" class="headerlink" title="1.3 代码验证"></a>1.3 代码验证</h2><p>接下来用代码来验证一下上面的迁移过程，由于涉及到并行度修改验证状态迁移，需要我们开启checkpoint，关于如果调试Local模式下带状态的Flink任务，可以参考我之前的文章：<a target="_blank" rel="noopener" href="https://blog.csdn.net/shirukai/article/details/106926326%E3%80%82">https://blog.csdn.net/shirukai/article/details/106926326。</a></p>
+<h3 id="1-3-1-验证场景及代码实现"><a href="#1-3-1-验证场景及代码实现" class="headerlink" title="1.3.1 验证场景及代码实现"></a>1.3.1 验证场景及代码实现</h3><p>输入数据结构为(id,value)，其中id为设备ID，value为设备值，Flink从socket中实时接收数据，按照Id keyby之后，经过map算子计算累加和，然后将当前算子索引和结果输出到控制台。其中map计算时，需要保存上次计算的累加和到状态中。验证场景是：1.按照准备好的数据放，输出结果与预期相同2. 修改并行度之后，重新发送数据，原本在相同keygroup的状态，会被同一个子任务处理。</p>
+<p>代码实现如下：</p>
+<pre><code class="scala">package com.hollysys.flink.streaming.state.redistribution
+
+import org.apache.flink.api.common.functions.RichMapFunction
+import org.apache.flink.api.common.state.&#123;ValueState, ValueStateDescriptor&#125;
+import org.apache.flink.streaming.api.scala.DataStream
+import org.apache.flink.api.scala._
+import org.apache.flink.configuration.Configuration
+
+/**
+ * 验证Keyed 状态并行度改变时，重新分配示例
+ * keyby的每个key会被分到不同的key group中，状态迁移时，是随着key group进行迁移的
+ * org.apache.flink.runtime.state.KeyGroupRangeAssignment
+ * @author shirukai
+ */
+object KeyedStateRedistributionExample &#123;
+  case class Device(id: String, value: Double)
+
+  case class Result(taskNumber: Int, deviceId: String, sum: Double)
+
+  def main(args: Array[String]): Unit = &#123;
+    // 1. 创建本地运行环境
+    val (env, params) = FlinkLocalEnvUtil.createLocalCheckpointEnv(args)
+
+    // 2. 从socket中获取文本
+    val streamText: DataStream[String] = env.socketTextStream(&quot;127.0.0.1&quot;, 9000)
+      .name(&quot;SocketSource&quot;)
+      .uid(&quot;SocketSource&quot;)
+
+
+    // 3. 文本转换为Device样例类
+    val deviceStream = streamText.map(text =&gt; &#123;
+      val items = text.split(&quot; &quot;)
+      Device(items(0), items(1).toDouble)
+    &#125;).setParallelism(1)
+      .name(&quot;FormatDevice&quot;)
+      .uid(&quot;FormatDevice&quot;)
+
+    // 4. 计算累加和
+    val resultStream = deviceStream.keyBy(_.id).map(new ValueAccumulator)
+      // 设置并行度为1
+      .setParallelism(12)
+      .name(&quot;ValueAccumulator&quot;)
+      .uid(&quot;ValueAccumulator&quot;)
+
+    // 5. 输出到控制台
+    resultStream.print().name(&quot;Print&quot;).uid(&quot;Print&quot;)
+
+    // 6. execute
+    env.execute(&quot;KeyedStateRedistributionExample&quot;)
+
+  &#125;
+
+  class ValueAccumulator extends RichMapFunction[Device, Result] &#123;
+    private var accumulatorState: ValueState[Double] = _
+
+    override def open(parameters: Configuration): Unit = &#123;
+      // 获取状态
+      accumulatorState = getRuntimeContext.getState(new ValueStateDescriptor[Double](&quot;sum-state&quot;, classOf[Double]))
+    &#125;
+
+    override def map(value: Device): Result = &#123;
+      val sum = accumulatorState.value() + value.value
+
+      // 更新状态
+      accumulatorState.update(sum)
+      Result(getRuntimeContext.getIndexOfThisSubtask, value.id, sum)
+    &#125;
+  &#125;
+
+&#125;
+</code></pre>
+<h3 id="1-3-2-准备数据"><a href="#1-3-2-准备数据" class="headerlink" title="1.3.2 准备数据"></a>1.3.2 准备数据</h3><p>这里需要造一些比较特别的数据，不然很难测试出我们想要的结果。笔者电脑是6核12线程的，默认flink应用并行度是12。所以我们模拟一些数据，这些数据能够均匀的分配到每个算子上，并且每个算子只有一个KeyGroup，每个KeyGroup里有两条记录。我模拟出来的数据如下，以 “device-1 3 0”为例解释其结构，device-1为key值，3为KeyGroup索引，0为将会下发的算子索引。</p>
+<pre><code class="json">  [
+    &quot;device-1 3 0&quot;,
+    &quot;device-97 3 0&quot;,
+    &quot;device-19 14 1&quot;,
+    &quot;device-77 14 1&quot;,
+    &quot;device-5 31 2&quot;,
+    &quot;device-7 31 2&quot;,
+    &quot;device-2 35 3&quot;,
+    &quot;device-433 35 3&quot;,
+    &quot;device-27 44 4&quot;,
+    &quot;device-146 44 4&quot;,
+    &quot;device-16 62 5&quot;,
+    &quot;device-62 62 5&quot;,
+    &quot;device-37 67 6&quot;,
+    &quot;device-360 67 6&quot;,
+    &quot;device-32 85 7&quot;,
+    &quot;device-69 85 7&quot;,
+    &quot;device-17 94 8&quot;,
+    &quot;device-53 94 8&quot;,
+    &quot;device-8 102 9&quot;,
+    &quot;device-71 102 9&quot;,
+    &quot;device-12 112 10&quot;,
+    &quot;device-256 112 10&quot;,
+    &quot;device-13 120 11&quot;,
+    &quot;device-222 120 11&quot;
+]
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>KeyGroup索引</th>
+<th>并行度为12时算子索引</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>device-1</td>
+<td>3</td>
+<td>0</td>
+</tr>
+<tr>
+<td>device-97</td>
+<td>3</td>
+<td>0</td>
+</tr>
+<tr>
+<td>device-19</td>
+<td>14</td>
+<td>1</td>
+</tr>
+<tr>
+<td>device-77</td>
+<td>14</td>
+<td>1</td>
+</tr>
+<tr>
+<td>device-5</td>
+<td>31</td>
+<td>2</td>
+</tr>
+<tr>
+<td>device-7</td>
+<td>31</td>
+<td>2</td>
+</tr>
+<tr>
+<td>device-2</td>
+<td>35</td>
+<td>3</td>
+</tr>
+<tr>
+<td>device-433</td>
+<td>35</td>
+<td>3</td>
+</tr>
+<tr>
+<td>device-27</td>
+<td>44</td>
+<td>4</td>
+</tr>
+<tr>
+<td>device-146</td>
+<td>44</td>
+<td>4</td>
+</tr>
+<tr>
+<td>device-16</td>
+<td>62</td>
+<td>5</td>
+</tr>
+<tr>
+<td>device-62</td>
+<td>62</td>
+<td>5</td>
+</tr>
+<tr>
+<td>device-37</td>
+<td>67</td>
+<td>6</td>
+</tr>
+<tr>
+<td>device-360</td>
+<td>67</td>
+<td>6</td>
+</tr>
+<tr>
+<td>device-32</td>
+<td>85</td>
+<td>7</td>
+</tr>
+<tr>
+<td>device-69</td>
+<td>85</td>
+<td>7</td>
+</tr>
+<tr>
+<td>device-17</td>
+<td>94</td>
+<td>8</td>
+</tr>
+<tr>
+<td>device-53</td>
+<td>94</td>
+<td>8</td>
+</tr>
+<tr>
+<td>device-8</td>
+<td>102</td>
+<td>9</td>
+</tr>
+<tr>
+<td>device-71</td>
+<td>102</td>
+<td>9</td>
+</tr>
+<tr>
+<td>device-12</td>
+<td>112</td>
+<td>10</td>
+</tr>
+<tr>
+<td>device-256</td>
+<td>112</td>
+<td>10</td>
+</tr>
+<tr>
+<td>device-13</td>
+<td>120</td>
+<td>11</td>
+</tr>
+<tr>
+<td>device-222</td>
+<td>120</td>
+<td>11</td>
+</tr>
+</tbody></table>
+<p>造数程序如下：</p>
+<pre><code class="scala">
+/**
+ * KeyGroup分配测试
+ *
+ * @author shirukai
+ */
+object KeyGroupRangeAssignmentTest &#123;
+
+  case class KeyGroup(key: String, group: Int)
+
+  def main(args: Array[String]): Unit = &#123;
+    // 最大并行度
+    val maxParallelism = 128
+    // 算子并行度
+    val parallelism = 12
+    val map = mutable.SortedMap[Int, mutable.ListBuffer[KeyGroup]]()
+    for (elem &lt;- 1.until(1000)) &#123;
+      val key = s&quot;device-$elem&quot;
+      // 计算KeyGroup索引
+      val keyGroup = KeyGroupRangeAssignment.assignToKeyGroup(key, maxParallelism)
+      // 计算算子索引
+      val index = KeyGroupRangeAssignment.computeOperatorIndexForKeyGroup(maxParallelism, parallelism, keyGroup)
+      if (!map.contains(index)) &#123;
+        map.put(index, mutable.ListBuffer(KeyGroup(key, keyGroup)))
+      &#125; else &#123;
+        val keyList = map(index)
+        if (keyList.size &lt; 2) &#123;
+          val group = keyList.head.group
+          if (group == keyGroup) &#123;
+            keyList.append(KeyGroup(key, keyGroup))
+          &#125;
+        &#125;
+      &#125;
+    &#125;
+    implicit val formats: AnyRef with Formats = Serialization.formats(NoTypeHints)
+    println(Serialization.write(map.flatMap(i =&gt; &#123;
+      i._2.map(k =&gt; s&quot;$&#123;k.key&#125; $&#123;k.group&#125; $&#123;i._1&#125;&quot;)
+    &#125;)))
+  &#125;
+&#125;
+</code></pre>
+<h3 id="1-3-3-验证"><a href="#1-3-3-验证" class="headerlink" title="1.3.3 验证"></a>1.3.3 验证</h3><ol>
+<li><p>首次启动程序，然后逐条发送准备好的数据，输出结果中的算子索引与预期的相同。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200828164735.png" alt="image-20200828164735233"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200828171730.gif" alt="flink-state-1"></p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>KeyGroup索引</th>
+<th>并行度为12时算子索引</th>
+<th>输入</th>
+<th>并行度为12时的预期输出</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>device-1</td>
+<td>3</td>
+<td>0</td>
+<td>device-1 1.0</td>
+<td>Result(0,device-1,1.0)</td>
+</tr>
+<tr>
+<td>device-97</td>
+<td>3</td>
+<td>0</td>
+<td>device-97 1.0</td>
+<td>Result(0,device-97,1.0)</td>
+</tr>
+<tr>
+<td>device-19</td>
+<td>14</td>
+<td>1</td>
+<td>device-19 1.0</td>
+<td>Result(1,device-19,1.0)</td>
+</tr>
+<tr>
+<td>device-77</td>
+<td>14</td>
+<td>1</td>
+<td>device-77 1.0</td>
+<td>Result(1,device-77,1.0)</td>
+</tr>
+<tr>
+<td>device-5</td>
+<td>31</td>
+<td>2</td>
+<td>device-5 1.0</td>
+<td>Result(2,device-5,1.0)</td>
+</tr>
+<tr>
+<td>device-7</td>
+<td>31</td>
+<td>2</td>
+<td>device-7 1.0</td>
+<td>Result(2,device-7,1.0)</td>
+</tr>
+<tr>
+<td>device-2</td>
+<td>35</td>
+<td>3</td>
+<td>device-2 1.0</td>
+<td>Result(3,device-2,1.0)</td>
+</tr>
+<tr>
+<td>device-433</td>
+<td>35</td>
+<td>3</td>
+<td>device-433 1.0</td>
+<td>Result(3,device-433,1.0)</td>
+</tr>
+<tr>
+<td>device-27</td>
+<td>44</td>
+<td>4</td>
+<td>device-27 1.0</td>
+<td>Result(4,device-27,1.0)</td>
+</tr>
+<tr>
+<td>device-146</td>
+<td>44</td>
+<td>4</td>
+<td>device-146 1.0</td>
+<td>Result(4,device-146,1.0)</td>
+</tr>
+<tr>
+<td>device-16</td>
+<td>62</td>
+<td>5</td>
+<td>device-16 1.0</td>
+<td>Result(5,device-16,1.0)</td>
+</tr>
+<tr>
+<td>device-62</td>
+<td>62</td>
+<td>5</td>
+<td>device-62 1.0</td>
+<td>Result(5,device-62,1.0)</td>
+</tr>
+<tr>
+<td>device-37</td>
+<td>67</td>
+<td>6</td>
+<td>device-37 1.0</td>
+<td>Result(6,device-37,1.0)</td>
+</tr>
+<tr>
+<td>device-360</td>
+<td>67</td>
+<td>6</td>
+<td>device-360 1.0</td>
+<td>Result(6,device-360,1.0)</td>
+</tr>
+<tr>
+<td>device-32</td>
+<td>85</td>
+<td>7</td>
+<td>device-32 1.0</td>
+<td>Result(7,device-32,1.0)</td>
+</tr>
+<tr>
+<td>device-69</td>
+<td>85</td>
+<td>7</td>
+<td>device-69 1.0</td>
+<td>Result(7,device-69,1.0)</td>
+</tr>
+<tr>
+<td>device-17</td>
+<td>94</td>
+<td>8</td>
+<td>device-17 1.0</td>
+<td>Result(8,device-17,1.0)</td>
+</tr>
+<tr>
+<td>device-53</td>
+<td>94</td>
+<td>8</td>
+<td>device-53 1.0</td>
+<td>Result(8,device-53,1.0)</td>
+</tr>
+<tr>
+<td>device-8</td>
+<td>102</td>
+<td>9</td>
+<td>device-8 1.0</td>
+<td>Result(9,device-8,1.0)</td>
+</tr>
+<tr>
+<td>device-71</td>
+<td>102</td>
+<td>9</td>
+<td>device-71 1.0</td>
+<td>Result(9,device-71,1.0)</td>
+</tr>
+<tr>
+<td>device-12</td>
+<td>112</td>
+<td>10</td>
+<td>device-12 1.0</td>
+<td>Result(10,device-12,1.0)</td>
+</tr>
+<tr>
+<td>device-256</td>
+<td>112</td>
+<td>10</td>
+<td>device-256 1.0</td>
+<td>Result(10,device-256,1.0)</td>
+</tr>
+<tr>
+<td>device-13</td>
+<td>120</td>
+<td>11</td>
+<td>device-13 1.0</td>
+<td>Result(11,device-13,1.0)</td>
+</tr>
+<tr>
+<td>device-222</td>
+<td>120</td>
+<td>11</td>
+<td>device-222 1.0</td>
+<td>Result(11,device-222,1.0)</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>停止程序，修改map算子的并行度为6，启动程序，再次发送准备好的数据， 相同KeyGroup的记录，会被同一个算子处理。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200828164802.png" alt="image-20200828164541262"></p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>KeyGroup索引</th>
+<th>并行度为12时算子索引</th>
+<th>输入</th>
+<th>并行度为6时的预期输出</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>device-1</td>
+<td>3</td>
+<td>0</td>
+<td>device-1 1.0</td>
+<td>Result(0,device-1,2.0)</td>
+</tr>
+<tr>
+<td>device-97</td>
+<td>3</td>
+<td>0</td>
+<td>device-97 1.0</td>
+<td>Result(0,device-97,2.0)</td>
+</tr>
+<tr>
+<td>device-19</td>
+<td>14</td>
+<td>1</td>
+<td>device-19 1.0</td>
+<td>Result(0,device-19,2.0)</td>
+</tr>
+<tr>
+<td>device-77</td>
+<td>14</td>
+<td>1</td>
+<td>device-77 1.0</td>
+<td>Result(0,device-77,2.0)</td>
+</tr>
+<tr>
+<td>device-5</td>
+<td>31</td>
+<td>2</td>
+<td>device-5 1.0</td>
+<td>Result(1,device-5,2.0)</td>
+</tr>
+<tr>
+<td>device-7</td>
+<td>31</td>
+<td>2</td>
+<td>device-7 1.0</td>
+<td>Result(1,device-7,2.0)</td>
+</tr>
+<tr>
+<td>device-2</td>
+<td>35</td>
+<td>3</td>
+<td>device-2 1.0</td>
+<td>Result(1,device-2,2.0)</td>
+</tr>
+<tr>
+<td>device-433</td>
+<td>35</td>
+<td>3</td>
+<td>device-433 1.0</td>
+<td>Result(1,device-433,2.0)</td>
+</tr>
+<tr>
+<td>device-27</td>
+<td>44</td>
+<td>4</td>
+<td>device-27 1.0</td>
+<td>Result(2,device-27,2.0)</td>
+</tr>
+<tr>
+<td>device-146</td>
+<td>44</td>
+<td>4</td>
+<td>device-146 1.0</td>
+<td>Result(2,device-146,2.0)</td>
+</tr>
+<tr>
+<td>device-16</td>
+<td>62</td>
+<td>5</td>
+<td>device-16 1.0</td>
+<td>Result(2,device-16,2.0)</td>
+</tr>
+<tr>
+<td>device-62</td>
+<td>62</td>
+<td>5</td>
+<td>device-62 1.0</td>
+<td>Result(2,device-62,2.0)</td>
+</tr>
+<tr>
+<td>device-37</td>
+<td>67</td>
+<td>6</td>
+<td>device-37 1.0</td>
+<td>Result(3,device-37,2.0)</td>
+</tr>
+<tr>
+<td>device-360</td>
+<td>67</td>
+<td>6</td>
+<td>device-360 1.0</td>
+<td>Result(3,device-360,2.0)</td>
+</tr>
+<tr>
+<td>device-32</td>
+<td>85</td>
+<td>7</td>
+<td>device-32 1.0</td>
+<td>Result(3,device-32,2.0)</td>
+</tr>
+<tr>
+<td>device-69</td>
+<td>85</td>
+<td>7</td>
+<td>device-69 1.0</td>
+<td>Result(3,device-69,2.0)</td>
+</tr>
+<tr>
+<td>device-17</td>
+<td>94</td>
+<td>8</td>
+<td>device-17 1.0</td>
+<td>Result(4,device-17,2.0)</td>
+</tr>
+<tr>
+<td>device-53</td>
+<td>94</td>
+<td>8</td>
+<td>device-53 1.0</td>
+<td>Result(4,device-53,2.0)</td>
+</tr>
+<tr>
+<td>device-8</td>
+<td>102</td>
+<td>9</td>
+<td>device-8 1.0</td>
+<td>Result(4,device-8,2.0)</td>
+</tr>
+<tr>
+<td>device-71</td>
+<td>102</td>
+<td>9</td>
+<td>device-71 1.0</td>
+<td>Result(4,device-71,2.0)</td>
+</tr>
+<tr>
+<td>device-12</td>
+<td>112</td>
+<td>10</td>
+<td>device-12 1.0</td>
+<td>Result(5,device-12,2.0)</td>
+</tr>
+<tr>
+<td>device-256</td>
+<td>112</td>
+<td>10</td>
+<td>device-256 1.0</td>
+<td>Result(5,device-256,2.0)</td>
+</tr>
+<tr>
+<td>device-13</td>
+<td>120</td>
+<td>11</td>
+<td>device-13 1.0</td>
+<td>Result(5,device-13,2.0)</td>
+</tr>
+<tr>
+<td>device-222</td>
+<td>120</td>
+<td>11</td>
+<td>device-222 1.0</td>
+<td>Result(5,device-222,2.0)</td>
+</tr>
+</tbody></table>
+</li>
+</ol>
+<h1 id="2-算子列表状态（ListCheckpointed）"><a href="#2-算子列表状态（ListCheckpointed）" class="headerlink" title="2 算子列表状态（ListCheckpointed）"></a>2 算子列表状态（ListCheckpointed）</h1><p>算子列表状态在算子扩容时会对列表中的状态进行重新分配，通俗的理解就是，当算子任务并行度发生变化时会将之前的每一个子任务产生列表状态统一收集起来，然后在重新分配到更多或者更少的并行任务中。</p>
+<h2 id="2-1-列表状态的知识"><a href="#2-1-列表状态的知识" class="headerlink" title="2.1 列表状态的知识"></a>2.1 列表状态的知识</h2><p>列表状态是通过继承ListCheckpointed接口实现的作用在每个子任务实例上的算法状态。继承ListCheckpointed，需要实现两个方法restoreState和snapshotState。restoreState方法会在checkpoint恢复时被调用，Flink会将分配后的列表状态作为参数传入，用以恢复到之前检查点时的状态。snapshotState方法会在做ckeckpoint的时候被调用，需要返回当前的列表状态，用以将当前状态保存到checkpoint中。具体实现也可以参考之前的关于状态的博客：<a target="_blank" rel="noopener" href="https://blog.csdn.net/shirukai/article/details/102505946">https://blog.csdn.net/shirukai/article/details/102505946</a></p>
+<h2 id="2-2-列表状态迁移示意图"><a href="#2-2-列表状态迁移示意图" class="headerlink" title="2.2 列表状态迁移示意图"></a>2.2 列表状态迁移示意图</h2><p>列表状态的迁移相对来说比较容易理解，统一收集，重新分配。如下图为列表状态的迁移示例图，开始时，算子并行度为2，2个子任务中的列表状态里分别有3条状态。接下来并行度变为3，Flink会将之前一共6个状态收集起来重新分配到3个子任务里，实现扩容的状态迁移。接下来并行度变为1，Flink会将之前3个子任务中的所有状态收集起来，重新分配到1个子任务里，实现缩容的状态迁移。通过状态的迁移过程，也很好理解，为什么Flink要把算子状态设置为列表，就是为了在缩扩容时灵活分配。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200829102237.png" alt="image-20200829102237454"></p>
+<h2 id="2-3-代码验证"><a href="#2-3-代码验证" class="headerlink" title="2.3 代码验证"></a>2.3 代码验证</h2><h3 id="2-3-1-验证场景及代码实现"><a href="#2-3-1-验证场景及代码实现" class="headerlink" title="2.3.1 验证场景及代码实现"></a>2.3.1 验证场景及代码实现</h3><p>输出数据格式为(id,value)，其中id为设备id，value为设备值，使用flatmap在每个子任务中，统计value值大于指定阈值的个数，如果输出数据value值大于指定阈值，将当前子任务索引号和统计个数输出。</p>
+<p>验证场景：</p>
+<ol>
+<li>先将flatmap算子并行度设置为2，发送准备好的数据，输出结果符合预期</li>
+<li>将flatmap算子并行度设置为3，会有2个算子基于之前的状态继续统计，另外一个算子从头统计。</li>
+</ol>
+<p>代码实现：</p>
+<pre><code class="scala">package com.hollysys.flink.streaming.state.redistribution
+
+import java.util
+import java.util.Collections
+import org.apache.flink.api.common.functions.RichFlatMapFunction
+import org.apache.flink.api.scala._
+import org.apache.flink.streaming.api.checkpoint.ListCheckpointed
+import org.apache.flink.streaming.api.scala.DataStream
+import org.apache.flink.util.Collector
+
+/**
+ * 验证列表状态，并行度改变时，状态重新分配示例
+ *
+ * @author shirukai
+ */
+object ListStateRedistributionExample &#123;
+
+  case class Device(id: String, value: Double)
+
+  case class Result(taskNumber: Int, count: Long)
+
+  def main(args: Array[String]): Unit = &#123;
+    // 1. 创建本地运行环境
+    val (env, params) = FlinkLocalEnvUtil.createLocalCheckpointEnv(args)
+
+    // 2. 从socket中获取文本
+    val streamText: DataStream[String] = env.socketTextStream(&quot;127.0.0.1&quot;, 9000)
+      .name(&quot;SocketSource&quot;)
+      .uid(&quot;SocketSource&quot;)
+
+    // 3. 文本转换为Device样例类
+    val deviceStream = streamText.map(text =&gt; &#123;
+      val items = text.split(&quot; &quot;)
+      Device(items(0), items(1).toDouble)
+    &#125;).setParallelism(1)
+      .name(&quot;FormatDevice&quot;)
+      .uid(&quot;FormatDevice&quot;)
+
+    // 4. 统计value大于6.0的设备总和
+    val resultStream = deviceStream
+      // 均匀分配
+      .rescale
+      .flatMap(new HighValueCounter(6.0))
+      .setParallelism(2)
+      .name(&quot;HighValueCounter&quot;)
+      .uid(&quot;HighValueCounter&quot;)
+
+    // 5. 结果输出到控制台
+    resultStream.print()
+      .setParallelism(1)
+      .name(&quot;Print&quot;)
+      .uid(&quot;Print&quot;)
+
+    // 6. 提交执行
+    env.execute(&quot;ListStateRedistributionExample&quot;)
+
+
+  &#125;
+
+  class HighValueCounter(threshold: Double) extends RichFlatMapFunction[Device, Result] with ListCheckpointed[java.lang.Long] &#123;
+    // 子任务的索引号
+    private lazy val subTaskNumber = getRuntimeContext.getIndexOfThisSubtask
+    // 本地计数器变量
+    private var highValueCounter = 0L
+
+    override def flatMap(value: Device, out: Collector[Result]): Unit = &#123;
+      if (value.value &gt; threshold) &#123;
+        // 如果超过阈值计数器加一
+        highValueCounter += 1
+        // 发出当前子任务索引和当前计数器值
+        out.collect(Result(subTaskNumber, highValueCounter))
+      &#125;
+
+    &#125;
+
+    /**
+     * 返回当前状态用以保存到快照中
+     *
+     * @param checkpointId 检查点ID
+     * @param timestamp    检查点时间戳
+     * @return
+     */
+    override def snapshotState(checkpointId: Long, timestamp: Long): util.List[java.lang.Long] = &#123;
+      Collections.singletonList(highValueCounter)
+    &#125;
+
+    /**
+     * 恢复到之前检查点的状态
+     *
+     * @param state 检查点中的状态
+     */
+    override def restoreState(state: util.List[java.lang.Long]): Unit = &#123;
+      import scala.collection.JavaConverters._
+      for (cnt &lt;- state.asScala) &#123;
+        highValueCounter += cnt
+      &#125;
+    &#125;
+  &#125;
+
+&#125;
+</code></pre>
+<h3 id="2-3-2-准备数据"><a href="#2-3-2-准备数据" class="headerlink" title="2.3.2 准备数据"></a>2.3.2 准备数据</h3><p>准备一下三条数据，用以从socket中输入</p>
+<pre><code class="shell">device-1 7.0
+device-1 8.0
+device-1 9.0
+</code></pre>
+<h3 id="2-3-3-验证"><a href="#2-3-3-验证" class="headerlink" title="2.3.3 验证"></a>2.3.3 验证</h3><ol>
+<li><p>设置flatmap的并行度为2，依次发送准备好的三条数据，输出结果与预期相同</p>
+<table>
+<thead>
+<tr>
+<th>输入</th>
+<th>并行度为2预期输出</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>device-1 7.0</td>
+<td>Result(0,1)</td>
+</tr>
+<tr>
+<td>device-1 8.0</td>
+<td>Result(1,1)</td>
+</tr>
+<tr>
+<td>device-1 9.0</td>
+<td>Result(0,2)</td>
+</tr>
+</tbody></table>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200831142541.png" alt="image-20200831142536316"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200831143046.gif" alt="flink-state-list"></p>
+</li>
+<li><p>设置flatmap的并行度为2，依次发送准备好的三条数据，输出结果与预期相同</p>
+<table>
+<thead>
+<tr>
+<th>输入</th>
+<th>并行度为3预期输出</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>device-1 7.0</td>
+<td>Result(0,3)</td>
+</tr>
+<tr>
+<td>device-1 8.0</td>
+<td>Result(1,2)</td>
+</tr>
+<tr>
+<td>device-1 9.0</td>
+<td>Result(2,1)</td>
+</tr>
+</tbody></table>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200831142651.png" alt="image-20200831142651784"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200831143248.gif" alt="flink-state-list2"></p>
+</li>
+</ol>
+<h1 id="3-算子联合列表状态（CheckpointedFunction）"><a href="#3-算子联合列表状态（CheckpointedFunction）" class="headerlink" title="3 算子联合列表状态（CheckpointedFunction）"></a>3 算子联合列表状态（CheckpointedFunction）</h1><p>算子联合列表状态的算在扩缩容时会把状态列表的全部条目广播到全部的任务上。通俗的理解就是，在缩扩容时，会将之前算子所有子任务的状态都收集起来，使用广播的方式，将全量的状态列表广播给扩缩容后的每个子任务上。</p>
+<h2 id="3-1-算子联合列表状态"><a href="#3-1-算子联合列表状态" class="headerlink" title="3.1 算子联合列表状态"></a>3.1 算子联合列表状态</h2><p>在Flink中CheckpointedFunction是指定有状态函数最底层的接口，也是唯一支持联合列表状态的接口。继承CheckpointedFunction需要实现2个方法：initializeState、snapshotState。initializeState用以初始化状态，该方法在checkpoint被恢复的时候调用，从该方法的上下文中，可以通过context.getOperatorStateStore.getUnionListState(descriptor)获取聚合状态。snapshotState方法与之前ListCheckpoint中实现的方法作用一样，做checkpoint的时候会调用。</p>
+<p>具体实现也可以参考之前的关于状态的博客：<a target="_blank" rel="noopener" href="https://blog.csdn.net/shirukai/article/details/102505946">https://blog.csdn.net/shirukai/article/details/102505946</a></p>
+<h2 id="3-2-联合列表状态迁移示意图"><a href="#3-2-联合列表状态迁移示意图" class="headerlink" title="3.2 联合列表状态迁移示意图"></a>3.2 联合列表状态迁移示意图</h2><p>联合列表状态相比上面提到的联合状态，唯一的区别就是在缩扩容时，列表状态是根据任务分配状态，联合列表状态是广播全量状态。需要用户在代码中实现，哪些状态被保留，哪些状态被丢弃。如下图为联合列表状态的迁移示意图，开始时，算子并行度为2，每个人物里有两条状态，接下来并行度改为3，flink会将之前的算子状态分别广播到之后的每个算子任务中，从图中可以看出扩容后的每个任务里都会得到一个全量的状态列表，用户可以根据需求进行取舍。同理，当并行度改为1时，flink会将之前的算子状态统一广播到之后的一个子任务中得到全量的子任务。</p>
+<p>![image-20200904151220088](/Users/shirukai/Library/Application Support/typora-user-images/image-20200904151220088.png)</p>
+<h2 id="3-3-代码验证"><a href="#3-3-代码验证" class="headerlink" title="3.3 代码验证"></a>3.3 代码验证</h2><h3 id="3-3-1-验证场景及代码实现"><a href="#3-3-1-验证场景及代码实现" class="headerlink" title="3.3.1 验证场景及代码实现"></a>3.3.1 验证场景及代码实现</h3><p>输出数据格式为(id,value)，其中id为设备id，value为设备值，使用map在每个子任务中，将记录写入到state里，并输出状态中的所有状态。</p>
+<p>验证场景：</p>
+<ol>
+<li>并行度为2时，输入四条数据，每个算子中的状态会存两条记录</li>
+<li>并行度改为3时，输入三条数据，每个算子汇总的状态会存5条数据，4条是之前扩容迁移后得到的全量，一条是刚刚进入的数据</li>
+</ol>
+<p>代码实现：</p>
+<pre><code class="scala">package com.hollysys.flink.streaming.state.redistribution
+
+import java.util
+
+import org.apache.commons.collections.IteratorUtils
+import org.apache.flink.api.common.functions.&#123;MapFunction, RichMapFunction&#125;
+import org.apache.flink.api.common.state.&#123;ListState, ListStateDescriptor&#125;
+import org.apache.flink.api.scala._
+import org.apache.flink.configuration.Configuration
+import org.apache.flink.runtime.state.&#123;FunctionInitializationContext, FunctionSnapshotContext&#125;
+import org.apache.flink.streaming.api.checkpoint.CheckpointedFunction
+import org.apache.flink.streaming.api.scala.DataStream
+
+/**
+ * 验证联合列表状态，并行度改变时，状态迁移示例
+ *
+ * @author shirukai
+ */
+object UnionListStateRedistributionExample &#123;
+
+  case class Device(id: String, value: Double)
+
+  case class Result(taskId: Int, devices: List[Device])
+
+  def main(args: Array[String]): Unit = &#123;
+    // 1. 创建本地运行环境
+    val (env, params) = FlinkLocalEnvUtil.createLocalCheckpointEnv(args)
+
+    // 2. 从socket中获取文本
+    val streamText: DataStream[String] = env.socketTextStream(&quot;127.0.0.1&quot;, 9000)
+      .name(&quot;SocketSource&quot;)
+      .uid(&quot;SocketSource&quot;)
+
+    // 3. 文本转换为Device样例类
+    val deviceStream = streamText.map(text =&gt; &#123;
+      val items = text.split(&quot; &quot;)
+      Device(items(0), items(1).toDouble)
+    &#125;).setParallelism(1)
+      .name(&quot;FormatDevice&quot;)
+      .uid(&quot;FormatDevice&quot;)
+
+    val resultStream = deviceStream
+      // 均匀分配
+      .rescale
+      .map(new DeviceCollector)
+      .setParallelism(3)
+      .name(&quot;DeviceCollector&quot;)
+      .uid(&quot;DeviceCollector&quot;)
+
+    resultStream
+      .print()
+      .setParallelism(1)
+      .name(&quot;Print&quot;)
+      .uid(&quot;Print&quot;)
+
+    env.execute(&quot;UnionListStateRedistributionExample&quot;)
+  &#125;
+
+  class DeviceCollector extends RichMapFunction[Device, Result] with CheckpointedFunction &#123;
+    private var deviceCollectorState: ListState[Device] = _
+    private var deviceCollectorCache: util.List[Device] = _
+    
+
+    override def map(value: Device): Result = &#123;
+      deviceCollectorCache.add(value)
+      import scala.collection.JavaConverters._
+      Result(getRuntimeContext.getIndexOfThisSubtask, deviceCollectorCache.asScala.toList)
+    &#125;
+
+    /**
+     * 当检查点被请求快照时调用，用以保存当前状态
+     *
+     * @param context ct
+     */
+    override def snapshotState(context: FunctionSnapshotContext): Unit = &#123;
+      // 清空之前的状态
+      deviceCollectorState.clear()
+      // 将缓存刷到状态里
+      deviceCollectorState.addAll(deviceCollectorCache)
+    &#125;
+
+    /**
+     * 当并行实例被创建时调用，用以初始化状态
+     *
+     * @param context ct
+     */
+    override def initializeState(context: FunctionInitializationContext): Unit = &#123;
+      val deviceCollectorStateDesc = new ListStateDescriptor[Device](&quot;device-collector-state&quot;, classOf[Device])
+      deviceCollectorState = context.getOperatorStateStore.getUnionListState(deviceCollectorStateDesc)
+      if (context.isRestored) &#123;
+        // 将状态刷到缓存里
+        deviceCollectorCache = IteratorUtils.toList(deviceCollectorState.get().iterator()).asInstanceOf[util.List[Device]]
+      &#125;else&#123;
+        deviceCollectorCache = new util.ArrayList[Device]()
+      &#125;
+    &#125;
+  &#125;
+
+&#125;
+</code></pre>
+<h3 id="3-3-2-准备数据"><a href="#3-3-2-准备数据" class="headerlink" title="3.3.2 准备数据"></a>3.3.2 准备数据</h3><p>准备以下三条数据，用以从socket中输入</p>
+<pre><code class="shell">device-1 7.0
+device-1 8.0
+device-1 9.0
+device-1 10.0
+
+device-1 11.0
+device-1 12.0
+device-1 13.0
+</code></pre>
+<h3 id="3-3-3-验证"><a href="#3-3-3-验证" class="headerlink" title="3.3.3 验证"></a>3.3.3 验证</h3><ol>
+<li><p>设置map算子的并行度为2，输入下列数据，输出结果与预期相同</p>
+<p>a 修改并行度</p>
+<pre><code class="scala">val resultStream = deviceStream
+  // 均匀分配
+  .rescale
+  .map(new DeviceCollector)
+  .setParallelism(2)
+  .name(&quot;DeviceCollector&quot;)
+  .uid(&quot;DeviceCollector&quot;)
+</code></pre>
+<p>b 数据</p>
+<table>
+<thead>
+<tr>
+<th>输入</th>
+<th>并行度为2预期输出</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>device-1 7.0</td>
+<td>Result(0,List(Device(device-1,7.0)))</td>
+</tr>
+<tr>
+<td>device-1 8.0</td>
+<td>Result(1,List(Device(device-1,8.0)))</td>
+</tr>
+<tr>
+<td>device-1 9.0</td>
+<td>Result(0,List(Device(device-1,7.0), Device(device-1,9.0)))</td>
+</tr>
+<tr>
+<td>device-1 10.0</td>
+<td>Result(1,List(Device(device-1,8.0), Device(device-1,10.0)))</td>
+</tr>
+</tbody></table>
+<p>c 拓扑图</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200919142521.png" alt="image-20200919142357909"></p>
+<p>d 运行示例</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200919143128.gif" alt="flink-state-list"></p>
+</li>
+<li><p>设置map算子的并行度为3，输入下列数据，输出结果与预期相同</p>
+<p>a 修改并行度</p>
+<pre><code class="scala">val resultStream = deviceStream
+  // 均匀分配
+  .rescale
+  .map(new DeviceCollector)
+  .setParallelism(3)
+  .name(&quot;DeviceCollector&quot;)
+  .uid(&quot;DeviceCollector&quot;)
+</code></pre>
+<p>b 数据</p>
+<table>
+<thead>
+<tr>
+<th>输入</th>
+<th>并行度为3预期输出</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>device-1 11.0</td>
+<td>Result(0,List(Device(device-1,7.0), Device(device-1,9.0), Device(device-1,8.0), Device(device-1,10.0), Device(device-1,11.0)))</td>
+</tr>
+<tr>
+<td>device-1 12.0</td>
+<td>Result(1,List(Device(device-1,7.0), Device(device-1,9.0), Device(device-1,8.0), Device(device-1,10.0), Device(device-1,12.0)))</td>
+</tr>
+<tr>
+<td>device-1 13.0</td>
+<td>Result(2,List(Device(device-1,7.0), Device(device-1,9.0), Device(device-1,8.0), Device(device-1,10.0), Device(device-1,13.0)))</td>
+</tr>
+</tbody></table>
+<p>c 拓扑图</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200919142510.png" alt="image-20200919142510758"></p>
+<p>d 运行示例</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200919143819.gif" alt="flink-state-list2"></p>
+</li>
+</ol>
+<h1 id="4-广播状态"><a href="#4-广播状态" class="headerlink" title="4 广播状态"></a>4 广播状态</h1><p>Flink里还有一种状态叫做广播状态，广播状态需要与广播流一起使用，该状态在扩容时，会以拷贝的形式，将之前子任务中的状态拷贝到新的任务中，在缩容时，拷贝对应的子任务状态即可。</p>
+<h2 id="4-1-广播状态的知识"><a href="#4-1-广播状态的知识" class="headerlink" title="4.1 广播状态的知识"></a>4.1 广播状态的知识</h2><p>上面说过，广播状态是需要与广播流一起使用的，广播流在配置动态更新、规则更新等场景应用的比较多。所谓广播流就是将上游算子的一条记录，通过广播的方式，下发给下游的每一个算子。声明一个广播流需要通过DataStream的broadcast方法，传入一个MapStateDescriptor对象。普通流需要通过connect方法与广播流进行连接，随后调用process方法，传入一个自定义的广播流处理算子。该算子需要继承BroadcastProcessFunction（如果前面是KeyedStream则需要继承KeyedBroadcastProcessFunction），并实现processElement和processBroadcastElement方法。</p>
+<h2 id="4-2-广播状态迁移示意图"><a href="#4-2-广播状态迁移示意图" class="headerlink" title="4.2 广播状态迁移示意图"></a>4.2 广播状态迁移示意图</h2><p>广播状态的迁移是通过拷贝的方式进行的，在扩容时它会拷贝之前子任务中的状态来填充新增的子任务，在缩容时它会拷贝对应的子任务到当前子任务中。如下图所示为广播状态迁移的示意图，开始时并行度为2，当并行度变为4时，flink会将1，2子任务的状态，拷贝到新增的3、4任务中，同理，当并行度改为1时，会拷贝对应的子任务状态，到当前任务。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200920091202.png" alt="image-20200920091202318"></p>
+<h2 id="4-3-代码验证"><a href="#4-3-代码验证" class="headerlink" title="4.3 代码验证"></a>4.3 代码验证</h2><h3 id="4-3-1-验证场景及代码实现"><a href="#4-3-1-验证场景及代码实现" class="headerlink" title="4.3.1 验证场景及代码实现"></a>4.3.1 验证场景及代码实现</h3><p>输出数据格式为(id,value)，其中id为设备id，value为设备值，广播流输入格式为(id,rule)，其中id为规则id，rule为规则内容。将广播流与正常流进行连接，使用process在每个子任务中，将设备与规则列表绑定后发到下游算子。</p>
+<p>验证场景：</p>
+<ol>
+<li>先将process算子并行度设置为2，发送准备好的数据，输出结果符合预期</li>
+<li>将process算子并行度设置为4，发送准备的数据，新增的3、4任务会分别拷贝原来1、2的状态，输出结果符合预期</li>
+</ol>
+<p>代码实现：</p>
+<pre><code class="scala">package com.hollysys.flink.streaming.state.redistribution
+
+import org.apache.flink.api.common.state.MapStateDescriptor
+import org.apache.flink.streaming.api.scala.DataStream
+import org.apache.flink.api.scala._
+import org.apache.flink.streaming.api.functions.co.BroadcastProcessFunction
+import org.apache.flink.util.Collector
+
+/**
+ * 验证广播状态，并行度改变时，状态迁移示例
+ *
+ * @author shirukai
+ */
+object BroadcastStateRedistributionExample &#123;
+
+  case class Device(id: String, value: Double)
+
+  case class Rule(id: String, rule: String, var taskId: Int)
+
+  case class Result(taskId: Int, device: Device, rules: List[Rule])
+
+  private val stateDescriptor = new MapStateDescriptor(&quot;rule-state&quot;,
+    createTypeInformation[String],
+    createTypeInformation[Rule])
+
+  def main(args: Array[String]): Unit = &#123;
+    // 1. 创建本地运行环境
+    val (env, params) = FlinkLocalEnvUtil.createLocalCheckpointEnv(args)
+
+    // 2. 从socket中获取文本
+    val deviceStreamText: DataStream[String] = env.socketTextStream(&quot;127.0.0.1&quot;, 9000)
+      .name(&quot;DeviceSocketSource&quot;)
+      .uid(&quot;DeviceSocketSource&quot;)
+
+    val ruleStreamText: DataStream[String] = env.socketTextStream(&quot;127.0.0.1&quot;, 9001)
+      .name(&quot;RuleSocketSource&quot;)
+      .uid(&quot;RuleSocketSource&quot;)
+
+    // 3. 文本转换为样例类
+    val deviceStream = deviceStreamText.map(text =&gt; &#123;
+      val items = text.split(&quot; &quot;)
+      Device(items(0), items(1).toDouble)
+    &#125;).setParallelism(1)
+      .name(&quot;FormatDevice&quot;)
+      .uid(&quot;FormatDevice&quot;)
+
+    val ruleStream = ruleStreamText.map(text =&gt; &#123;
+      val items = text.split(&quot; &quot;)
+      Rule(items(0), items(1), -1)
+    &#125;).setParallelism(1)
+      .name(&quot;FormatRule&quot;)
+      .uid(&quot;FormatRule&quot;)
+    val broadcastStream = ruleStream.broadcast(stateDescriptor)
+
+    // 4. 绑定规则
+    val resultStream = deviceStream
+      .rescale
+      .connect(broadcastStream)
+      .process(new RuleBinding)
+      .setParallelism(2)
+      .name(&quot;RuleBinding&quot;)
+      .uid(&quot;RuleBinding&quot;)
+
+    resultStream
+      .print()
+      .setParallelism(1)
+      .name(&quot;Print&quot;)
+      .uid(&quot;Print&quot;)
+
+    env.execute(&quot;BroadcastStateRedistributionExample&quot;)
+
+
+  &#125;
+
+  class RuleBinding extends BroadcastProcessFunction[Device, Rule, Result] &#123;
+    override def processElement(value: Device,
+                                ctx: BroadcastProcessFunction[Device, Rule, Result]#ReadOnlyContext,
+                                out: Collector[Result]): Unit = &#123;
+      val state = ctx.getBroadcastState(stateDescriptor)
+      import scala.collection.JavaConverters._
+      val taskId = getRuntimeContext.getIndexOfThisSubtask
+      val result = Result(taskId, value, state.immutableEntries().asScala.map(_.getValue).toList)
+      out.collect(result)
+    &#125;
+
+    override def processBroadcastElement(value: Rule,
+                                         ctx: BroadcastProcessFunction[Device, Rule, Result]#Context,
+                                         out: Collector[Result]): Unit = &#123;
+      val state = ctx.getBroadcastState(stateDescriptor)
+      value.taskId = getRuntimeContext.getIndexOfThisSubtask
+      state.put(value.id, value)
+    &#125;
+  &#125;
+
+&#125;
+</code></pre>
+<h3 id="3-3-2-准备数据-1"><a href="#3-3-2-准备数据-1" class="headerlink" title="3.3.2 准备数据"></a>3.3.2 准备数据</h3><p>准备以下数据，用以从socket中输入</p>
+<pre><code class="shell"># 设备流
+device-1 8.0
+# 规则流
+id-1 rule-1
+</code></pre>
+<h3 id="3-3-3-验证-1"><a href="#3-3-3-验证-1" class="headerlink" title="3.3.3 验证"></a>3.3.3 验证</h3><ol>
+<li><p>设置process算子的并行度为2，输入下列数据，输出结果与预期相同</p>
+<p>a 修改并行度</p>
+<pre><code class="scala">    val resultStream = deviceStream
+      .rescale
+      .connect(broadcastStream)
+      .process(new RuleBinding)
+      .setParallelism(2)
+      .name(&quot;RuleBinding&quot;)
+      .uid(&quot;RuleBinding&quot;)
+</code></pre>
+<p>b 数据</p>
+<p>首先在规则socket中输入数据</p>
+<pre><code>id-1 rule-1
+</code></pre>
+<p>然后在设备socket中输入如下数据</p>
+<table>
+<thead>
+<tr>
+<th>输入</th>
+<th>并行度为2预期输出</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>device-1 8.0</td>
+<td>Result(0,Device(device-1,8.0),List(Rule(id-1,rule-1,0)))</td>
+</tr>
+<tr>
+<td>device-1 8.0</td>
+<td>Result(1,Device(device-1,8.0),List(Rule(id-1,rule-1,1)))</td>
+</tr>
+</tbody></table>
+<p>c 拓扑图</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200920103849.png" alt="image-20200920102502342"></p>
+<p>d 运行示例</p>
+<p><img src="/Users/shirukai/Desktop/flink-state-broadcast.gif" alt="flink-state-broadcast"></p>
+</li>
+<li><p>设置process算子的并行度为3，输入下列数据，输出结果与预期相同</p>
+<p>a 修改并行度</p>
+<pre><code class="scala">    val resultStream = deviceStream
+      .rescale
+      .connect(broadcastStream)
+      .process(new RuleBinding)
+      .setParallelism(4)
+      .name(&quot;RuleBinding&quot;)
+      .uid(&quot;RuleBinding&quot;)
+</code></pre>
+<p>b 数据</p>
+<table>
+<thead>
+<tr>
+<th>输入</th>
+<th>并行度为3预期输出</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>device-1 8.0</td>
+<td>Result(0,Device(device-1,8.0),List(Rule(id-1,rule-1,0)))</td>
+</tr>
+<tr>
+<td>device-1 8.0</td>
+<td>Result(1,Device(device-1,8.0),List(Rule(id-1,rule-1,1)))</td>
+</tr>
+<tr>
+<td>device-1 8.0</td>
+<td>Result(2,Device(device-1,8.0),List(Rule(id-1,rule-1,0)))</td>
+</tr>
+<tr>
+<td>device-1 8.0</td>
+<td>Result(3,Device(device-1,8.0),List(Rule(id-1,rule-1,1)))</td>
+</tr>
+</tbody></table>
+<p>c 拓扑图</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200920103857.png" alt="image-20200920102610107"></p>
+<p>d 运行示例</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200920103835.gif" alt="flink-state-broadcast2"></p>
+</li>
+</ol>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E9%94%AE%E5%80%BC%E5%88%86%E5%8C%BA%E7%8A%B6%E6%80%81"><span class="toc-number">1.</span> <span class="toc-text">1 键值分区状态</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-Key%E5%88%86%E5%8C%BA%E7%9A%84%E7%9F%A5%E8%AF%86"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 Key分区的知识</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-%E9%94%AE%E5%80%BC%E7%8A%B6%E6%80%81%E8%BF%81%E7%A7%BB%E7%A4%BA%E6%84%8F%E5%9B%BE"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 键值状态迁移示意图</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3-%E4%BB%A3%E7%A0%81%E9%AA%8C%E8%AF%81"><span class="toc-number">1.3.</span> <span class="toc-text">1.3 代码验证</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-1-%E9%AA%8C%E8%AF%81%E5%9C%BA%E6%99%AF%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.3.1.</span> <span class="toc-text">1.3.1 验证场景及代码实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-2-%E5%87%86%E5%A4%87%E6%95%B0%E6%8D%AE"><span class="toc-number">1.3.2.</span> <span class="toc-text">1.3.2 准备数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-3-%E9%AA%8C%E8%AF%81"><span class="toc-number">1.3.3.</span> <span class="toc-text">1.3.3 验证</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E7%AE%97%E5%AD%90%E5%88%97%E8%A1%A8%E7%8A%B6%E6%80%81%EF%BC%88ListCheckpointed%EF%BC%89"><span class="toc-number">2.</span> <span class="toc-text">2 算子列表状态（ListCheckpointed）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-%E5%88%97%E8%A1%A8%E7%8A%B6%E6%80%81%E7%9A%84%E7%9F%A5%E8%AF%86"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 列表状态的知识</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-%E5%88%97%E8%A1%A8%E7%8A%B6%E6%80%81%E8%BF%81%E7%A7%BB%E7%A4%BA%E6%84%8F%E5%9B%BE"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 列表状态迁移示意图</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-%E4%BB%A3%E7%A0%81%E9%AA%8C%E8%AF%81"><span class="toc-number">2.3.</span> <span class="toc-text">2.3 代码验证</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-1-%E9%AA%8C%E8%AF%81%E5%9C%BA%E6%99%AF%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="toc-number">2.3.1.</span> <span class="toc-text">2.3.1 验证场景及代码实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-2-%E5%87%86%E5%A4%87%E6%95%B0%E6%8D%AE"><span class="toc-number">2.3.2.</span> <span class="toc-text">2.3.2 准备数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-3-%E9%AA%8C%E8%AF%81"><span class="toc-number">2.3.3.</span> <span class="toc-text">2.3.3 验证</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E7%AE%97%E5%AD%90%E8%81%94%E5%90%88%E5%88%97%E8%A1%A8%E7%8A%B6%E6%80%81%EF%BC%88CheckpointedFunction%EF%BC%89"><span class="toc-number">3.</span> <span class="toc-text">3 算子联合列表状态（CheckpointedFunction）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-%E7%AE%97%E5%AD%90%E8%81%94%E5%90%88%E5%88%97%E8%A1%A8%E7%8A%B6%E6%80%81"><span class="toc-number">3.1.</span> <span class="toc-text">3.1 算子联合列表状态</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-%E8%81%94%E5%90%88%E5%88%97%E8%A1%A8%E7%8A%B6%E6%80%81%E8%BF%81%E7%A7%BB%E7%A4%BA%E6%84%8F%E5%9B%BE"><span class="toc-number">3.2.</span> <span class="toc-text">3.2 联合列表状态迁移示意图</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-%E4%BB%A3%E7%A0%81%E9%AA%8C%E8%AF%81"><span class="toc-number">3.3.</span> <span class="toc-text">3.3 代码验证</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-1-%E9%AA%8C%E8%AF%81%E5%9C%BA%E6%99%AF%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="toc-number">3.3.1.</span> <span class="toc-text">3.3.1 验证场景及代码实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-2-%E5%87%86%E5%A4%87%E6%95%B0%E6%8D%AE"><span class="toc-number">3.3.2.</span> <span class="toc-text">3.3.2 准备数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-3-%E9%AA%8C%E8%AF%81"><span class="toc-number">3.3.3.</span> <span class="toc-text">3.3.3 验证</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%E5%B9%BF%E6%92%AD%E7%8A%B6%E6%80%81"><span class="toc-number">4.</span> <span class="toc-text">4 广播状态</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-%E5%B9%BF%E6%92%AD%E7%8A%B6%E6%80%81%E7%9A%84%E7%9F%A5%E8%AF%86"><span class="toc-number">4.1.</span> <span class="toc-text">4.1 广播状态的知识</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-%E5%B9%BF%E6%92%AD%E7%8A%B6%E6%80%81%E8%BF%81%E7%A7%BB%E7%A4%BA%E6%84%8F%E5%9B%BE"><span class="toc-number">4.2.</span> <span class="toc-text">4.2 广播状态迁移示意图</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-3-%E4%BB%A3%E7%A0%81%E9%AA%8C%E8%AF%81"><span class="toc-number">4.3.</span> <span class="toc-text">4.3 代码验证</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-1-%E9%AA%8C%E8%AF%81%E5%9C%BA%E6%99%AF%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="toc-number">4.3.1.</span> <span class="toc-text">4.3.1 验证场景及代码实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-2-%E5%87%86%E5%A4%87%E6%95%B0%E6%8D%AE-1"><span class="toc-number">4.3.2.</span> <span class="toc-text">3.3.2 准备数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-3-%E9%AA%8C%E8%AF%81-1"><span class="toc-number">4.3.3.</span> <span class="toc-text">3.3.3 验证</span></a></li></ol></li></ol></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

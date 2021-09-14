@@ -1,0 +1,786 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Flink自定义窗口触发器 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="
+flink: 1.10.1
+Github: https://github.com/shirukai/flink-examples-trigger.git
+
+前段时间同事开发遇到一个需求，要求按照事,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">Flink自定义窗口触发器</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/6.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/Flink"><b>「
+                    </b>FLINK<b> 」</b></a>
+                
+                June 08, 2021
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/flink-custom-window-trigger.html" title="Flink自定义窗口触发器" class="">Flink自定义窗口触发器</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    16k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    14 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Flink/" rel="tag">Flink</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <blockquote>
+<p>flink: 1.10.1</p>
+<p>Github: <a target="_blank" rel="noopener" href="https://github.com/shirukai/flink-examples-trigger.git">https://github.com/shirukai/flink-examples-trigger.git</a></p>
+</blockquote>
+<p>前段时间同事开发遇到一个需求，要求按照事件时间10分钟窗口计数，同时需要有新数据时每分钟输出一次结果。窗口计数非常简单，设置一个窗口，然后运用一个聚合函数就可以解决了。但是有新数据时每分钟输出一次结果，好像实现起来并不容易，因为按照平时的窗口，设置10分钟之后，要等到watermark超过了当前的窗口之后，才会被触发计算。这里还涉及到一个问题，如果10分钟的窗口之后，再没有数据产生，那么watermark就不会增长，窗口也就不会触发计算，那我们就一直拿不到结果。如何解决上面的问题呢，这里就需要涉及到触发器的概念。本篇文章先介绍Flink内置的几种触发器，并且使用自定义窗口触发器解决上述问题。</p>
+<h1 id="1-创建示例项目"><a href="#1-创建示例项目" class="headerlink" title="1 创建示例项目"></a>1 创建示例项目</h1><p>使用maven基于Flink官方模板创建一个项目</p>
+<pre><code class="shell">mvn archetype:generate -DarchetypeGroupId=org.apache.flink -DarchetypeArtifactId=flink-quickstart-java -DarchetypeVersion=1.10.1 -DgroupId=flink.examples -DartifactId=flink-examples-trigger -Dversion=1.0 -Dpackage=flink.trigger.example -DinteractiveMode=false
+</code></pre>
+<h1 id="2-Flink内置的触发器"><a href="#2-Flink内置的触发器" class="headerlink" title="2 Flink内置的触发器"></a>2 Flink内置的触发器</h1><p>在介绍自定义窗口触发器之前，先简单介绍一下Flink内置的几种触发器，要知道我们平时使用的时间窗口、计数窗口等，窗口在什么时候触发计算，什么时候清理窗口状态，这些逻辑都是在触发器中实现的。Flink内置触发器如下：</p>
+<table>
+<thead>
+<tr>
+<th>触发器</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CountTrigger</td>
+<td>当窗口中的元素计数达到给定数量时触发的触发器</td>
+</tr>
+<tr>
+<td>EventTimeTrigger</td>
+<td>水印超高窗口结束时间时触发的触发器</td>
+</tr>
+<tr>
+<td>ProcessingTimeTrigger</td>
+<td>系统时间超过窗口结束时间时触发的触发器</td>
+</tr>
+<tr>
+<td>ContinuousEventTimeTrigger</td>
+<td>给定一个时间间隔，按照事件时间连续触发的触发器</td>
+</tr>
+<tr>
+<td>ContinuousProcessTrigger</td>
+<td>给定一个时间间隔，按照处理时间连续触发的触发器</td>
+</tr>
+<tr>
+<td>PurgingTrigger</td>
+<td>可以包装任何一个触发器，使其触发之后，清除窗口和状态</td>
+</tr>
+<tr>
+<td>DeltaTrigger</td>
+<td>指定一个DeltaFunction，和一个阈值，当计算出来的Delta值超出给定阈值时触发的触发器</td>
+</tr>
+</tbody></table>
+<h2 id="1-1-CountTrigger"><a href="#1-1-CountTrigger" class="headerlink" title="1.1 CountTrigger"></a>1.1 CountTrigger</h2><p>给定一个最大数量，当窗口中的元素大于等于这个数量时，触发窗口计算。</p>
+<p>实现上也相对简单，使用一个ReduceState来计数，并且指定一个累加方法的实现。每来一条数据count+1，然后判断是否超过指定的数量，如果超过就触发计算，清空计数器。</p>
+<pre><code class="java">    @Override
+    public TriggerResult onElement(Object element, long timestamp, W window, TriggerContext ctx) throws Exception &#123;
+        ReducingState&lt;Long&gt; count = ctx.getPartitionedState(stateDesc);
+        count.add(1L);
+        if (count.get() &gt;= maxCount) &#123;
+            count.clear();
+            return TriggerResult.FIRE;
+        &#125;
+        return TriggerResult.CONTINUE;
+    &#125;
+</code></pre>
+<h2 id="1-2-EventTimeTrigger"><a href="#1-2-EventTimeTrigger" class="headerlink" title="1.2 EventTimeTrigger"></a>1.2 EventTimeTrigger</h2><p>基于事件时间的触发器，当窗口的最大时间小于watermark时触发计算。</p>
+<p>具体实现如下代码，可以看到当数据来的时候，会判断当前窗口的最大事件是否比当前的水印小，如果小的话触发计算，否则注册一个基于事件时间的定时器，返回一个CONTINUE。</p>
+<pre><code class="java">    @Override
+    public TriggerResult onElement(Object element, long timestamp, TimeWindow window, TriggerContext ctx) throws Exception &#123;
+        if (window.maxTimestamp() &lt;= ctx.getCurrentWatermark()) &#123;
+            // if the watermark is already past the window fire immediately
+            return TriggerResult.FIRE;
+        &#125; else &#123;
+            ctx.registerEventTimeTimer(window.maxTimestamp());
+            return TriggerResult.CONTINUE;
+        &#125;
+    &#125;
+</code></pre>
+<h2 id="1-3-ProcessingTimeTrigger"><a href="#1-3-ProcessingTimeTrigger" class="headerlink" title="1.3 ProcessingTimeTrigger"></a>1.3 ProcessingTimeTrigger</h2><p>基于处理时间的触发器，当系统时间超出窗口的最大时间时触发。</p>
+<p>具体实现如下代码，数据到来时，仅仅是注册一个基于处理时间的定时器，当定时器触发时同事也触发窗口计算。</p>
+<pre><code class="java">    @Override
+    public TriggerResult onElement(Object element, long timestamp, TimeWindow window, TriggerContext ctx) &#123;
+        ctx.registerProcessingTimeTimer(window.maxTimestamp());
+        return TriggerResult.CONTINUE;
+    &#125;
+    @Override
+    public TriggerResult onProcessingTime(long time, TimeWindow window, TriggerContext ctx) &#123;
+        return TriggerResult.FIRE;
+    &#125;
+</code></pre>
+<h2 id="1-4-ContinuousEventTimeTrigger"><a href="#1-4-ContinuousEventTimeTrigger" class="headerlink" title="1.4 ContinuousEventTimeTrigger"></a>1.4 ContinuousEventTimeTrigger</h2><p>从字面意思上理解是连续的事件时间触发器，需要指定一个时间间隔，基于事件时间的定时器会根据时间间隔定时触发窗口计算。</p>
+<p>具体代码如下所示，当窗口数据到达时，前面的逻辑与EventTimeTrigger是一样的，先判断当前的水印是否超过了当前窗口的最大值，如果超过了，那就触发窗口计算，否则注册一个基于事件时间到达窗口最大时间的定时器。然后从状态里拿到按照间隔触发的定时器时间戳，如果这个时间戳不存在，就重新计算一出下一次定时触发的时间戳是多少，注册基于事件时间的定时器，并将该时间戳重新保存到状态中。当事件时间定时器执行时，判断是否触发，并注册新的定时器。</p>
+<pre><code class="java">    private ContinuousEventTimeTrigger(long interval) &#123;
+        this.interval = interval;
+    &#125;
+    @Override
+    public TriggerResult onElement(Object element, long timestamp, W window, TriggerContext ctx) throws Exception &#123;
+
+        if (window.maxTimestamp() &lt;= ctx.getCurrentWatermark()) &#123;
+            // if the watermark is already past the window fire immediately
+            return TriggerResult.FIRE;
+        &#125; else &#123;
+            ctx.registerEventTimeTimer(window.maxTimestamp());
+        &#125;
+
+        ReducingState&lt;Long&gt; fireTimestamp = ctx.getPartitionedState(stateDesc);
+        if (fireTimestamp.get() == null) &#123;
+            long start = timestamp - (timestamp % interval);
+            long nextFireTimestamp = start + interval;
+            ctx.registerEventTimeTimer(nextFireTimestamp);
+            fireTimestamp.add(nextFireTimestamp);
+        &#125;
+
+        return TriggerResult.CONTINUE;
+    &#125;
+
+    @Override
+    public TriggerResult onEventTime(long time, W window, TriggerContext ctx) throws Exception &#123;
+
+        if (time == window.maxTimestamp())&#123;
+            return TriggerResult.FIRE;
+        &#125;
+
+        ReducingState&lt;Long&gt; fireTimestampState = ctx.getPartitionedState(stateDesc);
+
+        Long fireTimestamp = fireTimestampState.get();
+
+        if (fireTimestamp != null &amp;&amp; fireTimestamp == time) &#123;
+            fireTimestampState.clear();
+            fireTimestampState.add(time + interval);
+            ctx.registerEventTimeTimer(time + interval);
+            return TriggerResult.FIRE;
+        &#125;
+
+        return TriggerResult.CONTINUE;
+    &#125;
+</code></pre>
+<h2 id="1-5-ContinuousProcessTrigger"><a href="#1-5-ContinuousProcessTrigger" class="headerlink" title="1.5 ContinuousProcessTrigger"></a>1.5 ContinuousProcessTrigger</h2><p>从字面意思上理解是连续的处理时间触发器，需要指定一个时间间隔，基于处理时间的定时器会根据时间间隔定时触发窗口计算。</p>
+<p>具体代码如下所示，当窗口数据到达时，从状态中拿到基于处理时间定时器的时间戳，如果时间戳不存在，重新计算出新的定时器时间戳，并基于这个时间戳注册一个基于处理时间的定时器。当处理时间的定时器执行时，触发窗口计算，并基于时间间隔注册新的定时器。</p>
+<pre><code class="java">
+    private ContinuousProcessingTimeTrigger(long interval) &#123;
+        this.interval = interval;
+    &#125;
+
+    @Override
+    public TriggerResult onElement(Object element, long timestamp, W window, TriggerContext ctx) throws Exception &#123;
+        ReducingState&lt;Long&gt; fireTimestamp = ctx.getPartitionedState(stateDesc);
+
+        timestamp = ctx.getCurrentProcessingTime();
+
+        if (fireTimestamp.get() == null) &#123;
+            long start = timestamp - (timestamp % interval);
+            long nextFireTimestamp = start + interval;
+
+            ctx.registerProcessingTimeTimer(nextFireTimestamp);
+
+            fireTimestamp.add(nextFireTimestamp);
+            return TriggerResult.CONTINUE;
+        &#125;
+        return TriggerResult.CONTINUE;
+    &#125;
+    
+        @Override
+    public TriggerResult onProcessingTime(long time, W window, TriggerContext ctx) throws Exception &#123;
+        ReducingState&lt;Long&gt; fireTimestamp = ctx.getPartitionedState(stateDesc);
+
+        if (fireTimestamp.get().equals(time)) &#123;
+            fireTimestamp.clear();
+            fireTimestamp.add(time + interval);
+            ctx.registerProcessingTimeTimer(time + interval);
+            return TriggerResult.FIRE;
+        &#125;
+        return TriggerResult.CONTINUE;
+    &#125;
+</code></pre>
+<h2 id="1-6-DeltaTrigger"><a href="#1-6-DeltaTrigger" class="headerlink" title="1.6 DeltaTrigger"></a>1.6 DeltaTrigger</h2><p>需要指定一个DeltaFunction用来计算差值，还需要给定一个阈值，用来比较差值是否大于指定的阈值。只有在差值大于阈值的时候才会触发计算。</p>
+<p>代码实现如下所示，构造方法中需要用户传入一个DeltaFunction，还要指定一个阈值threshold。当窗口数据到达时，先判断上一个值在状态中是否存在，如果存在，就调用用户的DeltaFunction，传入上一个值和当前值来计算出差值来，如果差值比阈值大，就触发计算。</p>
+<pre><code class="java">
+    private DeltaTrigger(double threshold, DeltaFunction&lt;T&gt; deltaFunction, TypeSerializer&lt;T&gt; stateSerializer) &#123;
+        this.deltaFunction = deltaFunction;
+        this.threshold = threshold;
+        stateDesc = new ValueStateDescriptor&lt;&gt;(&quot;last-element&quot;, stateSerializer);
+
+    &#125;
+
+    @Override
+    public TriggerResult onElement(T element, long timestamp, W window, TriggerContext ctx) throws Exception &#123;
+        ValueState&lt;T&gt; lastElementState = ctx.getPartitionedState(stateDesc);
+        if (lastElementState.value() == null) &#123;
+            lastElementState.update(element);
+            return TriggerResult.CONTINUE;
+        &#125;
+        if (deltaFunction.getDelta(lastElementState.value(), element) &gt; this.threshold) &#123;
+            lastElementState.update(element);
+            return TriggerResult.FIRE;
+        &#125;
+        return TriggerResult.CONTINUE;
+    &#125;
+</code></pre>
+<h2 id="1-7-PurgingTrigger"><a href="#1-7-PurgingTrigger" class="headerlink" title="1.7 PurgingTrigger"></a>1.7 PurgingTrigger</h2><p>可以包装任何一个触发器，使其触发之后，清除窗口和状态。</p>
+<pre><code class="java">
+    private  PurgingTrigger(Trigger&lt;T, W&gt; nestedTrigger) &#123;
+        this.nestedTrigger = nestedTrigger;
+    &#125;
+
+    @Override
+    public TriggerResult onElement(T element, long timestamp, W window, TriggerContext ctx) throws Exception &#123;
+        TriggerResult triggerResult = nestedTrigger.onElement(element, timestamp, window, ctx);
+        return triggerResult.isFire() ? TriggerResult.FIRE_AND_PURGE : triggerResult;
+    &#125;
+
+    @Override
+    public TriggerResult onEventTime(long time, W window, TriggerContext ctx) throws Exception &#123;
+        TriggerResult triggerResult = nestedTrigger.onEventTime(time, window, ctx);
+        return triggerResult.isFire() ? TriggerResult.FIRE_AND_PURGE : triggerResult;
+    &#125;
+
+    @Override
+    public TriggerResult onProcessingTime(long time, W window, TriggerContext ctx) throws Exception &#123;
+        TriggerResult triggerResult = nestedTrigger.onProcessingTime(time, window, ctx);
+        return triggerResult.isFire() ? TriggerResult.FIRE_AND_PURGE : triggerResult;
+    &#125;
+</code></pre>
+<h1 id="2-自定义触发器"><a href="#2-自定义触发器" class="headerlink" title="2 自定义触发器"></a>2 自定义触发器</h1><p>通过对比上述的触发器，其实可以发现ContinuousProcessTrigger能够满足我们每分钟输出结果的需求，但是这个触发器有个问题，就是不管有没有新数据生成，它都会再一分钟输出一次结果。如果我们想要只有在有数据的时候触发，可以在这个触发器的基础上做一些改动。</p>
+<pre><code class="java">package flink.trigger.example.custom;
+
+import org.apache.flink.api.common.functions.ReduceFunction;
+import org.apache.flink.api.common.state.ReducingState;
+import org.apache.flink.api.common.state.ReducingStateDescriptor;
+import org.apache.flink.api.common.typeutils.base.LongSerializer;
+import org.apache.flink.streaming.api.windowing.time.Time;
+import org.apache.flink.streaming.api.windowing.triggers.Trigger;
+import org.apache.flink.streaming.api.windowing.triggers.TriggerResult;
+import org.apache.flink.streaming.api.windowing.windows.TimeWindow;
+
+import java.util.Objects;
+
+/**
+ * 事件时间间隔触发器
+ * copy from &#123;@link org.apache.flink.streaming.api.windowing.triggers.EventTimeTrigger&#125;
+ * 重写 &#123;@link org.apache.flink.streaming.api.windowing.triggers.EventTimeTrigger#onEventTime(long, TimeWindow, TriggerContext)&#125;
+ * 和 &#123;@link org.apache.flink.streaming.api.windowing.triggers.EventTimeTrigger#onProcessingTime(long, TimeWindow, TriggerContext)&#125;
+ * 方法：
+ * 1. 在onElement方法里增加基于处理时间的定时器
+ * 2. 在onProcessingTime方法里增加定时器触发后将窗口发出的逻辑
+ *
+ * @author shirukai
+ */
+public class EventTimeIntervalTrigger&lt;T&gt; extends Trigger&lt;T, TimeWindow&gt; &#123;
+    private final long interval;
+
+    /**
+     * When merging we take the lowest of all fire timestamps as the new fire timestamp.
+     */
+    private final ReducingStateDescriptor&lt;Long&gt; stateDesc =
+            new ReducingStateDescriptor&lt;&gt;(&quot;fire-time&quot;, new EventTimeIntervalTrigger.Min(), LongSerializer.INSTANCE);
+
+    private EventTimeIntervalTrigger(long interval) &#123;
+        this.interval = interval;
+    &#125;
+
+    /**
+     * 创建trigger实例
+     *
+     * @param interval 间隔
+     * @param &lt;T&gt;      数据类型泛型
+     * @return EventTimeIntervalTrigger
+     */
+    public static &lt;T&gt; EventTimeIntervalTrigger&lt;T&gt; of(Time interval) &#123;
+        return new EventTimeIntervalTrigger&lt;&gt;(interval.toMilliseconds());
+    &#125;
+
+    @Override
+    public TriggerResult onElement(T element, long timestamp, TimeWindow window, TriggerContext ctx) throws Exception &#123;
+        if (window.maxTimestamp() &lt;= ctx.getCurrentWatermark()) &#123;
+            // if the watermark is already past the window fire immediately
+            return TriggerResult.FIRE;
+        &#125; else &#123;
+            ctx.registerEventTimeTimer(window.maxTimestamp());
+            // 判断定时器是否注册过
+            ReducingState&lt;Long&gt; fireTimestamp = ctx.getPartitionedState(stateDesc);
+            if (Objects.isNull(fireTimestamp.get()) || fireTimestamp.get() &lt; 0) &#123;
+                // 注册一个基于处理时间的计时器
+                long currentTimestamp = ctx.getCurrentProcessingTime();
+                long nextFireTimestamp = currentTimestamp - (currentTimestamp % interval) + interval;
+                ctx.registerProcessingTimeTimer(nextFireTimestamp);
+                fireTimestamp.add(nextFireTimestamp);
+            &#125;
+            return TriggerResult.CONTINUE;
+        &#125;
+    &#125;
+
+    @Override
+    public TriggerResult onProcessingTime(long time, TimeWindow window, TriggerContext ctx) throws Exception &#123;
+        ctx.getPartitionedState(stateDesc).add(Long.MIN_VALUE);
+        return TriggerResult.FIRE;
+    &#125;
+
+    @Override
+    public TriggerResult onEventTime(long time, TimeWindow window, TriggerContext ctx) throws Exception &#123;
+        return time == window.maxTimestamp() ?
+                TriggerResult.FIRE :
+                TriggerResult.CONTINUE;
+    &#125;
+
+    @Override
+    public void clear(TimeWindow window, TriggerContext ctx) throws Exception &#123;
+        ReducingState&lt;Long&gt; fireTimestamp = ctx.getPartitionedState(stateDesc);
+        // 清理事件时间定时器
+        ctx.deleteEventTimeTimer(window.maxTimestamp());
+        // 清理处理时间定时器
+        if (Objects.isNull(fireTimestamp.get()) || fireTimestamp.get() &gt; 0) &#123;
+            ctx.deleteProcessingTimeTimer(fireTimestamp.get());
+        &#125;
+        // 清理状态
+        fireTimestamp.clear();
+    &#125;
+
+    @Override
+    public boolean canMerge() &#123;
+        return true;
+    &#125;
+
+    @Override
+    public void onMerge(TimeWindow window,
+                        OnMergeContext ctx) &#123;
+        // only register a timer if the watermark is not yet past the end of the merged window
+        // this is in line with the logic in onElement(). If the watermark is past the end of
+        // the window onElement() will fire and setting a timer here would fire the window twice.
+        long windowMaxTimestamp = window.maxTimestamp();
+        if (windowMaxTimestamp &gt; ctx.getCurrentWatermark()) &#123;
+            ctx.registerEventTimeTimer(windowMaxTimestamp);
+        &#125;
+    &#125;
+
+    private static class Min implements ReduceFunction&lt;Long&gt; &#123;
+        private static final long serialVersionUID = 1L;
+
+        @Override
+        public Long reduce(Long value1, Long value2) throws Exception &#123;
+            return Math.min(value1, value2);
+        &#125;
+    &#125;
+
+    @Override
+    public String toString() &#123;
+        return &quot;EventTimeIntervalTrigger()&quot;;
+    &#125;
+&#125;
+</code></pre>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E5%88%9B%E5%BB%BA%E7%A4%BA%E4%BE%8B%E9%A1%B9%E7%9B%AE"><span class="toc-number">1.</span> <span class="toc-text">1 创建示例项目</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-Flink%E5%86%85%E7%BD%AE%E7%9A%84%E8%A7%A6%E5%8F%91%E5%99%A8"><span class="toc-number">2.</span> <span class="toc-text">2 Flink内置的触发器</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-CountTrigger"><span class="toc-number">2.1.</span> <span class="toc-text">1.1 CountTrigger</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-EventTimeTrigger"><span class="toc-number">2.2.</span> <span class="toc-text">1.2 EventTimeTrigger</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3-ProcessingTimeTrigger"><span class="toc-number">2.3.</span> <span class="toc-text">1.3 ProcessingTimeTrigger</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-4-ContinuousEventTimeTrigger"><span class="toc-number">2.4.</span> <span class="toc-text">1.4 ContinuousEventTimeTrigger</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-5-ContinuousProcessTrigger"><span class="toc-number">2.5.</span> <span class="toc-text">1.5 ContinuousProcessTrigger</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-6-DeltaTrigger"><span class="toc-number">2.6.</span> <span class="toc-text">1.6 DeltaTrigger</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-7-PurgingTrigger"><span class="toc-number">2.7.</span> <span class="toc-text">1.7 PurgingTrigger</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E8%87%AA%E5%AE%9A%E4%B9%89%E8%A7%A6%E5%8F%91%E5%99%A8"><span class="toc-number">3.</span> <span class="toc-text">2 自定义触发器</span></a></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

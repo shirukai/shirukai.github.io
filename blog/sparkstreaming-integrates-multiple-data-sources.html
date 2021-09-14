@@ -1,0 +1,1077 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SparkStreaming整合多种数据源 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="SparkStreaming可以处理多种数据源，比如从socket里获取数据流，从文件系统获取数据流，从Flume获取数据流、从Kafka里获取数据流等。
+需要注意的是：
+
+SparkStreami,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">SparkStreaming整合多种数据源</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/8.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/Spark"><b>「
+                    </b>SPARK<b> 」</b></a>
+                
+                January 28, 2019
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/sparkstreaming-integrates-multiple-data-sources.html" title="SparkStreaming整合多种数据源" class="">SparkStreaming整合多种数据源</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    35k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    32 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Spark/" rel="tag">Spark</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <p>SparkStreaming可以处理多种数据源，比如从socket里获取数据流，从文件系统获取数据流，从Flume获取数据流、从Kafka里获取数据流等。</p>
+<p>需要注意的是：</p>
+<ul>
+<li>SparkStreaming 在处理socket、flume、kafka、Kinesis数据源的时候，本地模式下不能用以local、或者local[1]运行，因为需要启动一个线程运行Receivers来接收数据。读取文件系统的时候，不需要启动Receivers，所以在处理文件系统数据源的时候，不需要设置多个线程。</li>
+<li>将逻辑扩展到在集群上运行，分配给Spark Streaming应用程序的核心数必须大于接收器数。否则系统将接收数据，但无法处理数据。</li>
+</ul>
+<p>详细的介绍可以参考官网：<a target="_blank" rel="noopener" href="http://spark.apache.org/docs/latest/streaming-programming-guide.html#input-dstreams-and-receivers%E3%80%82">http://spark.apache.org/docs/latest/streaming-programming-guide.html#input-dstreams-and-receivers。</a></p>
+<p>本笔记主要记录一下Spark Steaming处理Socket、文件系统、Flume、Kafka等多种数据源。</p>
+<h2 id="1-Socket-Stream"><a href="#1-Socket-Stream" class="headerlink" title="1 Socket Stream"></a>1 Socket Stream</h2><p>本小节，将以SparkStreaming处理Socket数据为例，实现简单的WordCount、并将执行结果写入到MySQL、进行有状态的词频统计即统计单词包括之前的数据一共出现的次数、使用Transform api进行黑名单过滤操作、最后整合Spark SQL 使用 DataFrame进行词频统计等。</p>
+<h3 id="1-1-处理Socket-Stream进行简单的WordCount"><a href="#1-1-处理Socket-Stream进行简单的WordCount" class="headerlink" title="1.1 处理Socket Stream进行简单的WordCount"></a>1.1 处理Socket Stream进行简单的WordCount</h3><p>NetworkWordCount.scala</p>
+<pre><code class="scala">package com.hollysys.spark.streaming
+
+import org.apache.spark.SparkConf
+import org.apache.spark.streaming.&#123;Seconds, StreamingContext&#125;
+
+/**
+  * Created by shirukai on 2018/10/16
+  * Spark Streaming 处理Socket 数据
+  * nc -lk 9999
+  */
+object NetworkWordCount &#123;
+  def main(args: Array[String]): Unit = &#123;
+    val conf = new SparkConf().setAppName(&quot;NetworkWordCount&quot;).setMaster(&quot;local[2]&quot;)
+    /**
+      * 创建StreamingContext需要两个参数，SparkConf 和 batch interval
+      */
+    val ssc = new StreamingContext(conf, Seconds(2))
+
+    // 从socket中获取数据
+    val lines = ssc.socketTextStream(&quot;localhost&quot;, 9999)
+
+    val words = lines.flatMap(_.split(&quot; &quot;))
+    val wordCounts = words.map(x =&gt; (x, 1)).reduceByKey(_ + _)
+    wordCounts.print()
+
+    ssc.start()
+    ssc.awaitTermination()
+  &#125;
+&#125;
+</code></pre>
+<p>效果：</p>
+<p><img src="http://shirukai.gitee.io/images/77c4ad7584a7b4d06c63faded3405b54.gif"></p>
+<h3 id="1-2-将处理结果写到MySQL里"><a href="#1-2-将处理结果写到MySQL里" class="headerlink" title="1.2 将处理结果写到MySQL里"></a>1.2 将处理结果写到MySQL里</h3><p>官网：<a target="_blank" rel="noopener" href="http://spark.apache.org/docs/latest/streaming-programming-guide.html#design-patterns-for-using-foreachrdd">http://spark.apache.org/docs/latest/streaming-programming-guide.html#design-patterns-for-using-foreachrdd</a></p>
+<p>将数据写入MySQL我们需要使用foreachRDD去遍历RDD，然后RDD的数据写入到MySQL。</p>
+<pre><code class="scala">package com.hollysys.spark.streaming
+
+import java.sql.&#123;Connection, DriverManager&#125;
+
+import org.apache.spark.SparkConf
+import org.apache.spark.streaming.&#123;Seconds, StreamingContext&#125;
+
+/**
+  * Created by shirukai on 2018/10/16
+  * 将统计结果写到MySQL中
+  *
+  * 创建MySQL表：
+  * create table wordcount(word varchar(50) default null,wordcount int(10) default null);
+  */
+object ResultWriteMySQL &#123;
+  def main(args: Array[String]): Unit = &#123;
+    val conf = new SparkConf().setAppName(this.getClass.getSimpleName).setMaster(&quot;local[2]&quot;)
+    val ssc = new StreamingContext(conf, Seconds(5))
+
+    val lines = ssc.socketTextStream(&quot;localhost&quot;, 9999)
+
+    val words = lines.flatMap(_.split(&quot; &quot;))
+    val wordCounts = words.map((_, 1)).reduceByKey(_ + _)
+    wordCounts.foreachRDD(rdd =&gt; &#123;
+
+      rdd.foreachPartition(iterator =&gt; &#123;
+        val connection = createConnection()
+        iterator.foreach(record =&gt; &#123;
+          val sql = &quot;insert into wordcount(word,wordcount) values (&#39;&quot; + record._1 + &quot;&#39;,&#39;&quot; + record._2 + &quot;&#39;)&quot;
+          connection.createStatement().execute(sql)
+        &#125;)
+      &#125;)
+    &#125;)
+    ssc.start()
+    ssc.awaitTermination()
+  &#125;
+
+  /**
+    * 获取数据库连接
+    * @return
+    */
+  def createConnection(): Connection = &#123;
+    DriverManager.getConnection(&quot;jdbc:mysql://localhost:3306/spark?useSSL=false&amp;characterEncoding=utf-8&amp;user=root&amp;password=hollysys&quot;)
+  &#125;
+&#125;
+</code></pre>
+<h3 id="1-3-进行有状态的WordCount"><a href="#1-3-进行有状态的WordCount" class="headerlink" title="1.3 进行有状态的WordCount"></a>1.3 进行有状态的WordCount</h3><p>应用场景：统计单词一种出现的次数</p>
+<p>官网：<a target="_blank" rel="noopener" href="http://spark.apache.org/docs/latest/streaming-programming-guide.html#updatestatebykey-operation">http://spark.apache.org/docs/latest/streaming-programming-guide.html#updatestatebykey-operation</a></p>
+<pre><code class="scala">package com.hollysys.spark.streaming
+
+import org.apache.spark.SparkConf
+import org.apache.spark.streaming.&#123;Seconds, StreamingContext&#125;
+
+/**
+  * Created by shirukai on 2018/10/16
+  * 使用Spark Streaming 完成有状态统计
+  */
+object StatefulWordCount &#123;
+  def main(args: Array[String]): Unit = &#123;
+    val conf = new SparkConf().setAppName(this.getClass.getSimpleName).setMaster(&quot;local[2]&quot;)
+    val ssc = new StreamingContext(conf, Seconds(5))
+    // 如果使用了stateful的算子，必须要设置checkpoint
+    // 在生产环境中，建议大家把checkpoint设置到HDFS的某个文件夹中
+    ssc.checkpoint(&quot;data/checkpoint&quot;)
+    val lines = ssc.socketTextStream(&quot;localhost&quot;, 9999)
+
+    val words = lines.flatMap(_.split(&quot; &quot;))
+    val wordCounts = words.map((_, 1)).updateStateByKey(updateFunction)
+    wordCounts.print()
+
+    ssc.start()
+    ssc.awaitTermination()
+  &#125;
+
+  def updateFunction(currentValue: Seq[Int], previousValue: Option[Int]): Option[Int] = &#123;
+    val current = currentValue.sum
+    val pre = previousValue.getOrElse(0)
+    Some(current + pre)
+  &#125;
+&#125;
+</code></pre>
+<h3 id="1-4-利用Transform进行黑名单过滤"><a href="#1-4-利用Transform进行黑名单过滤" class="headerlink" title="1.4 利用Transform进行黑名单过滤"></a>1.4 利用Transform进行黑名单过滤</h3><p>官网地址：<a target="_blank" rel="noopener" href="http://spark.apache.org/docs/latest/streaming-programming-guide.html#transform-operation">http://spark.apache.org/docs/latest/streaming-programming-guide.html#transform-operation</a></p>
+<pre><code class="scala">package com.hollysys.spark.streaming
+
+import org.apache.spark.SparkConf
+import org.apache.spark.streaming.&#123;Seconds, StreamingContext&#125;
+
+/**
+  * Created by shirukai on 2018/10/16
+  * 黑名单过滤
+  */
+object TransformApp &#123;
+  def main(args: Array[String]): Unit = &#123;
+    val conf = new SparkConf().setAppName(&quot;NetworkWordCount&quot;).setMaster(&quot;local[2]&quot;)
+    val ssc = new StreamingContext(conf, Seconds(2))
+    /**
+      * 创建StreamingContext需要两个参数，SparkConf 和 batch interval
+      */
+    val lines = ssc.socketTextStream(&quot;localhost&quot;, 9999)
+    /**
+      * 构建黑名单
+      */
+    val blacks = List(&quot;zs&quot;, &quot;ls&quot;)
+    val blacksRDD = ssc.sparkContext.parallelize(blacks).map((_, true))
+
+    val res = lines.map(x =&gt; (x.split(&quot;,&quot;)(1), x)).transform(rdd =&gt; &#123;
+      rdd.leftOuterJoin(blacksRDD).filter(!_._2._2.getOrElse(false))
+        .map(_._2._1)
+    &#125;)
+    res.print()
+    ssc.start()
+    ssc.awaitTermination()
+  &#125;
+&#125;
+</code></pre>
+<h3 id="1-5-使用Spark-SQL-处理数据"><a href="#1-5-使用Spark-SQL-处理数据" class="headerlink" title="1.5 使用Spark SQL 处理数据"></a>1.5 使用Spark SQL 处理数据</h3><p>官网地址：<a target="_blank" rel="noopener" href="http://spark.apache.org/docs/latest/streaming-programming-guide.html#dataframe-and-sql-operations">http://spark.apache.org/docs/latest/streaming-programming-guide.html#dataframe-and-sql-operations</a></p>
+<pre><code class="scala">package com.hollysys.spark.streaming
+
+import org.apache.spark.SparkConf
+import org.apache.spark.streaming.&#123;Seconds, StreamingContext&#125;
+
+/**
+  * Created by shirukai on 2018/10/16
+  * 黑名单过滤
+  */
+object TransformApp &#123;
+  def main(args: Array[String]): Unit = &#123;
+    val conf = new SparkConf().setAppName(&quot;NetworkWordCount&quot;).setMaster(&quot;local[2]&quot;)
+    val ssc = new StreamingContext(conf, Seconds(2))
+    /**
+      * 创建StreamingContext需要两个参数，SparkConf 和 batch interval
+      */
+    val lines = ssc.socketTextStream(&quot;localhost&quot;, 9999)
+    /**
+      * 构建黑名单
+      */
+    val blacks = List(&quot;zs&quot;, &quot;ls&quot;)
+    val blacksRDD = ssc.sparkContext.parallelize(blacks).map((_, true))
+
+    val res = lines.map(x =&gt; (x.split(&quot;,&quot;)(1), x)).transform(rdd =&gt; &#123;
+      rdd.leftOuterJoin(blacksRDD).filter(!_._2._2.getOrElse(false))
+        .map(_._2._1)
+    &#125;)
+    res.print()
+    ssc.start()
+    ssc.awaitTermination()
+  &#125;
+&#125;
+</code></pre>
+<h2 id="2-File-Stream"><a href="#2-File-Stream" class="headerlink" title="2 File Stream"></a>2 File Stream</h2><p>SparkStreaming也可以使用文件系统作为数据源。本地文件系统、或者hdfs都可以。</p>
+<pre><code class="scala">package com.hollysys.spark.streaming
+
+import org.apache.spark.SparkConf
+import org.apache.spark.streaming.&#123;Seconds, StreamingContext&#125;
+
+/**
+  * Created by shirukai on 2018/10/16
+  * 使用Spark Streaming 处理文件系统（local/hdfs）的数据
+  */
+object FileWordCount &#123;
+  def main(args: Array[String]): Unit = &#123;
+    val conf = new SparkConf().setAppName(this.getClass.getSimpleName).setMaster(&quot;local[2]&quot;)
+    val ssc = new StreamingContext(conf, Seconds(5))
+
+    val lines = ssc.textFileStream(&quot;file:///Users/shirukai/Desktop/HollySys/Repository/learn-demo-spark/data/text&quot;)
+    val words = lines.flatMap(_.split(&quot; &quot;))
+    val wordCounts = words.map(x =&gt; (x, 1)).reduceByKey(_ + _)
+    wordCounts.print()
+
+    ssc.start()
+    ssc.awaitTermination()
+
+  &#125;
+&#125;
+</code></pre>
+<h2 id="3-Flume-Stream"><a href="#3-Flume-Stream" class="headerlink" title="3 Flume Stream"></a>3 Flume Stream</h2><h3 id="3-1-方式一：Push方式整合Flume-Agent"><a href="#3-1-方式一：Push方式整合Flume-Agent" class="headerlink" title="3.1 方式一：Push方式整合Flume Agent"></a>3.1 方式一：Push方式整合Flume Agent</h3><p>官网：<a target="_blank" rel="noopener" href="http://spark.apache.org/docs/latest/streaming-flume-integration.html">http://spark.apache.org/docs/latest/streaming-flume-integration.html</a></p>
+<p>Flume 推送数据到SparkStreaming。这时SparkStreaming需要启动一个Avro代理的接受器来接受数据。实现流程为：Flume 设置一个netcat-source，经过memory-channel，然后使用avro-sink发送数据，最后spark streaming接受数据然后处理。</p>
+<h4 id="3-1-1-配置Flume-Agent"><a href="#3-1-1-配置Flume-Agent" class="headerlink" title="3.1.1 配置Flume Agent"></a>3.1.1 配置Flume Agent</h4><p>我们需要配置一个Flume Agent 用来收集收集数据然后发送给Spark Streaming。</p>
+<p>Flume Agent的配置选型为：netcat-source –&gt; memory-channel –&gt; avro-sink</p>
+<p>在$FLUME_HOME/conf 下创建flume-push-spark.conf </p>
+<pre><code class="shell">vi $FLUME_HOME/conf/flume-push-spark.conf 
+</code></pre>
+<p>内容如下：</p>
+<pre><code>flume2spark.sources = netcat-source
+flume2spark.sinks = avro-sink
+flume2spark.channels = memory-channel
+
+# Describe/configure the source
+# sources类型
+flume2spark.sources.netcat-source.type = netcat
+flume2spark.sources.netcat-source.bind = localhost
+flume2spark.sources.netcat-source.port = 9090
+
+flume2spark.sinks.avro-sink.type = avro
+flume2spark.sinks.avro-sink.hostname = localhost
+flume2spark.sinks.avro-sink.port = 9999
+
+flume2spark.channels.memory-channel.type = memory
+flume2spark.channels.memory-channel.capacity = 1000
+flume2spark.channels.memory-channel.transactionCapacity = 100
+
+flume2spark.sources.netcat-source.channels = memory-channel
+flume2spark.sinks.avro-sink.channel = memory-channel
+</code></pre>
+<h4 id="3-1-2-Spark-Streaming-代码开发"><a href="#3-1-2-Spark-Streaming-代码开发" class="headerlink" title="3.1.2 Spark Streaming 代码开发"></a>3.1.2 Spark Streaming 代码开发</h4><h5 id="3-1-2-1-引入依赖"><a href="#3-1-2-1-引入依赖" class="headerlink" title="3.1.2.1 引入依赖"></a>3.1.2.1 引入依赖</h5><p>这里我们的spark.version版本为2.3.0</p>
+<pre><code class="xml">&lt;!--Spark Streaming flume--&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.apache.spark&lt;/groupId&gt;
+    &lt;artifactId&gt;spark-streaming-flume_2.11&lt;/artifactId&gt;
+    &lt;version&gt;$&#123;spark.version&#125;&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+<h5 id="3-1-2-2-代码开发"><a href="#3-1-2-2-代码开发" class="headerlink" title="3.1.2.2 代码开发"></a>3.1.2.2 代码开发</h5><p>创建FlumePushWordCount.scala</p>
+<pre><code class="scala">package com.hollysys.spark.streaming
+
+import org.apache.spark.SparkConf
+import org.apache.spark.streaming.&#123;Seconds, StreamingContext&#125;
+import org.apache.spark.streaming.flume._
+
+/**
+  * Created by shirukai on 2018/10/17
+  * Spark Streaming 整合Flume，Flume push 数据到Spark Streaming
+  */
+object FlumePushWordCount &#123;
+  def main(args: Array[String]): Unit = &#123;
+    val conf = new SparkConf().setAppName(&quot;NetworkWordCount&quot;).setMaster(&quot;local[2]&quot;)
+    val ssc = new StreamingContext(conf, Seconds(5))
+
+    val flumeData = FlumeUtils.createStream(ssc, &quot;localhost&quot;, 9999)
+    val result = flumeData.map(x =&gt; new String(x.event.getBody.array()).trim).flatMap(_.split(&quot; &quot;)).map((_, 1)).reduceByKey(_ + _)
+    result.print()
+    ssc.start()
+    ssc.awaitTermination()
+  &#125;
+&#125;
+</code></pre>
+<h4 id="3-1-3-IDEA-启动运行测试"><a href="#3-1-3-IDEA-启动运行测试" class="headerlink" title="3.1.3 IDEA 启动运行测试"></a>3.1.3 IDEA 启动运行测试</h4><p>代码开发完成后，我们可以在IDEA里直接启动测试，这里我们需要先启动Spark Streaming 的应用程序，然后再启动Flume 的Agent。</p>
+<h5 id="3-1-3-1-启动Spark-Streaming应用"><a href="#3-1-3-1-启动Spark-Streaming应用" class="headerlink" title="3.1.3.1 启动Spark Streaming应用"></a>3.1.3.1 启动Spark Streaming应用</h5><p>启动我们编写好的Spark Streaming应用的main方法。</p>
+<p><img src="http://shirukai.gitee.io/images/db512b418e34c8ce8fc5d992cb819103.jpg"></p>
+<h5 id="3-1-3-2-启动Flume-Agent"><a href="#3-1-3-2-启动Flume-Agent" class="headerlink" title="3.1.3.2 启动Flume Agent"></a>3.1.3.2 启动Flume Agent</h5><p>启动我们上面创建的Flume Agent</p>
+<pre><code class="shell">flume-ng agent \
+--name flume2spark \
+--conf-file /Users/shirukai/apps/flume-1.8.0/conf/flume-push-spark.conf \
+-Dflume.root.logger=INFO,console
+</code></pre>
+<p><img src="http://shirukai.gitee.io/images/db5f31f3d47b02d8f31af51f3ae3eb70.jpg"></p>
+<h5 id="3-1-3-3-使用telnet发送数据"><a href="#3-1-3-3-使用telnet发送数据" class="headerlink" title="3.1.3.3 使用telnet发送数据"></a>3.1.3.3 使用telnet发送数据</h5><pre><code class="shell">telnet localhost 9090
+</code></pre>
+<p><img src="http://shirukai.gitee.io/images/06c4edc1016d2ba68a8ebc947417cc6f.jpg"></p>
+<p>执行结果：</p>
+<p><img src="http://shirukai.gitee.io/images/c6293077f7bed7fc1bce67f76656ba9a.jpg"></p>
+<h4 id="3-1-4-以部署的方式运行测试"><a href="#3-1-4-以部署的方式运行测试" class="headerlink" title="3.1.4 以部署的方式运行测试"></a>3.1.4 以部署的方式运行测试</h4><p>上面我们使用IDEA直接运行main方法测试了我们的应用程序，下面来记录一下如何以部署的形式运行应用程序。</p>
+<p><img src="http://shirukai.gitee.io/images/9fecc182bfd607004fe24e0e0501d165.jpg"></p>
+<p>通过官方文档我们可以看出，在使用SBT或者Maven打包项目的时候，我们需要把spark-streaming-flume_2.11及其依赖也打包到应用程序的JAR中，对于Python的应用程序在spark-submit的时候通过制定–packages来指定依赖包。接下来将演示两种方式加载依赖，一种是把依赖打包到JAR中，另一种是在提交应用程序时指定依赖包。如果不引入依赖会报如下错误：</p>
+<p><img src="http://shirukai.gitee.io/images/2310f00714fc004d1a667995326eaff7.jpg"></p>
+<h5 id="3-1-4-1-将依赖打包到JAR中"><a href="#3-1-4-1-将依赖打包到JAR中" class="headerlink" title="3.1.4.1 将依赖打包到JAR中"></a>3.1.4.1 将依赖打包到JAR中</h5><p>我们可以通过maven的打包插件，将spark-streaming-flume_2.11打包到应用程序的JAR中。可以通过如下配置：</p>
+<pre><code class="xml">&lt;plugin&gt;
+    &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+    &lt;artifactId&gt;maven-shade-plugin&lt;/artifactId&gt;
+    &lt;version&gt;2.4.3&lt;/version&gt;
+    &lt;executions&gt;
+        &lt;execution&gt;
+            &lt;phase&gt;package&lt;/phase&gt;
+            &lt;goals&gt;
+                &lt;goal&gt;shade&lt;/goal&gt;
+            &lt;/goals&gt;
+            &lt;configuration&gt;
+                &lt;artifactSet&gt;
+                    &lt;includes&gt;
+                        &lt;include&gt;com.alibaba:fastjson&lt;/include&gt;
+                        &lt;include&gt;org.apache.spark:spark-streaming-flume_2.11&lt;/include&gt;
+                        &lt;include&gt;org.apache.flume:flume-ng-core&lt;/include&gt;
+                        &lt;include&gt;org.apache.flume:flume-ng-sdk&lt;/include&gt;
+                    &lt;/includes&gt;
+                &lt;/artifactSet&gt;
+            &lt;/configuration&gt;
+        &lt;/execution&gt;
+    &lt;/executions&gt;
+&lt;/plugin&gt;
+</code></pre>
+<p>经测试，需要打包spark-streaming-flume_2.11、flume-ng-core\flume-ng-sdk这三个依赖包。否则回报错。</p>
+<p>将项目打包</p>
+<pre><code class="shell"> mvn package -DskipTests
+</code></pre>
+<p>执行命令后我们会在项目的target目录下得到一个learn-demo-spark-1.0-SNAPSHOT.jar的JAR。</p>
+<p>使用spark-submit 提交应用</p>
+<pre><code class="shell">spark-submit --master local --class com.hollysys.spark.streaming.FlumePushWordCount /Users/shirukai/Desktop/HollySys/Repository/learn-demo-spark/target/learn-demo-spark-1.0-SNAPSHOT.jar
+</code></pre>
+<h5 id="3-1-4-2-在提交应用是指定依赖"><a href="#3-1-4-2-在提交应用是指定依赖" class="headerlink" title="3.1.4.2 在提交应用是指定依赖"></a>3.1.4.2 在提交应用是指定依赖</h5><pre><code class="shell">spark-submit --master local[2] --packages org.apache.spark:spark-streaming-flume_2.11:2.3.0 --class com.hollysys.spark.streaming.FlumePushWordCount /Users/shirukai/Desktop/HollySys/Repository/learn-demo-spark/target/learn-demo-spark-1.0-SNAPSHOT.jar
+</code></pre>
+<p>注意：如果遇到下载依赖包报错的情况， 可以到maven仓库里先把之前下载好的包删掉。</p>
+<h3 id="3-2-方式二：Pull方式整合Flume-Agent"><a href="#3-2-方式二：Pull方式整合Flume-Agent" class="headerlink" title="3.2 方式二：Pull方式整合Flume Agent"></a>3.2 方式二：Pull方式整合Flume Agent</h3><p>官网：<a target="_blank" rel="noopener" href="http://spark.apache.org/docs/latest/streaming-flume-integration.html#approach-2-pull-based-approach-using-a-custom-sink">http://spark.apache.org/docs/latest/streaming-flume-integration.html#approach-2-pull-based-approach-using-a-custom-sink</a></p>
+<p>Flume 将数据发送到spark-sink，然后Spark Streaming 从spark-sink上拉取数据。</p>
+<h4 id="3-2-1-配置Flume-Agent"><a href="#3-2-1-配置Flume-Agent" class="headerlink" title="3.2.1 配置Flume Agent"></a>3.2.1 配置Flume Agent</h4><p>我们需要配置一个Flume Agent 用来收集收集数据然后发送给spark-sink。</p>
+<p>Flume Agent的配置选型为：netcat-source –&gt; memory-channel –&gt; spark-sink</p>
+<p>在$FLUME_HOME/conf 下创建flume-pull-spark.conf </p>
+<pre><code class="shell">vi $FLUME_HOME/conf/flume-pull-spark.conf 
+</code></pre>
+<p>内容如下：</p>
+<pre><code>flume2spark.sources = netcat-source
+flume2spark.sinks = spark-sink
+flume2spark.channels = memory-channel
+
+# Describe/configure the source
+# sources类型
+flume2spark.sources.netcat-source.type = netcat
+flume2spark.sources.netcat-source.bind = localhost
+flume2spark.sources.netcat-source.port = 9090
+
+flume2spark.sinks.spark-sink.type = org.apache.spark.streaming.flume.sink.SparkSink
+flume2spark.sinks.spark-sink.hostname = localhost
+flume2spark.sinks.spark-sink.port = 9999
+
+flume2spark.channels.memory-channel.type = memory
+flume2spark.channels.memory-channel.capacity = 1000
+flume2spark.channels.memory-channel.transactionCapacity = 100
+
+flume2spark.sources.netcat-source.channels = memory-channel
+flume2spark.sinks.spark-sink.channel = memory-channel
+</code></pre>
+<h5 id="重要！重要！重要！"><a href="#重要！重要！重要！" class="headerlink" title="重要！重要！重要！"></a>重要！重要！重要！</h5><p>为了避免下面过程中出现的错误，在这里需要将Flume依赖的jar包放到$FLUME_HOME/lib下，可以参考官网</p>
+<p><img src="http://shirukai.gitee.io/images/5dc2686a69bad9303f79664a1c25b02b.jpg"></p>
+<h4 id="3-2-2-Spark-Streaming-代码开发"><a href="#3-2-2-Spark-Streaming-代码开发" class="headerlink" title="3.2.2 Spark Streaming 代码开发"></a>3.2.2 Spark Streaming 代码开发</h4><h5 id="3-2-2-1-引入依赖"><a href="#3-2-2-1-引入依赖" class="headerlink" title="3.2.2.1 引入依赖"></a>3.2.2.1 引入依赖</h5><pre><code class="xml">&lt;!--Spark Streaming flume sink--&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.apache.spark&lt;/groupId&gt;
+    &lt;artifactId&gt;spark-streaming-flume-sink_2.11&lt;/artifactId&gt;
+    &lt;version&gt;$&#123;spark.version&#125;&lt;/version&gt;
+&lt;/dependency&gt;
+
+&lt;!--commons lang3--&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.apache.commons&lt;/groupId&gt;
+    &lt;artifactId&gt;commons-lang3&lt;/artifactId&gt;
+    &lt;version&gt;3.7&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+<h5 id="3-2-2-2-代码开发"><a href="#3-2-2-2-代码开发" class="headerlink" title="3.2.2.2 代码开发"></a>3.2.2.2 代码开发</h5><p>创建FlumePullWordCount.scala</p>
+<pre><code class="scala">package com.hollysys.spark.streaming
+
+import org.apache.spark.SparkConf
+import org.apache.spark.streaming.flume._
+import org.apache.spark.streaming.&#123;Seconds, StreamingContext&#125;
+
+/**
+  * Created by shirukai on 2018/10/17
+  * Spark Streaming 整合Flume，Spark Streaming 从flume pull 数据
+  */
+object FlumePullWordCount &#123;
+  def main(args: Array[String]): Unit = &#123;
+//    if(args.length !=2)&#123;
+//      System.err.println(&quot;Usage: FlumePushWordCount &lt;hostname&gt; &lt;port&gt;&quot;)
+//      System.exit(1)
+//    &#125;
+    val conf = new SparkConf().setAppName(&quot;FlumePullWordCount&quot;).setMaster(&quot;local[2]&quot;)
+    val ssc = new StreamingContext(conf, Seconds(5))
+
+    val flumeData = FlumeUtils.createPollingStream(ssc,&quot;localhost&quot;,9999)
+    val result = flumeData.map(x =&gt; new String(x.event.getBody.array()).trim).flatMap(_.split(&quot; &quot;)).map((_, 1)).reduceByKey(_ + _)
+    result.print()
+    ssc.start()
+    ssc.awaitTermination()
+  &#125;
+&#125;
+</code></pre>
+<h4 id="3-2-3-IDEA-启动运行测试"><a href="#3-2-3-IDEA-启动运行测试" class="headerlink" title="3.2.3 IDEA 启动运行测试"></a>3.2.3 IDEA 启动运行测试</h4><p>代码开发完成后，我们可以在IDEA里直接启动测试，这里我们需要先启动Flume 的Agent，然后再启动Spark Streaming 的应用程序。与Push方式相反。</p>
+<h5 id="3-2-3-1-启动Flume-Agent"><a href="#3-2-3-1-启动Flume-Agent" class="headerlink" title="3.2.3.1 启动Flume Agent"></a>3.2.3.1 启动Flume Agent</h5><pre><code class="shell">flume-ng agent \
+--name flume2spark \
+--conf-file /Users/shirukai/apps/flume-1.8.0/conf/flume-pull-spark.conf \
+-Dflume.root.logger=INFO,console
+</code></pre>
+<p>这时候会报如下错误：</p>
+<p><img src="http://shirukai.gitee.io/images/bfa02ec843a0861b632bc92c06fe7be2.jpg"></p>
+<p>根据报错信息可以看出，我们的flume使用了spark-sink，但是没有找到org.apache.spark.streaming.flume.sink.SparkSink这个类，这时需要将依赖的spark-streaming-flume-sink_2.11.jar包复制到$FLUME_HOME/lib下。</p>
+<p>关于如何下载jar包：</p>
+<p>可以到<a target="_blank" rel="noopener" href="https://mvnrepository.com/artifact/org.apache.spark/spark-streaming-flume-sink_2.11/2.3.0">https://mvnrepository.com/artifact/org.apache.spark/spark-streaming-flume-sink_2.11/2.3.0</a> maven仓库下载。</p>
+<p>下载完成之后，将jar移动到$FLUME_HOME/lib下，然后重新启动。</p>
+<pre><code class="shell">mv spark-streaming-flume-sink_2.11-2.3.0.jar /Users/shirukai/apps/flume-1.8.0/lib/
+</code></pre>
+<h5 id="3-2-3-2-启动Spark-Streaming-应用"><a href="#3-2-3-2-启动Spark-Streaming-应用" class="headerlink" title="3.2.3.2 启动Spark Streaming 应用"></a>3.2.3.2 启动Spark Streaming 应用</h5><p><img src="http://shirukai.gitee.io/images/82cb3a99648325489d570948868ab4fc.jpg"></p>
+<p>当spark streaming应用启动的时候，Flume Agent回报如下错误，原因是因为我们需要导入相应的jar包。</p>
+<p><a target="_blank" rel="noopener" href="https://mvnrepository.com/artifact/org.scala-lang/scala-library/2.11.8">https://mvnrepository.com/artifact/org.scala-lang/scala-library/2.11.8</a></p>
+<p><img src="http://shirukai.gitee.io/images/e94c0a539016ccb4414decd500d6640d.jpg"></p>
+<p>删除之前的版本，替换成最新下载的2.11.8</p>
+<p><a target="_blank" rel="noopener" href="https://mvnrepository.com/artifact/org.apache.commons/commons-lang3/3.5">https://mvnrepository.com/artifact/org.apache.commons/commons-lang3/3.5</a></p>
+<p><img src="http://shirukai.gitee.io/images/7effd41259c316866f8de1cad2d7b9e2.jpg"></p>
+<h5 id="3-2-3-3-使用telnet-发送数据"><a href="#3-2-3-3-使用telnet-发送数据" class="headerlink" title="3.2.3.3 使用telnet 发送数据"></a>3.2.3.3 使用telnet 发送数据</h5><pre><code class="shell">telnet localhost 9090
+</code></pre>
+<p><img src="http://shirukai.gitee.io/images/336a603da04615bf2bfc45bdd620d577.gif"></p>
+<h2 id="4-Kafka-Stream"><a href="#4-Kafka-Stream" class="headerlink" title="4 Kafka Stream"></a>4 Kafka Stream</h2><p>官网：<a target="_blank" rel="noopener" href="http://spark.apache.org/docs/latest/streaming-kafka-0-10-integration.html">http://spark.apache.org/docs/latest/streaming-kafka-0-10-integration.html</a></p>
+<h3 id="4-1-Spark-Streaming-代码开发"><a href="#4-1-Spark-Streaming-代码开发" class="headerlink" title="4.1  Spark Streaming 代码开发"></a>4.1  Spark Streaming 代码开发</h3><h4 id="4-1-1-引入依赖"><a href="#4-1-1-引入依赖" class="headerlink" title="4.1.1 引入依赖"></a>4.1.1 引入依赖</h4><pre><code class="xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.apache.spark&lt;/groupId&gt;
+    &lt;artifactId&gt;spark-streaming-kafka-0-10_2.11&lt;/artifactId&gt;
+    &lt;version&gt;2.3.0&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+<h4 id="3-1-2-代码开发"><a href="#3-1-2-代码开发" class="headerlink" title="3.1.2 代码开发"></a>3.1.2 代码开发</h4><pre><code class="scala">package com.hollysys.spark.streaming
+
+import org.apache.kafka.common.serialization.StringDeserializer
+import org.apache.spark.SparkConf
+import org.apache.spark.streaming.kafka010.ConsumerStrategies.Subscribe
+import org.apache.spark.streaming.kafka010.KafkaUtils
+import org.apache.spark.streaming.kafka010.LocationStrategies.PreferConsistent
+import org.apache.spark.streaming.&#123;Seconds, StreamingContext&#125;
+
+/**
+  * Created by shirukai on 2018/10/29
+  * Spark Streaming 整合Kafka 进行词频统计
+  */
+object KafkaDirectWordCount &#123;
+  def main(args: Array[String]): Unit = &#123;
+    if (args.length != 2) &#123;
+      System.err.println(&quot;Usage:KafkaDirectWordCount &lt;brokers&gt; &lt;topics&gt;&quot;)
+      System.exit(1)
+    &#125;
+    val Array(servers, topics) = args
+
+
+    val conf = new SparkConf().setMaster(&quot;local[2]&quot;).setAppName(&quot;NetworkWordCount&quot;)
+    val ssc = new StreamingContext(conf, Seconds(5))
+
+
+    //val spark = SparkSession.builder().getOrCreate()
+    val kafkaParams = Map[String, Object](
+      &quot;bootstrap.servers&quot; -&gt; servers,
+      &quot;key.deserializer&quot; -&gt; classOf[StringDeserializer],
+      &quot;value.deserializer&quot; -&gt; classOf[StringDeserializer],
+      &quot;group.id&quot; -&gt; &quot;spark_streaming&quot;,
+      &quot;auto.offset.reset&quot; -&gt; &quot;earliest&quot;,
+      &quot;enable.auto.commit&quot; -&gt; (false: java.lang.Boolean)
+    )
+
+
+    val topicSet = topics.split(&quot;,&quot;).toSet
+    val message = KafkaUtils.createDirectStream[String, String](
+      ssc,
+      PreferConsistent,
+      Subscribe[String, String](topicSet, kafkaParams)
+    )
+    message.map(_.value()).flatMap(_.split(&quot; &quot;)).map((_, 1)).reduceByKey(_ + _).print()
+
+    ssc.start()
+    ssc.awaitTermination()
+
+  &#125;
+&#125;
+</code></pre>
+<h3 id="4-2-运行测试"><a href="#4-2-运行测试" class="headerlink" title="4.2 运行测试"></a>4.2 运行测试</h3><h4 id="4-2-1-启动Kafka"><a href="#4-2-1-启动Kafka" class="headerlink" title="4.2.1 启动Kafka"></a>4.2.1 启动Kafka</h4><h5 id="启动zookeeper"><a href="#启动zookeeper" class="headerlink" title="启动zookeeper"></a>启动zookeeper</h5><pre><code class="shell">sh $ZK_HOME/bin/zkServer.sh start
+</code></pre>
+<h5 id="启动kafka"><a href="#启动kafka" class="headerlink" title="启动kafka"></a>启动kafka</h5><pre><code class="shell">sh $KAFKA_HOME/bin/kafka-server-start.sh -daemon $KAFKA_HOME/config/server.properties
+</code></pre>
+<h5 id="创建topic"><a href="#创建topic" class="headerlink" title="创建topic"></a>创建topic</h5><pre><code class="shell">sh $KAFKA_HOME/bin/kafka-topics.sh --create  --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic kafka_streaming_topic
+</code></pre>
+<h5 id="查看topic"><a href="#查看topic" class="headerlink" title="查看topic"></a>查看topic</h5><pre><code class="shell">sh $KAFKA_HOME/bin/kafka_topics.sh --list --zookeeper localhost:2181
+</code></pre>
+<h5 id="使用kafka-console-producer-发送消息"><a href="#使用kafka-console-producer-发送消息" class="headerlink" title="使用kafka console producer 发送消息"></a>使用kafka console producer 发送消息</h5><pre><code class="shell">sh $KAFKA_HOME/bin/kafka-console-producer.sh --broker-list localhost:9092 --topic kafka_streaming_topic
+</code></pre>
+<h4 id="4-2-2-启动应用"><a href="#4-2-2-启动应用" class="headerlink" title="4.2.2 启动应用"></a>4.2.2 启动应用</h4><p><img src="http://shirukai.gitee.io/images/f3e7bea4b79c41ad4ec8fabdb443b19f.jpg"></p>
+<p><img src="http://shirukai.gitee.io/images/8b7138f6dd7617714f3b698133c976b7.jpg"></p>
+<h2 id="5-实战：获取应用日志，并进行实时分析"><a href="#5-实战：获取应用日志，并进行实时分析" class="headerlink" title="5 实战：获取应用日志，并进行实时分析"></a>5 实战：获取应用日志，并进行实时分析</h2><p>需求描述：通过Flume收集应用程序产生的日志，然后Flume将日志发送到kafka消息队里，最后Spark Streaming 分析 kafka里的数据，判断是否为WARN或者ERROR类日志，并打印输出。</p>
+<p>实现思路：应用 通过log4j Appender 将日志信息发送给Flume，Flume使用Avro Souce接收数据，经过Memory Channel 通过 Kafka Sink 发送给Kafka，最后SparkStreaming进行数据处理，如下图所示：</p>
+<p><img src="http://shirukai.gitee.io/images/879aa5d452e2f9ddec377c6c3eb7b01b.jpg"></p>
+<h3 id="5-1-配置-Kafka"><a href="#5-1-配置-Kafka" class="headerlink" title="5.1 配置 Kafka"></a>5.1 配置 Kafka</h3><h5 id="启动zookeeper-1"><a href="#启动zookeeper-1" class="headerlink" title="启动zookeeper"></a>启动zookeeper</h5><pre><code class="shell">sh $ZK_HOME/bin/zkServer.sh start
+</code></pre>
+<h5 id="启动kafka-1"><a href="#启动kafka-1" class="headerlink" title="启动kafka"></a>启动kafka</h5><pre><code class="shell">sh $KAFKA_HOME/bin/kafka-server-start.sh -daemon $KAFKA_HOME/config/server.properties
+</code></pre>
+<h5 id="创建topic-log-streaming"><a href="#创建topic-log-streaming" class="headerlink" title="创建topic:log-streaming"></a>创建topic:log-streaming</h5><pre><code class="shell">sh $KAFKA_HOME/bin/kafka-topics.sh --create  --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic log-streami
+</code></pre>
+<h5 id="查看topic-1"><a href="#查看topic-1" class="headerlink" title="查看topic"></a>查看topic</h5><pre><code class="shell">sh $KAFKA_HOME/bin/kafka_topics.sh --list --zookeeper localhost:2181
+</code></pre>
+<h3 id="5-2-配置Flume-Angent"><a href="#5-2-配置Flume-Angent" class="headerlink" title="5.2 配置Flume Angent"></a>5.2 配置Flume Angent</h3><p>在FLUME_HOME/conf/下创建log-angent.conf的配置文件，内容如下：</p>
+<pre><code class="properties">log-angent.sources = avro-source
+log-angent.sinks = kafka-sink
+log-angent.channels = memory-channel
+
+log-angent.sources.avro-source.type = avro
+log-angent.sources.avro-source.bind = localhost
+log-angent.sources.avro-source.port = 9999
+
+log-angent.sinks.kafka-sink.type = org.apache.flume.sink.kafka.KafkaSink
+log-angent.sinks.kafka-sink.kafka.topic = log-streaming
+log-angent.sinks.kafka-sink.kafka.bootstrap.servers = localhost:9092
+
+log-angent.channels.memory-channel.type = memory
+log-angent.channels.memory-channel.capacity = 1000
+log-angent.channels.memory-channel.transactionCapacity = 100
+
+log-angent.sources.avro-source.channels = memory-channel
+log-angent.sinks.kafka-sink.channel = memory-channel
+</code></pre>
+<p>启动 Flume Agent</p>
+<pre><code>flume-ng agent --conf $FLUME_HOME/conf --conf-file $FLUME_HOME/conf/log-angent.conf --name log-angent
+</code></pre>
+<h3 id="5-3-Application-整合Log4j-Appender"><a href="#5-3-Application-整合Log4j-Appender" class="headerlink" title="5.3 Application 整合Log4j Appender"></a>5.3 Application 整合Log4j Appender</h3><p>想要收集应用里的日志，Flume官网提供了一个Log4j Appender的类用来收集应用的日志。需要我们在应用中整合Log4j Appender。官网地址：<a target="_blank" rel="noopener" href="http://flume.apache.org/FlumeUserGuide.html#load-balancing-log4j-appender">http://flume.apache.org/FlumeUserGuide.html#load-balancing-log4j-appender</a></p>
+<h4 id="5-3-1-修改日志配置"><a href="#5-3-1-修改日志配置" class="headerlink" title="5.3.1 修改日志配置"></a>5.3.1 修改日志配置</h4><p>修改应用中resources目录下的log4j.properties配置文件，添加如下内容：</p>
+<pre><code class="properties">log4j.appender.flume = org.apache.flume.clients.log4jappender.Log4jAppender
+log4j.appender.flume.Hostname = localhost
+log4j.appender.flume.Port = 9999
+log4j.appender.flume.UnsafeMode = true
+</code></pre>
+<p>然后在log4j.rootCategory添加flume</p>
+<pre><code class="properties">log4j.rootCategory=INFO, console,flume
+</code></pre>
+<h4 id="5-3-2-添加log4j-appender依赖"><a href="#5-3-2-添加log4j-appender依赖" class="headerlink" title="5.3.2 添加log4j-appender依赖"></a>5.3.2 添加log4j-appender依赖</h4><p>添加log4j-appender依赖，否则会报如下错误：</p>
+<p><img src="http://shirukai.gitee.io/images/fea51c589b694c2afb4fb3261eb45a28.jpg"></p>
+<p>依赖：</p>
+<pre><code class="xml">&lt;!--flume log4j appender--&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.apache.flume.flume-ng-clients&lt;/groupId&gt;
+    &lt;artifactId&gt;flume-ng-log4jappender&lt;/artifactId&gt;
+    &lt;version&gt;1.8.0&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+<h4 id="5-3-3-模拟日志生成"><a href="#5-3-3-模拟日志生成" class="headerlink" title="5.3.3 模拟日志生成"></a>5.3.3 模拟日志生成</h4><p>创建LogGenerator类，模拟日志生成，并没10条数据产生一条错误日志。</p>
+<pre><code class="java">import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
+/**
+ * Created by shirukai on 2018/10/30
+ * 模拟产生日志
+ */
+public class LogGenerator &#123;
+    public static void main(String[] args) throws Exception &#123;
+        Logger LOG = LoggerFactory.getLogger(LogGenerator.class);
+        int index = 0;
+        while (true) &#123;
+
+            Thread.sleep(1000);
+            if (index % 10 == 0) &#123;
+                LOG.error(&quot;value:&#123;&#125;&quot;, index);
+            &#125; else &#123;
+                LOG.info(&quot;value:&#123;&#125;&quot;, index);
+            &#125;
+            index++;
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<h3 id="5-4-开发Spark-Streaming应用"><a href="#5-4-开发Spark-Streaming应用" class="headerlink" title="5.4 开发Spark Streaming应用"></a>5.4 开发Spark Streaming应用</h3><p>创建Spark Streaming应用，用来处理kafka数据。如下所示：KafkaLogHandler</p>
+<pre><code class="scala">package com.hollysys.spark.streaming
+
+import org.apache.kafka.common.serialization.StringDeserializer
+import org.apache.spark.SparkConf
+import org.apache.spark.streaming.&#123;Seconds, StreamingContext&#125;
+import org.apache.spark.streaming.kafka010.ConsumerStrategies.Subscribe
+import org.apache.spark.streaming.kafka010.KafkaUtils
+import org.apache.spark.streaming.kafka010.LocationStrategies.PreferConsistent
+
+/**
+  * Created by shirukai on 2018/10/31
+  * 处理kafka里log数据
+  */
+object KafkaLogHandler &#123;
+  def main(args: Array[String]): Unit = &#123;
+    if (args.length != 2) &#123;
+      System.err.println(&quot;Usage:KafkaDirectWordCount &lt;brokers&gt; &lt;topics&gt;&quot;)
+      System.exit(1)
+    &#125;
+    val Array(servers, topics) = args
+
+
+    val conf = new SparkConf().setMaster(&quot;local[2]&quot;).setAppName(&quot;KafkaLogHandler&quot;)
+    val ssc = new StreamingContext(conf, Seconds(5))
+
+
+    //val spark = SparkSession.builder().getOrCreate()
+    val kafkaParams = Map[String, Object](
+      &quot;bootstrap.servers&quot; -&gt; servers,
+      &quot;key.deserializer&quot; -&gt; classOf[StringDeserializer],
+      &quot;value.deserializer&quot; -&gt; classOf[StringDeserializer],
+      &quot;group.id&quot; -&gt; &quot;spark_streaming&quot;,
+      &quot;auto.offset.reset&quot; -&gt; &quot;earliest&quot;,
+      &quot;enable.auto.commit&quot; -&gt; (false: java.lang.Boolean)
+    )
+
+
+    val topicSet = topics.split(&quot;,&quot;).toSet
+    val message = KafkaUtils.createDirectStream[String, String](
+      ssc,
+      PreferConsistent,
+      Subscribe[String, String](topicSet, kafkaParams)
+    )
+    message.map(_.value()).foreachRDD(rdd =&gt; rdd.foreach(println))
+
+    ssc.start()
+    ssc.awaitTermination()
+  &#125;
+&#125;
+</code></pre>
+<h3 id="5-5-启动测试"><a href="#5-5-启动测试" class="headerlink" title="5.5 启动测试"></a>5.5 启动测试</h3><h4 id="5-5-1-启动日志模拟器"><a href="#5-5-1-启动日志模拟器" class="headerlink" title="5.5.1 启动日志模拟器"></a>5.5.1 启动日志模拟器</h4><p><img src="http://shirukai.gitee.io/images/cdb573682e7241a41bc24407f754a856.jpg"></p>
+<h4 id="5-5-2-启动Spark-Streaming-应用"><a href="#5-5-2-启动Spark-Streaming-应用" class="headerlink" title="5.5.2 启动Spark Streaming 应用"></a>5.5.2 启动Spark Streaming 应用</h4><p><img src="http://shirukai.gitee.io/images/7da66cfb235ce3d3bd1b8290cba5cae4.jpg"></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Socket-Stream"><span class="toc-number">1.</span> <span class="toc-text">1 Socket Stream</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E5%A4%84%E7%90%86Socket-Stream%E8%BF%9B%E8%A1%8C%E7%AE%80%E5%8D%95%E7%9A%84WordCount"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 处理Socket Stream进行简单的WordCount</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E5%B0%86%E5%A4%84%E7%90%86%E7%BB%93%E6%9E%9C%E5%86%99%E5%88%B0MySQL%E9%87%8C"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 将处理结果写到MySQL里</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-%E8%BF%9B%E8%A1%8C%E6%9C%89%E7%8A%B6%E6%80%81%E7%9A%84WordCount"><span class="toc-number">1.3.</span> <span class="toc-text">1.3 进行有状态的WordCount</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-4-%E5%88%A9%E7%94%A8Transform%E8%BF%9B%E8%A1%8C%E9%BB%91%E5%90%8D%E5%8D%95%E8%BF%87%E6%BB%A4"><span class="toc-number">1.4.</span> <span class="toc-text">1.4 利用Transform进行黑名单过滤</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-5-%E4%BD%BF%E7%94%A8Spark-SQL-%E5%A4%84%E7%90%86%E6%95%B0%E6%8D%AE"><span class="toc-number">1.5.</span> <span class="toc-text">1.5 使用Spark SQL 处理数据</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-File-Stream"><span class="toc-number">2.</span> <span class="toc-text">2 File Stream</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-Flume-Stream"><span class="toc-number">3.</span> <span class="toc-text">3 Flume Stream</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E6%96%B9%E5%BC%8F%E4%B8%80%EF%BC%9APush%E6%96%B9%E5%BC%8F%E6%95%B4%E5%90%88Flume-Agent"><span class="toc-number">3.1.</span> <span class="toc-text">3.1 方式一：Push方式整合Flume Agent</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E6%96%B9%E5%BC%8F%E4%BA%8C%EF%BC%9APull%E6%96%B9%E5%BC%8F%E6%95%B4%E5%90%88Flume-Agent"><span class="toc-number">3.2.</span> <span class="toc-text">3.2 方式二：Pull方式整合Flume Agent</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-Kafka-Stream"><span class="toc-number">4.</span> <span class="toc-text">4 Kafka Stream</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-Spark-Streaming-%E4%BB%A3%E7%A0%81%E5%BC%80%E5%8F%91"><span class="toc-number">4.1.</span> <span class="toc-text">4.1  Spark Streaming 代码开发</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-%E8%BF%90%E8%A1%8C%E6%B5%8B%E8%AF%95"><span class="toc-number">4.2.</span> <span class="toc-text">4.2 运行测试</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E5%AE%9E%E6%88%98%EF%BC%9A%E8%8E%B7%E5%8F%96%E5%BA%94%E7%94%A8%E6%97%A5%E5%BF%97%EF%BC%8C%E5%B9%B6%E8%BF%9B%E8%A1%8C%E5%AE%9E%E6%97%B6%E5%88%86%E6%9E%90"><span class="toc-number">5.</span> <span class="toc-text">5 实战：获取应用日志，并进行实时分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-%E9%85%8D%E7%BD%AE-Kafka"><span class="toc-number">5.1.</span> <span class="toc-text">5.1 配置 Kafka</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-%E9%85%8D%E7%BD%AEFlume-Angent"><span class="toc-number">5.2.</span> <span class="toc-text">5.2 配置Flume Angent</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-Application-%E6%95%B4%E5%90%88Log4j-Appender"><span class="toc-number">5.3.</span> <span class="toc-text">5.3 Application 整合Log4j Appender</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-4-%E5%BC%80%E5%8F%91Spark-Streaming%E5%BA%94%E7%94%A8"><span class="toc-number">5.4.</span> <span class="toc-text">5.4 开发Spark Streaming应用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-5-%E5%90%AF%E5%8A%A8%E6%B5%8B%E8%AF%95"><span class="toc-number">5.5.</span> <span class="toc-text">5.5 启动测试</span></a></li></ol></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

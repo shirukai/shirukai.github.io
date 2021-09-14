@@ -1,0 +1,2088 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Flask从0到1快速后台服务开发 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="
+版本说明：
+
+Python：3.7
+Flask：1.0.2
+
+前言
+
+Flask是一个使用 Python 编写的轻量级 Web 应用框架。其 WSGI 工具箱采用 Werkzeug ，模板引擎则使,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">Flask从0到1快速后台服务开发</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/7.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/Python"><b>「
+                    </b>PYTHON<b> 」</b></a>
+                
+                August 24, 2020
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/flask-develops-from-0-to-1-fast-background-service.html" title="Flask从0到1快速后台服务开发" class="">Flask从0到1快速后台服务开发</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    81k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    1:13
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/flask/" rel="tag">flask</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <blockquote>
+<p>版本说明：</p>
+</blockquote>
+<p>Python：3.7</p>
+<p>Flask：1.0.2</p>
+<blockquote>
+<p>前言</p>
+</blockquote>
+<p>Flask是一个使用 Python 编写的轻量级 Web 应用框架。其 WSGI 工具箱采用 Werkzeug ，模板引擎则使用 Jinja2 ，具体详情查看官网：<a target="_blank" rel="noopener" href="http://flask.pocoo.org/">http://flask.pocoo.org/</a>。</p>
+<p>接触Flask有一段时间了，在工作中使用Flask开发了几个轻量级的后台服务，相比较Django框架，Flask更加的轻量，为渐进式框架，适合快速开发。这里不做深入的源码研究，只是记录一下在工作中使用Flask的经验技巧，从0到1快速进行后台开发。</p>
+<h1 id="1-环境准备"><a href="#1-环境准备" class="headerlink" title="1 环境准备"></a>1 环境准备</h1><h2 id="1-1-Conda创建Python开发环境"><a href="#1-1-Conda创建Python开发环境" class="headerlink" title="1.1 Conda创建Python开发环境"></a>1.1 Conda创建Python开发环境</h2><p>这里为方便演示，使用conda创建一个名字为flask，版本为3.5的新环境。如果没有安装conda，可以从官网下载安装即可，conda官网地址：<a target="_blank" rel="noopener" href="https://www.anaconda.com/%E3%80%82">https://www.anaconda.com/。</a></p>
+<pre><code class="shell">conda create --name flask python=3.7
+</code></pre>
+<h2 id="1-2-创建Flask项目"><a href="#1-2-创建Flask项目" class="headerlink" title="1.2 创建Flask项目"></a>1.2 创建Flask项目</h2><p>使用PyCharm创建一个名为flask-demo的项目，并选择我们刚才创建的python环境。<img src="https://cdn.jsdelivr.net/gh/shirukai/images/bf0c9d504f57245552964688578b495d.jpg">。</p>
+<h2 id="1-3-安装Flask"><a href="#1-3-安装Flask" class="headerlink" title="1.3 安装Flask"></a>1.3 安装Flask</h2><p>flask可以使用python的pip直接安装，新版PyCharm选择Interpreter之后，点击Terminal可以直接切换到该环境。</p>
+<pre><code class="shell">pip install flask==1.0.2
+</code></pre>
+<h1 id="2-快速创建一个Web服务"><a href="#2-快速创建一个Web服务" class="headerlink" title="2 快速创建一个Web服务"></a>2 快速创建一个Web服务</h1><p>使用Flask创建一个web服务很简单，只需要通过Flask()创建一个Flask实例app，然后通过app.route()装饰器设置路由方法，最后通过app.run()启动内置的开发服务器即可。下面创建一个名为simple_app.py的python的文件，内容如下：</p>
+<pre><code class="python">from flask import Flask
+
+# create a flask app
+app = Flask(__name__)
+
+
+@app.route(&quot;/&quot;)
+def index():
+    return &quot;Hello world !&quot;
+
+
+if __name__ == &#39;__main__&#39;:
+    # run server
+    app.run(host=&quot;0.0.0.0&quot;, port=5000)
+</code></pre>
+<p>右击运行main方法即可启动服务，访问<a target="_blank" rel="noopener" href="http://0.0.0.0:5000/">http://0.0.0.0:5000/</a></p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/3f1bf4c5f8d007d3a61040ff36002e08.jpg"></p>
+<h1 id="3-Flask请求处理"><a href="#3-Flask请求处理" class="headerlink" title="3 Flask请求处理"></a>3 Flask请求处理</h1><p>上面我们已经启动了一个简单的服务，在web服务里有个关键的地方就是对请求的处理，如：获取请求信息，返回请求结果等。</p>
+<h2 id="3-1-指定路由请求类型"><a href="#3-1-指定路由请求类型" class="headerlink" title="3.1 指定路由请求类型"></a>3.1 指定路由请求类型</h2><p>常见的请求类型：GET、POST、PUT、DELETE、PATCH等等，Flask允许我们指定某个请求可以通过哪些类型进行访问。可以在路由装饰器中传入methods需要的参数，该参数是一个列表，如只允许GET请求，可以设置methods=[‘GET’]，如允许GET和POST，可以设置methods=[‘GET’,’POST’]。如设置下面/methods这个路由只允GET请求类型的访问。</p>
+<pre><code class="python">@app.route(&quot;/methods&quot;, methods=[&quot;GET&quot;])
+def methods():
+    return &quot;Only allow GET request types&quot;
+</code></pre>
+<h2 id="3-2-获取请求参数"><a href="#3-2-获取请求参数" class="headerlink" title="3.2 获取请求参数"></a>3.2 获取请求参数</h2><p>请求传参有很多方法，可以通过URL直接传参、通过body传参、Header、Cookie、Session等。Flask中关于请求相关的上下文信息，保存在两个对象里，一个是request里，另一个是session里。我们可以从这两个对象里获取所有我们想要获取的参数。如下源码所示：</p>
+<pre><code class="python"># context locals
+_request_ctx_stack = LocalStack()
+_app_ctx_stack = LocalStack()
+current_app = LocalProxy(_find_app)
+request = LocalProxy(partial(_lookup_req_object, &#39;request&#39;))
+session = LocalProxy(partial(_lookup_req_object, &#39;session&#39;))
+g = LocalProxy(partial(_lookup_app_object, &#39;g&#39;))
+</code></pre>
+<p>引入对象：</p>
+<pre><code class="python">from flask import request
+from flask import session
+</code></pre>
+<p>这里做点补充，上面提到Flask的上下文信息，从源码中我们可以看出，除了request对象和session对象之外，flask还提供了current_app和g两个对象。</p>
+<table>
+<thead>
+<tr>
+<th>变量名称</th>
+<th>上下文</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>current_app</td>
+<td>应用上下文</td>
+<td>当前Flask应用的应用实例</td>
+</tr>
+<tr>
+<td>g</td>
+<td>应用上下文</td>
+<td>处理请求时用作临时存储的对象，每次请求都会重设这个变量</td>
+</tr>
+<tr>
+<td>requset</td>
+<td>请求上下文</td>
+<td>请求对象，分装了客户端发出的HTTP请求中的内容</td>
+</tr>
+<tr>
+<td>session</td>
+<td>请求上下文</td>
+<td>用户会话，值作为一个字典，存储请求之前需要”记住”的值</td>
+</tr>
+</tbody></table>
+<p><strong>request请求对象</strong></p>
+<table>
+<thead>
+<tr>
+<th>属性或方法</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>form</td>
+<td>字典，存储请求提交的所有表单数据</td>
+</tr>
+<tr>
+<td>args</td>
+<td>字典，存储通过URL传递的所有参数</td>
+</tr>
+<tr>
+<td>values</td>
+<td>字典，form和args的合集</td>
+</tr>
+<tr>
+<td>cookies</td>
+<td>字典，存储请求的所有cookie</td>
+</tr>
+<tr>
+<td>headers</td>
+<td>字典，存储请请的所有HTTP首部</td>
+</tr>
+<tr>
+<td>files</td>
+<td>字典，存储请求上传的所有文件</td>
+</tr>
+<tr>
+<td>get_data()</td>
+<td>返回请求主题缓冲的数据</td>
+</tr>
+<tr>
+<td>get_json()</td>
+<td>返回一个Python字典，包含解析请求body后得到的JSON</td>
+</tr>
+<tr>
+<td>blueprint</td>
+<td>蓝图名称</td>
+</tr>
+<tr>
+<td>endpoint</td>
+<td>处理请求的Flask端点名称，Flask把视图函数的名称称作路由端点的名称</td>
+</tr>
+<tr>
+<td>method</td>
+<td>HTTP请求方法，例如GET\POST</td>
+</tr>
+<tr>
+<td>scheme</td>
+<td>URL方案(http活https)</td>
+</tr>
+<tr>
+<td>is_secure()</td>
+<td>通过安全的连接(HTTPS)发送请求时返回True</td>
+</tr>
+<tr>
+<td>host</td>
+<td>请求主机的主机名，如客户端定义了端口号，还包括端口号</td>
+</tr>
+<tr>
+<td>path</td>
+<td>URL的路径部分</td>
+</tr>
+<tr>
+<td>query_string</td>
+<td>URL的查询参数部分，如：?name=joke&amp;age=18</td>
+</tr>
+<tr>
+<td>full_path</td>
+<td>URL的路径和查询参数部分</td>
+</tr>
+<tr>
+<td>url</td>
+<td>客户端请求的完整URL</td>
+</tr>
+<tr>
+<td>base_url</td>
+<td>同url，但没有查询字符串部分</td>
+</tr>
+<tr>
+<td>remote_addr</td>
+<td>客户端的IP地址</td>
+</tr>
+<tr>
+<td>environ</td>
+<td>请求的原始WSGI环境字典</td>
+</tr>
+</tbody></table>
+<h3 id="3-2-1-获取URL上的参数"><a href="#3-2-1-获取URL上的参数" class="headerlink" title="3.2.1 获取URL上的参数"></a>3.2.1 获取URL上的参数</h3><p>对于url上参数，例如/params/url?name=joke，我们要想获取参数，可以使用request.args方法获取一个ImmutableMultiDict类型的参数列表，也可以通过get方法直接获取该参数的值，如下所示：</p>
+<pre><code class="python">@app.route(&quot;/params/url&quot;)
+def params_url():
+    print(request.args)
+    print(request.args.get(&quot;name&quot;))
+    return &quot;&quot;
+</code></pre>
+<p>url上的参数除了?和&amp;传参之外，也支持RESTFul风格的动态传参，如/params/rest/&lt;id&gt;，类似&lt;id&gt;这样的动态参数，默认解析为string类型，当然我们可以指定其它类型，如指定id为int类型，只是匹配整型的url，如/rest/1。Flask支持的类型：string、int、flot和path类型，path类型是一种特殊的字符串，与string类型不同的是，它可以包含正斜线。</p>
+<pre><code class="python">@app.route(&quot;/params/rest/&quot;, defaults=&#123;&#39;id&#39;: &#39;1&#39;&#125;)
+@app.route(&quot;/params/rest/&lt;id&gt;&quot;)
+def params_rest(id):
+    return jsonify(&#123;&quot;id&quot;: id&#125;)
+</code></pre>
+<p>如上代码，我们可以通过defaults设置默认值，设置id默认值为1。当我们访问http:xxxx:5000/params/rest时会返回如下结果：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/83658b3cbf5a2c66067acd02660e63cf.jpg"></p>
+<p>同样可以传入参数，如我们访问http:xxxx:5000/params/rest/2时会返回如下结果：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/3aed94933423b92ef74c875cd58cd304.jpg"></p>
+<h3 id="3-2-2-获取body里的参数"><a href="#3-2-2-获取body里的参数" class="headerlink" title="3.2.2 获取body里的参数"></a>3.2.2 获取body里的参数</h3><p>对于body里的数据，我们可以使用request.data直接获取bytes(在python2中返回的是str类型，类python3中返回的是bytes，并且要注意在python3.5之前，json.loads(str)里支持传入str类型，不支持bytes)类型数据，让后根据content_type进行相应的类型转换。如下所示，判断content_type是否为application/json，然后将其转为json格式</p>
+<pre><code class="python">@app.route(&quot;/params/body&quot;, methods=[&#39;POST&#39;])
+def params_body():
+    print(request.content_type)
+    if request.content_type == &#39;application/json&#39;:
+        print(json.loads(request.data))
+    return &quot;&quot;
+</code></pre>
+<p>另外，如果我们直道请求参数的类型是json，可以直接使用request.json直接获取json类型的数据</p>
+<pre><code class="python">    print(request.json)
+</code></pre>
+<p>注意：通过request.json或者request.get_json()得到的json数据可能会乱序。建议使用request.data，然后通过json.loads()获取json，如下所示：</p>
+<pre><code class="python">    conf = json.loads(data, encoding=&#39;UTF-8&#39;, object_pairs_hook=OrderedDict)
+</code></pre>
+<h3 id="3-2-3-获取表单数据"><a href="#3-2-3-获取表单数据" class="headerlink" title="3.2.3 获取表单数据"></a>3.2.3 获取表单数据</h3><p>对于form表单数据，我们可以使用request.form获取一个ImmutableMultiDict类型的参数列表，然后根据参数名获取参数值</p>
+<pre><code class="python">@app.route(&quot;/params/form&quot;, methods=[&#39;POST&#39;])
+def params_form():
+    print(request.form)
+    print(request.form[&#39;name&#39;])
+    return &quot;&quot;
+</code></pre>
+<h3 id="3-2-4-获取文件格式"><a href="#3-2-4-获取文件格式" class="headerlink" title="3.2.4 获取文件格式"></a>3.2.4 获取文件格式</h3><p>对于文件格式的参数，我们可以是用request.files获取一个参数列表，然后根据文件参数名获取某个文件，如request.files[‘flie’]。</p>
+<pre><code class="python">@app.route(&quot;/params/file&quot;, methods=[&#39;POST&#39;])
+def params_file():
+    file = request.files[&#39;file&#39;]
+    # get file type
+    print(file.content_type)
+    # get file name
+    print(file.filename)
+    # save file by bytes
+    with open(file.filename, &#39;wb&#39;) as f:
+        f.write(file.stream.read())
+    return &quot;&quot;
+</code></pre>
+<p>如上代码，我们可以使用file.stream.read()读取字节类型的数据，然后将其写出到文件。同样也可以使用file.save(路径)方法写出文件</p>
+<pre><code class="python">    # save file by method
+    file.save(file.filename)
+</code></pre>
+<h2 id="3-3-返回请求响应"><a href="#3-3-返回请求响应" class="headerlink" title="3.3 返回请求响应"></a>3.3 返回请求响应</h2><p>通常我们的请求响应不过几种，返回一个页面，返回一个json字符串，返回一个文件。对于Flask的响应，我们可以直接返回1个参数作为内容，如</p>
+<pre><code class="python">return &quot;hello world!&quot;
+</code></pre>
+<p>也可以返回2个参数，第二个参数为响应的状态码，如</p>
+<pre><code class="python">return &quot;hello world!&quot;,400
+</code></pre>
+<p>也可以返回3个参数，第三个参数为响应的头信息，参数以字典的形式指定，如</p>
+<pre><code class="python">return &quot;hello world!&quot;,400,&#123;&quot;Server&quot;:&quot;Werkzeug/0.15.2 Python/2.7.16&quot;&#125;
+</code></pre>
+<p>也可以通过make_reponse()方法自定义响应对象，后面会提到。</p>
+<p><strong>Flask响应对象</strong></p>
+<table>
+<thead>
+<tr>
+<th>属性和方法</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>status_code</td>
+<td>HTTP 数字状态码</td>
+</tr>
+<tr>
+<td>headers</td>
+<td>一个类似字典的对象，包含响应发送的所有首部</td>
+</tr>
+<tr>
+<td>set_cookie()</td>
+<td>为响应添加一个cookie</td>
+</tr>
+<tr>
+<td>delete_cookie()</td>
+<td>删除一个cookie</td>
+</tr>
+<tr>
+<td>content_length</td>
+<td>响应主体的长度</td>
+</tr>
+<tr>
+<td>content_type</td>
+<td>响应主体的媒体类型</td>
+</tr>
+<tr>
+<td>set_data()</td>
+<td>使用字符串或字节值设定响应</td>
+</tr>
+<tr>
+<td>get_data()</td>
+<td>获取响应主体</td>
+</tr>
+</tbody></table>
+<h3 id="3-3-1-返回一个页面"><a href="#3-3-1-返回一个页面" class="headerlink" title="3.3.1 返回一个页面"></a>3.3.1 返回一个页面</h3><p>要想要flask返回一个页面，只需要return render_template(“模板名”,**参数)即可，比如我在templates目录下有一个名为index.html的模板文件，模板引擎是Jinja2，相关语法可以百度。内容如下：</p>
+<pre><code class="html">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;title&gt;Index&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;Hello  &#123;&#123; name &#125;&#125; !&lt;/h1&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p>我可以通过render_template方法进行渲染并返回。</p>
+<pre><code class="python">@app.route(&quot;/&quot;)
+def index():
+    return render_template(&quot;index.html&quot;, **&#123;&quot;name&quot;: &quot;joke&quot;&#125;)
+</code></pre>
+<h3 id="3-3-2-返回json格式"><a href="#3-3-2-返回json格式" class="headerlink" title="3.3.2 返回json格式"></a>3.3.2 返回json格式</h3><p>要想flask返回json格式数据，可以使用flask提供的jsonify方法格式化之后返回。</p>
+<pre><code class="python">@app.route(&quot;/params/json&quot;, methods=[&#39;GET&#39;])
+def params_json():
+    return jsonify(&#123;&quot;name&quot;: &quot;joke&quot;&#125;)
+</code></pre>
+<p>注意使用jsonify返回的json是会自动排序的，如果不想排序，可以使用</p>
+<pre><code class="python">Response(json.dumps(&#123;&quot;name&quot;: &quot;joke&quot;&#125;), mimetype=&#39;application/json&#39;)
+</code></pre>
+<h3 id="3-3-3-返回文件"><a href="#3-3-3-返回文件" class="headerlink" title="3.3.3 返回文件"></a>3.3.3 返回文件</h3><p>要想flask返回文件，即文件下载，可以使用flask提供的send_file()方法</p>
+<pre><code class="python">@app.route(&quot;/download&quot;, methods=[&#39;GET&#39;])
+def download():
+    return send_file(&quot;test.gif&quot;, as_attachment=True)
+</code></pre>
+<h3 id="3-3-4-自定义响应"><a href="#3-3-4-自定义响应" class="headerlink" title="3.3.4 自定义响应"></a>3.3.4 自定义响应</h3><p>Flask给我提供了一个Response类，可以方便我们自由设置响应，如设置状态码、设置返回内容、设置header等等。我们可以通过两种方式创建response对象，实例化Response()类，或者通过make_response(body,status,headers)方法。</p>
+<pre><code class="python">Response(response=None,
+        status=None,
+        headers=None,
+        mimetype=None,
+        content_type=None,
+        direct_passthrough=False,)
+
+make_response(body=None,
+              status=None
+              ,headers=None)
+</code></pre>
+<p>使用make_response()方法</p>
+<pre><code class="python">@app.route(&quot;/response&quot;, methods=[&#39;GET&#39;])
+def response_test():
+    data = &#123;
+        &quot;test&quot;: &quot;123&quot;
+    &#125;
+    # res = Response(data)
+    res = make_response(json.dumps(data), 500, &#123;&#39;Content-Type&#39;: &#39;application/json&#39;&#125;)
+    return res
+</code></pre>
+<p>使用Response()</p>
+<pre><code class="python">@app.route(&quot;/response&quot;, methods=[&#39;GET&#39;])
+def response_test():
+    data = &#123;
+        &quot;test&quot;: &quot;123&quot;
+    &#125;
+    res = Response(data,status=500,headers=&#123;&#39;Content-Type&#39;: &#39;application/json&#39;&#125;)
+    #res = make_response(json.dumps(data), 500, &#123;&#39;Content-Type&#39;: &#39;application/json&#39;&#125;)
+    return res
+</code></pre>
+<h2 id="3-5-cookie的获取与设置"><a href="#3-5-cookie的获取与设置" class="headerlink" title="3.5 cookie的获取与设置"></a>3.5 cookie的获取与设置</h2><p>上面讲过，Flask关于请求的信息大多封装到了request里，同样cookie信息也是保存到了request里。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/cd8a7d86ef905135e17af0aa56d4dc56.jpg"></p>
+<h3 id="3-5-1-获取cookie"><a href="#3-5-1-获取cookie" class="headerlink" title="3.5.1 获取cookie"></a>3.5.1 获取cookie</h3><p>cookie获取如上图所示，通过request.cookies就可以获取一个字典对象，里面包含了cookie信息。</p>
+<pre><code class="python">requset.cookies[&#39;test&#39;]
+</code></pre>
+<h3 id="3-5-2-设置cookie"><a href="#3-5-2-设置cookie" class="headerlink" title="3.5.2 设置cookie"></a>3.5.2 设置cookie</h3><p>在上文中的response对象的属性和方法表格中，提到有set_cookie()方法，这个方法就是用来设置cookie的，那么该方法如何使用，需要如何传参呢？先看一下源码。</p>
+<pre><code class="python"> def set_cookie(
+        self,
+        key,
+        value=&quot;&quot;,
+        max_age=None,
+        expires=None,
+        path=&quot;/&quot;,
+        domain=None,
+        secure=False,
+        httponly=False,
+        samesite=None,
+    ):
+    pass
+</code></pre>
+<p>参数说明：</p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>key</td>
+<td>设置cookie的key</td>
+</tr>
+<tr>
+<td>value</td>
+<td>设置cookie的value</td>
+</tr>
+<tr>
+<td>max_age</td>
+<td>设置最大过期时长，单位秒，多少秒之后过期，默认为None</td>
+</tr>
+<tr>
+<td>expires</td>
+<td>设置过期时间，什么时间点过期，可以设置datatime对象或者时间戳</td>
+</tr>
+<tr>
+<td>path</td>
+<td>将cookie限制为给定路径，默认情况下它将跨越整个域</td>
+</tr>
+<tr>
+<td>domain</td>
+<td>设置cookie的域范围，如果想设置跨域cookie，如设置domain=’.example.com’，允许’<a target="_blank" rel="noopener" href="http://www.example.com&/#39;%E5%92%8C&#39;foo.example.com&#39;%E7%AD%89%E7%B1%BB%E4%BC%BC%E7%9A%84%E5%9F%9F%E8%AE%BF%E9%97%AE%E3%80%82%E5%90%A6%E5%88%99%EF%BC%8Ccookie%E5%8F%AA%E8%83%BD%E7%94%B1%E8%AE%BE%E7%BD%AE%E7%9A%84%E5%9F%9F%E8%AE%BF%E9%97%AE%E3%80%82">www.example.com&#39;和&#39;foo.example.com&#39;等类似的域访问。否则，cookie只能由设置的域访问。</a></td>
+</tr>
+<tr>
+<td>secure</td>
+<td>如果设为“True”，则cookie只能通过HTTPS获得</td>
+</tr>
+<tr>
+<td>httponly</td>
+<td>禁止JavaScript访问cookie。这是cookie标准的扩展，可能并非所有浏览器都支持</td>
+</tr>
+<tr>
+<td>samesite</td>
+<td>限制cookie的范围，使其仅在请求是“同一站点”时附加到请求</td>
+</tr>
+</tbody></table>
+<p>使用：</p>
+<pre><code class="python">@app.route(&quot;/response&quot;, methods=[&#39;GET&#39;])
+def response_test():
+    data = &#123;
+        &quot;test&quot;: &quot;123&quot;
+    &#125;
+    res = Response(data, status=500, headers=&#123;&#39;Content-Type&#39;: &#39;application/json&#39;&#125;)
+    res.set_cookie(&quot;test_key&quot;, &quot;test_value&quot;, max_age=20)
+    return res;
+</code></pre>
+<h3 id="3-5-3-删除cookie"><a href="#3-5-3-删除cookie" class="headerlink" title="3.5.3 删除cookie"></a>3.5.3 删除cookie</h3><p>删除cookie使用delete_cookie(key)即可。</p>
+<h2 id="3-6-session的获取与设置"><a href="#3-6-session的获取与设置" class="headerlink" title="3.6 session的获取与设置"></a>3.6 session的获取与设置</h2><p>session在flask中是一个神奇的存在，它的本质其实就是经过加密的cookie。所以要想使用session，我们需要给flask设置盐值秘钥SECRET_KEY，flask使用它来进行加密解密。设置SECRET_KEY可以直接在app配置中添加config，如：</p>
+<pre><code class="python">app.config[&#39;SECRET_KEY&#39;]=&#39;xxxxx&#39;
+</code></pre>
+<p>上文中也有提及，flask提供了几种上下文对象，其中session也被作为单独的上下文对象在flask应用中提供，通过下面方式，拿到该对象。</p>
+<pre><code class="python">from flask import session
+</code></pre>
+<p>对于session的操作，类似于操作字典，可以使用如下方法和属性</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/a92a0b573dd7f2c100edc211eab71e46.jpg"></p>
+<h3 id="3-6-1-获取session"><a href="#3-6-1-获取session" class="headerlink" title="3.6.1 获取session"></a>3.6.1 获取session</h3><p>获取session有两种方式，直接获取</p>
+<pre><code class="python">session[&#39;session_key&#39;]
+</code></pre>
+<p>这种方式，有种弊端，当session_key对应的session不存在时，会报异常。可以使用get()方法获取</p>
+<pre><code class="python">session.get(&#39;session_key&#39;)
+</code></pre>
+<p>这种方式，不会抛出异常，如果不存在会返回None。</p>
+<h3 id="3-6-2-设置session"><a href="#3-6-2-设置session" class="headerlink" title="3.6.2 设置session"></a>3.6.2 设置session</h3><p>设置session我们可以像给字典赋值一样，给session赋值。</p>
+<pre><code class="python">session[&#39;session_key&#39;]=&#39;session_value&#39;
+</code></pre>
+<h3 id="3-6-3-删除session"><a href="#3-6-3-删除session" class="headerlink" title="3.6.3 删除session"></a>3.6.3 删除session</h3><p>删除session我们可以使用pop()方法</p>
+<pre><code class="python">session.pop(&#39;session_key&#39;)
+</code></pre>
+<h3 id="3-6-4-清空所有session"><a href="#3-6-4-清空所有session" class="headerlink" title="3.6.4 清空所有session"></a>3.6.4 清空所有session</h3><p>要想清空session，可以使用clear()方法</p>
+<pre><code>session.clear()
+</code></pre>
+<h3 id="3-6-5-设置session过期时间"><a href="#3-6-5-设置session过期时间" class="headerlink" title="3.6.5 设置session过期时间"></a>3.6.5 设置session过期时间</h3><p>在Flask中session的过期机制是这样的，如果没有设置sesion过期时间，那么默认浏览器关闭时销毁session。我们可以通过设置permanent参数为True，来延长过期时间，默认为31天，当然我们也可以通过给app.config设置PERMANENT_SESSION_LIFETIME来更改过期时间，这个值的数据类型是datetime.timedelay类型。</p>
+<p>设置session为31天</p>
+<pre><code class="python">session[&#39;session_key&#39;]=&#39;session_value&#39;
+session.permanent=True
+</code></pre>
+<p>自定义时长</p>
+<pre><code class="python">app.config[&#39;PERMANENT_SESSION_LIFETIME&#39;] = timedelta(days=7) 
+</code></pre>
+<h2 id="3-7-请求钩子"><a href="#3-7-请求钩子" class="headerlink" title="3.7 请求钩子"></a>3.7 请求钩子</h2><p>讲完了请求和响应，这里补充一下flask中的几种请求钩子，钩子的作用很常见，比如我们需要在执行某个请求之前，或者之后进行一些逻辑处理。Flask提供的钩子是通过装饰器实现，提供如下四种钩子。</p>
+<ul>
+<li>before_request：注册一个函数，在每次请求之前执行。</li>
+<li>before_first_request：注册一个函数，只在处理第一个请求之前运行。可以通过这个钩子添加服务器初始化任务。</li>
+<li>after_request：注册一个函数，如果没有未处理的异常抛出，在每次请求之后运行。</li>
+<li>teardow_request：注册一个函数，即使有未处理的异常抛出，也在每次请求之后运行。</li>
+</ul>
+<h1 id="4-Flask蓝图"><a href="#4-Flask蓝图" class="headerlink" title="4 Flask蓝图"></a>4 Flask蓝图</h1><p>蓝图官网介绍：<a target="_blank" rel="noopener" href="https://dormousehole.readthedocs.io/en/latest/blueprints.html">https://dormousehole.readthedocs.io/en/latest/blueprints.html</a></p>
+<p>关于Flask蓝图的描述，这里就不做介绍，简单来书，蓝图可以方便我们将一个项目进行模块化，详细介绍可以参考官网。在项目中，主要是使用蓝图进行版本区分，比如v1版、v2版。</p>
+<h2 id="4-1-创建蓝图"><a href="#4-1-创建蓝图" class="headerlink" title="4.1 创建蓝图"></a>4.1 创建蓝图</h2><p>下面我们创建一个名为v1的蓝图，并添加应用前缀:/api/v1</p>
+<pre><code class="python">from flask import Blueprint, jsonify
+
+v1_blueprint = Blueprint(&quot;v1&quot;, __name__, url_prefix=&quot;/api/v1&quot;)
+
+
+@v1_blueprint.route(&quot;/&quot;, defaults=&#123;&#39;id&#39;: &#39;1&#39;&#125;)
+@v1_blueprint.route(&quot;/&lt;id&gt;&quot;)
+def show_id(id):
+    return jsonify(&#123;&#39;id&#39;: id&#125;)
+</code></pre>
+<h2 id="4-2-注册蓝图"><a href="#4-2-注册蓝图" class="headerlink" title="4.2 注册蓝图"></a>4.2 注册蓝图</h2><p>将蓝图注册到Flask应用</p>
+<pre><code class="python">from v1 import v1_blueprint
+
+# create a flask app
+app = Flask(__name__)
+
+# register blueprint
+app.register_blueprint(blueprint=v1_blueprint)
+</code></pre>
+<p>访问：<a target="_blank" rel="noopener" href="http://0.0.0.0:5000/api/v1/">http://0.0.0.0:5000/api/v1/</a></p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/0c6d5d25a733bb52cfa1cb5debbbc64f.jpg"></p>
+<h1 id="5-自定义Flask红图"><a href="#5-自定义Flask红图" class="headerlink" title="5 自定义Flask红图"></a>5 自定义Flask红图</h1><p>如果说蓝图是将一个项目按照应用来模块化，那么我们可以使用红图将每个应用按照功能进行模块化。蓝图是Flask原生就提供的，但是红图需要我们自己来实现，红图是在蓝图的基础做的进一步细分。红图的概念，是参考网上资料实现的。那么红图有什么应用场景呢，比如上述我们定义的v1蓝图下面，我们要按照功能再次进行模块细分，分为普通用户模块和管理员模块，这时候我们就可以使用红图了。</p>
+<h2 id="5-1定义红图插件"><a href="#5-1定义红图插件" class="headerlink" title="5.1定义红图插件"></a>5.1定义红图插件</h2><p>创建一个lib目录，然后创建redprint.py文件，最后创建如下类</p>
+<pre><code class="python">class Redprint:
+    def __init__(self, name):
+        self.name = name
+        self.mound = []
+
+    def route(self, rule, **options):
+        def decorator(f):
+            self.mound.append((f, rule, options))
+            return f
+
+        return decorator
+
+    def register(self, bp, url_prefix=None):
+        if url_prefix is None:
+            url_prefix = &quot;/&quot; + self.name
+        for f, rule, options in self.mound:
+            endpoint = options.pop(&quot;endpoint&quot;, f.__name__)
+            bp.add_url_rule(url_prefix + rule, endpoint, f, **options)
+</code></pre>
+<h2 id="5-2-创建红图"><a href="#5-2-创建红图" class="headerlink" title="5.2 创建红图"></a>5.2 创建红图</h2><p>创建api/v1/admin包，并创建endpoint.py文件，内容如下：</p>
+<pre><code class="python">from flask import jsonify
+
+from lib.redprint import Redprint
+
+# create redprint
+admin_redprint = Redprint(&quot;admin&quot;)
+
+
+@admin_redprint.route(&quot;/&quot;)
+def admin():
+    return jsonify(&#123;&quot;type&quot;: &quot;admin&quot;&#125;)
+</code></pre>
+<p>创建api/v1/user包，并创建endpoint.py文件，内容如下：</p>
+<pre><code class="python">from flask import jsonify
+
+from lib.redprint import Redprint
+
+# create redprint
+user_redprint = Redprint(&quot;user&quot;)
+
+
+@user_redprint.route(&quot;/&quot;)
+def user():
+    return jsonify(&#123;&quot;type&quot;: &quot;user&quot;&#125;)
+</code></pre>
+<p>目录结构如下图所示：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20f8c750fef21b9d116140477c316aa2.jpg"></p>
+<h2 id="5-3-注册红图"><a href="#5-3-注册红图" class="headerlink" title="5.3 注册红图"></a>5.3 注册红图</h2><p>在/api/v1/包下的_<em>init</em>_.py文件里注册红图，需要先创建blueprint然后注册到红图。</p>
+<pre><code class="python">from flask import Blueprint
+from api.v1.admin.endpoint import admin_redprint
+from api.v1.user.endpoint import user_redprint
+
+
+def create_blueprint_v1():
+    # create blueprint
+    v1_blueprint = Blueprint(&quot;v1&quot;, __name__, url_prefix=&quot;/api/v1&quot;)
+
+    # register redprint
+    admin_redprint.register(bp=v1_blueprint, url_prefix=&quot;/admin&quot;)
+    user_redprint.register(bp=v1_blueprint, url_prefix=&quot;/user&quot;)
+    
+    return v1_blueprint
+</code></pre>
+<h2 id="5-4-注册蓝图"><a href="#5-4-注册蓝图" class="headerlink" title="5.4 注册蓝图"></a>5.4 注册蓝图</h2><p>蓝图的注册方式，与之前方式相同，只不过蓝图，需要通过create_blueprint_v1()方法创建。</p>
+<pre><code class="python"># register blueprint by redprint
+app.register_blueprint(blueprint=create_blueprint_v1())
+</code></pre>
+<h2 id="5-5-测试红图"><a href="#5-5-测试红图" class="headerlink" title="5.5 测试红图"></a>5.5 测试红图</h2><p>启动应用，访问<a target="_blank" rel="noopener" href="http://localhost:5000/api/v1/user/">http://localhost:5000/api/v1/user/</a></p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/19c6f55efa0247f1a6be06f64504996f.jpg"></p>
+<p>访问<a target="_blank" rel="noopener" href="http://localhost:5000/api/v1/admin/">http://localhost:5000/api/v1/admin/</a></p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/648cbb026bb8438f47de98337b67dd40.jpg"></p>
+<p>由上图可以看出，我们定义的红图可以生效。</p>
+<h1 id="6-ORM插件-Flask-SQLAlchemy"><a href="#6-ORM插件-Flask-SQLAlchemy" class="headerlink" title="6 ORM插件 Flask-SQLAlchemy"></a>6 ORM插件 Flask-SQLAlchemy</h1><p>通过上面几个小节，我们已经可以快速的创建一个web服务，能够处理简单的请求并返回相应的内容。而且可以使用蓝图和红图，模块化项目，使项目结构更加清晰。接下来将进一步深入，Flask使用Flask-SQLAlchemy插件对数据库进行CRUD操作。这里不对Flask-SQLAlchemy进行深入研究，详细API可以参考官网<a target="_blank" rel="noopener" href="https://flask-sqlalchemy.palletsprojects.com/en/2.x/%E3%80%82">https://flask-sqlalchemy.palletsprojects.com/en/2.x/。</a></p>
+<h2 id="6-1-安装Flask-SQLAlchemy"><a href="#6-1-安装Flask-SQLAlchemy" class="headerlink" title="6.1 安装Flask-SQLAlchemy"></a>6.1 安装Flask-SQLAlchemy</h2><p>使用pip安装flask-sqlalchemy</p>
+<pre><code class="python">pip install flask-sqlalchemy -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com
+</code></pre>
+<h2 id="6-2-Flask应用加载SQLAlchemy"><a href="#6-2-Flask应用加载SQLAlchemy" class="headerlink" title="6.2 Flask应用加载SQLAlchemy"></a>6.2 Flask应用加载SQLAlchemy</h2><h3 id="6-2-1-配置数据库"><a href="#6-2-1-配置数据库" class="headerlink" title="6.2.1 配置数据库"></a>6.2.1 配置数据库</h3><p>为了方便演示，这里使用轻量级数据库sqlite作为演示数据库。假设数据库文件在当前目录，名为test.db。简单配置如下：</p>
+<pre><code class="python"># config db
+app.config[&#39;SQLALCHEMY_DATABASE_URI&#39;] = &#39;sqlite:///test.db&#39;
+app.config[&#39;SQLALCHEMY_TRACK_MODIFICATIONS&#39;] = False
+</code></pre>
+<p>详细配置项可以参考：<a target="_blank" rel="noopener" href="http://www.pythondoc.com/flask-sqlalchemy/config.html">http://www.pythondoc.com/flask-sqlalchemy/config.html</a></p>
+<h3 id="6-2-2-创建DB实例"><a href="#6-2-2-创建DB实例" class="headerlink" title="6.2.2 创建DB实例"></a>6.2.2 创建DB实例</h3><p>创建SQLAlchemy实例，首先创建database包，然后在_<em>init</em>_.py包里创建DB实例，如下代码所示：</p>
+<pre><code class="python"># create db from app
+db = SQLAlchemy()
+</code></pre>
+<h3 id="6-2-3-创建表模型"><a href="#6-2-3-创建表模型" class="headerlink" title="6.2.3 创建表模型"></a>6.2.3 创建表模型</h3><p>因为是ORM框架，类似Spring JPA，框架可以根据实体类进行关系映射。在Python里也是通过类型进行映射，所以首先我们要创建模型类。关于模型创建以及模型关系，可以参考官网：<a target="_blank" rel="noopener" href="http://docs.jinkan.org/docs/flask-sqlalchemy/models.html">http://docs.jinkan.org/docs/flask-sqlalchemy/models.html</a>。如我们要创建一个User表，里面有id、name、age三个属性，在database包下创建一个models.py的文件，然后创建类如下：</p>
+<pre><code class="python">class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(80), unique=True, nullable=False)
+    age = db.Column(db.Integer)
+
+    def __init__(self, id, name, age):
+        self.id = id
+        self.name = name
+        self.age = age
+        
+    def dict(self):
+        return &#123;
+            &quot;id&quot;: self.id,
+            &quot;name&quot;: self.name,
+            &quot;age&quot;: self.age
+        &#125;
+      
+    def __repr__(self):
+        return &#39;User %r&#39; % self.name
+</code></pre>
+<h3 id="6-2-4-初始化数据库"><a href="#6-2-4-初始化数据库" class="headerlink" title="6.2.4 初始化数据库"></a>6.2.4 初始化数据库</h3><p>数据库初始化之前需要将SQLAlchemy实例与Flask进行整合</p>
+<pre><code class="python">    # init db
+    db.init_app(app)
+</code></pre>
+<p>Flask启动时如果表不存在自动创建</p>
+<pre><code class="python">    # crate db table
+    with app.app_context():
+        db.create_all()
+</code></pre>
+<p>如下所示，重启应用后表自动创建了。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/9676fd6da3cbbc5d1d706cfd28669c57.jpg"></p>
+<h3 id="6-2-5-基本的CURD操作"><a href="#6-2-5-基本的CURD操作" class="headerlink" title="6.2.5 基本的CURD操作"></a>6.2.5 基本的CURD操作</h3><p>上面我们已经将SQLAlchemy整合到Flask里了，那么我们如果对数据库进行增删改查操作呢，相面将简单演示一下。详细内容可以查看：<a target="_blank" rel="noopener" href="http://www.pythondoc.com/flask-sqlalchemy/queries.html">http://www.pythondoc.com/flask-sqlalchemy/queries.html</a></p>
+<h4 id="6-2-5-1-新增记录"><a href="#6-2-5-1-新增记录" class="headerlink" title="6.2.5.1 新增记录"></a>6.2.5.1 新增记录</h4><p>上面我们创建了一张User表，现在我们向这张表里插入一条记录，该如何操作？继续上面红图里的/api/v1/user/endpoint.py。接收一个POST请求，获取请求参数id、name、age的值然后插入数据库，如下代码所示：</p>
+<pre><code class="python">@user_redprint.route(&quot;&quot;, methods=[&#39;POST&#39;])
+def add_user():
+    data = request.get_json()
+    u = User(data[&#39;id&#39;], data[&#39;name&#39;], data[&#39;age&#39;])
+    db.session.add(u)
+    db.session.commit()
+    return &quot;success&quot;
+</code></pre>
+<p>PostMan测试请求：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/05a89778aa6b72685bc3bce37d4b7bd7.jpg"></p>
+<h4 id="6-2-5-2-查询记录"><a href="#6-2-5-2-查询记录" class="headerlink" title="6.2.5.2 查询记录"></a>6.2.5.2 查询记录</h4><p>上面我们已经能够插入一条记录了，那么我们如何能查询到刚才查询的记录呢。如下代码为查询所有记录</p>
+<pre><code class="python">@user_redprint.route(&quot;&quot;, methods=[&#39;GET&#39;])
+def get_users():
+    users = User.query.all()
+    return jsonify([user.dict() for user in users])
+</code></pre>
+<p>PostMan测试请求</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/9503eb4e1f16b189590a699b419ec54f.jpg"></p>
+<h4 id="6-2-5-3-更新记录"><a href="#6-2-5-3-更新记录" class="headerlink" title="6.2.5.3 更新记录"></a>6.2.5.3 更新记录</h4><p>上面提到新增一条记录用session.add()，其实更新一条记录也可以用add，如下代码所示：</p>
+<pre><code class="python">@user_redprint.route(&quot;&quot;, methods=[&#39;PUT&#39;])
+def update_user():
+    data = request.get_json()
+    u = User.query.filter(User.id == data[&#39;id&#39;]).one_or_none()
+    u.name = data[&#39;name&#39;]
+    u.age = data[&#39;age&#39;]
+    db.session.add(u)
+    db.session.commit()
+    return &quot;success&quot;
+</code></pre>
+<p>PostMan请求</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/3aad3254a2444a6bc6bb190c671fef8a.jpg"></p>
+<h4 id="6-2-5-4-删除记录"><a href="#6-2-5-4-删除记录" class="headerlink" title="6.2.5.4 删除记录"></a>6.2.5.4 删除记录</h4><p>添加记录用session.add，那么删除记录，我们可以用session.delete。如下代码所示，根据名字删除记录</p>
+<pre><code class="python">@user_redprint.route(&quot;&quot;, methods=[&#39;DELETE&#39;])
+def delete_user():
+    name = request.args.get(&quot;name&quot;)
+    u = User.query.filter(User.name == name).first()
+    db.session.delete(u)
+    db.session.commit()
+    return &quot;success&quot;
+</code></pre>
+<p>PostMan请求</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/6f94ff5f1da282e23dee0550d78c011a.jpg"></p>
+<h1 id="7-定时调度插件Flask-APScheduler"><a href="#7-定时调度插件Flask-APScheduler" class="headerlink" title="7 定时调度插件Flask-APScheduler"></a>7 定时调度插件Flask-APScheduler</h1><p>前面记录了Flask对请求的处理以及数据库的CRUD操作，已经能完成一个简单的后台开发了。下面将进行一些扩展，定时任务。相信在平时的项目里经常会用到定时任务，在Java里我们我们可以使用Quartz，它能与Spring很好的整合。对于Python里可以使用APScheduler，官网文档：<a target="_blank" rel="noopener" href="https://apscheduler.readthedocs.io/en/latest/%E3%80%82%E8%80%8CFlask-APScheduler%E6%98%AF%E5%AF%B9APScheduler%E7%9A%84%E5%B0%81%E8%A3%85%E6%89%A9%E5%B1%95%EF%BC%8C%E4%BD%BF%E5%85%B6%E8%83%BD%E4%B8%8EFlask%E6%9B%B4%E5%A5%BD%E7%9A%84%E8%9E%8D%E5%90%88%E3%80%82%E6%8F%90%E8%B5%B7%E8%BF%99%E4%B8%AA%E6%8F%92%E4%BB%B6%EF%BC%8C%E6%88%91%E6%9C%89%E4%BA%9B%E8%AE%B8%E5%A4%B4%E7%96%BC%EF%BC%8C%E7%AB%9F%E6%B2%A1%E6%89%BE%E5%88%B0%E8%AF%A6%E7%BB%86%E7%9A%84%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%EF%BC%8C%E5%8F%AA%E5%AE%9A%E4%BD%8D%E5%88%B0%E4%BA%86Git%E4%BB%93%E5%BA%93%E7%9A%84%E5%9C%B0%E5%9D%80%EF%BC%9Ahttps://github.com/viniciuschiele/flask-apscheduler%EF%BC%8C%E8%80%8C%E4%B8%94%E6%9F%A5%E6%9F%90%E5%BA%A6%E5%92%8CGoogle%E5%BE%97%E5%88%B0%E7%9A%84%E6%96%87%E7%AB%A0%E5%87%A0%E4%B9%8E%E5%8D%83%E7%AF%87%E4%B8%80%E5%BE%8B%EF%BC%8C%E6%B2%A1%E6%9C%89%E8%AF%A6%E7%BB%86%E7%9A%84%E4%BB%8B%E7%BB%8D%E3%80%82%E5%85%B6%E5%AE%9EFlask-APScheduler%E7%9A%84%E4%BD%BF%E7%94%A8%E4%B8%8EAPScheduler%E7%B1%BB%E4%BC%BC%EF%BC%8C%E8%BF%99%E9%87%8C%E5%B0%B1%E8%8A%B1%E4%B8%80%E7%82%B9%E6%97%B6%E9%97%B4%EF%BC%8C%E6%95%B4%E7%90%86%E6%B1%87%E6%80%BB%E4%B8%80%E4%B8%8B%EF%BC%8C%E6%88%91%E5%AF%B9%E4%BA%8EFlask-APScheduler%E6%8F%92%E4%BB%B6%E7%9A%84%E4%BD%BF%E7%94%A8%E8%AE%B0%E5%BD%95%E3%80%82%E6%9C%AC%E8%8A%82%E5%B0%86%E4%BB%8E%E4%BB%A5%E4%B8%8B%E5%87%A0%E4%B8%AA%E6%96%B9%E9%9D%A2%E8%BF%9B%E8%A1%8C%E6%95%B4%E7%90%86%EF%BC%9AAPScheduler%E7%89%B9%E6%80%A7%E3%80%81%E5%8A%A8%E6%80%81%E7%AE%A1%E7%90%86%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E3%80%81%E5%AE%9A%E6%97%B6%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F%E3%80%81%E6%89%A7%E8%A1%8C%E5%99%A8%E7%9A%84%E9%85%8D%E7%BD%AE%E3%80%81%E6%8C%81%E4%B9%85%E5%8C%96%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E3%80%82">https://apscheduler.readthedocs.io/en/latest/。而Flask-APScheduler是对APScheduler的封装扩展，使其能与Flask更好的融合。提起这个插件，我有些许头疼，竟没找到详细的官方文档，只定位到了Git仓库的地址：https://github.com/viniciuschiele/flask-apscheduler，而且查某度和Google得到的文章几乎千篇一律，没有详细的介绍。其实Flask-APScheduler的使用与APScheduler类似，这里就花一点时间，整理汇总一下，我对于Flask-APScheduler插件的使用记录。本节将从以下几个方面进行整理：APScheduler特性、动态管理定时任务、定时的几种方式、执行器的配置、持久化定时任务。</a></p>
+<h2 id="7-1-Flask-APScheduler特性"><a href="#7-1-Flask-APScheduler特性" class="headerlink" title="7.1 Flask-APScheduler特性"></a>7.1 Flask-APScheduler特性</h2><p>从Git的README可以看出，APScheduler有一下几个特性：</p>
+<ul>
+<li>从Flask的配置中加载scheduler配置</li>
+<li>从Flask的配置中加载定义的的定时任务</li>
+<li>允许指定调度程序将在其上运行的主机名</li>
+<li>提供REST API 去管理调度任务</li>
+<li>为REST API 提供权限认证</li>
+</ul>
+<p>下面将详细的落地这些特性。</p>
+<h3 id="7-1-1-特性一：从Flask的配置中加载scheduler配置"><a href="#7-1-1-特性一：从Flask的配置中加载scheduler配置" class="headerlink" title="7.1.1 特性一：从Flask的配置中加载scheduler配置"></a>7.1.1 特性一：从Flask的配置中加载scheduler配置</h3><p>意思就是说，关于scheduler的配置，是从Flask应用的上下文中获取的，也就是说，配置是统一在Flask应用中指定的，即通过app.config指定的。如我们在config/目录下创建一个scheduler.py文见用来存放关于Flask-APScheduler相关的配置。简单添加一个Executors的配置，关于Executors的详细配置，在后面后详细讲解。</p>
+<pre><code class="python">class SchedulerConfig(object):
+    SCHEDULER_EXECUTORS = &#123;
+        &#39;default&#39;: &#123;&#39;type&#39;: &#39;threadpool&#39;, &#39;max_workers&#39;: 20&#125;
+    &#125;
+</code></pre>
+<p>将配置添加到Flask应用</p>
+<pre><code class="python">app.config.from_object(SchedulerConfig)
+</code></pre>
+<p>创建调度器</p>
+<pre><code class="python"># create scheduler
+scheduler = APScheduler()
+</code></pre>
+<p>初始化调度器</p>
+<pre><code class="python"># init scheduler
+scheduler.init_app(app=app)
+
+scheduler.start()
+</code></pre>
+<h3 id="7-1-2-特性二：从Flask的配置中加载定义的的定时任务"><a href="#7-1-2-特性二：从Flask的配置中加载定义的的定时任务" class="headerlink" title="7.1.2 特性二：从Flask的配置中加载定义的的定时任务"></a>7.1.2 特性二：从Flask的配置中加载定义的的定时任务</h3><p>该特性意思是可以从配置中加载事先定义好的定时任务，比如我有一个print_test(name)方法，每隔1秒打印一下name，代码如下：</p>
+<pre><code class="python">def print_test(name):
+    print(name)
+</code></pre>
+<p>在SchedulerConfig类中添加如下配置：</p>
+<pre><code class="python">    JOBS = [
+        &#123;
+            &#39;id&#39;: &#39;job1&#39;,
+            &#39;func&#39;: &#39;config.scheduler:print_test&#39;,
+            &#39;args&#39;: (&#39;joke&#39;,),
+            &#39;trigger&#39;: &#39;interval&#39;,
+            &#39;seconds&#39;: 1
+
+        &#125;
+    ]
+</code></pre>
+<p>启动测试：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/ee1792c0ee3a9469f90535d63c87bf85.gif"></p>
+<h3 id="7-1-3-特性三：允许指定调度程序将在其上运行的主机名"><a href="#7-1-3-特性三：允许指定调度程序将在其上运行的主机名" class="headerlink" title="7.1.3 特性三：允许指定调度程序将在其上运行的主机名"></a>7.1.3 特性三：允许指定调度程序将在其上运行的主机名</h3><p>默认Flask-APScheduler允许在所有的主机名上运行，即</p>
+<pre><code class="shell">SCHEDULER_ALLOWED_HOSTS = [&#39;*&#39;]
+</code></pre>
+<p>我们可以通过修改该参数，限制允许执行的主机名，比如我当前的主机名为shirukaideimac.local，我设置SCHEDULER_ALLOWED_HOSTS=[‘localhost’]，那么调度程序将不会执行。</p>
+<h3 id="7-1-4-特性四：提供REST-API-去管理调度任务"><a href="#7-1-4-特性四：提供REST-API-去管理调度任务" class="headerlink" title="7.1.4 特性四：提供REST API 去管理调度任务"></a>7.1.4 特性四：提供REST API 去管理调度任务</h3><p>Flask-APScheduler 提供REST API方便我们去管理调度任务。但是需要我们手动开启，在配置中添加如下配置</p>
+<pre><code class="python">SCHEDULER_API_ENABLED=True
+</code></pre>
+<p>重启服务，访问<a target="_blank" rel="noopener" href="http://localhost:5000/scheduler">http://localhost:5000/{api_prefix}</a>即可得到scheduler的基本信息。这里api_prefix默认为scheduler，可以通过SCHEDULER_API_PREFIX参数进行自定义。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/5bcd89e3831f615fd5b7573e2245d14a.jpg"></p>
+<p>关于Flask-APScheduler提供了哪些REST API，可以在flask_apscheduler/scheduler.py里查看，代码如下：</p>
+<pre><code class="python">    def _load_api(self):
+        &quot;&quot;&quot;
+        Add the routes for the scheduler API.
+        &quot;&quot;&quot;
+        self._add_url_route(&#39;get_scheduler_info&#39;, &#39;&#39;, api.get_scheduler_info, &#39;GET&#39;)
+        self._add_url_route(&#39;add_job&#39;, &#39;/jobs&#39;, api.add_job, &#39;POST&#39;)
+        self._add_url_route(&#39;get_job&#39;, &#39;/jobs/&lt;job_id&gt;&#39;, api.get_job, &#39;GET&#39;)
+        self._add_url_route(&#39;get_jobs&#39;, &#39;/jobs&#39;, api.get_jobs, &#39;GET&#39;)
+        self._add_url_route(&#39;delete_job&#39;, &#39;/jobs/&lt;job_id&gt;&#39;, api.delete_job, &#39;DELETE&#39;)
+        self._add_url_route(&#39;update_job&#39;, &#39;/jobs/&lt;job_id&gt;&#39;, api.update_job, &#39;PATCH&#39;)
+        self._add_url_route(&#39;pause_job&#39;, &#39;/jobs/&lt;job_id&gt;/pause&#39;, api.pause_job, &#39;POST&#39;)
+        self._add_url_route(&#39;resume_job&#39;, &#39;/jobs/&lt;job_id&gt;/resume&#39;, api.resume_job, &#39;POST&#39;)
+        self._add_url_route(&#39;run_job&#39;, &#39;/jobs/&lt;job_id&gt;/run&#39;, api.run_job, &#39;POST&#39;)
+</code></pre>
+<p>这里简单总结一下:</p>
+<h4 id="7-1-4-1-获取调度信息"><a href="#7-1-4-1-获取调度信息" class="headerlink" title="7.1.4.1 获取调度信息"></a>7.1.4.1 获取调度信息</h4><p>API: /{api_prefix}</p>
+<p>请求类型：GET</p>
+<p>请求参数：无</p>
+<p>描述：获取调度信息</p>
+<p>结果：</p>
+<pre><code class="json">&#123;
+    &quot;current_host&quot;: &quot;shirukaideimac.local&quot;,
+    &quot;allowed_hosts&quot;: [
+        &quot;*&quot;
+    ],
+    &quot;running&quot;: true
+&#125;
+</code></pre>
+<h4 id="7-1-4-2-获取所有job列表"><a href="#7-1-4-2-获取所有job列表" class="headerlink" title="7.1.4.2 获取所有job列表"></a>7.1.4.2 获取所有job列表</h4><p>API: /{api_prefix}/jobs</p>
+<p>请求类型：GET</p>
+<p>请求参数：无</p>
+<p>描述：获取所有的job</p>
+<p>结果：</p>
+<pre><code class="json">[
+    &#123;
+        &quot;id&quot;: &quot;job1&quot;,
+        &quot;name&quot;: &quot;job1&quot;,
+        &quot;func&quot;: &quot;config.scheduler:print_test&quot;,
+        &quot;args&quot;: [
+            &quot;joke&quot;
+        ],
+        &quot;kwargs&quot;: &#123;&#125;,
+        &quot;trigger&quot;: &quot;interval&quot;,
+        &quot;start_date&quot;: &quot;2019-05-21T17:43:32.105979+08:00&quot;,
+        &quot;seconds&quot;: 1,
+        &quot;misfire_grace_time&quot;: 1,
+        &quot;max_instances&quot;: 1,
+        &quot;next_run_time&quot;: &quot;2019-05-21T17:52:25.105979+08:00&quot;
+    &#125;
+]
+</code></pre>
+<h4 id="7-1-4-3-新增job"><a href="#7-1-4-3-新增job" class="headerlink" title="7.1.4.3 新增job"></a>7.1.4.3 新增job</h4><p>API: /{api_prefix}/jobs</p>
+<p>请求类型：POST</p>
+<p>请求参数：</p>
+<pre><code class="json">&#123;
+    &quot;id&quot;:&quot;job2&quot;,
+    &quot;func&quot;:&quot;config.scheduler:print_test&quot;,
+    &quot;args&quot;:[&quot;linda&quot;],
+    &quot;trigger&quot;:&quot;interval&quot;,
+    &quot;seconds&quot;:5
+&#125;
+</code></pre>
+<p>描述：新增定时任务</p>
+<p>结果：</p>
+<pre><code class="json">&#123;
+    &quot;id&quot;: &quot;job2&quot;,
+    &quot;name&quot;: &quot;job2&quot;,
+    &quot;func&quot;: &quot;config.scheduler:print_test&quot;,
+    &quot;args&quot;: [
+        &quot;linda&quot;
+    ],
+    &quot;kwargs&quot;: &#123;&#125;,
+    &quot;trigger&quot;: &quot;interval&quot;,
+    &quot;start_date&quot;: &quot;2019-05-21T17:46:27.750697+08:00&quot;,
+    &quot;seconds&quot;: 5,
+    &quot;misfire_grace_time&quot;: 1,
+    &quot;max_instances&quot;: 1,
+    &quot;next_run_time&quot;: &quot;2019-05-21T17:46:27.750697+08:00&quot;
+&#125;
+</code></pre>
+<h4 id="7-1-4-4-获取某个job信息"><a href="#7-1-4-4-获取某个job信息" class="headerlink" title="7.1.4.4 获取某个job信息"></a>7.1.4.4 获取某个job信息</h4><p>API: /{api_prefix}/jobs/{job_id}</p>
+<p>请求类型：GET</p>
+<p>请求参数：job_id</p>
+<p>描述：获取某个job的信息</p>
+<p>结果：</p>
+<pre><code class="json">&#123;
+    &quot;id&quot;: &quot;job2&quot;,
+    &quot;name&quot;: &quot;job2&quot;,
+    &quot;func&quot;: &quot;config.scheduler:print_test&quot;,
+    &quot;args&quot;: [
+        &quot;linda&quot;
+    ],
+    &quot;kwargs&quot;: &#123;&#125;,
+    &quot;trigger&quot;: &quot;interval&quot;,
+    &quot;start_date&quot;: &quot;2019-05-21T17:46:27.750697+08:00&quot;,
+    &quot;seconds&quot;: 5,
+    &quot;misfire_grace_time&quot;: 1,
+    &quot;max_instances&quot;: 1,
+    &quot;next_run_time&quot;: &quot;2019-05-21T17:49:37.750697+08:00&quot;
+&#125;
+</code></pre>
+<h4 id="7-1-4-5-更新指定job"><a href="#7-1-4-5-更新指定job" class="headerlink" title="7.1.4.5 更新指定job"></a>7.1.4.5 更新指定job</h4><p>API: /{api_prefix}/jobs/{job_id}</p>
+<p>请求类型：PATCH</p>
+<p>请求参数：job_id，注意请求参数里不能包含id。</p>
+<pre><code class="json">&#123;
+    &quot;func&quot;:&quot;config.scheduler:print_test&quot;,
+    &quot;args&quot;:[&quot;simple&quot;],
+    &quot;trigger&quot;:&quot;interval&quot;,
+    &quot;seconds&quot;:5
+&#125;
+</code></pre>
+<p>描述：更新指定的job</p>
+<p>结果：</p>
+<pre><code class="json">&#123;
+    &quot;id&quot;: &quot;job2&quot;,
+    &quot;name&quot;: &quot;job2&quot;,
+    &quot;func&quot;: &quot;config.scheduler:print_test&quot;,
+    &quot;args&quot;: [
+        &quot;simple&quot;
+    ],
+    &quot;kwargs&quot;: &#123;&#125;,
+    &quot;trigger&quot;: &quot;interval&quot;,
+    &quot;start_date&quot;: &quot;2019-05-21T17:56:59.183372+08:00&quot;,
+    &quot;seconds&quot;: 5,
+    &quot;misfire_grace_time&quot;: 1,
+    &quot;max_instances&quot;: 1,
+    &quot;next_run_time&quot;: &quot;2019-05-21T17:56:59.183372+08:00&quot;
+&#125;
+</code></pre>
+<h4 id="7-1-4-6-暂停某个job"><a href="#7-1-4-6-暂停某个job" class="headerlink" title="7.1.4.6 暂停某个job"></a>7.1.4.6 暂停某个job</h4><p>API: /{api_prefix}/jobs/{job_id}/pause</p>
+<p>请求类型：POST</p>
+<p>请求参数：job_id</p>
+<p>描述：暂停某个job</p>
+<p>结果：</p>
+<pre><code class="json">&#123;
+    &quot;id&quot;: &quot;job2&quot;,
+    &quot;name&quot;: &quot;job2&quot;,
+    &quot;func&quot;: &quot;config.scheduler:print_test&quot;,
+    &quot;args&quot;: [
+        &quot;simple&quot;
+    ],
+    &quot;kwargs&quot;: &#123;&#125;,
+    &quot;trigger&quot;: &quot;interval&quot;,
+    &quot;start_date&quot;: &quot;2019-05-21T17:56:59.183372+08:00&quot;,
+    &quot;seconds&quot;: 5,
+    &quot;misfire_grace_time&quot;: 1,
+    &quot;max_instances&quot;: 1,
+    &quot;next_run_time&quot;: null
+&#125;
+</code></pre>
+<h4 id="7-1-4-7-恢复某个job"><a href="#7-1-4-7-恢复某个job" class="headerlink" title="7.1.4.7 恢复某个job"></a>7.1.4.7 恢复某个job</h4><p>API: /{api_prefix}/jobs/{job_id}/pause</p>
+<p>请求类型：POST</p>
+<p>请求参数：job_id</p>
+<p>描述：恢复某个job</p>
+<p>结果：</p>
+<pre><code class="json">&#123;
+    &quot;id&quot;: &quot;job2&quot;,
+    &quot;name&quot;: &quot;job2&quot;,
+    &quot;func&quot;: &quot;config.scheduler:print_test&quot;,
+    &quot;args&quot;: [
+        &quot;simple&quot;
+    ],
+    &quot;kwargs&quot;: &#123;&#125;,
+    &quot;trigger&quot;: &quot;interval&quot;,
+    &quot;start_date&quot;: &quot;2019-05-21T17:56:59.183372+08:00&quot;,
+    &quot;seconds&quot;: 5,
+    &quot;misfire_grace_time&quot;: 1,
+    &quot;max_instances&quot;: 1,
+    &quot;next_run_time&quot;: &quot;2019-05-21T18:02:59.183372+08:00&quot;
+&#125;
+</code></pre>
+<h4 id="7-1-4-8-删除某个job"><a href="#7-1-4-8-删除某个job" class="headerlink" title="7.1.4.8 删除某个job"></a>7.1.4.8 删除某个job</h4><p>API: /{api_prefix}/jobs/{job_id}</p>
+<p>请求类型：DELETE</p>
+<p>请求参数：job_id</p>
+<p>描述：删除某个job</p>
+<p>结果：无</p>
+<h3 id="7-1-2-特性五：为REST-API-提供权限认证"><a href="#7-1-2-特性五：为REST-API-提供权限认证" class="headerlink" title="7.1.2 特性五：为REST API 提供权限认证"></a>7.1.2 特性五：为REST API 提供权限认证</h3><p>flask默认提供了基于HTTP Basic Auth的权限认证。需要开启权限认证，我们需要添加如下配置：</p>
+<pre><code class="python">    SCHEDULER_AUTH = HTTPBasicAuth()
+</code></pre>
+<p>实现认证方法</p>
+<pre><code class="python">@scheduler.authenticate
+def authenticate(auth):
+    return auth[&#39;username&#39;] == &#39;admin&#39; and auth[&#39;password&#39;] == &#39;admin&#39;
+</code></pre>
+<p>如果不带auth发送请求，会出现如下错误。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/2393d38177de554f02c46cd74ef06f99.jpg"></p>
+<p>需要带入认证信息。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/bcb6f967fdae6ee0f48b6750b0687608.jpg"></p>
+<h2 id="7-2-动态管理定时任务"><a href="#7-2-动态管理定时任务" class="headerlink" title="7.2 动态管理定时任务"></a>7.2 动态管理定时任务</h2><p>在7.1小节讲特性的时候，讲到我们可以通过配置添加定时任务，在配置中的JOBS的列表中添加job信息即可，当然在Flask-APScheduler提供的REST API里我们也可以通过给定的API对定时任务进行添加、暂停、恢复、以及删除等管理操作。同样，Flask-APScheduler也提供代码层级的API让我们来实现定时任务的管理。</p>
+<h3 id="7-2-1-获取调度信息"><a href="#7-2-1-获取调度信息" class="headerlink" title="7.2.1 获取调度信息"></a>7.2.1 获取调度信息</h3><pre><code class="python"># get scheduler info
+scheduler_info = OrderedDict([
+    (&#39;current_host&#39;, scheduler.host_name),
+    (&#39;allowed_hosts&#39;, scheduler.allowed_hosts),
+    (&#39;running&#39;, scheduler.running)
+])
+print(scheduler_info)
+</code></pre>
+<h3 id="7-2-2-获取所有job列表"><a href="#7-2-2-获取所有job列表" class="headerlink" title="7.2.2 获取所有job列表"></a>7.2.2 获取所有job列表</h3><p><strong>方法：</strong></p>
+<pre><code class="python">get_jobs(self, jobstore=None)
+</code></pre>
+<p><strong>参数说明：</strong></p>
+<p>jobstore：为存储器名称，不指定为获取所有存储器里的job</p>
+<p><strong>返回值：</strong></p>
+<p>job列表，里面包含job实例。</p>
+<pre><code>[&lt;Job (id=job1 name=job1)&gt;]
+</code></pre>
+<h3 id="7-2-3-新增job"><a href="#7-2-3-新增job" class="headerlink" title="7.2.3 新增job"></a>7.2.3 新增job</h3><p><strong>方法：</strong></p>
+<pre><code class="python">add_job(self, id, func, **kwargs)
+</code></pre>
+<p><strong>参数说明：</strong></p>
+<p>id：为指定job的id</p>
+<p>func：为需要执行的方法，可以是方法名，也可以是字符串，字符串的话需要写成”包路径:方法名”的格式。**kwargs：其他kv格式的参数，如args、trigger、seconds等。</p>
+<p><strong>返回值：</strong></p>
+<p>单个job实例</p>
+<pre><code class="python">job2 (trigger: interval[0:00:05], next run at: 2019-05-22 10:39:27 CST)
+</code></pre>
+<p><strong>demo:</strong></p>
+<pre><code class="python">    # add job
+    scheduler.add_job(id=&#39;job2&#39;, func=print_test, args=(&#39;dear&#39;,), trigger=&#39;interval&#39;, seconds=5)
+</code></pre>
+<h3 id="7-2-4-获取某个job信息"><a href="#7-2-4-获取某个job信息" class="headerlink" title="7.2.4 获取某个job信息"></a>7.2.4 获取某个job信息</h3><p><strong>方法：</strong></p>
+<pre><code class="python">get_job(self, id, jobstore=None)
+</code></pre>
+<p><strong>参数说明：</strong></p>
+<p>Id ：为指定job的id</p>
+<p>jobstore：想要从哪个存储器里获取，默认为None从所有的存储器获取。</p>
+<p><strong>返回值：</strong></p>
+<p>单个job实例</p>
+<pre><code>job2 (trigger: interval[0:00:05], next run at: 2019-05-22 10:49:26 CST)
+</code></pre>
+<p><strong>demo:</strong></p>
+<pre><code class="python">    # get job
+    print(scheduler.get_job(&quot;job2&quot;))
+</code></pre>
+<h3 id="7-2-5-更新指定job"><a href="#7-2-5-更新指定job" class="headerlink" title="7.2.5 更新指定job"></a>7.2.5 更新指定job</h3><p><strong>方法：</strong></p>
+<pre><code class="python">modify_job(self, id, jobstore=None, **changes):
+</code></pre>
+<p><strong>参数说明：</strong></p>
+<p>Id ：为指定job的id</p>
+<p>jobstore：想要从哪个存储器里修改，默认为None从所有的存储器。</p>
+<p>**changes：更新的内容，如args等</p>
+<p><strong>返回值：</strong></p>
+<p>单个job实例</p>
+<pre><code>job2 (trigger: interval[0:00:05], next run at: 2019-05-22 10:49:26 CST)
+</code></pre>
+<p><strong>demo:</strong></p>
+<pre><code class="python">    # modify job
+    scheduler.modify_job(&quot;job2&quot;, args=(&quot;hello&quot;,))
+</code></pre>
+<h3 id="7-2-6-暂停某个job"><a href="#7-2-6-暂停某个job" class="headerlink" title="7.2.6 暂停某个job"></a>7.2.6 暂停某个job</h3><p><strong>方法：</strong></p>
+<pre><code class="python">pause_job(self, id, jobstore=None):
+</code></pre>
+<p><strong>参数说明：</strong></p>
+<p>Id ：为指定job的id</p>
+<p>jobstore：想要从哪个存储器里暂停，默认为None从所有的存储器。</p>
+<p><strong>返回值：</strong></p>
+<p>单个job实例</p>
+<p><strong>demo:</strong></p>
+<pre><code class="python">    # pause job
+    scheduler.pause_job(&quot;job2&quot;)
+</code></pre>
+<h3 id="7-2-7-恢复某个job"><a href="#7-2-7-恢复某个job" class="headerlink" title="7.2.7 恢复某个job"></a>7.2.7 恢复某个job</h3><p><strong>方法：</strong></p>
+<pre><code class="python">resume_job(self, id, jobstore=None):
+</code></pre>
+<p><strong>参数说明：</strong></p>
+<p>Id ：为指定job的id</p>
+<p>jobstore：想要从哪个存储器里恢复，默认为None从所有的存储器。</p>
+<p><strong>返回值：</strong></p>
+<p>单个job实例</p>
+<p><strong>demo:</strong></p>
+<pre><code class="python">    # resume job
+    scheduler.resume_job(&quot;job2&quot;)
+</code></pre>
+<h3 id="7-2-8-删除某个job"><a href="#7-2-8-删除某个job" class="headerlink" title="7.2.8 删除某个job"></a>7.2.8 删除某个job</h3><p><strong>方法：</strong></p>
+<pre><code class="python">remove_job(self, id, jobstore=None):
+</code></pre>
+<p><strong>参数说明：</strong></p>
+<p>Id ：为指定job的id</p>
+<p>jobstore：想要从哪个存储器里移除，默认为None从所有的存储器。</p>
+<p><strong>返回值：</strong></p>
+<p>单个job实例</p>
+<p><strong>demo:</strong></p>
+<pre><code class="python">    # remove job
+    scheduler.remove_job(&quot;job2&quot;)
+</code></pre>
+<h2 id="7-3-定时的几种方式：触发器"><a href="#7-3-定时的几种方式：触发器" class="headerlink" title="7.3 定时的几种方式：触发器"></a>7.3 定时的几种方式：触发器</h2><p>上面我们在介绍特性以及API的过程中，使用了相同的定时触发器interval。Flask-APScheduler与APScheduler一样支持以下三种触发器：</p>
+<table>
+<thead>
+<tr>
+<th>触发器</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>date</td>
+<td>日期：触发任务运行的具体日期</td>
+</tr>
+<tr>
+<td>interval</td>
+<td>间隔：触发任务运行的时间间隔</td>
+</tr>
+<tr>
+<td>cron</td>
+<td>周期：触发任务运行的周期</td>
+</tr>
+</tbody></table>
+<p>下面将分别介绍三种触发器的使用，统一使用配置的方式，添加定时任务。</p>
+<h3 id="7-3-1-date触发器"><a href="#7-3-1-date触发器" class="headerlink" title="7.3.1 date触发器"></a>7.3.1 date触发器</h3><p>date触发器，是指定任务在特定的日期执行。使用date触发器，需要指定两个参数，一个是trigger、另一个是run_date， trigger:’date’，run_date可以有三种值类型。</p>
+<h4 id="7-3-1-1-run-date类型为字符串"><a href="#7-3-1-1-run-date类型为字符串" class="headerlink" title="7.3.1.1 run_date类型为字符串"></a>7.3.1.1 run_date类型为字符串</h4><p>我们可以指定run_date的值为字符串类型，例如：”2019-05-22 11:58:00”，可以写成如下配置：</p>
+<pre><code class="python">        &#123;
+            &#39;id&#39;: &#39;date_trigger&#39;,
+            &#39;func&#39;: &#39;config.scheduler:print_test&#39;,
+            &#39;args&#39;: (&#39;joke&#39;,),
+            &#39;trigger&#39;: &#39;date&#39;,
+            &#39;run_date&#39;: &#39;2019-05-22 11:58:00&#39;
+        &#125;
+</code></pre>
+<h4 id="7-3-1-2-run-date类型为date"><a href="#7-3-1-2-run-date类型为date" class="headerlink" title="7.3.1.2 run_date类型为date"></a>7.3.1.2 run_date类型为date</h4><p>指定run_date的值类型为date时，只能精确到天，指定定时任务在具体哪一天执行。</p>
+<pre><code class="python">        &#123;
+            &#39;id&#39;: &#39;date_trigger&#39;,
+            &#39;func&#39;: &#39;config.scheduler:print_test&#39;,
+            &#39;args&#39;: (&#39;joke&#39;,),
+            &#39;trigger&#39;: &#39;date&#39;,
+            &#39;run_date&#39;: date(2019, 5, 22)
+        &#125;
+</code></pre>
+<h4 id="7-3-1-3-run-date类型为datetime"><a href="#7-3-1-3-run-date类型为datetime" class="headerlink" title="7.3.1.3 run_date类型为datetime"></a>7.3.1.3 run_date类型为datetime</h4><p>指定run_date的值类型为datetime时，可以精确到毫秒。</p>
+<pre><code class="python">        &#123;
+            &#39;id&#39;: &#39;date_trigger&#39;,
+            &#39;func&#39;: &#39;config.scheduler:print_test&#39;,
+            &#39;args&#39;: (&#39;joke&#39;,),
+            &#39;trigger&#39;: &#39;date&#39;,
+            &#39;run_date&#39;: datetime(2019, 5, 22, 12, 5, 0, 0)
+        &#125;
+</code></pre>
+<h3 id="7-3-2-interval触发器"><a href="#7-3-2-interval触发器" class="headerlink" title="7.3.2 interval触发器"></a>7.3.2 interval触发器</h3><p>interval触发器，是设置任务间隔多长时间运行一次。在前面的例子中我们一直使用的是是interval。它有几个比较常用的参数，间隔参数：seconds、minutes、hours分别是间隔几秒、间隔几分钟、间隔几小时，这几个参数只能设置也一个。时间范围范数：start_date、end_date。设置定时任务运行的时间范围。浮动参数：jitter，给每次触发添加一个随机浮动秒数，一般适用于多服务器，避免同时运行造成服务拥堵。</p>
+<p>例如：</p>
+<pre><code class="python">        &#123;
+            &#39;id&#39;: &#39;job1&#39;,
+            &#39;func&#39;: &#39;config.scheduler:print_test&#39;,
+            &#39;args&#39;: (&#39;joke&#39;,),
+            &#39;trigger&#39;: &#39;interval&#39;,
+            &#39;minutes&#39;: 1,
+            &#39;start_date&#39;: &#39;2019-05-22 14:00:00&#39;,
+            &#39;end_date&#39;: &#39;2019-05-22 16:00:00&#39;,
+            &#39;jitter&#39;: 10
+
+        &#125;
+</code></pre>
+<h3 id="7-3-3-cron触发器"><a href="#7-3-3-cron触发器" class="headerlink" title="7.3.3 cron触发器"></a>7.3.3 cron触发器</h3><p>可以说cron触发器是很强大了，常用的定时任务框架，大多都支持cron定时调度。APScheduler对crontab表达式进行了一层分装，我们可以传入如下参数</p>
+<pre><code class="python">class apscheduler.triggers.cron.CronTrigger(
+year=None, 
+month=None, 
+day=None, 
+week=None, 
+day_of_week=None, 
+hour=None, 
+minute=None,
+second=None, 
+start_date=None, 
+end_date=None, 
+timezone=None, 
+jitter=None)
+</code></pre>
+<p>当省略时间参数时，在显式指定参数之前的参数会被设定为<em>，之后的参数会被设定为最小值，week 和day_of_week的最小值为</em>。比如，设定day=1, minute=20等同于设定year=’*‘, month=&#39;*’, day=1, week=’*‘, day_of_week=’*‘, hour=’*‘, minute=20, second=0，即每个月的第一天，且当分钟到达20时就触发。</p>
+<p><strong>表达式类型</strong></p>
+<table>
+<thead>
+<tr>
+<th>表达式</th>
+<th>参数类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>*</td>
+<td>所有</td>
+<td>通配符。例：minutes=*即每分钟触发</td>
+</tr>
+<tr>
+<td>*/a</td>
+<td>所有</td>
+<td>可被a整除的通配符。</td>
+</tr>
+<tr>
+<td>a-b</td>
+<td>所有</td>
+<td>范围a-b触发</td>
+</tr>
+<tr>
+<td>a-b/c</td>
+<td>所有</td>
+<td>范围a-b，且可被c整除时触发</td>
+</tr>
+<tr>
+<td>xth y</td>
+<td>日</td>
+<td>第几个星期几触发。x为第几个，y为星期几(英文缩写)</td>
+</tr>
+<tr>
+<td>last x</td>
+<td>日</td>
+<td>一个月中，最后个星期几触发</td>
+</tr>
+<tr>
+<td>last</td>
+<td>日</td>
+<td>一个月最后一天触发</td>
+</tr>
+<tr>
+<td>x,y,z</td>
+<td>所有</td>
+<td>组合表达式，可以组合确定值或上方的表达式</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>注！month和day_of_week参数分别接受的是英语缩写jan– dec 和 mon – sun</strong></p>
+</blockquote>
+<p>比如设置定时任务在每年的6月、7月、8月、11月和12月的第三个周五，00:00、01:00、02:00和03:00触发。配置定时任务如下所示：</p>
+<pre><code class="python">        &#123;
+            &#39;id&#39;: &#39;cron_trigger&#39;,
+            &#39;func&#39;: &#39;config.scheduler:print_test&#39;,
+            &#39;args&#39;: (&#39;joke&#39;,),
+            &#39;trigger&#39;: &#39;cron&#39;,
+            &#39;month&#39;: &#39;6-8,11-12&#39;,
+            &#39;day&#39;: &#39;3rd fri&#39;,
+            &#39;start_date&#39;: &#39;2019-05-22 14:00:00&#39;,
+            &#39;end_date&#39;: &#39;2019-05-22 16:00:00&#39;,
+            &#39;jitter&#39;: 10
+
+        &#125;
+</code></pre>
+<p>当然也可以使用crontab表达式，不过需要from_crontab方法创建trigger，如下代码所示：</p>
+<pre><code class="python">        &#123;
+            &#39;id&#39;: &#39;cron_trigger&#39;,
+            &#39;func&#39;: &#39;config.scheduler:print_test&#39;,
+            &#39;args&#39;: (&#39;joke&#39;,),
+            &#39;trigger&#39;:  CronTrigger.from_crontab(&#39;* * * * *&#39;),
+            &#39;jitter&#39;: 10
+
+        &#125;
+</code></pre>
+<h2 id="7-4-Executor-执行器的配置"><a href="#7-4-Executor-执行器的配置" class="headerlink" title="7.4 Executor 执行器的配置"></a>7.4 Executor 执行器的配置</h2><p>关于执行器这一块，我查阅的资料不是很详细。APScheduler提供这几种类型处理器：asyncio、gevent、processpool、threadpool、tornado、twisted。</p>
+<pre><code class="python">from pkg_resources import iter_entry_points
+_executor_plugins = dict((ep.name, ep) for ep in iter_entry_points(&#39;apscheduler.executors&#39;))
+print(_executor_plugins)
+
+&#123;&#39;asyncio&#39;: EntryPoint.parse(&#39;asyncio = apscheduler.executors.asyncio:AsyncIOExecutor [asyncio]&#39;), &#39;debug&#39;: EntryPoint.parse(&#39;debug = apscheduler.executors.debug:DebugExecutor&#39;), &#39;gevent&#39;: EntryPoint.parse(&#39;gevent = apscheduler.executors.gevent:GeventExecutor [gevent]&#39;), &#39;processpool&#39;: EntryPoint.parse(&#39;processpool = apscheduler.executors.pool:ProcessPoolExecutor&#39;), &#39;threadpool&#39;: EntryPoint.parse(&#39;threadpool = apscheduler.executors.pool:ThreadPoolExecutor&#39;), &#39;tornado&#39;: EntryPoint.parse(&#39;tornado = apscheduler.executors.tornado:TornadoExecutor [tornado]&#39;), &#39;twisted&#39;: EntryPoint.parse(&#39;twisted = apscheduler.executors.twisted:TwistedExecutor [twisted]&#39;)&#125;
+</code></pre>
+<p>通常我们使用额是threadpool和processpool。可以通过如下的配置进行配置：</p>
+<pre><code class="python">    SCHEDULER_EXECUTORS = &#123;
+        &#39;default&#39;: &#123;
+            &#39;type&#39;: &#39;threadpool&#39;,
+            &#39;max_workers&#39;: 20
+        &#125;,
+        &#39;process&#39;: &#123;
+            &#39;type&#39;: &#39;processpool&#39;,
+            &#39;max_workers&#39;: 10
+        &#125;
+    &#125;
+</code></pre>
+<p>创建job的时候，可以通过executor参数执行该job所使用的执行器，如下代码所示。</p>
+<pre><code class="python">        &#123;
+            &#39;id&#39;: &#39;cron_trigger&#39;,
+            &#39;func&#39;: &#39;config.scheduler:print_test&#39;,
+            &#39;args&#39;: (&#39;joke&#39;,),
+            &#39;trigger&#39;: CronTrigger.from_crontab(&#39;* * * * *&#39;),
+            &#39;executor&#39;: &#39;process&#39;
+
+        &#125;
+</code></pre>
+<h2 id="7-5-JobStore持久化定时任务"><a href="#7-5-JobStore持久化定时任务" class="headerlink" title="7.5 JobStore持久化定时任务"></a>7.5 JobStore持久化定时任务</h2><p>Flask-APScheduler支持定时任务的持久化，默认是使用内存存储定时任务，也支持基于SQLAlchemy的关系型数据库、非关系的MongoDB、Redis、Rethinkdb、另外也支持Zookeeper。</p>
+<pre><code class="python">from pkg_resources import iter_entry_points
+_jobstore_plugins = dict((ep.name, ep) for ep in iter_entry_points(&#39;apscheduler.jobstores&#39;))
+print(_jobstore_plugins)
+
+&#123;&#39;memory&#39;: EntryPoint.parse(&#39;memory = apscheduler.jobstores.memory:MemoryJobStore&#39;), &#39;mongodb&#39;: EntryPoint.parse(&#39;mongodb = apscheduler.jobstores.mongodb:MongoDBJobStore [mongodb]&#39;), &#39;redis&#39;: EntryPoint.parse(&#39;redis = apscheduler.jobstores.redis:RedisJobStore [redis]&#39;), &#39;rethinkdb&#39;: EntryPoint.parse(&#39;rethinkdb = apscheduler.jobstores.rethinkdb:RethinkDBJobStore [rethinkdb]&#39;), &#39;sqlalchemy&#39;: EntryPoint.parse(&#39;sqlalchemy = apscheduler.jobstores.sqlalchemy:SQLAlchemyJobStore [sqlalchemy]&#39;), &#39;zookeeper&#39;: EntryPoint.parse(&#39;zookeeper = apscheduler.jobstores.zookeeper:ZooKeeperJobStore [zookeeper]&#39;)&#125;
+</code></pre>
+<h3 id="7-5-1MemoryJobStore"><a href="#7-5-1MemoryJobStore" class="headerlink" title="7.5.1MemoryJobStore"></a>7.5.1MemoryJobStore</h3><p>该存储器是APScheduler默认的，不需要手动指定。当然也可以通过配置文件进行显示指定，配置如下所示：</p>
+<pre><code class="python">    SCHEDULER_JOBSTORES = &#123;
+        &#39;default&#39;: MemoryJobStore()
+    &#125;
+</code></pre>
+<h3 id="7-5-2-SQLAlchemyJobStore"><a href="#7-5-2-SQLAlchemyJobStore" class="headerlink" title="7.5.2 SQLAlchemyJobStore"></a>7.5.2 SQLAlchemyJobStore</h3><p>在前面讲Flask的ORM框架的时候，我们提到过Flask-SQLAlchemy，这里Flask-APScheduler可以基于它进行关系型数据库的定时任务持久化， MySQL、SQLite、Oracle、Postgresql等。这里为了方便演示，使用SQLite进行持久化。在使用SQLAlchemyJobStore之前首先要安装该插件。</p>
+<pre><code class="shell">pip install flask-sqlalchemy
+</code></pre>
+<p>配置如下所示：</p>
+<pre><code class="python">    SCHEDULER_JOBSTORES = &#123;
+        &#39;default&#39;: MemoryJobStore(),
+        &#39;sqlalchemy&#39;: SQLAlchemyJobStore(url=&#39;sqlite:///test.db&#39;)
+    &#125;
+</code></pre>
+<p>并且在配置定时任务的时候，显示的指定该job所使用的jobstore。</p>
+<pre><code class="python">        &#123;
+            &#39;id&#39;: &#39;cron_trigger&#39;,
+            &#39;func&#39;: &#39;config.scheduler:print_test&#39;,
+            &#39;args&#39;: (&#39;joke&#39;,),
+            &#39;trigger&#39;: CronTrigger.from_crontab(&#39;* * * * *&#39;),
+            &#39;executor&#39;: &#39;process&#39;,
+            &#39;jobstore&#39;:&#39;sqlalchemy&#39;
+        &#125;
+</code></pre>
+<p>启动应用之后，会发现自动创建了一个名为apscheduler_jobs的表。如下图所示：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/970c65353c701e154ed622ede16edd63.jpg"></p>
+<h3 id="7-5-3-RedisJobStore"><a href="#7-5-3-RedisJobStore" class="headerlink" title="7.5.3 RedisJobStore"></a>7.5.3 RedisJobStore</h3><p>同样我们也可以使用Redis进行持久化，首先需要安装Python的Redis包。</p>
+<pre><code class="shell">pip install redis
+</code></pre>
+<p>配置：</p>
+<pre><code class="python">    SCHEDULER_JOBSTORES = &#123;
+        # &#39;default&#39;: MemoryJobStore(),
+        # &#39;sqlalchemy&#39;: SQLAlchemyJobStore(url=&#39;sqlite:///test.db&#39;),
+        &#39;redis&#39;: RedisJobStore(host=&#39;localhost&#39;, port=6379)
+    &#125;
+</code></pre>
+<p>显示指定：</p>
+<pre><code class="python">        &#123;
+            &#39;id&#39;: &#39;cron_trigger&#39;,
+            &#39;func&#39;: &#39;config.scheduler:print_test&#39;,
+            &#39;args&#39;: (&#39;joke&#39;,),
+            &#39;trigger&#39;: CronTrigger.from_crontab(&#39;* * * * *&#39;),
+            &#39;executor&#39;: &#39;process&#39;,
+            &#39;jobstore&#39;: &#39;redis&#39;
+        &#125;
+</code></pre>
+<p>如下图所示，发现redis里写入了APScheduler相关的数据。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/42a5007a76dd7354601658cb25966abd.jpg"></p>
+<h3 id="7-5-4-RethinkDBJobStore"><a href="#7-5-4-RethinkDBJobStore" class="headerlink" title="7.5.4 RethinkDBJobStore"></a>7.5.4 RethinkDBJobStore</h3><p>关于rethindb，<a target="_blank" rel="noopener" href="https://rethinkdb.com/%E3%80%82APScheduler%E5%90%8C%E6%A0%B7%E6%94%AF%E6%8C%81%E4%BD%BF%E7%94%A8RethinkDB%E5%81%9A%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E6%8C%81%E4%B9%85%E5%8C%96%E3%80%82">https://rethinkdb.com/。APScheduler同样支持使用RethinkDB做定时任务持久化。</a></p>
+<p>依然首选需要安装RethinkDB的包。</p>
+<pre><code class="shell">pip install rethinkdb
+</code></pre>
+<p>配置：</p>
+<pre><code class="python">    SCHEDULER_JOBSTORES = &#123;
+        # &#39;default&#39;: MemoryJobStore(),
+        # &#39;sqlalchemy&#39;: SQLAlchemyJobStore(url=&#39;sqlite:///test.db&#39;),
+        # &#39;redis&#39;: RedisJobStore(host=&#39;localhost&#39;, port=6379),
+        &#39;rethinkdb&#39;: RethinkDBJobStore(host=&#39;localhost&#39;, port=28015)
+    &#125;
+</code></pre>
+<p>显示在job里指定jobstore</p>
+<pre><code class="python">        &#123;
+            &#39;id&#39;: &#39;cron_trigger&#39;,
+            &#39;func&#39;: &#39;config.scheduler:print_test&#39;,
+            &#39;args&#39;: (&#39;joke&#39;,),
+            &#39;trigger&#39;: CronTrigger.from_crontab(&#39;* * * * *&#39;),
+            &#39;executor&#39;: &#39;process&#39;,
+            &#39;jobstore&#39;: &#39;rethinkdb&#39;
+        &#125;
+</code></pre>
+<p>重启应用，发现在rethinkdb里写入了定时任务的相关信息。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/e9268af3efb92e783cc1e5a22b106271.jpg"></p>
+<h3 id="7-5-5-MongoDBJobStore"><a href="#7-5-5-MongoDBJobStore" class="headerlink" title="7.5.5 MongoDBJobStore"></a>7.5.5 MongoDBJobStore</h3><p>依然需要安装mongo的python包</p>
+<pre><code class="shell">pip install pymongo
+</code></pre>
+<p>配置：</p>
+<pre><code class="python">    SCHEDULER_JOBSTORES = &#123;
+        # &#39;default&#39;: MemoryJobStore(),
+        # &#39;sqlalchemy&#39;: SQLAlchemyJobStore(url=&#39;sqlite:///test.db&#39;),
+        # &#39;redis&#39;: RedisJobStore(host=&#39;localhost&#39;, port=6379),
+        # &#39;rethinkdb&#39;: RethinkDBJobStore(host=&#39;localhost&#39;, port=28015)
+        &#39;mongodb&#39;: MongoDBJobStore(host=&#39;localhost&#39;,port=27017)
+    &#125;
+</code></pre>
+<p>显示的在job中指定：</p>
+<pre><code class="python">        &#123;
+            &#39;id&#39;: &#39;cron_trigger&#39;,
+            &#39;func&#39;: &#39;config.scheduler:print_test&#39;,
+            &#39;args&#39;: (&#39;joke&#39;,),
+            &#39;trigger&#39;: CronTrigger.from_crontab(&#39;* * * * *&#39;),
+            &#39;executor&#39;: &#39;process&#39;,
+            &#39;jobstore&#39;: &#39;mongodb&#39;
+        &#125;
+</code></pre>
+<p>重启应用，查看数据库如下所示：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/d076d6bb5d11897a9070756606f027c8.jpg"></p>
+<h3 id="7-5-6-ZooKeeperJobStore"><a href="#7-5-6-ZooKeeperJobStore" class="headerlink" title="7.5.6 ZooKeeperJobStore"></a>7.5.6 ZooKeeperJobStore</h3><p>依然是需要安装zookeeper的python客户端，这里使用的是kazoo</p>
+<pre><code class="shell">pip install kazoo
+</code></pre>
+<p>配置：</p>
+<pre><code class="python">    SCHEDULER_JOBSTORES = &#123;
+        # &#39;default&#39;: MemoryJobStore(),
+        # &#39;sqlalchemy&#39;: SQLAlchemyJobStore(url=&#39;sqlite:///test.db&#39;),
+        # &#39;redis&#39;: RedisJobStore(host=&#39;localhost&#39;, port=6379),
+        # &#39;rethinkdb&#39;: RethinkDBJobStore(host=&#39;localhost&#39;, port=28015)
+        # &#39;mongodb&#39;: MongoDBJobStore(host=&#39;localhost&#39;,port=27017)
+        &#39;zookeeper&#39;: ZooKeeperJobStore(hosts=&#39;localhost:2181&#39;)
+    &#125;
+</code></pre>
+<p>显示的在job中指定jobstore:</p>
+<pre><code class="python">        &#123;
+            &#39;id&#39;: &#39;cron_trigger&#39;,
+            &#39;func&#39;: &#39;config.scheduler:print_test&#39;,
+            &#39;args&#39;: (&#39;joke&#39;,),
+            &#39;trigger&#39;: CronTrigger.from_crontab(&#39;* * * * *&#39;),
+            &#39;executor&#39;: &#39;process&#39;,
+            &#39;jobstore&#39;: &#39;zookeeper&#39;
+        &#125;
+</code></pre>
+<p>进入zookeeper命令行，查看。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/074541f079d79a51f81c0407daf6e6a3.jpg"></p>
+<h1 id="8-Socket插件Flask-SocketIO"><a href="#8-Socket插件Flask-SocketIO" class="headerlink" title="8 Socket插件Flask-SocketIO"></a>8 Socket插件Flask-SocketIO</h1><p>相信websocket在平时的web开发中，也用到不少。这里主要介绍一下Flask里的Flask-SocketIO插件，该插件支持三种异步模式：eventlet、gevent、threading。</p>
+<ul>
+<li>eventlet是性能最佳的选项，支持长轮询和WebSocket传输。</li>
+<li>gevent在许多不同的配置中得到支持。gevent包完全支持长轮询传输，但与eventlet不同，gevent没有原生的WebSocket支持。要添加对WebSocket的支持，目前有两种选择：安装gevent-websocket 包为gevent添加WebSocket支持，或者可以使用带有WebSocket功能的uWSGI Web服务器。gevent的使用也是一种高性能选项，但略低于eventlet。</li>
+<li>theading需要注意的是它缺乏其他两个选项的性能，因此它只应用于简化开发工作流程，此选项仅支持长轮询传输。</li>
+</ul>
+<p>Flask-SocketIO会根据安装的内容自动检测要使用的异步框架。优先选择eventlet，然后是gevent。对于gevent中的WebSocket支持，首选uWSGI，然后是gevent-websocket。如果既未安装eventlet也未安装gevent，则使用Flask开发服务器。更多关于Flask-SocketIO的使用可以查看官网：<a target="_blank" rel="noopener" href="https://flask-socketio.readthedocs.io/en/latest/%E3%80%82">https://flask-socketio.readthedocs.io/en/latest/。</a></p>
+<h2 id="8-1-快速使用"><a href="#8-1-快速使用" class="headerlink" title="8.1 快速使用"></a>8.1 快速使用</h2><p>首先需要安装Flask-SocketIO的包</p>
+<pre><code class="shell">pip install flask-socketio
+</code></pre>
+<p>初始化</p>
+<pre><code class="python"># create a flask app
+app = Flask(__name__)
+
+# create socketio
+socketio = SocketIO()
+
+if __name__ == &#39;__main__&#39;:
+
+    # init scheduler
+    scheduler.init_app(app=app)
+
+    scheduler.start()
+    scheduler_api()
+
+    # init socketio
+    socketio.init_app(app=app)
+    # run server
+    socketio.run(app=app, host=&#39;0.0.0.0&#39;, port=5000, debug=False)
+</code></pre>
+<h2 id="8-2-演示Demo"><a href="#8-2-演示Demo" class="headerlink" title="8.2 演示Demo"></a>8.2 演示Demo</h2><p>官网文档关于Flask-SocketIO的说明已经很详细了，就不做多余的copy。使用Flask-SocketIO接收消息、发送消息、广播、房间等功能都可以参考官网例子。这里就简单写一个hello world级别的demo，演示一下Flask-SokcetIO如何使用。该demo主要功能就是实时获取内存使用情况，并将信息推送给前台，如下所示：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/61faa079f2527714b9857fd1f5dc90d7.gif"></p>
+<p>主要思路是：当用户点击 [开始监控]按钮时，触发socket连接，后台socket接收连接事件之后，启动后台任务每两秒钟获取一次内存信息，然后推送给前台，前台接收到消息后实时展示。当用户点击[停止监控]按钮是，触发socket销毁，后台socket借口销毁事件之后，停止监控内存。</p>
+<h3 id="8-2-1-获取内存信息"><a href="#8-2-1-获取内存信息" class="headerlink" title="8.2.1 获取内存信息"></a>8.2.1 获取内存信息</h3><p>这里使用psutil获取内存信息，需要先安装此包。</p>
+<pre><code class="shell">pip install psutil
+</code></pre>
+<p>获取内存信息并解析成json</p>
+<pre><code class="python">def get_virtual_memory():
+    &quot;&quot;&quot;
+    获取内存使用情况
+    :return: dict
+    &quot;&quot;&quot;
+    memory_info = psutil.virtual_memory()
+    return &#123;attr: getattr(memory_info, attr) for attr in dir(memory_info) if
+            not attr.__contains__(&quot;_&quot;) and not isinstance(getattr(memory_info, attr), type(len))&#125;
+</code></pre>
+<p>json格式如下所示：</p>
+<pre><code class="json">&#123;
+    &quot;active&quot;: 5771452416,
+    &quot;available&quot;: 6745636864,
+    &quot;free&quot;: 762896384,
+    &quot;inactive&quot;: 5699289088,
+    &quot;percent&quot;: 73.8,
+    &quot;total&quot;: 25769803776,
+    &quot;used&quot;: 17115865088,
+    &quot;wired&quot;: 11344412672
+&#125;
+</code></pre>
+<h3 id="8-2-2-编写异步方法"><a href="#8-2-2-编写异步方法" class="headerlink" title="8.2.2 编写异步方法"></a>8.2.2 编写异步方法</h3><p>该方法主要功能是每2秒获取一次内存信息，然后推送给前台。这里使用tasks字典来存放任务状态，</p>
+<p>使用emit()方法推送消息。代码如下所示：</p>
+<pre><code class="python">def background_task(sid):
+    # add sid to tasks
+    tasks[sid] = True
+    while tasks[sid]:
+        info = get_virtual_memory()
+        socketio.emit(&quot;server_response&quot;, &#123;&#39;data&#39;: info&#125;, namespace=&#39;/ws&#39;)
+        socketio.sleep(2)
+    if not tasks[sid]:
+        tasks.pop(sid)
+</code></pre>
+<h3 id="8-2-3-SocketIO监听connect事件"><a href="#8-2-3-SocketIO监听connect事件" class="headerlink" title="8.2.3 SocketIO监听connect事件"></a>8.2.3 SocketIO监听connect事件</h3><p>后台使用@socketio.on(“connect”, namespace=”/ws”)监听connect事件，并使用socketio.start_background_task()启动后台任务。代码如下所示：</p>
+<pre><code class="python">@socketio.on(&quot;connect&quot;, namespace=&quot;/ws&quot;)
+def handle_connect():
+    &quot;&quot;&quot;
+    handle connect
+    :return:
+    &quot;&quot;&quot;
+    sid = getattr(request, &#39;sid&#39;)
+    socketio.start_background_task(background_task, sid)
+    emit(&quot;connect&quot;, &#123;&#39;data&#39;: &#39;连接成功&#39;&#125;)
+</code></pre>
+<h3 id="8-2-4-SocketIO监听disconnect事件"><a href="#8-2-4-SocketIO监听disconnect事件" class="headerlink" title="8.2.4 SocketIO监听disconnect事件"></a>8.2.4 SocketIO监听disconnect事件</h3><p>后台使用@socketio.on(“disconnect”, namespace=”/ws”)监听disconnect事件，并设置tasks状态为False用以停止后台任务。代码如下：</p>
+<pre><code class="shell">@socketio.on(&quot;disconnect&quot;, namespace=&quot;/ws&quot;)
+def handle_disconnect():
+    sid = getattr(request, &#39;sid&#39;)
+    if sid in tasks:
+        tasks[sid] = False
+</code></pre>
+<h3 id="8-2-5-前台展示"><a href="#8-2-5-前台展示" class="headerlink" title="8.2.5 前台展示"></a>8.2.5 前台展示</h3><p>前台主要使用socket.io.js与后台通信。</p>
+<pre><code class="html">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;title&gt;Flask Demo&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css&quot;
+          integrity=&quot;sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm&quot; crossorigin=&quot;anonymous&quot;&gt;
+    &lt;script src=&quot;https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js&quot;
+            integrity=&quot;sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN&quot;
+            crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js&quot;
+            integrity=&quot;sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q&quot;
+            crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js&quot;
+            integrity=&quot;sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl&quot;
+            crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://cdn.bootcss.com/socket.io/2.2.0/socket.io.dev.js&quot;&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;container&quot;&gt;
+    &lt;br&gt;
+    &lt;h1 class=&quot;text-center&quot;&gt;实时监控内存使用情况&lt;/h1&gt;
+    &lt;div class=&quot;row&quot;&gt;
+        &lt;div style=&quot;margin-bottom: 5%&quot; class=&quot;col-md-12 text-center head-title-font&quot;&gt;
+            &lt;button id=&quot;start-monitor&quot; class=&quot;btn btn-primary&quot; style=&quot;width: 10%&quot;&gt;开始监控&lt;/button&gt;
+
+            &lt;button id=&quot;stop-monitor&quot; class=&quot;btn btn-danger&quot; style=&quot;width: 10%&quot;&gt;停止监控&lt;/button&gt;
+            &lt;hr&gt;
+            &lt;table data-toggle=&quot;table&quot; class=&quot;table table-striped table-bordered&quot;&gt;
+                &lt;thead&gt;
+                &lt;tr id=&quot;table_head&quot;&gt;
+                &lt;/tr&gt;
+                &lt;/thead&gt;
+                &lt;tbody&gt;
+                &lt;tr id=&quot;table_content&quot;&gt;
+                &lt;/tr&gt;
+                &lt;/tbody&gt;
+            &lt;/table&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;script&gt;
+    const url = &quot;ws://localhost:5000/ws&quot;;
+
+    let socket = null;
+
+    //开始监控
+    $(&quot;#start-monitor&quot;).click(function () &#123;
+        socket = io(url)
+
+        socket.on(&#39;connect&#39;, function (msg) &#123;
+            if (!$.isEmptyObject(msg)) &#123;
+                alert(&quot;开启监控&quot;)
+                socket.on(&#39;server_response&#39;, function (msg) &#123;
+                    let headHtml = &#39;&#39;
+                    let content = &#39;&#39;
+                    for (let key in msg[&#39;data&#39;]) &#123;
+                        headHtml += &#39;&lt;th&gt;&#39; + key + &#39;&lt;/th&gt;&#39;
+                        content += `&lt;td&gt;$&#123;msg[&#39;data&#39;][key]&#125;&lt;/td&gt;`
+                    &#125;
+
+                    $(&quot;#table_head&quot;).html(headHtml)
+                    $(&quot;#table_content&quot;).html(content)
+                &#125;);
+            &#125;
+        &#125;);
+    &#125;)
+
+    // 停止监控
+    $(&quot;#stop-monitor&quot;).click(function () &#123;
+        socket.disconnect()
+    &#125;)
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<h1 id="9-使用自定义红图打造层次结构分明的项目"><a href="#9-使用自定义红图打造层次结构分明的项目" class="headerlink" title="9 使用自定义红图打造层次结构分明的项目"></a>9 使用自定义红图打造层次结构分明的项目</h1><p>之前小节讲解了如果使用Flask快速创建一个Web服务，并介绍了Flask的几种扩展。可以看出Flask是一个渐进式的web服务框架，我们可以根据需求动态的进行组件扩展。这一节主要介绍一下如何使用自定义的红图打造一个层次结构分明的项目。为什么要打造一个层次分明的项目，对我个人来说，受spring mvc框架的影响，希望把项目能够按照架构分层，像视图层、逻辑层、数据访问层等，更重要的一点，层次分明的项目，可读性更强。</p>
+<h2 id="9-1-项目结构及说明"><a href="#9-1-项目结构及说明" class="headerlink" title="9.1 项目结构及说明"></a>9.1 项目结构及说明</h2><p>这里创建了一个小的项目，功能层面上实现了博客、用户、标签的CURD操作。提供了RESTful风格的接口。项目集成了上面讲述的blueprint、redprint用于进行项目的层次划分，集成了Flask-SocketIO插件用以提供WebSocket服务，集成了Flask-SQLAlchemy用以对关系型数据库的操作，集成了Flask-APScheduler插件用以执行定时任务。项目结构如下所示：</p>
+<pre><code class="shell">├── README.md 
+├── application # 应用代码文件夹
+│   ├── __init__.py # 初始化应用
+│   ├── api # api包，用以提供RESTful接口
+│   │   ├── __init__.py
+│   │   └── v1 # v1版本包
+│   │       ├── __init__.py # 初始化v1蓝图，注册红图
+│   │       ├── blog # 博客相关接口
+│   │       │   ├── business.py
+│   │       │   └── endpoints.py
+│   │       ├── socketio.py
+│   │       ├── tag # 标签相关接口
+│   │       │   ├── business.py
+│   │       │   └── endpoints.py
+│   │       └── user # 用户相关接口
+│   │           ├── business.py
+│   │           └── endpoints.py
+│   ├── apsheduler
+│   │   ├── __init__.py
+│   ├── config # 应用相关配置目录
+│   │   ├── __init__.py
+│   │   ├── logging.conf # 日志配置文件
+│   │   ├── scheduler.py # flask-apscheduler配置文件
+│   │   └── setting.py # 应用配置文件
+│   ├── database
+│   │   ├── __init__.py # 初始化数据库
+│   │   └── models.py # 模型类，对象关系映射
+│   ├── libs # 组件包
+│   │   ├── __init__.py
+│   │   ├── error.py # 处理错误请求，返回结构化数据
+│   │   ├── ok.py # 处理正常请求，返回结构化数据
+│   │   └── redprint.py # 红图插件，提供红图路由
+│   ├── socketio # flask-socketio扩展
+│   │   ├── __init__.py
+│   └── templates # 用以存放模板以及静态资源。
+│       ├── index.html
+│       └── static
+│           ├── css 
+│           └── js
+├── application.db # sqlite数据库文件
+├── logs
+│   └── application.log # 应用日志
+├── manager.py # 应用入口脚本，提供服务启动、数据库初始化、数据库情况等命令
+└── requirements.txt # 依赖包清单
+</code></pre>
+<h2 id="9-2-代码及接口说明"><a href="#9-2-代码及接口说明" class="headerlink" title="9.2 代码及接口说明"></a>9.2 代码及接口说明</h2><p>关于项目搭建，以及每一模块的详细说明，这里就不做详细描述，完整的代码已经上传到GitHub上了，项目地址：<a target="_blank" rel="noopener" href="https://github.com/shirukai/flask-framework-redprint.git">https://github.com/shirukai/flask-framework-redprint.git</a> </p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/91d9887b6b12125ca793068245dedffb.jpg"></p>
+<p>接口的话这里生成了一份PostMan的文档。<a target="_blank" rel="noopener" href="https://documenter.getpostman.com/view/2759292/S1TSYymv">https://documenter.getpostman.com/view/2759292/S1TSYymv</a> 可以在本地将服务起来，进行接口测试。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/3d3ea37b2b61da628fa7f27bfa7ee3ad.jpg"></p>
+<h1 id="10-使用flask-restplus插件打造RESTFul风格项目"><a href="#10-使用flask-restplus插件打造RESTFul风格项目" class="headerlink" title="10 使用flask-restplus插件打造RESTFul风格项目"></a>10 使用flask-restplus插件打造RESTFul风格项目</h1><p>上面我们已经使用Redprint打造了一个层次接口分明的项目，并且也具有了一定的RESFul风格，能够满足大部分的项目开发。但是提供的REST API管理起来并不容易，在Spring项目里，我们可以使用Swagger来管理API，同样Flask也支持Swagger，因为是渐进式框架， 同样需要我们安装支持swagger的扩展，这里使用的是flask-restplus，官方网址：<a target="_blank" rel="noopener" href="https://flask-restplus.readthedocs.io/en/stable/%EF%BC%8C%E5%AE%83%E7%9A%84%E4%B8%BB%E6%97%A8%E6%98%AF%E4%BB%A5%E6%9C%80%E5%B0%91%E7%9A%84%E8%AE%BE%E7%BD%AE%E8%BF%9B%E8%A1%8C%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%9E%84%E5%BB%BAREST">https://flask-restplus.readthedocs.io/en/stable/，它的主旨是以最少的设置进行最佳实践，快速构建REST</a> API并提供一个连贯的装饰器和工具集来描述我们的API并正确公开其文档。</p>
+<h2 id="10-1-安装flask-restplus"><a href="#10-1-安装flask-restplus" class="headerlink" title="10.1 安装flask-restplus"></a>10.1 安装flask-restplus</h2><p>像其它扩展一样，flask-restplus可以通过pip直接安装</p>
+<pre><code class="shell">pip install flask-restplus
+</code></pre>
+<p>或者使用easy_install</p>
+<pre><code>easy_install flask-restplus
+</code></pre>
+<h2 id="10-2-项目结构及说明"><a href="#10-2-项目结构及说明" class="headerlink" title="10.2 项目结构及说明"></a>10.2 项目结构及说明</h2><p>这里对之前的使用红图创建的项目进行改造，使用flask-restplus来替代红图的作用。主体结构不变，主要对endpoints以及v1.__<em>init</em>__.py进行改造，具体实现可以参考代码。</p>
+<pre><code class="shell">├── README.md
+├── application
+│   ├── __init__.py
+│   ├── api
+│   │   ├── __init__.py
+│   │   └── v1
+│   │       ├── __init__.py # 注册restplus的namespace
+│   │       ├── blog
+│   │       │   ├── business.py
+│   │       │   └── endpoints.py
+│   │       ├── restplus.py # restplus初始化
+│   │       ├── serializers.py # 串行口用以格式化请求参数和返回值
+│   │       ├── socketio.py
+│   │       ├── tag
+│   │       │   ├── business.py
+│   │       │   └── endpoints.py
+│   │       └── user
+│   │           ├── business.py
+│   │           └── endpoints.py
+│   ├── apsheduler
+│   │   ├── __init__.py
+│   ├── config
+│   │   ├── __init__.py
+│   │   ├── logging.conf
+│   │   ├── scheduler.py
+│   │   └── setting.py
+│   ├── database
+│   │   ├── __init__.py
+│   │   └── models.py
+│   ├── libs
+│   │   ├── __init__.py
+│   │   ├── error.py
+│   │   ├── ok.py
+│   │   └── redprint.py
+│   ├── socketio
+│   │   ├── __init__.py
+│   └── templates
+│       ├── index.html
+│       └── static
+│           ├── css
+│           └── js
+├── application.db
+├── logs
+│   └── application.log
+├── manager.py
+└── requirements.txt
+</code></pre>
+<h2 id="10-3-代码及接口说明"><a href="#10-3-代码及接口说明" class="headerlink" title="10.3 代码及接口说明"></a>10.3 代码及接口说明</h2><p>代码同样放到了GitHub上，可以下载代码参考，项目地址：<a target="_blank" rel="noopener" href="https://github.com/shirukai/flask-framwork-restplus.git%E3%80%82">https://github.com/shirukai/flask-framwork-restplus.git。</a></p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/6e2c67ddc84a1d6ad2ab124dca9eb991.jpg"></p>
+<p>刚才也提到过，RESTPlus会自动为我们生成接口文档，当我们启动项目之后，可以访问<a target="_blank" rel="noopener" href="http://localhost:5000/api/v1%E6%9F%A5%E7%9C%8Bswagger%E3%80%82">http://localhost:5000/api/v1查看swagger。</a></p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/05921c101f1960045326a9a623b71604.jpg"></p>
+<h1 id="11-Flask项目发布"><a href="#11-Flask项目发布" class="headerlink" title="11 Flask项目发布"></a>11 Flask项目发布</h1><p>Flask自动的app.run()启动的web服务是用来开发的，并不适合生成环境，所以官方不建议使用app.run()作为生产的容器。关于Flask的项目发布，官方也提供了几种方式，具体的可以参考：<a target="_blank" rel="noopener" href="https://dormousehole.readthedocs.io/en/latest/deploying/%E3%80%82%E8%BF%99%E9%87%8C%E5%B0%B1%E4%B8%8D%E4%B8%80%E4%B8%80%E8%AE%B2%E8%A7%A3%EF%BC%8C%E5%9B%A0%E4%B8%BA%E8%BF%99%E4%B8%AA%E5%9C%B0%E6%96%B9%E6%88%91%E6%8E%A5%E8%A7%A6%E7%9A%84%E4%B9%9F%E4%B8%8D%E5%A4%9A%EF%BC%8C%E6%9A%82%E4%B8%94%E5%8F%AA%E5%86%99%E4%B8%80%E4%B8%8B%E4%BD%BF%E7%94%A8uWSGI%E8%BF%9B%E8%A1%8CFlask%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%8F%91%E5%B8%83%E5%90%A7%E3%80%82">https://dormousehole.readthedocs.io/en/latest/deploying/。这里就不一一讲解，因为这个地方我接触的也不多，暂且只写一下使用uWSGI进行Flask项目的发布吧。</a></p>
+<h2 id="11-1-安装uWSGI"><a href="#11-1-安装uWSGI" class="headerlink" title="11.1 安装uWSGI"></a>11.1 安装uWSGI</h2><p>使用pip安装uwsgi</p>
+<pre><code class="shell">pip install uwsgi
+</code></pre>
+<h2 id="11-2-uwsgi命令的方式启动flask项目"><a href="#11-2-uwsgi命令的方式启动flask项目" class="headerlink" title="11.2 uwsgi命令的方式启动flask项目"></a>11.2 uwsgi命令的方式启动flask项目</h2><p>这里以flask-framework-redprint这个项目为例子，使用uwsgi命令行启动服务。</p>
+<pre><code class="python">uwsgi --http :18666 --wsgi-file manager.py --callable app
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/1c4adad980ed559be923754483aa3c4d.jpg"></p>
+<h2 id="11-3-使用配置文件的方式启动flask项目"><a href="#11-3-使用配置文件的方式启动flask项目" class="headerlink" title="11.3 使用配置文件的方式启动flask项目"></a>11.3 使用配置文件的方式启动flask项目</h2><p>上面使用命令可以简单的启动一个flask服务，但是如果命令参数比较多，使用命令就比较繁琐，这时候我们可以通过配置文件的方式启动。给我们的flask项目设置一个uwsgi配置文件。同样是以flask-framework-redprint为例，在项目根目录创建一个名为uwsgi.ini的配置文件，内容如下：</p>
+<pre><code class="ini">[uwsgi]
+wsgi-file = manager.py
+callable = app
+gevent = 1000
+http-websockets = true
+master = true
+http = 0.0.0.0:18666
+</code></pre>
+<p>启动服务</p>
+<pre><code class="shell">uwsgi uwsgi.ini
+</code></pre>
+<p>效果与命令行一样。</p>
+<h1 id="12-Flask项目容器化"><a href="#12-Flask项目容器化" class="headerlink" title="12 Flask项目容器化"></a>12 Flask项目容器化</h1><p>docker，docker快到碗里来，flask，flask快到docker里去。目前我司项目部署大多都是使用docker，这里不禁要感慨一下，曾几何时使用spring mvc，需要一大把的xml文件，去配置bean，去配置mybatis等等，各种配置文件，搞不好哪里就出问题了，而且启动的时候还需要打成war放到tomcat里，繁琐易出错。现在使用spring boot简化了太多的配置，而且自带web容器，方便到爱不释手，再加上docker加持，从开发到生产节省了太多的精力了。说这么多，只是想表达，新技术给我们带来的极大的便利。接触docker不长，但已经被深深的吸引，上文在讲Flask定时任务插件时，提到的几种持久化方式，像Redis、RethinkDB、MongoDB、还有Zookeeper等，我都是通过docker部署的，几乎是一条命令，就部署完成了，节省了太多部署步骤。所以这里也简单讲一下，如何将我们的Flask服务容器化。</p>
+<h2 id="12-1-使用Dockerfile创建容器镜像"><a href="#12-1-使用Dockerfile创建容器镜像" class="headerlink" title="12.1 使用Dockerfile创建容器镜像"></a>12.1 使用Dockerfile创建容器镜像</h2><p>在项目根目录创建名为Dockerfile的文件，内容如下：</p>
+<pre><code class="python">FROM python:3
+ARG SERVER_PORT=18666
+MAINTAINER shirukai &quot;shirukai@hollysys.net&quot;
+
+# set work dir
+WORKDIR flask-framework-redprint
+
+# copy server files
+COPY . .
+
+# install dependencies
+RUN pip install --no-cache-dir -r requirements.txt -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com
+
+# expose server port
+EXPOSE $&#123;SERVER_PORT&#125;
+
+# set time zone
+ENV TZ Asia/Shanghai
+# start flask service when the container starts
+CMD uwsgi uwsgi.ini
+</code></pre>
+<p>在项目路径执行docker命令创建镜像</p>
+<pre><code class="shell"> docker build -t flask-framework-redprint:v1 .
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/c599967f0f27f726316a25c615b2e3d6.gif"></p>
+<p>等待创建完成，我们可以使用docker images查看我们的镜像。</p>
+<h2 id="12-2-启动容器"><a href="#12-2-启动容器" class="headerlink" title="12.2 启动容器"></a>12.2 启动容器</h2><p>镜像创建完成之后，我们就可以启动我们的docekr容器了，使用如下命令运行</p>
+<pre><code class="python">docker run -itd -p 18666:18666 flask-framework-redprint:v1
+</code></pre>
+<p>查看容器状态</p>
+<pre><code class="shell">docker ps
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/7f273f811100893d65a639508089a1c3.jpg"></p>
+<p>查看容器日志</p>
+<pre><code class="shell">docekr logs 8ca71365a64e
+</code></pre>
+<p>访问localhost:18666查看</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/3d129bd4de7f89fd987b285f692a2329.jpg"></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>Flask的知识点整理到这里总算要告一段落，前前后后花了差不多一个月的时间，断断续续。期间在图书馆拜读了基本关于Flask的书《Flask Web开发》和《Flask Web开发实战：入门、进阶与原理解析》，怎么说呢，这两本书其实大同小异，内容差不多，后者实战的东西更多一点，没有深入阅读。从这两本书中，补充了不少知识，比如请求钩子、关系模型等。之前也接触过Python的另一个热门的Web框架Django，那会学习起来比较费劲，因为刚接触Python，需要学习语法也需要学习框架，对于Django框架的学习只停留在了会使用的阶段。在学习Flask的时候，轻松了不少，一个原因是框架本身的轻量级，另一个原因是有了语言基础，学习起来并不费劲。本文是我对Flask的学习记录，从0到1的学习过程，希望有所帮助，不足或者有错误的地方，烦请指正。</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87"><span class="toc-number">1.</span> <span class="toc-text">1 环境准备</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-Conda%E5%88%9B%E5%BB%BAPython%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 Conda创建Python开发环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-%E5%88%9B%E5%BB%BAFlask%E9%A1%B9%E7%9B%AE"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 创建Flask项目</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3-%E5%AE%89%E8%A3%85Flask"><span class="toc-number">1.3.</span> <span class="toc-text">1.3 安装Flask</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E5%BF%AB%E9%80%9F%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AAWeb%E6%9C%8D%E5%8A%A1"><span class="toc-number">2.</span> <span class="toc-text">2 快速创建一个Web服务</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-Flask%E8%AF%B7%E6%B1%82%E5%A4%84%E7%90%86"><span class="toc-number">3.</span> <span class="toc-text">3 Flask请求处理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-%E6%8C%87%E5%AE%9A%E8%B7%AF%E7%94%B1%E8%AF%B7%E6%B1%82%E7%B1%BB%E5%9E%8B"><span class="toc-number">3.1.</span> <span class="toc-text">3.1 指定路由请求类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-%E8%8E%B7%E5%8F%96%E8%AF%B7%E6%B1%82%E5%8F%82%E6%95%B0"><span class="toc-number">3.2.</span> <span class="toc-text">3.2 获取请求参数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-1-%E8%8E%B7%E5%8F%96URL%E4%B8%8A%E7%9A%84%E5%8F%82%E6%95%B0"><span class="toc-number">3.2.1.</span> <span class="toc-text">3.2.1 获取URL上的参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-2-%E8%8E%B7%E5%8F%96body%E9%87%8C%E7%9A%84%E5%8F%82%E6%95%B0"><span class="toc-number">3.2.2.</span> <span class="toc-text">3.2.2 获取body里的参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-3-%E8%8E%B7%E5%8F%96%E8%A1%A8%E5%8D%95%E6%95%B0%E6%8D%AE"><span class="toc-number">3.2.3.</span> <span class="toc-text">3.2.3 获取表单数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-4-%E8%8E%B7%E5%8F%96%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F"><span class="toc-number">3.2.4.</span> <span class="toc-text">3.2.4 获取文件格式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-%E8%BF%94%E5%9B%9E%E8%AF%B7%E6%B1%82%E5%93%8D%E5%BA%94"><span class="toc-number">3.3.</span> <span class="toc-text">3.3 返回请求响应</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-1-%E8%BF%94%E5%9B%9E%E4%B8%80%E4%B8%AA%E9%A1%B5%E9%9D%A2"><span class="toc-number">3.3.1.</span> <span class="toc-text">3.3.1 返回一个页面</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-2-%E8%BF%94%E5%9B%9Ejson%E6%A0%BC%E5%BC%8F"><span class="toc-number">3.3.2.</span> <span class="toc-text">3.3.2 返回json格式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-3-%E8%BF%94%E5%9B%9E%E6%96%87%E4%BB%B6"><span class="toc-number">3.3.3.</span> <span class="toc-text">3.3.3 返回文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-4-%E8%87%AA%E5%AE%9A%E4%B9%89%E5%93%8D%E5%BA%94"><span class="toc-number">3.3.4.</span> <span class="toc-text">3.3.4 自定义响应</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-5-cookie%E7%9A%84%E8%8E%B7%E5%8F%96%E4%B8%8E%E8%AE%BE%E7%BD%AE"><span class="toc-number">3.4.</span> <span class="toc-text">3.5 cookie的获取与设置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-5-1-%E8%8E%B7%E5%8F%96cookie"><span class="toc-number">3.4.1.</span> <span class="toc-text">3.5.1 获取cookie</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-5-2-%E8%AE%BE%E7%BD%AEcookie"><span class="toc-number">3.4.2.</span> <span class="toc-text">3.5.2 设置cookie</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-5-3-%E5%88%A0%E9%99%A4cookie"><span class="toc-number">3.4.3.</span> <span class="toc-text">3.5.3 删除cookie</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-6-session%E7%9A%84%E8%8E%B7%E5%8F%96%E4%B8%8E%E8%AE%BE%E7%BD%AE"><span class="toc-number">3.5.</span> <span class="toc-text">3.6 session的获取与设置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-6-1-%E8%8E%B7%E5%8F%96session"><span class="toc-number">3.5.1.</span> <span class="toc-text">3.6.1 获取session</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-6-2-%E8%AE%BE%E7%BD%AEsession"><span class="toc-number">3.5.2.</span> <span class="toc-text">3.6.2 设置session</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-6-3-%E5%88%A0%E9%99%A4session"><span class="toc-number">3.5.3.</span> <span class="toc-text">3.6.3 删除session</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-6-4-%E6%B8%85%E7%A9%BA%E6%89%80%E6%9C%89session"><span class="toc-number">3.5.4.</span> <span class="toc-text">3.6.4 清空所有session</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-6-5-%E8%AE%BE%E7%BD%AEsession%E8%BF%87%E6%9C%9F%E6%97%B6%E9%97%B4"><span class="toc-number">3.5.5.</span> <span class="toc-text">3.6.5 设置session过期时间</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-7-%E8%AF%B7%E6%B1%82%E9%92%A9%E5%AD%90"><span class="toc-number">3.6.</span> <span class="toc-text">3.7 请求钩子</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-Flask%E8%93%9D%E5%9B%BE"><span class="toc-number">4.</span> <span class="toc-text">4 Flask蓝图</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-%E5%88%9B%E5%BB%BA%E8%93%9D%E5%9B%BE"><span class="toc-number">4.1.</span> <span class="toc-text">4.1 创建蓝图</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-%E6%B3%A8%E5%86%8C%E8%93%9D%E5%9B%BE"><span class="toc-number">4.2.</span> <span class="toc-text">4.2 注册蓝图</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%E8%87%AA%E5%AE%9A%E4%B9%89Flask%E7%BA%A2%E5%9B%BE"><span class="toc-number">5.</span> <span class="toc-text">5 自定义Flask红图</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#5-1%E5%AE%9A%E4%B9%89%E7%BA%A2%E5%9B%BE%E6%8F%92%E4%BB%B6"><span class="toc-number">5.1.</span> <span class="toc-text">5.1定义红图插件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-2-%E5%88%9B%E5%BB%BA%E7%BA%A2%E5%9B%BE"><span class="toc-number">5.2.</span> <span class="toc-text">5.2 创建红图</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-3-%E6%B3%A8%E5%86%8C%E7%BA%A2%E5%9B%BE"><span class="toc-number">5.3.</span> <span class="toc-text">5.3 注册红图</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-4-%E6%B3%A8%E5%86%8C%E8%93%9D%E5%9B%BE"><span class="toc-number">5.4.</span> <span class="toc-text">5.4 注册蓝图</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-5-%E6%B5%8B%E8%AF%95%E7%BA%A2%E5%9B%BE"><span class="toc-number">5.5.</span> <span class="toc-text">5.5 测试红图</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-ORM%E6%8F%92%E4%BB%B6-Flask-SQLAlchemy"><span class="toc-number">6.</span> <span class="toc-text">6 ORM插件 Flask-SQLAlchemy</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#6-1-%E5%AE%89%E8%A3%85Flask-SQLAlchemy"><span class="toc-number">6.1.</span> <span class="toc-text">6.1 安装Flask-SQLAlchemy</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-2-Flask%E5%BA%94%E7%94%A8%E5%8A%A0%E8%BD%BDSQLAlchemy"><span class="toc-number">6.2.</span> <span class="toc-text">6.2 Flask应用加载SQLAlchemy</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#6-2-1-%E9%85%8D%E7%BD%AE%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">6.2.1.</span> <span class="toc-text">6.2.1 配置数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-2-2-%E5%88%9B%E5%BB%BADB%E5%AE%9E%E4%BE%8B"><span class="toc-number">6.2.2.</span> <span class="toc-text">6.2.2 创建DB实例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-2-3-%E5%88%9B%E5%BB%BA%E8%A1%A8%E6%A8%A1%E5%9E%8B"><span class="toc-number">6.2.3.</span> <span class="toc-text">6.2.3 创建表模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-2-4-%E5%88%9D%E5%A7%8B%E5%8C%96%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">6.2.4.</span> <span class="toc-text">6.2.4 初始化数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-2-5-%E5%9F%BA%E6%9C%AC%E7%9A%84CURD%E6%93%8D%E4%BD%9C"><span class="toc-number">6.2.5.</span> <span class="toc-text">6.2.5 基本的CURD操作</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-%E5%AE%9A%E6%97%B6%E8%B0%83%E5%BA%A6%E6%8F%92%E4%BB%B6Flask-APScheduler"><span class="toc-number">7.</span> <span class="toc-text">7 定时调度插件Flask-APScheduler</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#7-1-Flask-APScheduler%E7%89%B9%E6%80%A7"><span class="toc-number">7.1.</span> <span class="toc-text">7.1 Flask-APScheduler特性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#7-1-1-%E7%89%B9%E6%80%A7%E4%B8%80%EF%BC%9A%E4%BB%8EFlask%E7%9A%84%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%8A%A0%E8%BD%BDscheduler%E9%85%8D%E7%BD%AE"><span class="toc-number">7.1.1.</span> <span class="toc-text">7.1.1 特性一：从Flask的配置中加载scheduler配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-1-2-%E7%89%B9%E6%80%A7%E4%BA%8C%EF%BC%9A%E4%BB%8EFlask%E7%9A%84%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%8A%A0%E8%BD%BD%E5%AE%9A%E4%B9%89%E7%9A%84%E7%9A%84%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1"><span class="toc-number">7.1.2.</span> <span class="toc-text">7.1.2 特性二：从Flask的配置中加载定义的的定时任务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-1-3-%E7%89%B9%E6%80%A7%E4%B8%89%EF%BC%9A%E5%85%81%E8%AE%B8%E6%8C%87%E5%AE%9A%E8%B0%83%E5%BA%A6%E7%A8%8B%E5%BA%8F%E5%B0%86%E5%9C%A8%E5%85%B6%E4%B8%8A%E8%BF%90%E8%A1%8C%E7%9A%84%E4%B8%BB%E6%9C%BA%E5%90%8D"><span class="toc-number">7.1.3.</span> <span class="toc-text">7.1.3 特性三：允许指定调度程序将在其上运行的主机名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-1-4-%E7%89%B9%E6%80%A7%E5%9B%9B%EF%BC%9A%E6%8F%90%E4%BE%9BREST-API-%E5%8E%BB%E7%AE%A1%E7%90%86%E8%B0%83%E5%BA%A6%E4%BB%BB%E5%8A%A1"><span class="toc-number">7.1.4.</span> <span class="toc-text">7.1.4 特性四：提供REST API 去管理调度任务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-1-2-%E7%89%B9%E6%80%A7%E4%BA%94%EF%BC%9A%E4%B8%BAREST-API-%E6%8F%90%E4%BE%9B%E6%9D%83%E9%99%90%E8%AE%A4%E8%AF%81"><span class="toc-number">7.1.5.</span> <span class="toc-text">7.1.2 特性五：为REST API 提供权限认证</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-2-%E5%8A%A8%E6%80%81%E7%AE%A1%E7%90%86%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1"><span class="toc-number">7.2.</span> <span class="toc-text">7.2 动态管理定时任务</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#7-2-1-%E8%8E%B7%E5%8F%96%E8%B0%83%E5%BA%A6%E4%BF%A1%E6%81%AF"><span class="toc-number">7.2.1.</span> <span class="toc-text">7.2.1 获取调度信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-2-2-%E8%8E%B7%E5%8F%96%E6%89%80%E6%9C%89job%E5%88%97%E8%A1%A8"><span class="toc-number">7.2.2.</span> <span class="toc-text">7.2.2 获取所有job列表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-2-3-%E6%96%B0%E5%A2%9Ejob"><span class="toc-number">7.2.3.</span> <span class="toc-text">7.2.3 新增job</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-2-4-%E8%8E%B7%E5%8F%96%E6%9F%90%E4%B8%AAjob%E4%BF%A1%E6%81%AF"><span class="toc-number">7.2.4.</span> <span class="toc-text">7.2.4 获取某个job信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-2-5-%E6%9B%B4%E6%96%B0%E6%8C%87%E5%AE%9Ajob"><span class="toc-number">7.2.5.</span> <span class="toc-text">7.2.5 更新指定job</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-2-6-%E6%9A%82%E5%81%9C%E6%9F%90%E4%B8%AAjob"><span class="toc-number">7.2.6.</span> <span class="toc-text">7.2.6 暂停某个job</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-2-7-%E6%81%A2%E5%A4%8D%E6%9F%90%E4%B8%AAjob"><span class="toc-number">7.2.7.</span> <span class="toc-text">7.2.7 恢复某个job</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-2-8-%E5%88%A0%E9%99%A4%E6%9F%90%E4%B8%AAjob"><span class="toc-number">7.2.8.</span> <span class="toc-text">7.2.8 删除某个job</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-3-%E5%AE%9A%E6%97%B6%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F%EF%BC%9A%E8%A7%A6%E5%8F%91%E5%99%A8"><span class="toc-number">7.3.</span> <span class="toc-text">7.3 定时的几种方式：触发器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#7-3-1-date%E8%A7%A6%E5%8F%91%E5%99%A8"><span class="toc-number">7.3.1.</span> <span class="toc-text">7.3.1 date触发器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-3-2-interval%E8%A7%A6%E5%8F%91%E5%99%A8"><span class="toc-number">7.3.2.</span> <span class="toc-text">7.3.2 interval触发器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-3-3-cron%E8%A7%A6%E5%8F%91%E5%99%A8"><span class="toc-number">7.3.3.</span> <span class="toc-text">7.3.3 cron触发器</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-4-Executor-%E6%89%A7%E8%A1%8C%E5%99%A8%E7%9A%84%E9%85%8D%E7%BD%AE"><span class="toc-number">7.4.</span> <span class="toc-text">7.4 Executor 执行器的配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-5-JobStore%E6%8C%81%E4%B9%85%E5%8C%96%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1"><span class="toc-number">7.5.</span> <span class="toc-text">7.5 JobStore持久化定时任务</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#7-5-1MemoryJobStore"><span class="toc-number">7.5.1.</span> <span class="toc-text">7.5.1MemoryJobStore</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-5-2-SQLAlchemyJobStore"><span class="toc-number">7.5.2.</span> <span class="toc-text">7.5.2 SQLAlchemyJobStore</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-5-3-RedisJobStore"><span class="toc-number">7.5.3.</span> <span class="toc-text">7.5.3 RedisJobStore</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-5-4-RethinkDBJobStore"><span class="toc-number">7.5.4.</span> <span class="toc-text">7.5.4 RethinkDBJobStore</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-5-5-MongoDBJobStore"><span class="toc-number">7.5.5.</span> <span class="toc-text">7.5.5 MongoDBJobStore</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-5-6-ZooKeeperJobStore"><span class="toc-number">7.5.6.</span> <span class="toc-text">7.5.6 ZooKeeperJobStore</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#8-Socket%E6%8F%92%E4%BB%B6Flask-SocketIO"><span class="toc-number">8.</span> <span class="toc-text">8 Socket插件Flask-SocketIO</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#8-1-%E5%BF%AB%E9%80%9F%E4%BD%BF%E7%94%A8"><span class="toc-number">8.1.</span> <span class="toc-text">8.1 快速使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-2-%E6%BC%94%E7%A4%BADemo"><span class="toc-number">8.2.</span> <span class="toc-text">8.2 演示Demo</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#8-2-1-%E8%8E%B7%E5%8F%96%E5%86%85%E5%AD%98%E4%BF%A1%E6%81%AF"><span class="toc-number">8.2.1.</span> <span class="toc-text">8.2.1 获取内存信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-2-2-%E7%BC%96%E5%86%99%E5%BC%82%E6%AD%A5%E6%96%B9%E6%B3%95"><span class="toc-number">8.2.2.</span> <span class="toc-text">8.2.2 编写异步方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-2-3-SocketIO%E7%9B%91%E5%90%ACconnect%E4%BA%8B%E4%BB%B6"><span class="toc-number">8.2.3.</span> <span class="toc-text">8.2.3 SocketIO监听connect事件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-2-4-SocketIO%E7%9B%91%E5%90%ACdisconnect%E4%BA%8B%E4%BB%B6"><span class="toc-number">8.2.4.</span> <span class="toc-text">8.2.4 SocketIO监听disconnect事件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-2-5-%E5%89%8D%E5%8F%B0%E5%B1%95%E7%A4%BA"><span class="toc-number">8.2.5.</span> <span class="toc-text">8.2.5 前台展示</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#9-%E4%BD%BF%E7%94%A8%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BA%A2%E5%9B%BE%E6%89%93%E9%80%A0%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84%E5%88%86%E6%98%8E%E7%9A%84%E9%A1%B9%E7%9B%AE"><span class="toc-number">9.</span> <span class="toc-text">9 使用自定义红图打造层次结构分明的项目</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#9-1-%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84%E5%8F%8A%E8%AF%B4%E6%98%8E"><span class="toc-number">9.1.</span> <span class="toc-text">9.1 项目结构及说明</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-2-%E4%BB%A3%E7%A0%81%E5%8F%8A%E6%8E%A5%E5%8F%A3%E8%AF%B4%E6%98%8E"><span class="toc-number">9.2.</span> <span class="toc-text">9.2 代码及接口说明</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#10-%E4%BD%BF%E7%94%A8flask-restplus%E6%8F%92%E4%BB%B6%E6%89%93%E9%80%A0RESTFul%E9%A3%8E%E6%A0%BC%E9%A1%B9%E7%9B%AE"><span class="toc-number">10.</span> <span class="toc-text">10 使用flask-restplus插件打造RESTFul风格项目</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#10-1-%E5%AE%89%E8%A3%85flask-restplus"><span class="toc-number">10.1.</span> <span class="toc-text">10.1 安装flask-restplus</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-2-%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84%E5%8F%8A%E8%AF%B4%E6%98%8E"><span class="toc-number">10.2.</span> <span class="toc-text">10.2 项目结构及说明</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-3-%E4%BB%A3%E7%A0%81%E5%8F%8A%E6%8E%A5%E5%8F%A3%E8%AF%B4%E6%98%8E"><span class="toc-number">10.3.</span> <span class="toc-text">10.3 代码及接口说明</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#11-Flask%E9%A1%B9%E7%9B%AE%E5%8F%91%E5%B8%83"><span class="toc-number">11.</span> <span class="toc-text">11 Flask项目发布</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#11-1-%E5%AE%89%E8%A3%85uWSGI"><span class="toc-number">11.1.</span> <span class="toc-text">11.1 安装uWSGI</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#11-2-uwsgi%E5%91%BD%E4%BB%A4%E7%9A%84%E6%96%B9%E5%BC%8F%E5%90%AF%E5%8A%A8flask%E9%A1%B9%E7%9B%AE"><span class="toc-number">11.2.</span> <span class="toc-text">11.2 uwsgi命令的方式启动flask项目</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#11-3-%E4%BD%BF%E7%94%A8%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E7%9A%84%E6%96%B9%E5%BC%8F%E5%90%AF%E5%8A%A8flask%E9%A1%B9%E7%9B%AE"><span class="toc-number">11.3.</span> <span class="toc-text">11.3 使用配置文件的方式启动flask项目</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#12-Flask%E9%A1%B9%E7%9B%AE%E5%AE%B9%E5%99%A8%E5%8C%96"><span class="toc-number">12.</span> <span class="toc-text">12 Flask项目容器化</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#12-1-%E4%BD%BF%E7%94%A8Dockerfile%E5%88%9B%E5%BB%BA%E5%AE%B9%E5%99%A8%E9%95%9C%E5%83%8F"><span class="toc-number">12.1.</span> <span class="toc-text">12.1 使用Dockerfile创建容器镜像</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#12-2-%E5%90%AF%E5%8A%A8%E5%AE%B9%E5%99%A8"><span class="toc-number">12.2.</span> <span class="toc-text">12.2 启动容器</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">13.</span> <span class="toc-text">总结</span></a></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

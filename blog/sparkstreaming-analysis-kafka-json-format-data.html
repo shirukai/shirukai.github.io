@@ -1,0 +1,955 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SparkStreaming 解析Kafka JSON格式数据 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="
+版本说明：
+Spark 2.3.0
+Kafka 2.11-2.0.0
+
+前言在项目中，SparkStreaming整合Kafka时，通常Kafka发送的数据是以JSON字符串形式发送的，这里总结了,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">SparkStreaming 解析Kafka JSON格式数据</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/2.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/Spark"><b>「
+                    </b>SPARK<b> 」</b></a>
+                
+                June 11, 2019
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/sparkstreaming-analysis-kafka-json-format-data.html" title="SparkStreaming 解析Kafka JSON格式数据" class="">SparkStreaming 解析Kafka JSON格式数据</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    30k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    28 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Spark/" rel="tag">Spark</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <blockquote>
+<p>版本说明：</p>
+<p>Spark 2.3.0</p>
+<p>Kafka 2.11-2.0.0</p>
+</blockquote>
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>在项目中，SparkStreaming整合Kafka时，通常Kafka发送的数据是以JSON字符串形式发送的，这里总结了五种SparkStreaming解析Kafka中JSON格式数据并转为DataFrame进行数据分析的方法。</p>
+<p>需求：将如下JSON格式的数据</p>
+<p><img src="http://shirukai.gitee.io/images/9744009fbbabe64d3bdd00163d4067b3.jpg"></p>
+<p>转成如下所示的DataFrame</p>
+<p><img src="http://shirukai.gitee.io/images/8f8edce3f9d84668c263502d633b8384.jpg"></p>
+<h1 id="1-使用Python脚本创建造数器"><a href="#1-使用Python脚本创建造数器" class="headerlink" title="1 使用Python脚本创建造数器"></a>1 使用Python脚本创建造数器</h1><p>随机生成如上图所示的JSON格式的数据，并将它发送到Kafka。造数器脚本代码如下所示：</p>
+<p>kafka_data_generator.py</p>
+<pre><code class="python">&quot;&quot;&quot;
+造数器：向kafka发送json格式数据
+
+数据格式如下所示：
+&#123;
+    &quot;namespace&quot;:&quot;000001&quot;,
+    &quot;region&quot;：&quot;Beijing&quot;,
+    &quot;id&quot;:&quot;9d58f83e-fb3b-45d8-b7e4-13d33b0dd832&quot;,
+    &quot;valueType&quot;:&quot;Float&quot;,
+    &quot;value&quot;:&quot;48.5&quot;,
+    &quot;time&quot;:&quot;2018-11-05 15:04:47&quot;
+&#125;
+&quot;&quot;&quot;
+import uuid
+import time
+import random
+from pykafka import KafkaClient
+import json
+
+sample_type = [&#39;Float&#39;, &#39;String&#39;, &#39;Int&#39;]
+sample_namespace = [&#39;000000&#39;, &#39;000001&#39;, &#39;000002&#39;]
+sample_region = [&#39;Beijing&#39;, &#39;Shanghai&#39;, &#39;Jinan&#39;, &#39;Qingdao&#39;, &#39;Yantai&#39;, &#39;Hangzhou&#39;]
+sample_id_info = [
+    &#123;&#39;3f7e7feb-fce6-4421-8321-3ac7c712f57a&#39;: &#123;&#39;valueType&#39;: &#39;Float&#39;, &#39;region&#39;: &#39;Shanghai&#39;, &#39;namespace&#39;: &#39;000001&#39;&#125;&#125;,
+    &#123;&#39;42f3937e-301c-489e-976b-d18f47df626f&#39;: &#123;&#39;valueType&#39;: &#39;Float&#39;, &#39;region&#39;: &#39;Beijing&#39;, &#39;namespace&#39;: &#39;000000&#39;&#125;&#125;,
+    &#123;&#39;d61e5ac7-4357-4d48-a6d9-3e070927f087&#39;: &#123;&#39;valueType&#39;: &#39;Int&#39;, &#39;region&#39;: &#39;Beijing&#39;, &#39;namespace&#39;: &#39;000000&#39;&#125;&#125;,
+    &#123;&#39;ddfca6fe-baf5-4853-8463-465ddf8234b4&#39;: &#123;&#39;valueType&#39;: &#39;String&#39;, &#39;region&#39;: &#39;Hangzhou&#39;, &#39;namespace&#39;: &#39;000001&#39;&#125;&#125;,
+    &#123;&#39;15f7ef13-2100-464c-84d7-ce99d494f702&#39;: &#123;&#39;valueType&#39;: &#39;Int&#39;, &#39;region&#39;: &#39;Qingdao&#39;, &#39;namespace&#39;: &#39;000001&#39;&#125;&#125;,
+    &#123;&#39;abb43869-dd0b-4f43-ab9d-e4682cb9c844&#39;: &#123;&#39;valueType&#39;: &#39;Int&#39;, &#39;region&#39;: &#39;Beijing&#39;, &#39;namespace&#39;: &#39;000000&#39;&#125;&#125;,
+    &#123;&#39;b63c1a92-c76c-4db3-a8ac-66d67c9dc6e6&#39;: &#123;&#39;valueType&#39;: &#39;Int&#39;, &#39;region&#39;: &#39;Yantai&#39;, &#39;namespace&#39;: &#39;000001&#39;&#125;&#125;,
+    &#123;&#39;0cf781ae-8202-4986-8df5-7ca0b21c094e&#39;: &#123;&#39;valueType&#39;: &#39;String&#39;, &#39;region&#39;: &#39;Yantai&#39;, &#39;namespace&#39;: &#39;000002&#39;&#125;&#125;,
+    &#123;&#39;42073ecd-0f23-49d6-a8ba-a8cbee6446e3&#39;: &#123;&#39;valueType&#39;: &#39;Float&#39;, &#39;region&#39;: &#39;Beijing&#39;, &#39;namespace&#39;: &#39;000000&#39;&#125;&#125;,
+    &#123;&#39;bd1fc887-d980-4488-8b03-2254165da582&#39;: &#123;&#39;valueType&#39;: &#39;String&#39;, &#39;region&#39;: &#39;Shanghai&#39;, &#39;namespace&#39;: &#39;000000&#39;&#125;&#125;,
+    &#123;&#39;eec90363-48bc-44b7-90dd-f79288d34f39&#39;: &#123;&#39;valueType&#39;: &#39;String&#39;, &#39;region&#39;: &#39;Shanghai&#39;, &#39;namespace&#39;: &#39;000002&#39;&#125;&#125;,
+    &#123;&#39;fb15d27f-d2e3-4048-85b8-64f4faa526d1&#39;: &#123;&#39;valueType&#39;: &#39;Float&#39;, &#39;region&#39;: &#39;Jinan&#39;, &#39;namespace&#39;: &#39;000001&#39;&#125;&#125;,
+    &#123;&#39;c5a623fd-d67b-4d83-8b42-3345352b8db9&#39;: &#123;&#39;valueType&#39;: &#39;String&#39;, &#39;region&#39;: &#39;Qingdao&#39;, &#39;namespace&#39;: &#39;000001&#39;&#125;&#125;,
+    &#123;&#39;fee3ecb2-dd1a-4421-a8bd-cf8bc6648320&#39;: &#123;&#39;valueType&#39;: &#39;Float&#39;, &#39;region&#39;: &#39;Yantai&#39;, &#39;namespace&#39;: &#39;000001&#39;&#125;&#125;,
+    &#123;&#39;e62818ab-a42a-4342-be31-ba46e0ae7720&#39;: &#123;&#39;valueType&#39;: &#39;Float&#39;, &#39;region&#39;: &#39;Qingdao&#39;, &#39;namespace&#39;: &#39;000001&#39;&#125;&#125;,
+    &#123;&#39;83be5bdc-737c-4616-a576-a15a2c1a1684&#39;: &#123;&#39;valueType&#39;: &#39;String&#39;, &#39;region&#39;: &#39;Hangzhou&#39;, &#39;namespace&#39;: &#39;000001&#39;&#125;&#125;,
+    &#123;&#39;14dcd861-14eb-40f3-a556-e52013646e6d&#39;: &#123;&#39;valueType&#39;: &#39;String&#39;, &#39;region&#39;: &#39;Beijing&#39;, &#39;namespace&#39;: &#39;000002&#39;&#125;&#125;,
+    &#123;&#39;8117826d-4842-4907-b6eb-446fead74244&#39;: &#123;&#39;valueType&#39;: &#39;String&#39;, &#39;region&#39;: &#39;Beijing&#39;, &#39;namespace&#39;: &#39;000001&#39;&#125;&#125;,
+    &#123;&#39;fb23b254-a873-4fba-a17d-73fdccbfe768&#39;: &#123;&#39;valueType&#39;: &#39;Int&#39;, &#39;region&#39;: &#39;Yantai&#39;, &#39;namespace&#39;: &#39;000000&#39;&#125;&#125;,
+    &#123;&#39;0685c868-2f74-4f91-a531-772796b1c8a4&#39;: &#123;&#39;valueType&#39;: &#39;String&#39;, &#39;region&#39;: &#39;Shanghai&#39;, &#39;namespace&#39;: &#39;000001&#39;&#125;&#125;]
+
+
+def generate_id_info(amount=20):
+    &quot;&quot;&quot;
+    生成id 信息，只执行一次
+    :return:
+    [&#123;
+    &quot;id&quot;:&#123;
+        &quot;type&quot;:&quot;Int&quot;,
+        &quot;region&quot;:&quot;Hangzhou&quot;
+    &#125;
+    &#125;]
+    &quot;&quot;&quot;
+    return [&#123;str(uuid.uuid4()): &#123;&quot;valueType&quot;: random.sample(sample_type, 1)[0],
+                                 &quot;region&quot;: random.sample(sample_region, 1)[0],
+                                 &quot;namespace&quot;: random.sample(sample_namespace, 1)[0]
+                                 &#125;&#125; for i in range(amount)]
+
+
+def random_value(value_type):
+    value = &quot;this is string value&quot;
+    if value_type == &quot;Float&quot;:
+        value = random.uniform(1, 100)
+    if value_type == &quot;Int&quot;:
+        value = random.randint(1, 100)
+    return value
+
+
+def generate_data(id_info):
+    data = dict()
+    for _id, info in id_info.items():
+        data = &#123;&quot;id&quot;: _id,
+                &quot;value&quot;: random_value(info[&#39;valueType&#39;]),
+                &quot;time&quot;: time.strftime(&quot;%Y-%m-%d %H:%M:%S&quot;, time.localtime(time.time()))
+                &#125;
+        data.update(info)
+    return data
+
+
+def random_data():
+    return generate_data(random.sample(sample_id_info, 1)[0])
+
+
+if __name__ == &#39;__main__&#39;:
+    client = KafkaClient(hosts=&quot;localhost:9092&quot;, zookeeper_hosts=&quot;localhost:2181&quot;)
+    topic = client.topics[b&quot;spark_streaming_kafka_json&quot;]
+    with topic.get_sync_producer() as producer:
+        for i in range(1000):
+            _random_data = json.dumps(random_data())
+            producer.produce(bytes(_random_data, encoding=&quot;utf-8&quot;))
+            time.sleep(1)
+</code></pre>
+<p>查看kafka topic 中是否包含数据：</p>
+<pre><code class="shell"> sh kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic spark_streaming_kafka_json --from-beginning
+</code></pre>
+<p><img src="http://shirukai.gitee.io/images/adf14b30503df314496556350c269b69.jpg"></p>
+<h1 id="2-Spark-Streaming-处理JSON格式数据"><a href="#2-Spark-Streaming-处理JSON格式数据" class="headerlink" title="2 Spark Streaming 处理JSON格式数据"></a>2 Spark Streaming 处理JSON格式数据</h1><h2 id="2-1-方法一：处理JSON字符串为case-class-生成RDD-case-class-然后直接转成DataFrame"><a href="#2-1-方法一：处理JSON字符串为case-class-生成RDD-case-class-然后直接转成DataFrame" class="headerlink" title="2.1 方法一：处理JSON字符串为case class 生成RDD[case class] 然后直接转成DataFrame"></a>2.1 方法一：处理JSON字符串为case class 生成RDD[case class] 然后直接转成DataFrame</h2><p>思路：Spark Streaming从Kafka读到数据后，先通过自定义的handleMessage2CaseClass方法进行一次转换，将JSON字符串转换成指定格式的case class：[KafkaMessage]，然后通过foreachRDD拿到RDD[KafkaMessage]类型的的rdd，最后直接通过spark.createDataFrame(RDD[KafkaMessage])。思路来源如下图所示：</p>
+<p><img src="http://shirukai.gitee.io/images/9b6b3c5d0fccc94cc9e8f6679bab9121.jpg"></p>
+<p>核心代码：</p>
+<pre><code class="scala">    /**
+      * 方法一：处理JSON字符串为case class 生成RDD[case class] 然后直接转成DataFrame
+      */
+    stream.map(record =&gt; handleMessage2CaseClass(record.value())).foreachRDD(rdd =&gt; &#123;
+      val spark = SparkSession.builder().config(rdd.sparkContext.getConf).getOrCreate()
+      val df = spark.createDataFrame(rdd)
+      df.show()
+    &#125;)
+</code></pre>
+<p>handleMessage2CaseClass方法：</p>
+<pre><code class="scala">def handleMessage2CaseClass(jsonStr: String): KafkaMessage = &#123;
+    val gson = new Gson()
+    gson.fromJson(jsonStr, classOf[KafkaMessage])
+&#125;
+</code></pre>
+<p>Case Class:</p>
+<pre><code class="scala">case class KafkaMessage(time: String, namespace: String, id: String, region: String, value: String, valueType: String)
+</code></pre>
+<p>依赖：</p>
+<pre><code class="xml">&lt;!-- https://mvnrepository.com/artifact/com.google.code.gson/gson --&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;com.google.code.gson&lt;/groupId&gt;
+    &lt;artifactId&gt;gson&lt;/artifactId&gt;
+    &lt;version&gt;2.8.5&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+<h2 id="2-2-方法二：处理JSON字符串为Tuple-生成RDD-Tuple-然后转成DataFrame"><a href="#2-2-方法二：处理JSON字符串为Tuple-生成RDD-Tuple-然后转成DataFrame" class="headerlink" title="2.2 方法二：处理JSON字符串为Tuple 生成RDD[Tuple] 然后转成DataFrame"></a>2.2 方法二：处理JSON字符串为Tuple 生成RDD[Tuple] 然后转成DataFrame</h2><p>思路：此方法的思路与方法一的思路相同，只不过不转为Case Class 而是转为Tuple，思路来源如下图所示：</p>
+<p><img src="http://shirukai.gitee.io/images/d45f80d7f3c8c5f4c044bbbbf84ff7f2.jpg"></p>
+<p>核心代码：</p>
+<pre><code class="scala">    /**
+      * 方法二：处理JSON字符串为Tuple 生成RDD[Tuple] 然后转成DataFrame
+      */
+    stream.map(record =&gt; handleMessage2Tuples(record.value())).foreachRDD(rdd =&gt; &#123;
+      val spark = SparkSession.builder().config(rdd.sparkContext.getConf).getOrCreate()
+      import spark.implicits._
+      val df = rdd.toDF(&quot;id&quot;, &quot;value&quot;, &quot;time&quot;, &quot;valueType&quot;, &quot;region&quot;, &quot;namespace&quot;)
+      df.show()
+    &#125;)
+</code></pre>
+<p>handleMessage2Tuples方法：</p>
+<pre><code class="scala">  def handleMessage2Tuples(jsonStr: String): (String, String, String, String, String, String) = &#123;
+    import scala.collection.JavaConverters._
+    val list = JSON.parseObject(jsonStr, classOf[JLinkedHashMap[String, Object]]).asScala.values.map(x =&gt; String.valueOf(x)).toList
+    list match &#123;
+      case List(v1, v2, v3, v4, v5, v6) =&gt; (v1, v2, v3, v4, v5, v6)
+    &#125;
+  &#125;
+</code></pre>
+<h2 id="2-3-方法三：处理JSON字符串为Row-生成RDD-Row-然后通过schema创建DataFrame"><a href="#2-3-方法三：处理JSON字符串为Row-生成RDD-Row-然后通过schema创建DataFrame" class="headerlink" title="2.3  方法三：处理JSON字符串为Row 生成RDD[Row] 然后通过schema创建DataFrame"></a>2.3  方法三：处理JSON字符串为Row 生成RDD[Row] 然后通过schema创建DataFrame</h2><p>思路：SparkStreaming从kafka读到数据之后，先通过handlerMessage2Row自定义的方法，将JSON字符串转成Row类型，然后通过foreachRDD拿到RDD[Row]类型的RDD，最后通过Spark.createDataFrame(RDD[Row],Schema)生成DataFrame，思路来源：</p>
+<p><img src="http://shirukai.gitee.io/images/41fd698f5236a337b5d915ef95eef33c.jpg"></p>
+<p>核心代码：</p>
+<pre><code class="scala">    /**
+      * 方法三：处理JSON字符串为Row 生成RDD[Row] 然后通过schema创建DataFrame
+      */
+        val schema = StructType(List(
+          StructField(&quot;id&quot;, StringType),
+          StructField(&quot;value&quot;, StringType),
+          StructField(&quot;time&quot;, StringType),
+          StructField(&quot;valueType&quot;, StringType),
+          StructField(&quot;region&quot;, StringType),
+          StructField(&quot;namespace&quot;, StringType))
+        )
+        stream.map(record =&gt; handlerMessage2Row(record.value())).foreachRDD(rdd =&gt; &#123;
+          val spark = SparkSession.builder().config(rdd.sparkContext.getConf).getOrCreate()
+          val df = spark.createDataFrame(rdd, schema)
+          df.show()
+        &#125;)
+</code></pre>
+<p>handlerMessage2Row方法：</p>
+<pre><code class="scala">  def handlerMessage2Row(jsonStr: String): Row = &#123;
+    import scala.collection.JavaConverters._
+    val array = JSON.parseObject(jsonStr, classOf[JLinkedHashMap[String, Object]]).asScala.values.map(x =&gt; String.valueOf(x)).toArray
+    Row(array: _*)
+  &#125;
+</code></pre>
+<h2 id="2-4-方法四：直接将-RDD-String-转成DataSet-然后通过schema转换"><a href="#2-4-方法四：直接将-RDD-String-转成DataSet-然后通过schema转换" class="headerlink" title="2.4 方法四：直接将 RDD[String] 转成DataSet 然后通过schema转换"></a>2.4 方法四：直接将 RDD[String] 转成DataSet 然后通过schema转换</h2><p>思路：直接通过foreachRDD拿到RDD[String]类型的RDD，然后通过spark.createDataSet(RDD[String])方法生成只含有一列value列的DataSet，然后通过Spark SQL 内置函数 from_json格式化json字符串，然后取每一列的值生成DataFrame。思路来源：</p>
+<p><img src="http://shirukai.gitee.io/images/8f9ba40ed2b982db9b72273b71e4f000.jpg"></p>
+<p><img src="http://shirukai.gitee.io/images/3c242f6f0484a338d49b38f098fa881e.jpg"></p>
+<p>核心代码：</p>
+<pre><code class="scala">    /**
+      * 方法四：直接将 RDD[String] 转成DataSet 然后通过schema转换
+      */
+        val schema = StructType(List(
+          StructField(&quot;namespace&quot;, StringType),
+          StructField(&quot;id&quot;, StringType),
+          StructField(&quot;region&quot;, StringType),
+          StructField(&quot;time&quot;, StringType),
+          StructField(&quot;value&quot;, StringType),
+          StructField(&quot;valueType&quot;, StringType))
+        )
+        stream.map(record =&gt; record.value()).foreachRDD(rdd =&gt; &#123;
+          val spark = SparkSession.builder().config(rdd.sparkContext.getConf).getOrCreate()
+          import spark.implicits._
+          val ds = spark.createDataset(rdd)
+          ds.select(from_json(&#39;value.cast(&quot;string&quot;), schema) as &quot;value&quot;).select($&quot;value.*&quot;).show()
+        &#125;)
+</code></pre>
+<h2 id="2-5-方法五：直接将-RDD-String-转成DataSet-然后通过read-json转成DataFrame"><a href="#2-5-方法五：直接将-RDD-String-转成DataSet-然后通过read-json转成DataFrame" class="headerlink" title="2.5 方法五：直接将 RDD[String] 转成DataSet 然后通过read.json转成DataFrame"></a>2.5 方法五：直接将 RDD[String] 转成DataSet 然后通过read.json转成DataFrame</h2><p>思路：直接通过foreachRDD拿到RDD[String]类型的RDD,然后通过spark.createDataSet创建DataSet，最后通过spark.read.json(DataSet[String])方法来创建DataFrame。此方法代码量最小，不需要指定schema，不需要进行json转换。思路来源：</p>
+<p><img src="http://shirukai.gitee.io/images/ae82640fd0b83331b156df7e8969530d.jpg"></p>
+<p>核心代码：</p>
+<pre><code class="scala">/**
+  * 方法五：直接将 RDD[String] 转成DataSet 然后通过read.json转成DataFrame
+  */
+    stream.map(record =&gt; record.value()).foreachRDD(rdd =&gt; &#123;
+      val spark = SparkSession.builder().config(rdd.sparkContext.getConf).getOrCreate()
+      import spark.implicits._
+      val df = spark.read.json(spark.createDataset(rdd))
+      df.show()
+    &#125;)
+</code></pre>
+<h1 id="3-对生成的DataFrame进行分析"><a href="#3-对生成的DataFrame进行分析" class="headerlink" title="3 对生成的DataFrame进行分析"></a>3 对生成的DataFrame进行分析</h1><p>通过上面方法我们已经可以拿到一个如期所欲的DataFrame了，接下来就是使用Spark SQL 对数据进行分析处理。</p>
+<h2 id="3-1-需求1：将time列的时间由原来的2018-11-07-17-08-43字符串格式，转成：yyyyMMdd这种格式，生成新的列，并命名为day列。"><a href="#3-1-需求1：将time列的时间由原来的2018-11-07-17-08-43字符串格式，转成：yyyyMMdd这种格式，生成新的列，并命名为day列。" class="headerlink" title="3.1 需求1：将time列的时间由原来的2018-11-07 17:08:43字符串格式，转成：yyyyMMdd这种格式，生成新的列，并命名为day列。"></a>3.1 需求1：将time列的时间由原来的2018-11-07 17:08:43字符串格式，转成：yyyyMMdd这种格式，生成新的列，并命名为day列。</h2><p>实现代码：</p>
+<pre><code class="scala">  import org.apache.spark.sql.functions._
+      import spark.implicits._
+      df.select(date_format($&quot;time&quot;.cast(DateType), &quot;yyyyMMdd&quot;).as(&quot;day&quot;), $&quot;*&quot;).show()
+</code></pre>
+<p>结果：</p>
+<p><img src="http://shirukai.gitee.io/images/8324ef057225a8ce45e37c20e2ab60eb.jpg"></p>
+<h2 id="3-2-需求2：按照Day列和namespae列进行分区，并保存到文件。"><a href="#3-2-需求2：按照Day列和namespae列进行分区，并保存到文件。" class="headerlink" title="3.2 需求2：按照Day列和namespae列进行分区，并保存到文件。"></a>3.2 需求2：按照Day列和namespae列进行分区，并保存到文件。</h2><p>实现代码：</p>
+<pre><code class="scala">df.write.mode(SaveMode.Append)
+.partitionBy(&quot;namespace&quot;, &quot;time&quot;)
+.parquet(&quot;/Users/shirukai/Desktop/HollySys/Repository/learn-demo-spark/data/Streaming&quot;)
+</code></pre>
+<p>结果：</p>
+<p><img src="http://shirukai.gitee.io/images/507741bef57ea98e32f314fbd6f9b682.jpg"></p>
+<h1 id="4-一些思考？"><a href="#4-一些思考？" class="headerlink" title="4 一些思考？"></a>4 一些思考？</h1><h2 id="4-1-思考1：如果json格式为-数组该如何处理？"><a href="#4-1-思考1：如果json格式为-数组该如何处理？" class="headerlink" title="4.1 思考1：如果json格式为[]数组该如何处理？"></a>4.1 思考1：如果json格式为[]数组该如何处理？</h2><p>上面我们处理的json字符串都是{}都是对象格式的，那么如果Kafka里的数据是以[]数组字符串的格式存储的，那么我们该如何处理呢？</p>
+<p>这里暂且提供两种方法：</p>
+<h3 id="4-1-1-第一种：通过handleMessage自定义方法处理JSON字符串为Array-case-class-，然后通过flatmap展开，再通过foreachRDD拿到RDD-case-class-格式的RDD，最后直接转成DataFrame。"><a href="#4-1-1-第一种：通过handleMessage自定义方法处理JSON字符串为Array-case-class-，然后通过flatmap展开，再通过foreachRDD拿到RDD-case-class-格式的RDD，最后直接转成DataFrame。" class="headerlink" title="4.1.1 第一种：通过handleMessage自定义方法处理JSON字符串为Array[case class]，然后通过flatmap展开，再通过foreachRDD拿到RDD[case class]格式的RDD，最后直接转成DataFrame。"></a>4.1.1 第一种：通过handleMessage自定义方法处理JSON字符串为Array[case class]，然后通过flatmap展开，再通过foreachRDD拿到RDD[case class]格式的RDD，最后直接转成DataFrame。</h3><p>handleMessage方法：</p>
+<pre><code class="scala">  def handleMessage(jsonStr: String): Array[KafkaMessage] = &#123;
+    val gson = new Gson()
+    gson.fromJson(jsonStr, classOf[Array[KafkaMessage]])
+  &#125;
+</code></pre>
+<p>核心代码：</p>
+<pre><code class="scala">    /**
+      * 补充：处理[]数组格式的json字符串，方法一：通过handleMessage自定义方法处理JSON字符串为Array[case class]，
+      * 然后通过flatmap展开，再通过foreachRDD拿到RDD[case class]格式的RDD，最后直接转成DataFrame。
+      */
+    stream.map(record =&gt; handleMessage(record.value())).flatMap(x=&gt;x).foreachRDD(rdd =&gt; &#123;
+      val spark = SparkSession.builder().config(rdd.sparkContext.getConf).getOrCreate()
+      val df = spark.createDataFrame(rdd)
+      df.show()
+    &#125;)
+</code></pre>
+<p>注意：这里不能直接使用flatMap(<em>)，需要使用flatMap(x=&gt;x)。或者改成stream.map(</em>.value()).flatMap(handleMessage).foreachRDD(……）</p>
+<h3 id="4-1-2-第二种：直接处理RDD-String-，创建DataSet，然后通过Spark-SQL-内置函数from-json和指定的schema格式化json数据，然后再通过内置函数explode展开数组格式的json数据，最后通过select-json中的每一个key，获得最终的DataFrame"><a href="#4-1-2-第二种：直接处理RDD-String-，创建DataSet，然后通过Spark-SQL-内置函数from-json和指定的schema格式化json数据，然后再通过内置函数explode展开数组格式的json数据，最后通过select-json中的每一个key，获得最终的DataFrame" class="headerlink" title="4.1.2 第二种：直接处理RDD[String]，创建DataSet，然后通过Spark SQL 内置函数from_json和指定的schema格式化json数据，然后再通过内置函数explode展开数组格式的json数据，最后通过select json中的每一个key，获得最终的DataFrame"></a>4.1.2 第二种：直接处理RDD[String]，创建DataSet，然后通过Spark SQL 内置函数from_json和指定的schema格式化json数据，然后再通过内置函数explode展开数组格式的json数据，最后通过select json中的每一个key，获得最终的DataFrame</h3><p>核心代码：</p>
+<pre><code class="scala">    /**
+      * 补充：处理[]数组格式的json字符串，方法二：第二种：直接处理RDD[String]，创建DataSet，
+      * 然后通过Spark SQL 内置函数from_json和指定的schema格式化json数据，
+      * 再通过内置函数explode展开数组格式的json数据，最后通过select json中的每一个key，获得最终的DataFrame
+      */
+    val schema = StructType(List(
+      StructField(&quot;namespace&quot;, StringType),
+      StructField(&quot;id&quot;, StringType),
+      StructField(&quot;region&quot;, StringType),
+      StructField(&quot;time&quot;, StringType),
+      StructField(&quot;value&quot;, StringType),
+      StructField(&quot;valueType&quot;, StringType))
+    )
+    stream.map(record =&gt; record.value()).foreachRDD(rdd =&gt; &#123;
+      val spark = SparkSession.builder().config(rdd.sparkContext.getConf).getOrCreate()
+      import spark.implicits._
+      val ds = spark.createDataset(rdd)
+      import org.apache.spark.sql.functions._
+      val df = ds.select(from_json(&#39;value, ArrayType(schema)) as &quot;value&quot;).select(explode(&#39;value)).select($&quot;col.*&quot;)
+      df.show()
+    &#125;)
+</code></pre>
+<h2 id="4-2-思考2：如果使用StructStreaming该如何处理json数据？"><a href="#4-2-思考2：如果使用StructStreaming该如何处理json数据？" class="headerlink" title="4.2 思考2：如果使用StructStreaming该如何处理json数据？"></a>4.2 思考2：如果使用StructStreaming该如何处理json数据？</h2><p>StructStreaming是一个结构式流，实际拿到的就是一个DataFrame，所以可以使用上面的第四种方法来解析json数据。</p>
+<pre><code class="scala">package com.hollysys.spark.streaming.kafkajson
+
+import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.functions.&#123;date_format, from_json, struct&#125;
+import org.apache.spark.sql.streaming.Trigger
+import org.apache.spark.sql.types._
+
+/**
+  * Created by shirukai on 2018/11/8
+  * 使用Struct Streaming 处理 kafka中json格式的数据
+  */
+object HandleJSONDataByStructStreaming &#123;
+  def main(args: Array[String]): Unit = &#123;
+
+    val spark = SparkSession
+      .builder()
+      .appName(this.getClass.getSimpleName)
+      .master(&quot;local[2]&quot;)
+      .getOrCreate()
+    val source = spark
+      .readStream
+      .format(&quot;kafka&quot;)
+      .option(&quot;kafka.bootstrap.servers&quot;, &quot;localhost:9092&quot;)
+      .option(&quot;subscribe&quot;, &quot;spark_streaming_kafka_json&quot;)
+      .option(&quot;startingOffsets&quot;, &quot;earliest&quot;)
+      .option(&quot;failOnDataLoss&quot;, &quot;false&quot;)
+      .load()
+    import spark.implicits._
+    val schema = StructType(List(
+      StructField(&quot;id&quot;, StringType),
+      StructField(&quot;value&quot;, StringType),
+      StructField(&quot;time&quot;, StringType),
+      StructField(&quot;valueType&quot;, StringType),
+      StructField(&quot;region&quot;, StringType),
+      StructField(&quot;namespace&quot;, StringType))
+    )
+    val data = source.select(from_json(&#39;value.cast(&quot;string&quot;), schema) as &quot;value&quot;).select($&quot;value.*&quot;)
+      .select(date_format($&quot;time&quot;.cast(DateType), &quot;yyyyMMdd&quot;).as(&quot;day&quot;), $&quot;*&quot;)
+    val query = data
+      .writeStream
+      .format(&quot;parquet&quot;)
+      .outputMode(&quot;Append&quot;)
+      .option(&quot;checkpointLocation&quot;, &quot;/Users/shirukai/Desktop/HollySys/Repository/learn-demo-spark/data/checkpoint&quot;)
+      .option(&quot;path&quot;, &quot;/Users/shirukai/Desktop/HollySys/Repository/learn-demo-spark/data/structstreaming&quot;)
+      .trigger(Trigger.ProcessingTime(3000)).partitionBy(&quot;namespace&quot;, &quot;day&quot;)
+      .start()
+
+    query.awaitTermination()
+  &#125;
+&#125;
+</code></pre>
+<p>结果：</p>
+<p><img src="http://shirukai.gitee.io/images/409a635f7c1adeef4b41bd39a3795218.jpg"></p>
+<h1 id="5-完整代码："><a href="#5-完整代码：" class="headerlink" title="5 完整代码："></a>5 完整代码：</h1><pre><code class="scala">package com.hollysys.spark.streaming.kafkajson
+
+
+import com.alibaba.fastjson.JSON
+import com.google.gson.Gson
+import org.apache.kafka.common.serialization.StringDeserializer
+import org.apache.spark.SparkConf
+import org.apache.spark.sql.&#123;Row, SaveMode, SparkSession&#125;
+import org.apache.spark.sql.types._
+import org.apache.spark.streaming.kafka010.ConsumerStrategies.Subscribe
+import org.apache.spark.streaming.kafka010.KafkaUtils
+import org.apache.spark.streaming.kafka010.LocationStrategies.PreferConsistent
+import org.apache.spark.streaming.&#123;Seconds, StreamingContext&#125;
+import java.util.&#123;LinkedHashMap =&gt; JLinkedHashMap&#125;
+
+/**
+  * Created by shirukai on 2018/11/7
+  * Spark Streaming 处理 kafka json格式数据,并转成DataFrame
+  */
+object JSONDataHandler &#123;
+  def main(args: Array[String]): Unit = &#123;
+    val conf = new SparkConf().setMaster(&quot;local[2]&quot;).setAppName(&quot;JSONDataHandler&quot;)
+    val ssc = new StreamingContext(conf, Seconds(2))
+
+    val kafkaParams = Map[String, Object](
+      &quot;bootstrap.servers&quot; -&gt; &quot;localhost:9092&quot;,
+      &quot;key.deserializer&quot; -&gt; classOf[StringDeserializer],
+      &quot;value.deserializer&quot; -&gt; classOf[StringDeserializer],
+      &quot;group.id&quot; -&gt; &quot;spark_streaming&quot;,
+      &quot;auto.offset.reset&quot; -&gt; &quot;earliest&quot;,
+      &quot;enable.auto.commit&quot; -&gt; (false: java.lang.Boolean)
+    )
+
+    val topics = Array(&quot;spark_streaming_kafka_json&quot;)
+    val stream = KafkaUtils.createDirectStream[String, String](
+      ssc,
+      PreferConsistent,
+      Subscribe[String, String](topics, kafkaParams)
+    )
+
+
+    /**
+      * 方法一：处理JSON字符串为case class 生成RDD[case class] 然后直接转成DataFrame
+      */
+    stream.map(record =&gt; handleMessage2CaseClass(record.value())).foreachRDD(rdd =&gt; &#123;
+      val spark = SparkSession.builder().config(rdd.sparkContext.getConf).getOrCreate()
+      val df = spark.createDataFrame(rdd)
+      import org.apache.spark.sql.functions._
+      import spark.implicits._
+      df.select(date_format($&quot;time&quot;.cast(DateType), &quot;yyyyMMdd&quot;).as(&quot;day&quot;), $&quot;*&quot;)
+        .write.mode(SaveMode.Append)
+        .partitionBy(&quot;namespace&quot;, &quot;day&quot;)
+        .parquet(&quot;/Users/shirukai/Desktop/HollySys/Repository/learn-demo-spark/data/Streaming&quot;)
+    &#125;)
+
+
+    /**
+      * 方法二：处理JSON字符串为Tuple 生成RDD[Tuple] 然后转成DataFrame
+      */
+    //    stream.map(record =&gt; handleMessage2Tuples(record.value())).foreachRDD(rdd =&gt; &#123;
+    //      val spark = SparkSession.builder().config(rdd.sparkContext.getConf).getOrCreate()
+    //      import spark.implicits._
+    //      val df = rdd.toDF(&quot;id&quot;, &quot;value&quot;, &quot;time&quot;, &quot;valueType&quot;, &quot;region&quot;, &quot;namespace&quot;)
+    //      df.show()
+    //    &#125;)
+
+    /**
+      * 方法三：处理JSON字符串为Row 生成RDD[Row] 然后通过schema创建DataFrame
+      */
+    //        val schema = StructType(List(
+    //          StructField(&quot;id&quot;, StringType),
+    //          StructField(&quot;value&quot;, StringType),
+    //          StructField(&quot;time&quot;, StringType),
+    //          StructField(&quot;valueType&quot;, StringType),
+    //          StructField(&quot;region&quot;, StringType),
+    //          StructField(&quot;namespace&quot;, StringType))
+    //        )
+    //        stream.map(record =&gt; handlerMessage2Row(record.value())).foreachRDD(rdd =&gt; &#123;
+    //          val spark = SparkSession.builder().config(rdd.sparkContext.getConf).getOrCreate()
+    //          val df = spark.createDataFrame(rdd, schema)
+    //          df.show()
+    //        &#125;)
+
+    /**
+      * 方法四：直接将 RDD[String] 转成DataSet 然后通过schema转换
+      */
+    //        val schema = StructType(List(
+    //          StructField(&quot;namespace&quot;, StringType),
+    //          StructField(&quot;id&quot;, StringType),
+    //          StructField(&quot;region&quot;, StringType),
+    //          StructField(&quot;time&quot;, StringType),
+    //          StructField(&quot;value&quot;, StringType),
+    //          StructField(&quot;valueType&quot;, StringType))
+    //        )
+    //        stream.map(record =&gt; record.value()).foreachRDD(rdd =&gt; &#123;
+    //          val spark = SparkSession.builder().config(rdd.sparkContext.getConf).getOrCreate()
+    //          import spark.implicits._
+    //          val ds = spark.createDataset(rdd)
+    //          ds.select(from_json(&#39;value.cast(&quot;string&quot;), schema) as &quot;value&quot;).select($&quot;value.*&quot;).show()
+    //        &#125;)
+
+    /**
+      * 方法五：直接将 RDD[String] 转成DataSet 然后通过read.json转成DataFrame
+      */
+    //        stream.map(record =&gt; record.value()).foreachRDD(rdd =&gt; &#123;
+    //          val spark = SparkSession.builder().config(rdd.sparkContext.getConf).getOrCreate()
+    //          import spark.implicits._
+    //          val df = spark.read.json(spark.createDataset(rdd))
+    //          df.show()
+    //        &#125;)
+
+    /**
+      * 补充：处理[]数组格式的json字符串，方法一：通过handleMessage自定义方法处理JSON字符串为Array[case class]，
+      * 然后通过flatmap展开，再通过foreachRDD拿到RDD[case class]格式的RDD，最后直接转成DataFrame。
+      */
+    //    stream.map(record =&gt; handleMessage(record.value())).flatMap(x=&gt;x).foreachRDD(rdd =&gt; &#123;
+    //      val spark = SparkSession.builder().config(rdd.sparkContext.getConf).getOrCreate()
+    //      val df = spark.createDataFrame(rdd)
+    //      df.show()
+    //    &#125;)
+
+    /**
+      * 补充：处理[]数组格式的json字符串，方法二：第二种：直接处理RDD[String]，创建DataSet，
+      * 然后通过Spark SQL 内置函数from_json和指定的schema格式化json数据，
+      * 再通过内置函数explode展开数组格式的json数据，最后通过select json中的每一个key，获得最终的DataFrame
+      */
+    //    val schema = StructType(List(
+    //      StructField(&quot;namespace&quot;, StringType),
+    //      StructField(&quot;id&quot;, StringType),
+    //      StructField(&quot;region&quot;, StringType),
+    //      StructField(&quot;time&quot;, StringType),
+    //      StructField(&quot;value&quot;, StringType),
+    //      StructField(&quot;valueType&quot;, StringType))
+    //    )
+    //    stream.map(record =&gt; record.value()).foreachRDD(rdd =&gt; &#123;
+    //      val spark = SparkSession.builder().config(rdd.sparkContext.getConf).getOrCreate()
+    //      import spark.implicits._
+    //      val ds = spark.createDataset(rdd)
+    //      import org.apache.spark.sql.functions._
+    //      val df = ds.select(from_json(&#39;value, ArrayType(schema)) as &quot;value&quot;).select(explode(&#39;value)).select($&quot;col.*&quot;)
+    //      df.show()
+    //    &#125;)
+
+    ssc.start()
+    ssc.awaitTermination()
+  &#125;
+
+  def handleMessage(jsonStr: String): Array[KafkaMessage] = &#123;
+    val gson = new Gson()
+    gson.fromJson(jsonStr, classOf[Array[KafkaMessage]])
+  &#125;
+
+  def handleMessage2CaseClass(jsonStr: String): KafkaMessage = &#123;
+    val gson = new Gson()
+    gson.fromJson(jsonStr, classOf[KafkaMessage])
+  &#125;
+
+  def handleMessage2Tuples(jsonStr: String): (String, String, String, String, String, String) = &#123;
+    import scala.collection.JavaConverters._
+    val list = JSON.parseObject(jsonStr, classOf[JLinkedHashMap[String, Object]]).asScala.values.map(x =&gt; String.valueOf(x)).toList
+    list match &#123;
+      case List(v1, v2, v3, v4, v5, v6) =&gt; (v1, v2, v3, v4, v5, v6)
+    &#125;
+  &#125;
+
+  def handlerMessage2Row(jsonStr: String): Row = &#123;
+    import scala.collection.JavaConverters._
+    val array = JSON.parseObject(jsonStr, classOf[JLinkedHashMap[String, Object]]).asScala.values.map(x =&gt; String.valueOf(x)).toArray
+    Row(array: _*)
+  &#125;
+&#125;
+
+case class KafkaMessage(time: String, namespace: String, id: String, region: String, value: String, valueType: String)
+</code></pre>
+<h1 id="6-总结"><a href="#6-总结" class="headerlink" title="6 总结"></a>6 总结</h1><p>目前只想到了上面五种方法，如果有其它思路后续会补上。对比这五种方法，不考虑性能问题，从代码量和灵活度来看，第五种方法是比较好的，因为不需要我们指定schema信息。其次是第一种，不过需要事先定义好case class。另外，在上面的前三种方法中，我们都用到了将json转换成不同对象的方法，但是第一种用的是谷歌的gson后两种用的是阿里的fastjson。是因为，创建DataFrame的时候只支持case class，而当我们使用fastjson的JSON.pares(jsonStr,classOf[KafkaMessage])时会报错，因为fastjson无法将json字符串转成case class对象。所以这里选用的gson。</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E4%BD%BF%E7%94%A8Python%E8%84%9A%E6%9C%AC%E5%88%9B%E5%BB%BA%E9%80%A0%E6%95%B0%E5%99%A8"><span class="toc-number">2.</span> <span class="toc-text">1 使用Python脚本创建造数器</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-Spark-Streaming-%E5%A4%84%E7%90%86JSON%E6%A0%BC%E5%BC%8F%E6%95%B0%E6%8D%AE"><span class="toc-number">3.</span> <span class="toc-text">2 Spark Streaming 处理JSON格式数据</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-%E6%96%B9%E6%B3%95%E4%B8%80%EF%BC%9A%E5%A4%84%E7%90%86JSON%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%BAcase-class-%E7%94%9F%E6%88%90RDD-case-class-%E7%84%B6%E5%90%8E%E7%9B%B4%E6%8E%A5%E8%BD%AC%E6%88%90DataFrame"><span class="toc-number">3.1.</span> <span class="toc-text">2.1 方法一：处理JSON字符串为case class 生成RDD[case class] 然后直接转成DataFrame</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-%E6%96%B9%E6%B3%95%E4%BA%8C%EF%BC%9A%E5%A4%84%E7%90%86JSON%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%BATuple-%E7%94%9F%E6%88%90RDD-Tuple-%E7%84%B6%E5%90%8E%E8%BD%AC%E6%88%90DataFrame"><span class="toc-number">3.2.</span> <span class="toc-text">2.2 方法二：处理JSON字符串为Tuple 生成RDD[Tuple] 然后转成DataFrame</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-%E6%96%B9%E6%B3%95%E4%B8%89%EF%BC%9A%E5%A4%84%E7%90%86JSON%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%BARow-%E7%94%9F%E6%88%90RDD-Row-%E7%84%B6%E5%90%8E%E9%80%9A%E8%BF%87schema%E5%88%9B%E5%BB%BADataFrame"><span class="toc-number">3.3.</span> <span class="toc-text">2.3  方法三：处理JSON字符串为Row 生成RDD[Row] 然后通过schema创建DataFrame</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4-%E6%96%B9%E6%B3%95%E5%9B%9B%EF%BC%9A%E7%9B%B4%E6%8E%A5%E5%B0%86-RDD-String-%E8%BD%AC%E6%88%90DataSet-%E7%84%B6%E5%90%8E%E9%80%9A%E8%BF%87schema%E8%BD%AC%E6%8D%A2"><span class="toc-number">3.4.</span> <span class="toc-text">2.4 方法四：直接将 RDD[String] 转成DataSet 然后通过schema转换</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-5-%E6%96%B9%E6%B3%95%E4%BA%94%EF%BC%9A%E7%9B%B4%E6%8E%A5%E5%B0%86-RDD-String-%E8%BD%AC%E6%88%90DataSet-%E7%84%B6%E5%90%8E%E9%80%9A%E8%BF%87read-json%E8%BD%AC%E6%88%90DataFrame"><span class="toc-number">3.5.</span> <span class="toc-text">2.5 方法五：直接将 RDD[String] 转成DataSet 然后通过read.json转成DataFrame</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E5%AF%B9%E7%94%9F%E6%88%90%E7%9A%84DataFrame%E8%BF%9B%E8%A1%8C%E5%88%86%E6%9E%90"><span class="toc-number">4.</span> <span class="toc-text">3 对生成的DataFrame进行分析</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-%E9%9C%80%E6%B1%821%EF%BC%9A%E5%B0%86time%E5%88%97%E7%9A%84%E6%97%B6%E9%97%B4%E7%94%B1%E5%8E%9F%E6%9D%A5%E7%9A%842018-11-07-17-08-43%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%A0%BC%E5%BC%8F%EF%BC%8C%E8%BD%AC%E6%88%90%EF%BC%9AyyyyMMdd%E8%BF%99%E7%A7%8D%E6%A0%BC%E5%BC%8F%EF%BC%8C%E7%94%9F%E6%88%90%E6%96%B0%E7%9A%84%E5%88%97%EF%BC%8C%E5%B9%B6%E5%91%BD%E5%90%8D%E4%B8%BAday%E5%88%97%E3%80%82"><span class="toc-number">4.1.</span> <span class="toc-text">3.1 需求1：将time列的时间由原来的2018-11-07 17:08:43字符串格式，转成：yyyyMMdd这种格式，生成新的列，并命名为day列。</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-%E9%9C%80%E6%B1%822%EF%BC%9A%E6%8C%89%E7%85%A7Day%E5%88%97%E5%92%8Cnamespae%E5%88%97%E8%BF%9B%E8%A1%8C%E5%88%86%E5%8C%BA%EF%BC%8C%E5%B9%B6%E4%BF%9D%E5%AD%98%E5%88%B0%E6%96%87%E4%BB%B6%E3%80%82"><span class="toc-number">4.2.</span> <span class="toc-text">3.2 需求2：按照Day列和namespae列进行分区，并保存到文件。</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83%EF%BC%9F"><span class="toc-number">5.</span> <span class="toc-text">4 一些思考？</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-%E6%80%9D%E8%80%831%EF%BC%9A%E5%A6%82%E6%9E%9Cjson%E6%A0%BC%E5%BC%8F%E4%B8%BA-%E6%95%B0%E7%BB%84%E8%AF%A5%E5%A6%82%E4%BD%95%E5%A4%84%E7%90%86%EF%BC%9F"><span class="toc-number">5.1.</span> <span class="toc-text">4.1 思考1：如果json格式为[]数组该如何处理？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-1-%E7%AC%AC%E4%B8%80%E7%A7%8D%EF%BC%9A%E9%80%9A%E8%BF%87handleMessage%E8%87%AA%E5%AE%9A%E4%B9%89%E6%96%B9%E6%B3%95%E5%A4%84%E7%90%86JSON%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%BAArray-case-class-%EF%BC%8C%E7%84%B6%E5%90%8E%E9%80%9A%E8%BF%87flatmap%E5%B1%95%E5%BC%80%EF%BC%8C%E5%86%8D%E9%80%9A%E8%BF%87foreachRDD%E6%8B%BF%E5%88%B0RDD-case-class-%E6%A0%BC%E5%BC%8F%E7%9A%84RDD%EF%BC%8C%E6%9C%80%E5%90%8E%E7%9B%B4%E6%8E%A5%E8%BD%AC%E6%88%90DataFrame%E3%80%82"><span class="toc-number">5.1.1.</span> <span class="toc-text">4.1.1 第一种：通过handleMessage自定义方法处理JSON字符串为Array[case class]，然后通过flatmap展开，再通过foreachRDD拿到RDD[case class]格式的RDD，最后直接转成DataFrame。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-2-%E7%AC%AC%E4%BA%8C%E7%A7%8D%EF%BC%9A%E7%9B%B4%E6%8E%A5%E5%A4%84%E7%90%86RDD-String-%EF%BC%8C%E5%88%9B%E5%BB%BADataSet%EF%BC%8C%E7%84%B6%E5%90%8E%E9%80%9A%E8%BF%87Spark-SQL-%E5%86%85%E7%BD%AE%E5%87%BD%E6%95%B0from-json%E5%92%8C%E6%8C%87%E5%AE%9A%E7%9A%84schema%E6%A0%BC%E5%BC%8F%E5%8C%96json%E6%95%B0%E6%8D%AE%EF%BC%8C%E7%84%B6%E5%90%8E%E5%86%8D%E9%80%9A%E8%BF%87%E5%86%85%E7%BD%AE%E5%87%BD%E6%95%B0explode%E5%B1%95%E5%BC%80%E6%95%B0%E7%BB%84%E6%A0%BC%E5%BC%8F%E7%9A%84json%E6%95%B0%E6%8D%AE%EF%BC%8C%E6%9C%80%E5%90%8E%E9%80%9A%E8%BF%87select-json%E4%B8%AD%E7%9A%84%E6%AF%8F%E4%B8%80%E4%B8%AAkey%EF%BC%8C%E8%8E%B7%E5%BE%97%E6%9C%80%E7%BB%88%E7%9A%84DataFrame"><span class="toc-number">5.1.2.</span> <span class="toc-text">4.1.2 第二种：直接处理RDD[String]，创建DataSet，然后通过Spark SQL 内置函数from_json和指定的schema格式化json数据，然后再通过内置函数explode展开数组格式的json数据，最后通过select json中的每一个key，获得最终的DataFrame</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-%E6%80%9D%E8%80%832%EF%BC%9A%E5%A6%82%E6%9E%9C%E4%BD%BF%E7%94%A8StructStreaming%E8%AF%A5%E5%A6%82%E4%BD%95%E5%A4%84%E7%90%86json%E6%95%B0%E6%8D%AE%EF%BC%9F"><span class="toc-number">5.2.</span> <span class="toc-text">4.2 思考2：如果使用StructStreaming该如何处理json数据？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%E5%AE%8C%E6%95%B4%E4%BB%A3%E7%A0%81%EF%BC%9A"><span class="toc-number">6.</span> <span class="toc-text">5 完整代码：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-%E6%80%BB%E7%BB%93"><span class="toc-number">7.</span> <span class="toc-text">6 总结</span></a></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

@@ -1,0 +1,728 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Springboot学习 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="1利用IDEA创建springboot web 项目1.1 新建项目选择spring Initializr,然后点下一步。
+
+1.2填写项目信息
+1.3选择项目类型
+1.4项目名和项目路径
+1.5补,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">Springboot学习</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/1.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/Spring"><b>「
+                    </b>SPRING<b> 」</b></a>
+                
+                August 20, 2018
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/springboot-learning.html" title="Springboot学习" class="">Springboot学习</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    13k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    12 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Spring/" rel="tag">Spring</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <h2 id="1利用IDEA创建springboot-web-项目"><a href="#1利用IDEA创建springboot-web-项目" class="headerlink" title="1利用IDEA创建springboot web 项目"></a>1利用IDEA创建springboot web 项目</h2><h3 id="1-1-新建项目"><a href="#1-1-新建项目" class="headerlink" title="1.1 新建项目"></a>1.1 新建项目</h3><p>选择spring Initializr,然后点下一步。</p>
+<p><img src="https://shirukai.gitee.io/images/201711191434_36.png"></p>
+<h3 id="1-2填写项目信息"><a href="#1-2填写项目信息" class="headerlink" title="1.2填写项目信息"></a>1.2填写项目信息</h3><p><img src="https://shirukai.gitee.io/images/201711191438_694.png"></p>
+<h3 id="1-3选择项目类型"><a href="#1-3选择项目类型" class="headerlink" title="1.3选择项目类型"></a>1.3选择项目类型</h3><p><img src="https://shirukai.gitee.io/images/201711191439_112.png"></p>
+<h3 id="1-4项目名和项目路径"><a href="#1-4项目名和项目路径" class="headerlink" title="1.4项目名和项目路径"></a>1.4项目名和项目路径</h3><p><img src="https://shirukai.gitee.io/images/201711191440_711.png"></p>
+<h3 id="1-5补充包目录"><a href="#1-5补充包目录" class="headerlink" title="1.5补充包目录"></a>1.5补充包目录</h3><p>在com.springboot.demo下创建</p>
+<p>controller包</p>
+<p>entity包</p>
+<p>jpa包</p>
+<p>service包</p>
+<h3 id="1-6-依赖处理"><a href="#1-6-依赖处理" class="headerlink" title="1.6 依赖处理"></a>1.6 依赖处理</h3><p>在pom.xml里导入数据库依赖</p>
+<pre><code>&lt;!--数据库相关依赖--&gt;
+&lt;dependency&gt;
+   &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+   &lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+   &lt;groupId&gt;mysql&lt;/groupId&gt;
+   &lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;
+&lt;/dependency&gt;
+</code></pre>
+<h3 id="1-7项目配置"><a href="#1-7项目配置" class="headerlink" title="1.7项目配置"></a>1.7项目配置</h3><p>在resource下新建一个application.yml文件，并删除原有的application.properties文件</p>
+<p>application.yml配置文件如下</p>
+<pre><code>spring:
+ #配置数据库
+ datasource:
+   driver-class-name: com.mysql.jdbc.Driver
+   url: jdbc:mysql://localhost:3306/springboot?useSSL=false
+   username: root
+   password: inspur
+ #配置jpa
+ jpa: 
+  show-sql: true
+  database: mysql
+  hibernate:
+    ddl-auto: update
+</code></pre>
+<h2 id="2项目开发"><a href="#2项目开发" class="headerlink" title="2项目开发"></a>2项目开发</h2><h3 id="2-1编写entity层"><a href="#2-1编写entity层" class="headerlink" title="2.1编写entity层"></a>2.1编写entity层</h3><p>User</p>
+<pre><code>package com.springboot.demo.entity;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+/**User entity
+ * Created by shirukai on 2017/11/19.
+ */
+@Entity
+public class User &#123;
+    @Id
+    @GeneratedValue
+    private Integer id;
+    private String userName;
+    private String password;
+    //创建一个无参的构造方法（必须）
+    public User()&#123;&#125;
+
+    public Integer getId() &#123;
+        return id;
+    &#125;
+
+    public void setId(Integer id) &#123;
+        this.id = id;
+    &#125;
+
+    public String getUserName() &#123;
+        return userName;
+    &#125;
+
+    public void setUserName(String userName) &#123;
+        this.userName = userName;
+    &#125;
+
+    public String getPassword() &#123;
+        return password;
+    &#125;
+
+    public void setPassword(String password) &#123;
+        this.password = password;
+    &#125;
+&#125;
+</code></pre>
+<h3 id="2-2编写jpa"><a href="#2-2编写jpa" class="headerlink" title="2.2编写jpa"></a>2.2编写jpa</h3><p>UserRepository</p>
+<pre><code>package com.springboot.demo.jpa;
+
+import com.springboot.demo.entity.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+/**
+ * 
+ * Created by shirukai on 2017/11/19.
+ */
+public interface UserRepository extends JpaRepository&lt;User,Integer&gt; &#123;
+&#125;
+</code></pre>
+<h3 id="2-3编写service"><a href="#2-3编写service" class="headerlink" title="2.3编写service"></a>2.3编写service</h3><pre><code>package com.springboot.demo.service;
+
+import com.springboot.demo.entity.User;
+
+import java.util.List;
+
+/**
+ *
+ * Created by shirukai on 2017/11/19.
+ */
+public interface UserService &#123;
+    /**
+     * 新增用户
+     * @param user user
+     * @return user
+     */
+    User insertUser(User user);
+
+    /**
+     * 根据id删除用户
+     * @param id
+     */
+    void deleteUser(int id);
+
+    /**
+     * 获取所有用户
+     * @return
+     */
+    List&lt;User&gt; getAll();
+
+    /**
+     * 更新
+     * @param user
+     * @return
+     */
+    User updateUser(User user);
+
+    /**
+     * 根据id获取用户信息
+     * @param id
+     * @return
+     */
+    User getById(Integer id);
+&#125;
+</code></pre>
+<h3 id="2-4编写service实现类"><a href="#2-4编写service实现类" class="headerlink" title="2.4编写service实现类"></a>2.4编写service实现类</h3><pre><code>package com.springboot.demo.service.Impl;
+
+import com.springboot.demo.entity.User;
+import com.springboot.demo.jpa.UserRepository;
+import com.springboot.demo.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+/**
+ *
+ * Created by shirukai on 2017/11/19.
+ */
+@Service
+public class UserServiceImpl implements UserService &#123;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Override
+    public User insertUser(User user) &#123;
+        return userRepository.save(user);
+    &#125;
+
+    @Override
+    public void deleteUser(int id) &#123;
+        userRepository.delete(id);
+    &#125;
+
+    @Override
+    public List&lt;User&gt; getAll() &#123;
+        return userRepository.findAll();
+    &#125;
+
+    @Override
+    public User updateUser(User user) &#123;
+        return userRepository.save(user);
+    &#125;
+
+    @Override
+    public User getById(Integer id) &#123;
+        return userRepository.getOne(id);
+    &#125;
+&#125;
+</code></pre>
+<h3 id="2-5-编写controller"><a href="#2-5-编写controller" class="headerlink" title="2.5 编写controller"></a>2.5 编写controller</h3><pre><code>package com.springboot.demo.controller;
+
+import com.springboot.demo.entity.User;
+import com.springboot.demo.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+/**
+ * Created by shirukai on 2017/11/19.
+ */
+@RestController
+public class UserController &#123;
+    @Autowired
+    private UserService userService;
+
+    @RequestMapping(value = &quot;/insertuser&quot;, method = RequestMethod.POST)
+    public User insertUser(
+            User user
+    ) &#123;
+        return userService.insertUser(user);
+    &#125;
+
+    @RequestMapping(value = &quot;/getAll&quot;, method = RequestMethod.GET)
+    List&lt;User&gt; getAll() &#123;
+        return userService.getAll();
+    &#125;
+
+    @RequestMapping(value = &quot;/delete/&#123;id&#125;&quot;, method = RequestMethod.DELETE)
+    void deleteById(
+            @PathVariable(&quot;id&quot;) Integer id
+    ) &#123;
+        userService.deleteUser(id);
+    &#125;
+
+    @RequestMapping(value = &quot;/update/&#123;id&#125;&quot;, method = RequestMethod.PUT)
+    public User updateById(
+            @PathVariable(&quot;id&quot;) Integer id,
+            @RequestParam(&quot;password&quot;) String password
+    ) &#123;
+        User user = userService.getById(id);
+        user.setPassword(password);
+        return userService.updateUser(user);
+    &#125;
+&#125;
+</code></pre>
+<h2 id="3-运行-测试"><a href="#3-运行-测试" class="headerlink" title="3 运行 测试"></a>3 运行 测试</h2><h3 id="3-1运行DemoApplication的main方法"><a href="#3-1运行DemoApplication的main方法" class="headerlink" title="3.1运行DemoApplication的main方法"></a>3.1运行DemoApplication的main方法</h3><p><img src="https://shirukai.gitee.io/images/201711191940_734.png"></p>
+<h3 id="3-2利用Postman进行测试"><a href="#3-2利用Postman进行测试" class="headerlink" title="3.2利用Postman进行测试"></a>3.2利用Postman进行测试</h3><h4 id="3-2-1-新增用户"><a href="#3-2-1-新增用户" class="headerlink" title="3.2.1 新增用户"></a>3.2.1 新增用户</h4><p><img src="https://shirukai.gitee.io/images/201711191942_909.png"></p>
+<h4 id="3-2-2根据id删除用户"><a href="#3-2-2根据id删除用户" class="headerlink" title="3.2.2根据id删除用户"></a>3.2.2根据id删除用户</h4><p><img src="https://shirukai.gitee.io/images/201711191943_933.png"></p>
+<h4 id="3-2-3更新用户"><a href="#3-2-3更新用户" class="headerlink" title="3.2.3更新用户"></a>3.2.3更新用户</h4><p><img src="https://shirukai.gitee.io/images/201711191944_315.png"></p>
+<h4 id="3-2-4获取用户列表"><a href="#3-2-4获取用户列表" class="headerlink" title="3.2.4获取用户列表"></a>3.2.4获取用户列表</h4><p><img src="https://shirukai.gitee.io/images/201711191945_753.png"></p>
+<h2 id="4补充：Controller"><a href="#4补充：Controller" class="headerlink" title="4补充：Controller"></a>4补充：Controller</h2><h3 id="4-1-Controller和-RestController的区别"><a href="#4-1-Controller和-RestController的区别" class="headerlink" title="4.1 @Controller和@RestController的区别"></a>4.1 @Controller和@RestController的区别</h3><p>在之前使用Springmvc的时候，当我们使用@Controller注解的controller层需要返回json数据时，需要在方法的前面加上@ResponseBody。</p>
+<p>但是等我们使用RestController注解Controller层时，无需添加@ResponseBody直接就返回json类型的数据。</p>
+<h3 id="4-2-RequestMapping"><a href="#4-2-RequestMapping" class="headerlink" title="4.2 @RequestMapping"></a>4.2 @RequestMapping</h3><p>@RequestMapping是注解在Controller层方法前的。</p>
+<p>通俗的讲，在Spring中使用@RequestMapping注解时，当访问指定url时，会调用的相应的方法。</p>
+<h3 id="4-3-RequestMapping六种使用方法"><a href="#4-3-RequestMapping六种使用方法" class="headerlink" title="4.3 @RequestMapping六种使用方法"></a>4.3 @RequestMapping六种使用方法</h3><h4 id="4-3-1-基本的无参方法"><a href="#4-3-1-基本的无参方法" class="headerlink" title="4.3.1 基本的无参方法"></a>4.3.1 基本的无参方法</h4><pre><code>@RequestMapping(&quot;/login)public String testFunction()&#123;……&#125; 
+</code></pre>
+<p>说明：访问<a target="_blank" rel="noopener" href="http://localhost/xxxx/login%E7%9A%84%E6%97%B6%E5%80%99%EF%BC%8C%E5%B0%B1%E4%BC%9A%E8%B0%83%E7%94%A8testFunction%E6%96%B9%E6%B3%95">http://localhost/xxxx/login的时候，就会调用testFunction方法</a></p>
+<h4 id="4-3-2-参数绑定"><a href="#4-3-2-参数绑定" class="headerlink" title="4.3.2 参数绑定"></a>4.3.2 参数绑定</h4><pre><code>@RequestMapping(&quot;/login&quot;)public String testFunction(@RequestParam (&quot;userId&quot;) String userId)&#123;System.out.println(&quot;用户id为：&quot;+ userId);&#125;&#125;
+</code></pre>
+<p>说明：/login?userId=12 就可以触发调用testFunction方法</p>
+<h4 id="4-3-3-Rest风格的参数"><a href="#4-3-3-Rest风格的参数" class="headerlink" title="4.3.3 Rest风格的参数"></a>4.3.3 Rest风格的参数</h4><pre><code>@RequestMapping(&quot;/login/&#123;userId&#125;&quot;)public String testFunction(@PathVariable String userId)&#123;System.out.println(&quot;用户id为：&quot;+userId);&#125;
+</code></pre>
+<p>说明：</p>
+<p>形如 /login/23 ,其中用PathVariable接受rest风格的参数</p>
+<h4 id="4-3-4-Rest风格参数绑定2"><a href="#4-3-4-Rest风格参数绑定2" class="headerlink" title="4.3.4 Rest风格参数绑定2"></a>4.3.4 Rest风格参数绑定2</h4><pre><code>@RequestMapping (&quot;/login/&#123;userId&#125;&quot;)public String testFunction(@ParhVariable(&quot;userId&quot;)String someUserId)&#123;System.out.println(&quot;用户id为：&quot;+someUserId)&#125;
+</code></pre>
+<p>说明：形如/login/23,会把23传入给userId,然后传值绑定给自定义的 someUserId，</p>
+<p>在实际方法中调用someUserId值为23.</p>
+<h4 id="4-3-4-Url中同时绑定多个id"><a href="#4-3-4-Url中同时绑定多个id" class="headerlink" title="4.3.4 Url中同时绑定多个id"></a>4.3.4 Url中同时绑定多个id</h4><pre><code>    @RequestMapping(&quot;/login/&#123;userId&#125;/password/&#123;passwordId&#125;&quot;)
+    public String testFunction(@PathVariable String userId, @PathVariable String passwordId) &#123;
+        System.out.println(&quot;用户名Id：&quot; + userId);
+        System.out.println(&quot;密码Id：&quot; + passwordId);
+    &#125;
+</code></pre>
+<p>说明：形如/login/23/password/46 ,调用testFunction方法，赋值给userId=23，passwordId=46</p>
+<h4 id="4-3-5-支持正则表达式"><a href="#4-3-5-支持正则表达式" class="headerlink" title="4.3.5 支持正则表达式"></a>4.3.5 支持正则表达式</h4><pre><code>    @RequestMapping(&quot;/&#123;textualPart:[a-z-]+&#125;.&#123;numericPart:[\d]+&#125;&quot;)
+    public String testFunction(@PathVariable String textualPart, @pathVariable String numericPart) &#123;
+        System.out.println(&quot;Textual part:&quot; + textualPart + &quot;,numeric part:&quot; + numericPart);
+    &#125;
+</code></pre>
+<p>说明：形如/sometext.123则输出Textual part: sometext, numeric part: 123. </p>
+<h3 id="4-4-GetMapping、-PostMapping"><a href="#4-4-GetMapping、-PostMapping" class="headerlink" title="4.4 @GetMapping、@PostMapping"></a>4.4 @GetMapping、@PostMapping</h3><p>@GetMapping(“/get”) 相当于 @RequestMapping(value=”/get”,method.RequestMethod.GET)</p>
+<p>@PostMapping (“/post”)相当于@RequestMapping(value=”/post”,method.RequestMethod.POST)</p>
+<h3 id="4-5-处理参数"><a href="#4-5-处理参数" class="headerlink" title="4.5 处理参数"></a>4.5 处理参数</h3><h4 id="4-5-1-PathVariable"><a href="#4-5-1-PathVariable" class="headerlink" title="4.5.1 @PathVariable"></a>4.5.1 @PathVariable</h4><p>获取url里的参数，例如：</p>
+<p>@RequestMapping(“/login/{userId}/password/{passwordId}”)</p>
+<h4 id="4-5-2-RequetParam"><a href="#4-5-2-RequetParam" class="headerlink" title="4.5.2 @RequetParam"></a>4.5.2 @RequetParam</h4><p>获取请求中的参数</p>
+<h2 id="5-补充：Spring-Data-Jpa"><a href="#5-补充：Spring-Data-Jpa" class="headerlink" title="5 补充：Spring-Data-Jpa"></a>5 补充：Spring-Data-Jpa</h2><p><img src="https://shirukai.gitee.io/images/201711181543_110.png"></p>
+<h2 id="6-补充：Springboot-通用配置、开发、生产环境配置"><a href="#6-补充：Springboot-通用配置、开发、生产环境配置" class="headerlink" title="6 补充：Springboot 通用配置、开发、生产环境配置"></a>6 补充：Springboot 通用配置、开发、生产环境配置</h2><p>有时候，我们需要两套配置，比如开发的时候是一个配置，生产的时候是一个配置。这样我们就需要对Springboot的配置进行改造了。</p>
+<p>首先复制原来的配置文件同样粘贴到相同目录下并且重名为application-dev.yml </p>
+<p>然后在复制原来的配置文件，重名为application-pro.yml</p>
+<p>最后清空application.yml里的配置，并添加如下内容：</p>
+<pre><code>spring:
+  profiles:
+   active: dev
+</code></pre>
+<p>active后为dev说明用的是application-dev.yml配置文件，如果改为pro则使用的是application-pro.yml文件</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%E5%88%A9%E7%94%A8IDEA%E5%88%9B%E5%BB%BAspringboot-web-%E9%A1%B9%E7%9B%AE"><span class="toc-number">1.</span> <span class="toc-text">1利用IDEA创建springboot web 项目</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E6%96%B0%E5%BB%BA%E9%A1%B9%E7%9B%AE"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 新建项目</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2%E5%A1%AB%E5%86%99%E9%A1%B9%E7%9B%AE%E4%BF%A1%E6%81%AF"><span class="toc-number">1.2.</span> <span class="toc-text">1.2填写项目信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3%E9%80%89%E6%8B%A9%E9%A1%B9%E7%9B%AE%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.3.</span> <span class="toc-text">1.3选择项目类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-4%E9%A1%B9%E7%9B%AE%E5%90%8D%E5%92%8C%E9%A1%B9%E7%9B%AE%E8%B7%AF%E5%BE%84"><span class="toc-number">1.4.</span> <span class="toc-text">1.4项目名和项目路径</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-5%E8%A1%A5%E5%85%85%E5%8C%85%E7%9B%AE%E5%BD%95"><span class="toc-number">1.5.</span> <span class="toc-text">1.5补充包目录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-6-%E4%BE%9D%E8%B5%96%E5%A4%84%E7%90%86"><span class="toc-number">1.6.</span> <span class="toc-text">1.6 依赖处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-7%E9%A1%B9%E7%9B%AE%E9%85%8D%E7%BD%AE"><span class="toc-number">1.7.</span> <span class="toc-text">1.7项目配置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91"><span class="toc-number">2.</span> <span class="toc-text">2项目开发</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1%E7%BC%96%E5%86%99entity%E5%B1%82"><span class="toc-number">2.1.</span> <span class="toc-text">2.1编写entity层</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2%E7%BC%96%E5%86%99jpa"><span class="toc-number">2.2.</span> <span class="toc-text">2.2编写jpa</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3%E7%BC%96%E5%86%99service"><span class="toc-number">2.3.</span> <span class="toc-text">2.3编写service</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4%E7%BC%96%E5%86%99service%E5%AE%9E%E7%8E%B0%E7%B1%BB"><span class="toc-number">2.4.</span> <span class="toc-text">2.4编写service实现类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-%E7%BC%96%E5%86%99controller"><span class="toc-number">2.5.</span> <span class="toc-text">2.5 编写controller</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E8%BF%90%E8%A1%8C-%E6%B5%8B%E8%AF%95"><span class="toc-number">3.</span> <span class="toc-text">3 运行 测试</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1%E8%BF%90%E8%A1%8CDemoApplication%E7%9A%84main%E6%96%B9%E6%B3%95"><span class="toc-number">3.1.</span> <span class="toc-text">3.1运行DemoApplication的main方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2%E5%88%A9%E7%94%A8Postman%E8%BF%9B%E8%A1%8C%E6%B5%8B%E8%AF%95"><span class="toc-number">3.2.</span> <span class="toc-text">3.2利用Postman进行测试</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4%E8%A1%A5%E5%85%85%EF%BC%9AController"><span class="toc-number">4.</span> <span class="toc-text">4补充：Controller</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-Controller%E5%92%8C-RestController%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">4.1.</span> <span class="toc-text">4.1 @Controller和@RestController的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-RequestMapping"><span class="toc-number">4.2.</span> <span class="toc-text">4.2 @RequestMapping</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-RequestMapping%E5%85%AD%E7%A7%8D%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95"><span class="toc-number">4.3.</span> <span class="toc-text">4.3 @RequestMapping六种使用方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-GetMapping%E3%80%81-PostMapping"><span class="toc-number">4.4.</span> <span class="toc-text">4.4 @GetMapping、@PostMapping</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-5-%E5%A4%84%E7%90%86%E5%8F%82%E6%95%B0"><span class="toc-number">4.5.</span> <span class="toc-text">4.5 处理参数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E8%A1%A5%E5%85%85%EF%BC%9ASpring-Data-Jpa"><span class="toc-number">5.</span> <span class="toc-text">5 补充：Spring-Data-Jpa</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E8%A1%A5%E5%85%85%EF%BC%9ASpringboot-%E9%80%9A%E7%94%A8%E9%85%8D%E7%BD%AE%E3%80%81%E5%BC%80%E5%8F%91%E3%80%81%E7%94%9F%E4%BA%A7%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE"><span class="toc-number">6.</span> <span class="toc-text">6 补充：Springboot 通用配置、开发、生产环境配置</span></a></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

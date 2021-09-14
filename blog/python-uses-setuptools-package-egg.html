@@ -1,0 +1,583 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>python使用setuptools打包egg - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="作为Python标准的打包及分发工具，setuptools可以说相当得简单易用。相面记录一下Python如何利用setuptools进行分发打包。
+安装Setuptools方式一：通过python安,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">python使用setuptools打包egg</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/6.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/Python"><b>「
+                    </b>PYTHON<b> 」</b></a>
+                
+                August 20, 2018
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/python-uses-setuptools-package-egg.html" title="python使用setuptools打包egg" class="">python使用setuptools打包egg</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    4.6k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    4 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Python/" rel="tag">Python</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <p>作为Python标准的打包及分发工具，setuptools可以说相当得简单易用。相面记录一下Python如何利用setuptools进行分发打包。</p>
+<h2 id="安装Setuptools"><a href="#安装Setuptools" class="headerlink" title="安装Setuptools"></a>安装Setuptools</h2><p>方式一：通过python安装</p>
+<pre><code>wget http://peak.telecommunity.com/dist/ez_setup.py
+python ez_setup.py
+</code></pre>
+<p>方式二：yum 安装</p>
+<pre><code>yum install python-setuptools
+</code></pre>
+<h2 id="打包一个简单的egg文件"><a href="#打包一个简单的egg文件" class="headerlink" title="打包一个简单的egg文件"></a>打包一个简单的egg文件</h2><p>创建一个setup-demo目录</p>
+<pre><code>mkdir setup-demo
+</code></pre>
+<p>进入setup-demo目录并创建一个firstapp的目录</p>
+<pre><code>cd setup-demo
+mkdir firstapp
+</code></pre>
+<p>进入firstapp创建一个.py文件</p>
+<pre><code>vi say_hello_word.py
+</code></pre>
+<p>内容为：</p>
+<pre><code>say():
+  print(&#39;hello word !&#39;)
+</code></pre>
+<p>在setup-demo目录下创建一个setup.py的文件</p>
+<pre><code>vi setup.py
+</code></pre>
+<p>内容为：</p>
+<pre><code>from setuptools import setup
+setup(
+  name=&quot;firsapp&quot;,
+  version=&quot;1.0&quot;,
+  packages=[&#39;firstapp&#39;]
+)
+</code></pre>
+<p>name为打包app的名字</p>
+<p>version为版本号</p>
+<p>packages为要打包的包名，可以通过数组的形式指定，也可以通过from setuptools import find_packages 这个方法，读取setup.py所在目录的所有包</p>
+<pre><code>packages=find_packages()
+</code></pre>
+<p>最后整个目录结构如下所示：</p>
+<pre><code>[root@localhost setup-demo]# find ./
+./
+./firstapp
+./firstapp/say_hello_word.py
+./setup.py
+</code></pre>
+<p>打包成egg文件</p>
+<pre><code>python setup.py bdist_egg
+</code></pre>
+<p>打包后的目录结构如下图所示：</p>
+<pre><code>[root@localhost setup-demo]# find ./
+./
+./firstapp
+./firstapp/say_hello_word.py
+./setup.py
+./firsapp.egg-info
+./firsapp.egg-info/PKG-INFO
+./firsapp.egg-info/top_level.txt
+./firsapp.egg-info/dependency_links.txt
+./firsapp.egg-info/SOURCES.txt
+./build
+./build/lib
+./build/lib/firstapp
+./build/lib/firstapp/say_hello_word.py
+./build/bdist.linux-x86_64
+./dist
+./dist/firsapp-1.0-py2.7.egg
+</code></pre>
+<p>生成的egg文件会保存在dist目录下面。</p>
+<h2 id="安装egg"><a href="#安装egg" class="headerlink" title="安装egg"></a>安装egg</h2><p>安装egg文件，其实就是通过命令将打包的应用安装到python环境的“site-packages”目录下，这样其他程序就可以向导入标准库一样导入该应用的代码了。</p>
+<p>安装</p>
+<pre><code>python setup.py install
+</code></pre>
+<p><img src="https://shirukai.gitee.io/images/201804161434_161.png"></p>
+<p>或者</p>
+<pre><code>easy_install firsapp-1.0-py2.7.egg
+</code></pre>
+<p>测试</p>
+<pre><code>[root@localhost dist]# python
+Python 2.7.5 (default, Nov  6 2016, 00:28:07) 
+[GCC 4.8.5 20150623 (Red Hat 4.8.5-11)] on linux2
+Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.
+&gt;&gt;&gt; from firstapp.say_hello_word import say
+&gt;&gt;&gt; say()
+hello word !
+</code></pre>
+<h2 id="引入非Python文件"><a href="#引入非Python文件" class="headerlink" title="引入非Python文件"></a>引入非Python文件</h2><p>上例子中只将包下的python文件打包，如果要打包一些非.py的文件，需要在setup.py的同级添加一个MANIFEST.in的配置文件，来告诉setuptools我们打包的东西包括哪些内容。</p>
+<p>例如：我们在创建一个名为secondapp包，里面有一个word文件夹，用来存放一个words.txt的文件，我们来读取这个文件里的内容，然后输出。</p>
+<p>目录结构如下所示：</p>
+<pre><code>[root@localhost secondapp]# find ./
+./
+./secondapp
+./secondapp/word
+./secondapp/word/words.txt
+./secondapp/__init__.py
+./secondapp/handle_word.py
+./setup.py
+./MANIFEST.in
+</code></pre>
+<p>words.txt</p>
+<pre><code>Here are some words to deal with
+</code></pre>
+<p>handle_word.py</p>
+<pre><code>import os
+def print_words():
+        f_p = os.path.join(os.path.dirname(os.path.realpath(__file__)), &#39;word/words.txt&#39;)
+        print(f_p)
+        with open(f_p) as f :
+            print(f.read())
+</code></pre>
+<p>MANIFEST.in </p>
+<p>清单文件，用来列出想要引入的目录路径</p>
+<pre><code>recursive-include secondapp/word *
+</code></pre>
+<p>“recursive-include”表明包含子目录。别急，还有一件事要做，就是在”setup.py”中将” include_package_data”参数设为True：</p>
+<pre><code>from setuptools import setup
+setup(
+  name=&quot;secondapp&quot;,
+  version=&quot;1.0&quot;,
+  packages=[&#39;secondapp&#39;],
+  include_package_data=True 
+)
+</code></pre>
+<p>如果不想包含某些目录，可以添加以下配置</p>
+<pre><code>setup(
+    ...
+    include_package_data=True,    # 启用清单文件MANIFEST.in
+    exclude_package_date=&#123;&#39;&#39;:[&#39;.gitignore&#39;]&#125;
+)
+</code></pre>
+<p>打包</p>
+<pre><code>python setup.py install
+</code></pre>
+<p>测试</p>
+<pre><code>[root@localhost site-packages]# python
+Python 2.7.5 (default, Nov  6 2016, 00:28:07) 
+[GCC 4.8.5 20150623 (Red Hat 4.8.5-11)] on linux2
+Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.
+&gt;&gt;&gt; from secondapp.handle_word import print_words as pw
+&gt;&gt;&gt; pw()
+/usr/lib/python2.7/site-packages/secondapp-1.0-py2.7.egg/secondapp/word/words.txt
+Here are some words to deal with
+</code></pre>
+<p>参考博客：<a target="_blank" rel="noopener" href="http://python.jobbole.com/87240/">http://python.jobbole.com/87240/</a></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85Setuptools"><span class="toc-number">1.</span> <span class="toc-text">安装Setuptools</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%93%E5%8C%85%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84egg%E6%96%87%E4%BB%B6"><span class="toc-number">2.</span> <span class="toc-text">打包一个简单的egg文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85egg"><span class="toc-number">3.</span> <span class="toc-text">安装egg</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%95%E5%85%A5%E9%9D%9EPython%E6%96%87%E4%BB%B6"><span class="toc-number">4.</span> <span class="toc-text">引入非Python文件</span></a></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

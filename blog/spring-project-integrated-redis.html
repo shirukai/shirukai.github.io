@@ -1,0 +1,1559 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>spring项目整合redis - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="之前利用xml配置过spring-data-redis，但是在实际的项目中，兼容性不是很好。先在看一个实际项目中整合redis的案例。
+1 首先pom.xml引入依赖        &amp;lt;!--r,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">spring项目整合redis</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/6.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/Spring"><b>「
+                    </b>SPRING<b> 」</b></a>
+                
+                August 20, 2018
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/spring-project-integrated-redis.html" title="spring项目整合redis" class="">spring项目整合redis</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    36k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    33 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Spring/" rel="tag">Spring</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <p>之前利用xml配置过spring-data-redis，但是在实际的项目中，兼容性不是很好。先在看一个实际项目中整合redis的案例。</p>
+<h3 id="1-首先pom-xml引入依赖"><a href="#1-首先pom-xml引入依赖" class="headerlink" title="1 首先pom.xml引入依赖"></a>1 首先pom.xml引入依赖</h3><pre><code>        &lt;!--redis客户端 jedis--&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;redis.clients&lt;/groupId&gt;
+            &lt;artifactId&gt;jedis&lt;/artifactId&gt;
+            &lt;version&gt;2.8.1&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;!--spring-data-redis jedis--&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.data&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-data-redis&lt;/artifactId&gt;
+            &lt;version&gt;1.6.4.RELEASE&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;!--json、javabean、xml转换--&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;de.odysseus.staxon&lt;/groupId&gt;
+            &lt;artifactId&gt;staxon&lt;/artifactId&gt;
+            &lt;version&gt;1.3&lt;/version&gt;
+        &lt;/dependency&gt;
+</code></pre>
+<h3 id="2-在resources包下创建配置文件"><a href="#2-在resources包下创建配置文件" class="headerlink" title="2 在resources包下创建配置文件"></a>2 在resources包下创建配置文件</h3><p>config.properties</p>
+<pre><code>#是否使用redis(true或false)
+system.redis.isUseRedis=true
+
+#redis模式(哨兵模式:sentinel;单机模式:standalone)
+system.redis.mode=standalone
+
+#spring cache集成模式(redisCache或ehcache)
+system.cache.mode=redisCache
+
+#缓存选择redis时的超时时间(单位:秒)
+system.cache.redis.timeout=3000
+</code></pre>
+<p>redis.properties</p>
+<pre><code>#redis standalone配置
+redis.host=10.110.13.243
+redis.port=6379
+redis.password=shirukai
+
+#redis sentinel配置
+
+#redis 连接池配置
+#最大连接数(默认:8)
+redis.pool.maxTotal=600
+#最大空闲数(默认:8)
+redis.pool.maxIdle=300
+#当连接池资源耗尽时,调用者最大阻塞时间,超时将抛出异常.单位:毫秒,默认:-1,表示永不超时.
+redis.pool.maxWaitMillis=1000
+#指明是否在从池中取出连接前进行检验,如果检验失败,则从池中去除连接并尝试取出另一个 (默认:false)
+redis.pool.testOnBorrow=true
+</code></pre>
+<h3 id="3-创建包目录"><a href="#3-创建包目录" class="headerlink" title="3 创建包目录"></a>3 创建包目录</h3><p>在controller、dao层的同级目录下，创建redis包。</p>
+<p>在redis包下创建</p>
+<p>entity包</p>
+<p>redisDao包</p>
+<p>util包</p>
+<p>目录结构如图</p>
+<p><img src="https://shirukai.gitee.io/images/201712021455_193.png"></p>
+<h3 id="4-创建包扫描自动创建bean"><a href="#4-创建包扫描自动创建bean" class="headerlink" title="4 创建包扫描自动创建bean"></a>4 创建包扫描自动创建bean</h3><p>在spring的配置文件中添加包扫描 (如果项目中之前在这个目录下创建过包扫描，则不需要再次设置，否则会报错。)</p>
+<p>loushagn框架已经扫描，所以无需添加</p>
+<pre><code>&lt;context:component-scan base-package=&quot;kb.redis.redisDao&quot; /&gt;
+</code></pre>
+<h3 id="5-创建SpringContexHolder上下文类"><a href="#5-创建SpringContexHolder上下文类" class="headerlink" title="5 创建SpringContexHolder上下文类"></a>5 创建SpringContexHolder上下文类</h3><p>默认loushang已经创建</p>
+<pre><code>//
+// Source code recreated from a .class file by IntelliJ IDEA
+// (powered by Fernflower decompiler)
+//
+
+package org.loushang.framework.util;
+
+import org.loushang.framework.i18n.MessageSourceExt;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.DisposableBean;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+
+public class SpringContextHolder implements ApplicationContextAware, DisposableBean &#123;
+    private static ApplicationContext applicationContext = null;
+    private static Logger logger = LoggerFactory.getLogger(SpringContextHolder.class);
+
+    public SpringContextHolder() &#123;
+    &#125;
+
+    public static ApplicationContext getApplicationContext() &#123;
+        assertContextInjected();
+        return applicationContext;
+    &#125;
+
+    public static &lt;T&gt; T getBean(String name) &#123;
+        assertContextInjected();
+        return applicationContext.getBean(name);
+    &#125;
+
+    public static void clearHolder() &#123;
+        applicationContext = null;
+    &#125;
+
+    public void setApplicationContext(ApplicationContext applicationContext) &#123;
+        if (applicationContext != null) &#123;
+            logger.warn(MessageSourceExt.getLocaleMessage(&quot;framework.util.034&quot;, &quot;SpringContextHolder中的ApplicationContext被覆盖, 原有ApplicationContext为:&quot;) + applicationContext);
+        &#125;
+
+        applicationContext = applicationContext;
+    &#125;
+
+    public void destroy() throws Exception &#123;
+        clearHolder();
+    &#125;
+
+    private static void assertContextInjected() &#123;
+        if (applicationContext == null) &#123;
+            logger.error(MessageSourceExt.getLocaleMessage(&quot;framework.util.035&quot;, &quot;applicaitonContext属性未注入, 请在WEB-INF/spring/spring-context.xml中定义SpringContextHolder.&quot;));
+            throw new RuntimeException(MessageSourceExt.getLocaleMessage(&quot;framework.util.035&quot;, &quot;applicaitonContext属性未注入, 请在WEB-INF/spring/spring-context.xml中定义SpringContextHolder.&quot;));
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<h3 id="6-配置SpringContexHolder"><a href="#6-配置SpringContexHolder" class="headerlink" title="6 配置SpringContexHolder"></a>6 配置SpringContexHolder</h3><p>楼上配置文件中默认已经启用</p>
+<pre><code>     &lt;!-- spring上下文工具 --&gt;                
+    &lt;bean class=&quot;org.loushang.framework.util.SpringContextHolder&quot; lazy-init=&quot;false&quot; /&gt;
+</code></pre>
+<p>非loushang的话可以自己在spring配置文件中，配置bean。创建一个类，然后选择类路径即可。</p>
+<h3 id="7-创建redis工具类"><a href="#7-创建redis工具类" class="headerlink" title="7 创建redis工具类"></a>7 创建redis工具类</h3><h4 id="7-1-在redis-utils包下创建"><a href="#7-1-在redis-utils包下创建" class="headerlink" title="7.1 在redis/utils包下创建"></a>7.1 在redis/utils包下创建</h4><h5 id="7-1-1-JsonInput类"><a href="#7-1-1-JsonInput类" class="headerlink" title="7.1.1 JsonInput类"></a>7.1.1 JsonInput类</h5><p>JsonInput.java</p>
+<pre><code>package kb.redis.util;
+
+import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * json输入对象
+ */
+public class JsonInput implements Serializable &#123;
+    private static final long serialVersionUID = 6479304251080435277L;
+
+    private String appKey;
+    private String secretKey;
+    private String appType;
+    private String signatureInfo;
+    private String timeStamp;
+    private String tranSeq;
+    private String tranId;
+    private int queueId;
+    private List&lt;Map&lt;String, Object&gt;&gt; body;
+
+    public JsonInput() &#123;
+
+    &#125;
+
+    public JsonInput(String appKey, String secretKey, String appType, String signatureInfo, String timeStamp,
+            String tranSeq, String tranId, int queueId, List&lt;Map&lt;String, Object&gt;&gt; body) &#123;
+        super();
+        this.appKey = appKey;
+        this.secretKey = secretKey;
+        this.appType = appType;
+        this.signatureInfo = signatureInfo;
+        this.timeStamp = timeStamp;
+        this.tranSeq = tranSeq;
+        this.tranId = tranId;
+        this.queueId = queueId;
+        this.body = body;
+    &#125;
+
+    public String getAppKey() &#123;
+        return appKey;
+    &#125;
+
+    public void setAppKey(String appKey) &#123;
+        this.appKey = appKey;
+    &#125;
+
+    public String getSecretKey() &#123;
+        return secretKey;
+    &#125;
+
+    public void setSecretKey(String secretKey) &#123;
+        this.secretKey = secretKey;
+    &#125;
+
+    public String getAppType() &#123;
+        return appType;
+    &#125;
+
+    public void setAppType(String appType) &#123;
+        this.appType = appType;
+    &#125;
+
+    public String getSignatureInfo() &#123;
+        return signatureInfo;
+    &#125;
+
+    public void setSignatureInfo(String signatureInfo) &#123;
+        this.signatureInfo = signatureInfo;
+    &#125;
+
+    public String getTimeStamp() &#123;
+        return timeStamp;
+    &#125;
+
+    public void setTimeStamp(String timeStamp) &#123;
+        this.timeStamp = timeStamp;
+    &#125;
+
+    public String getTranSeq() &#123;
+        return tranSeq;
+    &#125;
+
+    public void setTranSeq(String tranSeq) &#123;
+        this.tranSeq = tranSeq;
+    &#125;
+
+    public List&lt;Map&lt;String, Object&gt;&gt; getBody() &#123;
+        return body;
+    &#125;
+
+    public void setBody(List&lt;Map&lt;String, Object&gt;&gt; body) &#123;
+        this.body = body;
+    &#125;
+
+    public String test(String json) &#123;
+
+        return json;
+    &#125;
+
+    public String getTranId() &#123;
+        return tranId;
+    &#125;
+
+    public void setTranId(String tranId) &#123;
+        this.tranId = tranId;
+    &#125;
+
+    public int getQueueId() &#123;
+        return queueId;
+    &#125;
+
+    public void setQueueId(int queueId) &#123;
+        this.queueId = queueId;
+    &#125;
+
+&#125;
+</code></pre>
+<h5 id="7-1-2-JsonOutput类"><a href="#7-1-2-JsonOutput类" class="headerlink" title="7.1.2 JsonOutput类"></a>7.1.2 JsonOutput类</h5><p>JsonOutput.java</p>
+<pre><code>package kb.redis.util;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * json输出对象
+ */
+public class JsonOutput implements Serializable &#123;
+   private static final long serialVersionUID = -8836237657941280022L;
+
+   private String timeStamp;
+   private String tranSeq;
+   private String tranId;
+
+   private String rtnCode;
+   private String code;
+   private String message;
+   private String signatureInfo;
+   private List&lt;Map&lt;String, Object&gt;&gt; body;
+
+   public JsonOutput() &#123;
+
+   &#125;
+
+   public JsonOutput(String rtnCode, String code, String message) &#123;
+      super();
+      this.rtnCode = rtnCode;
+      this.code = code;
+      this.message = message;
+      this.timeStamp = &quot;&quot;;
+      this.tranSeq = &quot;&quot;;
+      this.tranId = &quot;&quot;;
+      this.signatureInfo = &quot;&quot;;
+      this.body = new ArrayList&lt;Map&lt;String, Object&gt;&gt;();
+   &#125;
+
+   public JsonOutput(String timeStamp, String tranSeq, String tranId, String rtnCode, String code, String message,
+         String signatureInfo, List&lt;Map&lt;String, Object&gt;&gt; body) &#123;
+      super();
+      this.timeStamp = timeStamp;
+      this.tranSeq = tranSeq;
+      this.tranId = tranId;
+      this.rtnCode = rtnCode;
+      this.code = code;
+      this.message = message;
+      this.signatureInfo = signatureInfo;
+      this.body = body;
+   &#125;
+
+   public String getTimeStamp() &#123;
+      return timeStamp;
+   &#125;
+
+   public void setTimeStamp(String timeStamp) &#123;
+      this.timeStamp = timeStamp;
+   &#125;
+
+   public String getTranSeq() &#123;
+      return tranSeq;
+   &#125;
+
+   public void setTranSeq(String tranSeq) &#123;
+      this.tranSeq = tranSeq;
+   &#125;
+
+   public String getRtnCode() &#123;
+      return rtnCode;
+   &#125;
+
+   public void setRtnCode(String rtnCode) &#123;
+      this.rtnCode = rtnCode;
+   &#125;
+
+   public String getCode() &#123;
+      return code;
+   &#125;
+
+   public void setCode(String code) &#123;
+      this.code = code;
+   &#125;
+
+   public String getMessage() &#123;
+      return message;
+   &#125;
+
+   public void setMessage(String message) &#123;
+      this.message = message;
+   &#125;
+
+   public List&lt;Map&lt;String, Object&gt;&gt; getBody() &#123;
+      return body;
+   &#125;
+
+   public void setBody(List&lt;Map&lt;String, Object&gt;&gt; body) &#123;
+      this.body = body;
+   &#125;
+
+   public String getTranId() &#123;
+      return tranId;
+   &#125;
+
+   public void setTranId(String tranId) &#123;
+      this.tranId = tranId;
+   &#125;
+
+   public String getSignatureInfo() &#123;
+      return signatureInfo;
+   &#125;
+
+   public void setSignatureInfo(String signatureInfo) &#123;
+      this.signatureInfo = signatureInfo;
+   &#125;
+
+&#125;
+</code></pre>
+<h5 id="7-1-3-JsonUtil类"><a href="#7-1-3-JsonUtil类" class="headerlink" title="7.1.3  JsonUtil类"></a>7.1.3  JsonUtil类</h5><p>JsonUtil.java</p>
+<pre><code>package kb.redis.util;
+
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import de.odysseus.staxon.json.JsonXMLConfig;
+import de.odysseus.staxon.json.JsonXMLConfigBuilder;
+import de.odysseus.staxon.json.JsonXMLInputFactory;
+import de.odysseus.staxon.json.JsonXMLOutputFactory;
+import de.odysseus.staxon.xml.util.PrettyXMLEventWriter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.xml.stream.XMLEventReader;
+import javax.xml.stream.XMLEventWriter;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLOutputFactory;
+import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.util.Map;
+
+/**
+ * json工具类
+ */
+public final class JsonUtil &#123;
+
+    private JsonUtil() &#123;
+    &#125;
+
+    private static final Logger LOG = LoggerFactory.getLogger(JsonUtil.class);
+
+    /**
+     * object转换为json字符串
+     *
+     * @param object 要转换的对象
+     * @return 转换后的json字符串
+     */
+    public static String objectToJsonStr(Object object) &#123;
+        ObjectMapper om = new ObjectMapper();
+        try &#123;
+            return om.writeValueAsString(object);
+        &#125; catch (JsonProcessingException e) &#123;
+            LOG.error(e.getMessage());
+            return null;
+        &#125;
+    &#125;
+
+    /**
+     * json字符串转换为指定类型的对象
+     *
+     * @param &lt;T&gt;       Type Java类
+     * @param jsonStr   要转换的json字符串
+     * @param valueType 指定的对象类型
+     * @return 转换后的对象
+     */
+    public static &lt;T&gt; T jsonStrToObject(String jsonStr, Class&lt;T&gt; valueType) &#123;
+        ObjectMapper om = new ObjectMapper();
+        try &#123;
+            return om.readValue(jsonStr, valueType);
+        &#125; catch (JsonParseException e) &#123;
+            LOG.error(e.getMessage());
+            return null;
+        &#125; catch (JsonMappingException e) &#123;
+            LOG.error(e.getMessage());
+            return null;
+        &#125; catch (IOException e) &#123;
+            LOG.error(e.getMessage());
+            return null;
+        &#125; catch (NullPointerException e) &#123;
+            LOG.error(e.getMessage());
+            return null;
+        &#125;
+    &#125;
+
+    /**
+     * 将xml字符串转换为json字符串
+     *
+     * @param xmlStr 要转换的xml字符串
+     * @return 转换后的json字符串
+     */
+    public static String xmlStrToJsonStr(String xmlStr) &#123;
+        StringReader input = new StringReader(xmlStr);
+        StringWriter output = new StringWriter();
+        JsonXMLConfig config = new JsonXMLConfigBuilder().autoArray(true).autoPrimitive(true).prettyPrint(true).build();
+        try &#123;
+            XMLEventReader reader = XMLInputFactory.newInstance().createXMLEventReader(input);
+            XMLEventWriter writer = new JsonXMLOutputFactory(config).createXMLEventWriter(output);
+            writer.add(reader);
+            reader.close();
+            writer.close();
+        &#125; catch (Exception e) &#123;
+            LOG.error(e.getMessage());
+        &#125; finally &#123;
+            try &#123;
+                output.close();
+                input.close();
+            &#125; catch (IOException e) &#123;
+                LOG.error(e.getMessage());
+            &#125;
+        &#125;
+        return output.toString();
+    &#125;
+
+    /**
+     * 将json字符串转换为xml字符串
+     *
+     * @param jsonStr 要转换的json字符串
+     * @return 转换后的xml字符串
+     */
+    public static String jsonStrToXmlStr(String jsonStr) &#123;
+        StringReader input = new StringReader(jsonStr);
+        StringWriter output = new StringWriter();
+        JsonXMLConfig config = new JsonXMLConfigBuilder().multiplePI(false).repairingNamespaces(false).build();
+        try &#123;
+            XMLEventReader reader = new JsonXMLInputFactory(config).createXMLEventReader(input);
+            XMLEventWriter writer = XMLOutputFactory.newInstance().createXMLEventWriter(output);
+            writer = new PrettyXMLEventWriter(writer);
+            writer.add(reader);
+            reader.close();
+            writer.close();
+        &#125; catch (Exception e) &#123;
+            LOG.error(e.getMessage());
+        &#125; finally &#123;
+            try &#123;
+                output.close();
+                input.close();
+            &#125; catch (IOException e) &#123;
+                LOG.error(e.getMessage());
+            &#125;
+        &#125;
+        /**
+         * remove &lt;?xml version=&#39;1.0&#39;?&gt; return output.toString().substring(22);
+         */
+        return output.toString();
+    &#125;
+
+    /**
+     * JsonInput对象完整性校验
+     *
+     * @param jsonInput 要检验的JsonInput对象
+     * @return JsonOutput
+     */
+    public static JsonOutput validateJson(JsonInput jsonInput) &#123;
+        String rtnCode = &quot;3&quot;;
+        String code = &quot;3000&quot;;
+        String message = &quot;fail&quot;;
+        if (jsonInput == null) &#123;
+            message = &quot;inputJson not received.&quot;;
+        &#125; else if (jsonInput.getAppKey() == null) &#123;
+            message = &quot;appKey is required.&quot;;
+        &#125; else if (jsonInput.getAppType() == null) &#123;
+            message = &quot;appType is required.&quot;;
+        &#125; else if (jsonInput.getBody() == null) &#123;
+            message = &quot;body is required.&quot;;
+        &#125; else if (jsonInput.getSecretKey() == null) &#123;
+            message = &quot;secretKey is required.&quot;;
+        &#125; else if (jsonInput.getSignatureInfo() == null) &#123;
+            message = &quot;signatureInfo is required.&quot;;
+        &#125; else if (jsonInput.getTimeStamp() == null) &#123;
+            message = &quot;timeStamp is required.&quot;;
+        &#125; else if (jsonInput.getTranId() == null) &#123;
+            message = &quot;tranId is required.&quot;;
+        &#125; else if (jsonInput.getTranSeq() == null) &#123;
+            message = &quot;tranSeq is required.&quot;;
+        &#125; else &#123;
+            rtnCode = &quot;0&quot;;
+            code = &quot;0000&quot;;
+            message = &quot;success&quot;;
+        &#125;
+        JsonOutput jo = new JsonOutput(rtnCode, code, message);
+        return jo;
+    &#125;
+
+    /**
+     * json字符串转换为map
+     *
+     * @param jsonStr 要转换的json字符串
+     * @return 转换后的map
+     */
+    public static Map&lt;?, ?&gt; jsonStrToMap(String jsonStr) &#123;
+        try &#123;
+            ObjectMapper om = new ObjectMapper();
+            return om.readValue(jsonStr, Map.class);
+        &#125; catch (Exception e) &#123;
+            LOG.error(e.getMessage());
+            return null;
+        &#125;
+    &#125;
+
+    /**
+     * 格式化json字符串
+     *
+     * @param jsonStr 要格式化的json字符串
+     * @return 格式化后的json字符串
+     */
+    public static String formatJsonStr(String jsonStr) &#123;
+        try &#123;
+            ObjectMapper om = new ObjectMapper();
+            return om.writerWithDefaultPrettyPrinter().writeValueAsString(jsonStrToMap(jsonStr));
+        &#125; catch (Exception e) &#123;
+            LOG.error(e.getMessage());
+            return null;
+        &#125;
+    &#125;
+
+&#125;
+</code></pre>
+<h5 id="7-1-4-PropertiesLoader类"><a href="#7-1-4-PropertiesLoader类" class="headerlink" title="7.1.4 PropertiesLoader类"></a>7.1.4 PropertiesLoader类</h5><p>用于加载resources包的配置文件的</p>
+<p>PropertiesLoader.java</p>
+<pre><code>package kb.redis.util;
+
+import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.NoSuchElementException;
+import java.util.Properties;
+
+/**
+ * 用以加载配置文件
+ */
+public class PropertiesLoader &#123;
+    private static ResourceLoader resourceLoader = new DefaultResourceLoader();
+
+    private final Properties properties;
+
+    public PropertiesLoader(String... resourcesPaths) &#123;
+        properties = loadProperties(resourcesPaths);
+    &#125;
+
+    public Properties getProperties() &#123;
+        return properties;
+    &#125;
+
+    /**
+     * 取出Property,但以System的Property优先.取不到返回空字符串
+     *
+     * @param key Property键
+     * @return String类型的Property值
+     */
+    private String getValue(String key) &#123;
+        String systemProperty = System.getProperty(key);
+        if (systemProperty != null) &#123;
+            return systemProperty;
+        &#125;
+        if (properties.containsKey(key)) &#123;
+            return properties.getProperty(key);
+        &#125;
+        return &quot;&quot;;
+    &#125;
+
+    /**
+     * 取出String类型的Property,但以System的Property优先,如果都为Null则抛出异常
+     *
+     * @param key Property键
+     * @return String类型的Property值
+     */
+    public String getProperty(String key) &#123;
+        String value = getValue(key);
+        if (value == null) &#123;
+            throw new NoSuchElementException();
+        &#125;
+        return value;
+    &#125;
+
+    /**
+     * 取出String类型的Property,但以System的Property优先.如果都为Null则返回Default值
+     *
+     * @param key          Property键
+     * @param defaultValue Default值
+     * @return String类型的Property值
+     */
+    public String getProperty(String key, String defaultValue) &#123;
+        String value = getValue(key);
+        return value != null ? value : defaultValue;
+    &#125;
+
+    /**
+     * 取出Integer类型的Property,但以System的Property优先.如果都为Null或内容错误则抛出异常
+     *
+     * @param key Property键
+     * @return Integer类型的Property值
+     */
+    public Integer getInteger(String key) &#123;
+        String value = getValue(key);
+        if (value == null) &#123;
+            throw new NoSuchElementException();
+        &#125;
+        return Integer.valueOf(value);
+    &#125;
+
+    /**
+     * 取出Integer类型的Property,但以System的Property优先.如果都为Null则返回Default值,如果内容错误则抛出异常
+     *
+     * @param key          Property键
+     * @param defaultValue Default值
+     * @return Integer类型的Property值
+     */
+    public Integer getInteger(String key, Integer defaultValue) &#123;
+        String value = getValue(key);
+        return value != null ? Integer.valueOf(value) : defaultValue;
+    &#125;
+
+    /**
+     * 取出Long类型的Property,但以System的Property优先.如果都为Null或内容错误则抛出异常
+     *
+     * @param key Property键
+     * @return Long类型的Property值
+     */
+    public Long getLong(String key) &#123;
+        String value = getValue(key);
+        if (value == null) &#123;
+            throw new NoSuchElementException();
+        &#125;
+        return Long.valueOf(value);
+    &#125;
+
+    /**
+     * 取出Long类型的Property,但以System的Property优先.如果都为Null则返回Default值,如果内容错误则抛出异常
+     *
+     * @param key          Property键
+     * @param defaultValue Default值
+     * @return Long类型的Property值
+     */
+    public Long getLong(String key, Long defaultValue) &#123;
+        String value = getValue(key);
+        return value != null ? Long.valueOf(value) : defaultValue;
+    &#125;
+
+    /**
+     * 取出Double类型的Property,但以System的Property优先.如果都为Null或内容错误则抛出异常
+     *
+     * @param key Property键
+     * @return Double类型的Property值
+     */
+    public Double getDouble(String key) &#123;
+        String value = getValue(key);
+        if (value == null) &#123;
+            throw new NoSuchElementException();
+        &#125;
+        return Double.valueOf(value);
+    &#125;
+
+    /**
+     * 取出Double类型的Property,但以System的Property优先.如果都为Null则返回Default值,如果内容错误则抛出异常
+     *
+     * @param key          Property键
+     * @param defaultValue Default值
+     * @return Double类型的Property值
+     */
+    public Double getDouble(String key, Integer defaultValue) &#123;
+        String value = getValue(key);
+        return value != null ? Double.valueOf(value) : defaultValue;
+    &#125;
+
+    /**
+     * 取出Boolean类型的Property,但以System的Property优先.如果都为Null抛出异常,如果内容不是true/
+     * false则返回false
+     *
+     * @param key Property键
+     * @return Boolean类型的Property值
+     */
+    public Boolean getBoolean(String key) &#123;
+        String value = getValue(key);
+        if (value == null) &#123;
+            throw new NoSuchElementException();
+        &#125;
+        return Boolean.valueOf(value);
+    &#125;
+
+    /**
+     * 取出Boolean类型的Property,但以System的Property优先.如果都为Null则返回Default值,如果内容不为true/
+     * false则返回false
+     *
+     * @param key          Property键
+     * @param defaultValue Default值
+     * @return Boolean类型的Property值
+     */
+    public Boolean getBoolean(String key, boolean defaultValue) &#123;
+        String value = getValue(key);
+        return value != null ? Boolean.valueOf(value) : defaultValue;
+    &#125;
+
+    /**
+     * 载入多个文件,文件路径使用Spring Resource格式
+     *
+     * @param resourcesPaths 文件路径
+     * @return Properties
+     */
+    private Properties loadProperties(String... resourcesPaths) &#123;
+        Properties props = new Properties();
+
+        for (String location : resourcesPaths) &#123;
+            InputStream is = null;
+            try &#123;
+                Resource resource = resourceLoader.getResource(location);
+                is = resource.getInputStream();
+                props.load(is);
+            &#125; catch (IOException ex) &#123;
+                ex.printStackTrace();
+            &#125; finally &#123;
+                // IOUtils.closeQuietly(is);
+            &#125;
+        &#125;
+        return props;
+    &#125;
+&#125;
+</code></pre>
+<h4 id="7-2在redis-utils-redis包下创建"><a href="#7-2在redis-utils-redis包下创建" class="headerlink" title="7.2在redis/utils/redis包下创建"></a>7.2在redis/utils/redis包下创建</h4><h5 id="7-2-1-redis连接类"><a href="#7-2-1-redis连接类" class="headerlink" title="7.2.1 redis连接类"></a>7.2.1 redis连接类</h5><p>提供两种连接模式：哨兵模式和单机模式</p>
+<p>RedisConfig.java</p>
+<pre><code>package kb.redis.utils.redis;
+
+import kb.redis.utils.PropertiesLoader;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.RedisSentinelConfiguration;
+import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
+import org.springframework.util.StringUtils;
+import redis.clients.jedis.JedisPoolConfig;
+
+/**
+ * @ClassName: RedisConfig
+ * @Description: redis配置
+ */
+@Configuration
+public class RedisConfig &#123;
+
+    private final PropertiesLoader redisProperties = new PropertiesLoader(&quot;redis.properties&quot;);
+
+    /**
+     * redis的模式（哨兵模式:sentinel;单机模式:standalone）
+     */
+    @Value(&quot;$&#123;system.redis.mode&#125;&quot;)
+    private String redisMode;
+
+    /**
+     * @return
+     * @Title: jedisPoolConfig
+     * @Description: 配置连接池
+     */
+    @Bean
+    public JedisPoolConfig jedisPoolConfig() &#123;
+
+        JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
+
+        jedisPoolConfig.setMaxIdle(redisProperties.getInteger(&quot;redis.pool.maxIdle&quot;));
+        jedisPoolConfig.setMaxTotal(redisProperties.getInteger(&quot;redis.pool.maxTotal&quot;));
+        jedisPoolConfig.setMaxWaitMillis(redisProperties.getLong(&quot;redis.pool.maxWaitMillis&quot;));
+        jedisPoolConfig.setTestOnBorrow(redisProperties.getBoolean(&quot;redis.pool.testOnBorrow&quot;));
+
+        return jedisPoolConfig;
+    &#125;
+
+    /**
+     * @param jpc
+     * @return
+     * @Title: jedisConnectionFactory
+     * @Description: 配置连接工厂
+     */
+    @Bean
+    public JedisConnectionFactory jedisConnectionFactory(JedisPoolConfig jpc) &#123;
+
+        /**
+         * 根据config.properties中system.redis.mode配置连接工厂(哨兵模式:sentinel;单机模式: standalone)
+         */
+        if (&quot;sentinel&quot;.equals(redisMode)) &#123;
+
+            RedisSentinelConfiguration sentinelConfig = new RedisSentinelConfiguration(
+                    redisProperties.getProperty(&quot;redis.sentinel.master&quot;),
+                    StringUtils.commaDelimitedListToSet(redisProperties.getProperty(&quot;redis.sentinel.hostAndPost&quot;)));
+            return new JedisConnectionFactory(sentinelConfig, jpc);
+        &#125; else &#123;
+
+            JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory();
+            jedisConnectionFactory.setHostName(redisProperties.getProperty(&quot;redis.host&quot;));
+            jedisConnectionFactory.setPort(redisProperties.getInteger(&quot;redis.port&quot;));
+            jedisConnectionFactory.setPassword(redisProperties.getProperty(&quot;redis.password&quot;));
+            jedisConnectionFactory.setPoolConfig(jpc);
+
+            return jedisConnectionFactory;
+        &#125;
+    &#125;
+
+    /**
+     * @param jcf
+     * @return
+     * @Title: stringRedisTemplate
+     * @Description: 配置redis模板，用于操作redis
+     */
+    @Bean
+    public StringRedisTemplate stringRedisTemplate(JedisConnectionFactory jcf) &#123;
+        StringRedisTemplate stringRedisTemplate = new StringRedisTemplate();
+        stringRedisTemplate.setConnectionFactory(jcf);
+        stringRedisTemplate.setKeySerializer(new StringRedisSerializer());
+        stringRedisTemplate.setValueSerializer(new JdkSerializationRedisSerializer());
+        return stringRedisTemplate;
+    &#125;
+
+&#125;
+</code></pre>
+<h5 id="7-2-1-redis基本操作类"><a href="#7-2-1-redis基本操作类" class="headerlink" title="7.2.1 redis基本操作类"></a>7.2.1 redis基本操作类</h5><p>RedisBaseDao.java</p>
+<pre><code>package kb.redis.utils.redis;
+import kb.redis.utils.JsonUtil;
+import kb.redis.utils.PropertiesLoader;
+import org.loushang.framework.util.SpringContextHolder;
+import org.springframework.data.redis.core.StringRedisTemplate;
+
+import java.util.concurrent.TimeUnit;
+
+/**
+ * @ClassName: RedisBaseDao
+ * @Description: 提供操作redis的方法
+ */
+public abstract class RedisBaseDao &#123;
+
+    private static PropertiesLoader configProperties = new PropertiesLoader(&quot;config.properties&quot;);
+
+    private static boolean isUseRedis = configProperties.getBoolean(&quot;system.redis.isUseRedis&quot;);
+
+    private static StringRedisTemplate stringRedisTemplate = null;
+
+    static &#123;
+        if (isUseRedis) &#123;
+            stringRedisTemplate = SpringContextHolder.getBean(&quot;stringRedisTemplate&quot;);
+        &#125;
+    &#125;
+
+    /**
+     * 向redis中插入永不过期的数据
+     *
+     * @param key    键
+     * @param object 要存入的对象
+     * @return 是否成功
+     */
+    protected boolean insert(String key, Object object) &#123;
+        if (isUseRedis) &#123;
+            stringRedisTemplate.opsForValue().set(key, JsonUtil.objectToJsonStr(object));
+        &#125;
+        return isUseRedis;
+    &#125;
+
+    /**
+     * 向redis中插入含过期时间的数据(单位:秒)
+     *
+     * @param key     键
+     * @param object  要存入的对象
+     * @param timeout 超时时间
+     * @return 是否成功3
+     */
+    protected boolean insert(String key, Object object, Long timeout) &#123;
+        if (isUseRedis) &#123;
+            stringRedisTemplate.opsForValue().set(key, JsonUtil.objectToJsonStr(object), timeout, TimeUnit.SECONDS);
+        &#125;
+        return isUseRedis;
+    &#125;
+
+    /**
+     * 向redis中插入含过期时间的数据,需指定时间单位
+     *
+     * @param key     键
+     * @param object  要存入的对象
+     * @param timeout 超时时间
+     * @param unit    时间单位
+     * @return 是否成功
+     */
+    protected boolean insert(String key, Object object, Long timeout, TimeUnit unit) &#123;
+        if (isUseRedis) &#123;
+            stringRedisTemplate.opsForValue().set(key, JsonUtil.objectToJsonStr(object), timeout, unit);
+        &#125;
+        return isUseRedis;
+    &#125;
+
+    /**
+     * 删除redis中指定的数据
+     *
+     * @param key 键
+     * @return 是否成功
+     */
+    protected boolean delete(String key) &#123;
+        if (isUseRedis) &#123;
+            stringRedisTemplate.delete(key);
+        &#125;
+        return isUseRedis;
+    &#125;
+
+    /**
+     * 获取redis中指定的数据，并以指定类型返回
+     *
+     * @param &lt;T&gt;       Type Java类
+     * @param key       键
+     * @param valueType redis中对象的类型
+     * @return 在redis中对象
+     */
+    protected &lt;T&gt; T select(String key, Class&lt;T&gt; valueType) &#123;
+        if (isUseRedis) &#123;
+            String value = stringRedisTemplate.opsForValue().get(key);
+            return value == null ? null : JsonUtil.jsonStrToObject(value, valueType);
+        &#125; else &#123;
+            return null;
+        &#125;
+    &#125;
+
+    /**
+     * 是否使用redis
+     *
+     * @return 是否使用redis
+     */
+    public boolean isUseRedis() &#123;
+        return isUseRedis;
+    &#125;
+
+&#125;
+</code></pre>
+<h3 id="8-创建RedisDao层"><a href="#8-创建RedisDao层" class="headerlink" title="8 创建RedisDao层"></a>8 创建RedisDao层</h3><h4 id="8-1-在redis包下创建redisDao包"><a href="#8-1-在redis包下创建redisDao包" class="headerlink" title="8.1 在redis包下创建redisDao包"></a>8.1 在redis包下创建redisDao包</h4><h4 id="8-2-在redisDao包下创建TestRedisByListDao接口"><a href="#8-2-在redisDao包下创建TestRedisByListDao接口" class="headerlink" title="8.2 在redisDao包下创建TestRedisByListDao接口"></a>8.2 在redisDao包下创建TestRedisByListDao接口</h4><p>TestRedisByListDao.java</p>
+<pre><code>package kb.redis.redisDao;
+
+import java.util.List;
+
+/**
+ * 测试 插入、删除、获取 list格式
+ * Created by shirukai on 2017/12/2.
+ */
+public interface TestRedisByListDao &#123;
+    Boolean setListToRedis(String key,List list);
+
+    Boolean delListFromRedis(String key);
+
+    List getListFromRedis(String key);
+&#125;
+</code></pre>
+<h4 id="8-3-创建TestRedisByListDao的实现类"><a href="#8-3-创建TestRedisByListDao的实现类" class="headerlink" title="8.3 创建TestRedisByListDao的实现类"></a>8.3 创建TestRedisByListDao的实现类</h4><p>TestRedisByListDaoImpl.java</p>
+<pre><code>package kb.redis.redisDao;
+import kb.redis.utils.redis.RedisBaseDao;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+/**
+ * List操作
+ * Created by shirukai on 2017/12/2.
+ */
+@Repository
+public class TestRedisByListDaoImpl extends RedisBaseDao implements TestRedisByListDao &#123;
+    public static final String KEY = &quot;INSPUR:KB&quot;;
+
+    /**
+     * 保存List
+     *
+     * @param key  key
+     * @param list list
+     * @return boolean
+     */
+    @Override
+    public Boolean setListToRedis(String key, List list) &#123;
+        return insert(KEY + &quot;:&quot; + key, list);
+    &#125;
+
+    /**
+     * 删除key
+     *
+     * @param key key
+     * @return boolean
+     */
+    @Override
+    public Boolean delListFromRedis(String key) &#123;
+        return delete(KEY + &quot;:&quot; + key);
+
+    &#125;
+
+    /**
+     * 获取list
+     *
+     * @param key key
+     * @return list
+     */
+    @Override
+    public List getListFromRedis(String key) &#123;
+        return select(KEY + &quot;:&quot; + key,List.class);
+    &#125;
+&#125;
+</code></pre>
+<h3 id="9-单元测试"><a href="#9-单元测试" class="headerlink" title="9.单元测试"></a>9.单元测试</h3><pre><code>package kb.redis.redisDao;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.Assert.*;
+
+/**
+ * 测试保存list到redis
+ * Created by shirukai on 2017/12/2.
+ */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = &#123;&quot;classpath*:spring-context.xml&quot;, &quot;classpath*:mybatis-config.xml&quot;&#125;)
+public class TestRedisByListDaoImplTest &#123;
+    @Autowired
+    private TestRedisByListDao testRedisByListDao;
+
+    @Test
+    public void setListToRedis() throws Exception &#123;
+        List&lt;Map&lt;String,String&gt;&gt; list = new ArrayList&lt;Map&lt;String,String&gt;&gt;();
+        Map&lt;String,String&gt; map = new HashMap&lt;String,String&gt;();
+        map.put(&quot;key1&quot;,&quot;value1&quot;);
+        map.put(&quot;key2&quot;,&quot;value2&quot;);
+        list.add(map);
+        list.add(map);
+        String key = &quot;list1&quot;;
+        Boolean resulet = testRedisByListDao.setListToRedis(key,list);
+        if (resulet)&#123;
+            System.out.println(&quot;保存redis成功！&quot;);
+        &#125;else &#123;
+            System.out.println(&quot;保存失败！&quot;);
+        &#125;
+
+    &#125;
+
+    @Test
+    public void delListFromRedis() throws Exception &#123;
+    &#125;
+
+    @Test
+    public void getListFromRedis() throws Exception &#123;
+        String key = &quot;list1&quot;;
+        List list = testRedisByListDao.getListFromRedis(key);
+        if (list != null)&#123;
+            System.out.println(list);
+        &#125;else &#123;
+            System.out.println(&quot;获取失败！&quot;);
+        &#125;
+    &#125;
+
+&#125;
+</code></pre>
+<h3 id="附加配置redis"><a href="#附加配置redis" class="headerlink" title="附加配置redis"></a>附加配置redis</h3><p>下载redis后解压然后执行make命令进行编译</p>
+<h4 id="设置redis可以远程访问："><a href="#设置redis可以远程访问：" class="headerlink" title="设置redis可以远程访问："></a>设置redis可以远程访问：</h4><p>修改redis目录下的redis.conf文件中的两处地方</p>
+<p>第一处</p>
+<p>69行注释掉 #bind 127.0.0.0</p>
+<p>第二处</p>
+<p>88行设置 protected-mode no</p>
+<h4 id="设置redis密码"><a href="#设置redis密码" class="headerlink" title="设置redis密码"></a>设置redis密码</h4><p>500行  requirepass shirukai</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E9%A6%96%E5%85%88pom-xml%E5%BC%95%E5%85%A5%E4%BE%9D%E8%B5%96"><span class="toc-number">1.</span> <span class="toc-text">1 首先pom.xml引入依赖</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%9C%A8resources%E5%8C%85%E4%B8%8B%E5%88%9B%E5%BB%BA%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">2.</span> <span class="toc-text">2 在resources包下创建配置文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%88%9B%E5%BB%BA%E5%8C%85%E7%9B%AE%E5%BD%95"><span class="toc-number">3.</span> <span class="toc-text">3 创建包目录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E5%88%9B%E5%BB%BA%E5%8C%85%E6%89%AB%E6%8F%8F%E8%87%AA%E5%8A%A8%E5%88%9B%E5%BB%BAbean"><span class="toc-number">4.</span> <span class="toc-text">4 创建包扫描自动创建bean</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E5%88%9B%E5%BB%BASpringContexHolder%E4%B8%8A%E4%B8%8B%E6%96%87%E7%B1%BB"><span class="toc-number">5.</span> <span class="toc-text">5 创建SpringContexHolder上下文类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E9%85%8D%E7%BD%AESpringContexHolder"><span class="toc-number">6.</span> <span class="toc-text">6 配置SpringContexHolder</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-%E5%88%9B%E5%BB%BAredis%E5%B7%A5%E5%85%B7%E7%B1%BB"><span class="toc-number">7.</span> <span class="toc-text">7 创建redis工具类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-%E5%88%9B%E5%BB%BARedisDao%E5%B1%82"><span class="toc-number">8.</span> <span class="toc-text">8 创建RedisDao层</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95"><span class="toc-number">9.</span> <span class="toc-text">9.单元测试</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%99%84%E5%8A%A0%E9%85%8D%E7%BD%AEredis"><span class="toc-number">10.</span> <span class="toc-text">附加配置redis</span></a></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

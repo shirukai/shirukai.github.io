@@ -1,0 +1,1001 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Java调用Azkaban相关服务 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="项目里主要使用远程调用azkaban提供的api进行相关任务的执行，下面主要从基础接口封装和调用实例来记录相关代码。
+基础接口封装参考官网ajax-api:http://azkaban.github,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">Java调用Azkaban相关服务</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/6.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/项目开发记录"><b>「
+                    </b>项目开发记录<b> 」</b></a>
+                
+                August 20, 2018
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/java-call-azkaban-related-services.html" title="Java调用Azkaban相关服务" class="">Java调用Azkaban相关服务</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    24k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    21 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/hiacloud-analytics-service/" rel="tag">hiacloud-analytics-service</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91%E8%AE%B0%E5%BD%95/" rel="tag">项目开发记录</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <p>项目里主要使用远程调用azkaban提供的api进行相关任务的执行，下面主要从基础接口封装和调用实例来记录相关代码。</p>
+<h2 id="基础接口封装"><a href="#基础接口封装" class="headerlink" title="基础接口封装"></a>基础接口封装</h2><p>参考官网ajax-api:<a target="_blank" rel="noopener" href="http://azkaban.github.io/azkaban/docs/latest/#ajax-api">http://azkaban.github.io/azkaban/docs/latest/#ajax-api</a></p>
+<p>对于azkaban基础接口的封装主要是利用java调用azkaban官网提供的ajax-api，通过springframework提供的restTemplate进行http请求。封装接口主要包括：登录、创建project、删除project、上传zip、执行flow、查询project中的flow、查询execution信息、查询执行job日志、查询flow执行情况等。</p>
+<h3 id="代码部分："><a href="#代码部分：" class="headerlink" title="代码部分："></a>代码部分：</h3><pre><code>**
+ * Created by shirukai on 2018/4/24.
+ */
+@Component
+public class AzkabanAdapter &#123;
+    private static Logger log = LoggerFactory.getLogger(AzkabanHandle.class);
+    private String URI;
+    private String userName;
+    private String password;
+    private static RestTemplate restTemplate;
+    private static String SESSION_ID;
+
+    static &#123;
+        SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
+        requestFactory.setConnectTimeout(2000);
+        requestFactory.setReadTimeout(2000);
+        restTemplate = new RestTemplate(requestFactory);
+    &#125;
+
+    AzkabanAdapter(@Value(&quot;$&#123;azkaban.url&#125;&quot;) String URI,
+                   @Value(&quot;$&#123;azkaban.username&#125;&quot;) String userName,
+                   @Value(&quot;$&#123;azkaban.password&#125;&quot;) String password) &#123;
+        this.URI = URI;
+        this.userName = userName;
+        this.password = password;
+        SESSION_ID = &quot;b1d4f665-f4b9-4e7d-b83a-b928b41cc323&quot;;
+    &#125;
+
+    /**
+     * 登录
+     */
+    public void login() &#123;
+        HttpHeaders hs = new HttpHeaders();
+        hs.add(&quot;Content-Type&quot;, &quot;application/x-www-form-urlencoded; charset=utf-8&quot;);
+        hs.add(&quot;X-Requested-With&quot;, &quot;XMLHttpRequest&quot;);
+        LinkedMultiValueMap&lt;String, String&gt; linkedMultiValueMap = new LinkedMultiValueMap&lt;String, String&gt;();
+        linkedMultiValueMap.add(&quot;action&quot;, &quot;login&quot;);
+        linkedMultiValueMap.add(&quot;username&quot;, userName);
+        linkedMultiValueMap.add(&quot;password&quot;, password);
+
+        HttpEntity&lt;LinkedMultiValueMap&lt;String, String&gt;&gt; httpEntity = new HttpEntity&lt;&gt;(linkedMultiValueMap, hs);
+        String responsResultString = restTemplate.postForObject(URI, httpEntity, String.class);
+        responsResultString = responsResultString.replace(&quot;.&quot;, &quot;_&quot;);
+        JSONObject resJson = JSON.parseObject(responsResultString);
+        if (resJson.getString(&quot;status&quot;).equals(&quot;success&quot;)) &#123;
+            SESSION_ID = resJson.getString(&quot;session_id&quot;);
+            log.info(&quot;azkaban login success:&#123;&#125;&quot;, resJson);
+        &#125; else &#123;
+            log.warn(&quot;azkabna login failure:&#123;&#125;&quot;, resJson);
+        &#125;
+    &#125;
+
+    /**
+     * 创建项目
+     *
+     * @param projectName project 名称
+     * @param description 描述
+     * @return str
+     */
+    public String createProject(String projectName, String description) &#123;
+        HttpHeaders hs = new HttpHeaders();
+        hs.add(&quot;Content-Type&quot;, &quot;application/x-www-form-urlencoded; charset=utf-8&quot;);
+        hs.add(&quot;X-Requested-With&quot;, &quot;XMLHttpRequest&quot;);
+        LinkedMultiValueMap&lt;String, String&gt; linkedMultiValueMap = new LinkedMultiValueMap&lt;String, String&gt;();
+        linkedMultiValueMap.add(&quot;session.id&quot;, SESSION_ID);
+        linkedMultiValueMap.add(&quot;action&quot;, &quot;create&quot;);
+        linkedMultiValueMap.add(&quot;name&quot;, projectName);
+        linkedMultiValueMap.add(&quot;description&quot;, description);
+        HttpEntity&lt;LinkedMultiValueMap&lt;String, String&gt;&gt; httpEntity = new HttpEntity&lt;&gt;(linkedMultiValueMap, hs);
+        deleteProject(projectName);
+        String res = restTemplate.postForObject(URI + &quot;/manager&quot;, httpEntity, String.class);
+        log.info(&quot;azkaban create project:&#123;&#125;&quot;, res);
+        return res;
+    &#125;
+
+    /**
+     * 删除项目
+     *
+     * @param projectName project名称
+     * @return str
+     */
+    public boolean deleteProject(String projectName) &#123;
+        HttpHeaders hs = new HttpHeaders();
+        hs.add(&quot;Content-Type&quot;, &quot;application/x-www-form-urlencoded; charset=utf-8&quot;);
+        hs.add(&quot;X-Requested-With&quot;, &quot;XMLHttpRequest&quot;);
+        hs.add(&quot;Accept&quot;, &quot;text/plain;charset=utf-8&quot;);
+        Map&lt;String, String&gt; map = new HashMap&lt;&gt;();
+        map.put(&quot;id&quot;, SESSION_ID);
+        map.put(&quot;project&quot;, projectName);
+        ResponseEntity&lt;String&gt; exchange = restTemplate.exchange(URI + &quot;/manager?session.id=&#123;id&#125;&amp;delete=true&amp;project=&#123;project&#125;&quot;, HttpMethod.GET,
+                new HttpEntity&lt;String&gt;(hs), String.class, map);
+        log.info(&quot;azkaban delete project:&#123;&#125;&quot;, 200 == exchange.getStatusCodeValue());
+        return 200 == exchange.getStatusCodeValue();
+    &#125;
+
+    /**
+     * 上传zip
+     *
+     * @param zipFilePath zip 路径
+     * @param projectName project 名称
+     * @return str
+     */
+    public String uploadZip(String zipFilePath, String projectName) &#123;
+        FileSystemResource resource = new FileSystemResource(new File(zipFilePath));
+        LinkedMultiValueMap&lt;String, Object&gt; linkedMultiValueMap = new LinkedMultiValueMap&lt;String, Object&gt;();
+        linkedMultiValueMap.add(&quot;session.id&quot;, SESSION_ID);
+        linkedMultiValueMap.add(&quot;ajax&quot;, &quot;upload&quot;);
+        linkedMultiValueMap.add(&quot;project&quot;, projectName);
+        linkedMultiValueMap.add(&quot;file&quot;, resource);
+        String res = restTemplate.postForObject(URI + &quot;/manager&quot;, linkedMultiValueMap, String.class);
+        log.info(&quot;azkaban upload zip:&#123;&#125;&quot;, res);
+        return res;
+    &#125;
+
+    /**
+     * 执行Flow
+     *
+     * @param projectName project 名称
+     * @param flowName    flow 名称
+     * @return str
+     */
+    public String startFlow(String projectName, String flowName) &#123;
+        LinkedMultiValueMap&lt;String, Object&gt; linkedMultiValueMap = new LinkedMultiValueMap&lt;String, Object&gt;();
+        linkedMultiValueMap.add(&quot;session.id&quot;, SESSION_ID);
+        linkedMultiValueMap.add(&quot;ajax&quot;, &quot;executeFlow&quot;);
+        linkedMultiValueMap.add(&quot;project&quot;, projectName);
+        linkedMultiValueMap.add(&quot;flow&quot;, flowName);
+        String res = restTemplate.postForObject(URI + &quot;/executor&quot;, linkedMultiValueMap, String.class);
+        log.info(&quot;azkaban start flow:&#123;&#125;&quot;, res);
+        return JSON.parseObject(res).getString(&quot;execid&quot;);
+
+    &#125;
+
+    /**
+     * 查询项目的flow
+     *
+     * @param projectName project name
+     * @return str
+     */
+    public String fetchProjectFlows(String projectName) &#123;
+        String res = restTemplate
+                .getForObject(URI + &quot;/manager?ajax=fetchprojectflows&amp;session.id=&#123;1&#125;&amp;project=&#123;2&#125;&quot;
+                        , String.class, SESSION_ID, projectName
+                );
+        log.info(&quot;azkban fetch project flows:&#123;&#125;&quot;, res);
+        return res;
+    &#125;
+
+    /**
+     * azkaban执行信息
+     *
+     * @param execId 执行id
+     * @return str
+     */
+    public String executionInfo(String execId) &#123;
+        LinkedMultiValueMap&lt;String, Object&gt; linkedMultiValueMap = new LinkedMultiValueMap&lt;String, Object&gt;();
+        linkedMultiValueMap.add(&quot;session.id&quot;, SESSION_ID);
+        linkedMultiValueMap.add(&quot;ajax&quot;, &quot;fetchexecflow&quot;);
+        linkedMultiValueMap.add(&quot;execid&quot;, execId);
+        String res = restTemplate.postForObject(URI + &quot;/executor&quot;, linkedMultiValueMap, String.class);
+        log.info(&quot;azkaban execution info:&#123;&#125;&quot;, res);
+        return res;
+    &#125;
+
+    /**
+     * 查询执行job日志
+     *
+     * @param execId 执行ID
+     * @param jobId  jobID
+     * @param offset 起始位置
+     * @param length 长度
+     * @return str
+     */
+    public String fetchExecutionJobLogs(String execId, String jobId, int offset, int length) &#123;
+        String res = restTemplate
+                .getForObject(URI + &quot;/executor?ajax=fetchExecJobLogs&amp;session.id=&#123;1&#125;&amp;execid=&#123;2&#125;&amp;jobId=&#123;3&#125;&amp;offset=&#123;4&#125;&amp;length=&#123;5&#125;&quot;
+                        , String.class, SESSION_ID, execId, jobId, offset, length
+                );
+        log.info(&quot;azkban execution job logs:&#123;&#125;&quot;, res);
+        return res;
+    &#125;
+
+    /**
+     * 查询flow执行情况
+     *
+     * @param execId execId
+     * @return str
+     */
+    public String fetchFlowExecution(String execId) &#123;
+        String res = restTemplate
+                .getForObject(URI + &quot;/executor?ajax=fetchexecflow&amp;session.id=&#123;1&#125;&amp;execid=&#123;2&#125;&quot;
+                        , String.class, SESSION_ID, execId
+                );
+        log.info(&quot;azkban execution flow:&#123;&#125;&quot;, res);
+
+        return res;
+    &#125;
+
+    public FlowExecutionDetailVO fetchFlowExecutionObject(String execId) &#123;
+
+        FlowExecutionDetailVO res = restTemplate
+                .getForObject(URI + &quot;/executor?ajax=fetchexecflow&amp;session.id=&#123;1&#125;&amp;execid=&#123;2&#125;&quot;
+                        , FlowExecutionDetailVO.class, SESSION_ID, execId
+                );
+        log.info(&quot;azkban execution flow:&#123;&#125;&quot;, res);
+
+        //return responseHandle(res);
+
+        return res;
+    &#125;
+&#125;
+</code></pre>
+<h2 id="调用实例"><a href="#调用实例" class="headerlink" title="调用实例"></a>调用实例</h2><p>在项目中将AzkabanAdapter注入到spring里，使用单例运行。对于azkaban执行任务的流程如下：分析编排任务、拉取算法物件、生成job、打包zip、创建azkaban项目、上传zip、执行任务、返回任务信息。</p>
+<pre><code>/**
+ * azkaban任务执行相关服务
+ */
+@Service
+public class AzkabanService &#123;
+    //临时目录
+    @Value(&quot;$&#123;&quot; + Constants.ANALYTICS_SERVICE_TEMP_ORCHESTRATIONS_PATH + &quot;&#125;&quot;)
+    private String tempPath;
+
+    @Value(&quot;$&#123;fs.defaultFS&#125;&quot;)
+    private String fs_defaultFS;
+    //租户ID
+    @Value(&quot;$&#123;tenantId&#125;&quot;)
+    private String tenant_id;
+    @Value(&quot;$&#123;analyticService.analyticsArtifacts.baseDir&#125;&quot;)
+    private String analyticsArtifacts_baseDir;
+
+    @Autowired
+    OrchestrationRepository orchestrationRepository;
+
+    @Autowired
+    AnalyticsService analyticsService;
+    @Autowired
+    ExecutionRepository executionRepository;
+    @Autowired
+    AzkabanAdapter azkabanAdapter;
+    @Autowired
+    AnalyticsRepository analyticsRepository;
+    @Autowired
+    AlgorithmParamUtil algorithmParamUtil;
+
+    /**
+     * 执行编排
+     *
+     * @param orchestrationId 编排ID
+     */
+    public JSONObject executeOrchestration(String orchestrationId) &#123;
+        //获取编排信息
+        Orchestration orchestration = orchestrationRepository.findOne(orchestrationId);
+        Project project = orchestration.getProject();
+        if (isRunning(orchestration)) &#123;
+            throw new RuntimeException(&quot;有正在执行的任务，请等待执行完成后重试！&quot;);
+        &#125;
+        //azkaban base name
+        String baseName = tenant_id + &quot;_&quot; + project.getId(),
+                //azkaban project name
+                azProjectName = &quot;project_&quot; + baseName;
+        //判断是否需要重新编排
+        if (!isAnalysis(orchestration)) &#123;
+            JSONObject azResultJson = startAzkaban(azProjectName);
+            azResultJson.put(&quot;orchestrationId&quot;, orchestrationId);
+            return azResultJson;
+        &#125; else &#123;
+            //azkaban zip name
+            String zipName = baseName + &quot;.zip&quot;;
+            //初始化临时编排目录
+            String otp = initOrchestrationTempPath(orchestrationId);
+            //本地物件列表
+            ArrayList&lt;String&gt; localAlgorithms = new ArrayList&lt;&gt;(),
+                    //job 列表
+                    jobsPath = new ArrayList&lt;&gt;();
+            //获取编排任务
+            String algorithms = orchestration.getAlgorithms();
+            //分析编排
+            JSONArray algorithmArray = analysisOrchestrations(algorithms);
+            algorithmArray.forEach(row -&gt; &#123;
+                //编排任务
+                JSONObject algorithmJson = JSON.parseObject(row.toString());
+                //保存物件列表
+                String hdfsAlgorithm = generatePath(algorithmJson.getString(&quot;analyticsId&quot;));
+                //获取算法params
+                String params = algorithmJson.getString(&quot;params&quot;);
+                //拉取物件
+                String artifactLocalPath = pullArtifactsFromHdfs(hdfsAlgorithm, otp);
+                localAlgorithms.add(artifactLocalPath);
+                algorithmJson.put(&quot;artifactLocalPath&quot;, artifactLocalPath);
+                //生成job
+                //String jobName = algorithmJson.getString(&quot;jobName&quot;).equals(&quot;&quot;) ? azLastJobName : algorithmJson.getString(&quot;jobName&quot;);
+                String jobPath = constructJob(algorithmJson, otp);
+                jobsPath.add(jobPath);
+            &#125;);
+            localAlgorithms.addAll(jobsPath);
+            //生成zip
+            String zipPath = packageZip(localAlgorithms, otp, zipName);
+            //启动Azkaban任务
+            JSONObject azResultJson = startAzkaban(zipPath, azProjectName, orchestration.getDescription());
+            azResultJson.put(&quot;orchestrationId&quot;, orchestrationId);
+            //清除临时目录
+            cleanTemp(otp);
+            return azResultJson;
+        &#125;
+
+    &#125;
+
+    /**
+     * 编排是否在执行
+     *
+     * @param orchestration 编排
+     * @return boolean
+     */
+    public boolean isRunning(Orchestration orchestration) &#123;
+        Execution execution = executionRepository.getFirstByOrchestrationOrderByCreatedTimestampDesc(orchestration);
+        if (execution != null) &#123;
+            String execid = execution.getAzExecutionId();
+            String res = azkabanAdapter.executionInfo(execid);
+            return &quot;RUNNING&quot;.equals(JSON.parseObject(res).getString(&quot;status&quot;));
+        &#125;
+        return false;
+    &#125;
+
+    /**
+     * 是否需要编排
+     *
+     * @param orchestration 编排实体
+     * @return boolean
+     */
+    public boolean isAnalysis(Orchestration orchestration) &#123;
+        Execution execution = executionRepository.getFirstByOrchestrationOrderByCreatedTimestampDesc(orchestration);
+        if (orchestration.getUpdatedTimestamp() != null &amp;&amp; execution != null) &#123;
+            long orchestrationTime = orchestration.getUpdatedTimestamp().getTime();
+            long executionTime = execution
+                    .getCreatedTimestamp()
+                    .getTime();
+            return orchestrationTime &gt; executionTime;
+        &#125; else &#123;
+            return execution == null;
+        &#125;
+    &#125;
+
+    /**
+     * 分析编排
+     *
+     * @param algorithmJsonStr 待分析JSON
+     * @return 编排任务
+     */
+    public JSONArray analysisOrchestrations(String algorithmJsonStr) &#123;
+        ArrayList&lt;String&gt; jobNames = new ArrayList&lt;&gt;();
+        JSONArray resArrays = new JSONArray();
+        String resStr = &quot;&#123;&#39;analyticsId&#39;:&#39;%s&#39;,&#39;jobName&#39;:&#39;%s&#39;,&#39;param&#39;:&#39;%s&#39;,&#39;type&#39;:&#39;%s&#39;,&#39;language&#39;:&#39;%s&#39;&#125;&quot;;
+        JSONArray ajArrays = JSON.parseArray(algorithmJsonStr);
+        ajArrays.forEach(row -&gt; &#123;
+            JSONObject ajo = JSON.parseObject(row.toString());
+            String analyticsId = ajo.getString(&quot;analyticsId&quot;);
+            //生成算法参数
+            String algorithmParam = algorithmParamUtil.convertSingleAlgorithmParam(ajo.getString(&quot;param&quot;));
+            //获取分析信息
+            Analytics analytics = analyticsRepository.findOne(analyticsId);
+            String type = analytics.getType();
+            String language = analytics.getSupportedLanguage();
+            int index = jobNames.lastIndexOf(analyticsId);
+            String jobName;
+            if (index &gt; -1) &#123;
+                jobName = analyticsId + &quot;_&quot; + String.valueOf(index + 2) + &quot;.job&quot;;
+            &#125; else &#123;
+                jobName = analyticsId + &quot;_&quot; + &quot;1.job&quot;;
+            &#125;
+            jobNames.add(analyticsId);
+            resArrays.add(String.format(resStr,
+                    analyticsId, jobName, algorithmParam, type, language));
+        &#125;);
+        return resArrays;
+    &#125;
+
+
+    /**
+     * 构造job
+     *
+     * @param algorithmJson 参数列表
+     * @return job路径
+     */
+    public String constructJob(JSONObject algorithmJson, String orchestrationTempPath) &#123;
+        //获取spark master
+        String sparkMaster = &quot;yarn&quot;,
+                sparkJar = &quot;type=spark\r\nmaster=%s\r\nexecution-jar=%s\r\nclass=%s\r\nparams=&#39;%s&#39;\r\n&quot;,
+                sprakPy = &quot;type=spark\r\nmaster=%\r\nsexecution-jar=%s\r\nparams=%s\r\nparams=%s\r\n&quot;,
+                sparkPyCommand = &quot;type=command\r\ncommand=spark-submit --master %s %s &#39;%s&#39;&quot;,
+                sparkJarCommand = &quot;type=command\r\ncommand=spark-submit --master %s --class %s %s &#39;%s&#39;&quot;,
+                javaCommand = &quot;&quot;,
+                pythonCommand = &quot;&quot;,
+                shellCommand = &quot;&quot;,
+                filePath = algorithmJson.getString(&quot;artifactLocalPath&quot;),
+                fileName = FileUtils.getFileName(filePath, true),
+                fileType = FileUtils.getExtensionName(fileName),
+                jarClass = &quot;&quot;, job = &quot;&quot;,
+                param = algorithmJson.getString(&quot;param&quot;),
+                language = algorithmJson.getString(&quot;language&quot;);
+        if (fileType.equals(&quot;jar&quot;)) &#123;
+            //获取class
+            jarClass = String.valueOf(JarFileUtil.getClassEntryMap(filePath).get(&quot;className&quot;));
+        &#125;
+        switch (algorithmJson.getString(&quot;type&quot;)) &#123;
+            case &quot;spark&quot;:
+                switch (language) &#123;
+                    case &quot;java&quot;:
+                    case &quot;scala&quot;:
+                        job = String.format(sparkJarCommand, sparkMaster, jarClass, fileName, param);
+                        break;
+                    case &quot;python&quot;:
+                        job = String.format(sparkPyCommand, sparkMaster, fileName, param);
+                        break;
+                    default:
+                        break;
+                &#125;
+                break;
+            case &quot;single&quot;:
+                switch (language) &#123;
+                    case &quot;java&quot;:
+                        //todo
+                        break;
+                    case &quot;python&quot;:
+                        //todo
+                        break;
+                    case &quot;shell&quot;:
+                        //todo
+                        break;
+                    default:
+                        break;
+                &#125;
+            default:
+                break;
+        &#125;
+        //生成job文件
+        return generateJob(job, orchestrationTempPath, algorithmJson.getString(&quot;jobName&quot;));
+
+    &#125;
+
+    /**
+     * 生成HDFS地址
+     *
+     * @param analyticsId 算法ID
+     * @return hdfs地址
+     */
+    public String generatePath(String analyticsId) &#123;
+        AnalyticsArtifacts artifacts = analyticsService.findExecutableArtifacts(analyticsId);
+        return analyticsArtifacts_baseDir + &quot;/&quot; + analyticsId + &quot;/&quot; + artifacts.getFilename();
+    &#125;
+
+    /**
+     * 初始化 编排临时目录
+     *
+     * @param orchestrationID 编排ID
+     * @return 临时目录
+     */
+    public String initOrchestrationTempPath(String orchestrationID) &#123;
+        //编排临时目录
+        String orchestrationTempPath = tempPath + &quot;/&quot; + orchestrationID;
+        File folder = new File(orchestrationTempPath);
+        //如果目录不存在创建
+        if (!folder.exists()) &#123;
+            folder.mkdirs();
+        &#125;
+        return orchestrationTempPath;
+    &#125;
+
+    /**
+     * 拉取物件
+     *
+     * @param artifactPath          HDFS物件路径
+     * @param orchestrationTempPath 临时目录
+     * @return 本地物件路径
+     */
+    public String pullArtifactsFromHdfs(String artifactPath, String orchestrationTempPath) &#123;
+        String[] arrays = artifactPath.split(&quot;/&quot;);
+        String fileName = arrays[arrays.length - 1];
+        String savePath = orchestrationTempPath + &quot;/&quot; + fileName;
+        HdfsUtil.downloadFile(fs_defaultFS, artifactPath, savePath);
+        return savePath;
+    &#125;
+
+    /**
+     * 生成job
+     *
+     * @param params                job 参数
+     * @param orchestrationTempPath 临时目录
+     * @param jobName               job 名字
+     * @return job路径
+     */
+    public String generateJob(String params, String orchestrationTempPath, String jobName) &#123;
+        String jobPath = orchestrationTempPath + &quot;/&quot; + jobName;
+        AzkabanZipUtil.generateJob(params, new File(jobPath));
+        return jobPath;
+    &#125;
+
+    /**
+     * 打包zip
+     *
+     * @param localArtifacts        需要打包的文件列表
+     * @param orchestrationTempPath 临时目录
+     * @param zipName               zip名字
+     * @return zip目录
+     */
+    public String packageZip(ArrayList&lt;String&gt; localArtifacts, String orchestrationTempPath, String zipName) &#123;
+        String zipPath = orchestrationTempPath + &quot;/&quot; + zipName;
+        AzkabanZipUtil.generateZip(localArtifacts, zipPath);
+        return zipPath;
+    &#125;
+
+    /**
+     * 清空临时目录
+     *
+     * @param orchestrationTempPath 临时目录
+     */
+    public void cleanTemp(String orchestrationTempPath) &#123;
+        System.out.println(orchestrationTempPath);
+        File dir = new File(orchestrationTempPath);
+        AzkabanZipUtil.removeTemptDir(dir);
+    &#125;
+
+
+    /**
+     * 执行azkaban任务
+     *
+     * @param jobPath     文件获取路径
+     * @param projectName project名称
+     * @param description 描述信息
+     */
+    public JSONObject startAzkaban(String jobPath, String projectName, String description) &#123;
+        azkabanAdapter.createProject(projectName, description);
+        azkabanAdapter.uploadZip(jobPath, projectName);
+        String flows = azkabanAdapter.fetchProjectFlows(projectName);
+        String flowName = JSON.parseObject(flows)
+                .getJSONArray(&quot;flows&quot;)
+                .getJSONObject(0)
+                .getString(&quot;flowId&quot;);
+        String execid = azkabanAdapter.startFlow(projectName, flowName);
+        return JSON.parseObject(azkabanAdapter.executionInfo(execid));
+    &#125;
+
+    /**
+     * 执行azkaban任务
+     *
+     * @param projectName project名称
+     * @return json
+     */
+    public JSONObject startAzkaban(String projectName) &#123;
+        String flows = azkabanAdapter.fetchProjectFlows(projectName);
+        String flowName = JSON.parseObject(flows)
+                .getJSONArray(&quot;flows&quot;)
+                .getJSONObject(0)
+                .getString(&quot;flowId&quot;);
+        String execid = azkabanAdapter.startFlow(projectName, flowName);
+        return JSON.parseObject(azkabanAdapter.executionInfo(execid));
+    &#125;
+&#125;
+</code></pre>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E6%8E%A5%E5%8F%A3%E5%B0%81%E8%A3%85"><span class="toc-number">1.</span> <span class="toc-text">基础接口封装</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E9%83%A8%E5%88%86%EF%BC%9A"><span class="toc-number">1.1.</span> <span class="toc-text">代码部分：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B0%83%E7%94%A8%E5%AE%9E%E4%BE%8B"><span class="toc-number">2.</span> <span class="toc-text">调用实例</span></a></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

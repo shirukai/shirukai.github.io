@@ -1,0 +1,610 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>QuerySet API - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="从数据库中查询出来的结果一般是一个集合，这个集合叫做queryset
+查看Django QuerySet执行的SQL在python Manage.py shell 里执行下列操作
+print str,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">QuerySet API</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/2.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/Python"><b>「
+                    </b>PYTHON<b> 」</b></a>
+                
+                August 19, 2018
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/queryset-api.html" title="QuerySet API" class="">QuerySet API</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    12k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    11 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/django/" rel="tag">django</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <p>从数据库中查询出来的结果一般是一个集合，这个集合叫做queryset</p>
+<h2 id="查看Django-QuerySet执行的SQL"><a href="#查看Django-QuerySet执行的SQL" class="headerlink" title="查看Django QuerySet执行的SQL"></a>查看Django QuerySet执行的SQL</h2><p>在python Manage.py shell 里执行下列操作</p>
+<pre><code>print str(Author.objects.all().query)
+</code></pre>
+<p>结果：</p>
+<pre><code>SELECT `blog_author`.`id`, `blog_author`.`name`, `blog_author`.`qq`, `blog_author`.`addr`, `blog_author`.`email` FROM `blog_author`
+</code></pre>
+<h2 id="values-list-获取元素形式结果"><a href="#values-list-获取元素形式结果" class="headerlink" title="values_list 获取元素形式结果"></a>values_list 获取元素形式结果</h2><p>获取作者的name和qq</p>
+<pre><code>authors = Author.objects.values_list(&#39;name&#39;,&#39;qq&#39;)
+authors
+</code></pre>
+<p>结果：</p>
+<pre><code>&lt;QuerySet [(u&#39;WeizhongTu&#39;, u&#39;039333829&#39;), (u&#39;twz915&#39;, u&#39;372770695&#39;), (u&#39;dachui&#39;, u&#39;705162036&#39;), (u&#39;zhe&#39;, u&#39;814146503&#39;), (u&#39;zhen&#39;, u&#39;570022208&#39;)]&gt;
+</code></pre>
+<p>如果只需要一个字段，可以指定flat=True</p>
+<pre><code>&lt;QuerySet [u&#39;WeizhongTu&#39;, u&#39;twz915&#39;, u&#39;dachui&#39;, u&#39;zhe&#39;, u&#39;zhen&#39;]&gt;
+</code></pre>
+<h2 id="values-获取字典形式的结果"><a href="#values-获取字典形式的结果" class="headerlink" title="values 获取字典形式的结果"></a>values 获取字典形式的结果</h2><p>比如我们要获取作者的 name 和 qq</p>
+<pre><code>Author.objects.values(&#39;name&#39;, &#39;qq&#39;)
+&lt;QuerySet [&#123;&#39;qq&#39;: u&#39;336643078&#39;, &#39;name&#39;: u&#39;WeizhongTu&#39;&#125;, &#123;&#39;qq&#39;: u&#39;915792575&#39;, &#39;name&#39;: u&#39;twz915&#39;&#125;, &#123;&#39;qq&#39;: u&#39;353506297&#39;, &#39;name&#39;: u&#39;wangdachui&#39;&#125;, &#123;&#39;qq&#39;: u&#39;004466315&#39;, &#39;name&#39;: u&#39;xiaoming&#39;&#125;]&gt;
+</code></pre>
+<h3 id="list"><a href="#list" class="headerlink" title="list"></a>list</h3><pre><code>list(Author.objects.values(&#39;name&#39;, &#39;qq&#39;))
+[&#123;&#39;name&#39;: u&#39;WeizhongTu&#39;, &#39;qq&#39;: u&#39;336643078&#39;&#125;,
+ &#123;&#39;name&#39;: u&#39;twz915&#39;, &#39;qq&#39;: u&#39;915792575&#39;&#125;,
+ &#123;&#39;name&#39;: u&#39;wangdachui&#39;, &#39;qq&#39;: u&#39;353506297&#39;&#125;,
+ &#123;&#39;name&#39;: u&#39;xiaoming&#39;, &#39;qq&#39;: u&#39;004466315&#39;&#125;]
+</code></pre>
+<p>查询twz915这个人的文章标题</p>
+<pre><code>Article.objects.filter(author__name=&#39;twz915&#39;).values(&#39;title&#39;)
+</code></pre>
+<p>结果：</p>
+<pre><code>&lt;QuerySet [&#123;&#39;title&#39;: u&#39;Django \u6559\u7a0b_3&#39;&#125;, &#123;&#39;title&#39;: u&#39;Django \u6559\u7a0b_5&#39;&#125;, &#123;&#39;title&#39;: u&#39;Django \u6559\u7a0b_7&#39;&#125;]&gt;
+</code></pre>
+<blockquote>
+<p>注意：</p>
+</blockquote>
+<ol>
+<li>values_list 和 values 返回的并不是真正的 列表 或 字典，也是 queryset，他们也是 lazy evaluation 的（惰性评估，通俗地说，就是用的时候才真正的去数据库查）</li>
+<li>如果查询后没有使用，在数据库更新后再使用，你发现得到在是新内容！！！如果想要旧内容保持着，数据库更新后不要变，可以 list 一下</li>
+<li>如果只是遍历这些结果，没有必要 list 它们转成列表（浪费内存，数据量大的时候要更谨慎！！！）</li>
+</ol>
+<h2 id="extra-实现-别名，条件，排序等"><a href="#extra-实现-别名，条件，排序等" class="headerlink" title="extra 实现 别名，条件，排序等"></a>extra 实现 别名，条件，排序等</h2><p>extra 中可实现别名，条件，排序等，后面两个用 filter, exclude 一般都能实现，排序用 order_by 也能实现。我们主要看一下别名这个</p>
+<p>比如 Author 中有 name， Tag 中有 name 我们想执行</p>
+<p>SELECT name AS tag_name FROM blog_tag;</p>
+<p>这样的语句，就可以用 select 来实现，如下：</p>
+<pre><code>tags = Tag.objects.all().extra(select=&#123;&#39;tag_name&#39;:&#39;name&#39;&#125;)
+tags[0].name
+tags[0].tag_name
+</code></pre>
+<p>结果是一样的</p>
+<pre><code>u&#39;Django&#39;
+</code></pre>
+<h2 id="annotate-聚合计数、求和、平均数"><a href="#annotate-聚合计数、求和、平均数" class="headerlink" title="annotate 聚合计数、求和、平均数"></a>annotate 聚合计数、求和、平均数</h2><h3 id="计数"><a href="#计数" class="headerlink" title="计数"></a>计数</h3><p>我们来计算一下每个作者的文章数</p>
+<pre><code>Article.objects.all().values(&#39;author_id&#39;).annotate(count=Count(&#39;author&#39;)).values(&#39;author_id&#39;, &#39;count&#39;)
+</code></pre>
+<p>结果：</p>
+<pre><code>&lt;QuerySet [&#123;&#39;count&#39;: 3, &#39;author_id&#39;: 2L&#125;, &#123;&#39;count&#39;: 37, &#39;author_id&#39;: 4L&#125;, &#123;&#39;count&#39;: 20, &#39;author_id&#39;: 5L&#125;]&gt;
+</code></pre>
+<p>工作原理：</p>
+<pre><code>&gt;&gt;&gt; Article.objects.all().values(&#39;author_id&#39;).annotate(count=Count(&#39;author&#39;)).values(&#39;author_id&#39;, &#39;count&#39;).query.__str__()
+u&#39;SELECT `blog_article`.`author_id`, COUNT(`blog_article`.`author_id`) AS `count` FROM `blog_article` GROUP BY `blog_article`.`author_id` ORDER BY NULL&#39;
+</code></pre>
+<h3 id="求和-平均值"><a href="#求和-平均值" class="headerlink" title="求和 平均值"></a>求和 平均值</h3><p>求一个作者的所有文章的得分(score)平均值</p>
+<pre><code>from django.db.models import Avg
+Article.objects.values(&#39;author_id&#39;).annotate(avg_score=Avg(&#39;score&#39;)).values(&#39;author_id&#39;, &#39;avg_score&#39;)
+&lt;QuerySet [&#123;&#39;author_id&#39;: 1, &#39;avg_score&#39;: 86.05&#125;, &#123;&#39;author_id&#39;: 2, &#39;avg_score&#39;: 83.75&#125;, &#123;&#39;author_id&#39;: 5, &#39;avg_score&#39;: 85.65&#125;]&gt;
+</code></pre>
+<p>求一个作者所有文章的总分</p>
+<pre><code>from django.db.models import Sum
+ Article.objects.values(&#39;author__name&#39;).annotate(sum_score=Sum(&#39;score&#39;)).values(&#39;author__name&#39;, &#39;sum_score&#39;)
+&lt;QuerySet [&#123;&#39;author__name&#39;: u&#39;WeizhongTu&#39;, &#39;sum_score&#39;: 1721&#125;, &#123;&#39;author__name&#39;: u&#39;twz915&#39;, &#39;sum_score&#39;: 1675&#125;, &#123;&#39;author__name&#39;: u&#39;zhen&#39;, &#39;sum_score&#39;: 1713&#125;]&gt;
+</code></pre>
+<h2 id="select-related优化一对一，多对一查询"><a href="#select-related优化一对一，多对一查询" class="headerlink" title="select_related优化一对一，多对一查询"></a>select_related优化一对一，多对一查询</h2><p>修改settings配置在尾部添加如下信息：</p>
+<pre><code>LOGGING = &#123;
+    &#39;version&#39;: 1,
+    &#39;disable_existing_loggers&#39;: False,
+    &#39;handlers&#39;: &#123;
+        &#39;console&#39;: &#123;
+            &#39;class&#39;: &#39;logging.StreamHandler&#39;,
+        &#125;,
+    &#125;,
+    &#39;loggers&#39;: &#123;
+        &#39;django.db.backends&#39;: &#123;
+            &#39;handlers&#39;: [&#39;console&#39;],
+            &#39;level&#39;: &#39;DEBUG&#39; if DEBUG else &#39;INFO&#39;,
+        &#125;,
+    &#125;,
+&#125;
+</code></pre>
+<p>这样当 DEBUG 为 True 的时候，我们可以看出 django 执行了什么 SQL 语句</p>
+<pre><code>  articles = Article.objects.all()[:10]
+  a1 = articles[0]  # 取第一篇
+  (0.000) SELECT &quot;blog_article&quot;.&quot;id&quot;, &quot;blog_article&quot;.&quot;title&quot;, &quot;blog_article&quot;.&quot;author_id&quot;, &quot;blog_article&quot;.&quot;content&quot;, &quot;blog_article&quot;.&quot;score&quot; FROM &quot;blog_article&quot; LIMIT 1; args=()
+ a1.title
+
+ u&#39;Django \u6559\u7a0b_1&#39;
+
+ a1.author_id
+
+ 5
+
+ a1.author.name   # 再次查询了数据库，注意！！！
+
+(0.000) SELECT &quot;blog_author&quot;.&quot;id&quot;, &quot;blog_author&quot;.&quot;name&quot;, &quot;blog_author&quot;.&quot;qq&quot;, &quot;blog_author&quot;.&quot;addr&quot;, &quot;blog_author&quot;.&quot;email&quot; FROM &quot;blog_author&quot; WHERE &quot;blog_author&quot;.&quot;id&quot; = 5; args=(5,)
+
+u&#39;zhen&#39;
+</code></pre>
+<p>这样的话我们遍历查询结果的时候就会查询很多次数据库，能不能只查询一次，把作者的信息也查出来呢？</p>
+<p>当然可以，这时就用到 select_related，我们的数据库设计的是一篇文章只能有一个作者，一个作者可以有多篇文章。</p>
+<p>现在要查询文章的时候连同作者一起查询出来，“文章”和“作者”的关系就是<strong>多对一</strong>，换句说说，就是一篇文章只可能有一个作者。</p>
+<pre><code> articles = Article.objects.all().select_related(&#39;author&#39;)[:10]
+
+ a1 = articles[0]  # 取第一篇
+
+(0.000) SELECT &quot;blog_article&quot;.&quot;id&quot;, &quot;blog_article&quot;.&quot;title&quot;, &quot;blog_article&quot;.&quot;author_id&quot;, &quot;blog_article&quot;.&quot;content&quot;, &quot;blog_article&quot;.&quot;score&quot;, &quot;blog_author&quot;.&quot;id&quot;, &quot;blog_author&quot;.&quot;name&quot;, &quot;blog_author&quot;.&quot;qq&quot;, &quot;blog_author&quot;.&quot;addr&quot;, &quot;blog_author&quot;.&quot;email&quot; FROM &quot;blog_article&quot; INNER JOIN &quot;blog_author&quot; ON (&quot;blog_article&quot;.&quot;author_id&quot; = &quot;blog_author&quot;.&quot;id&quot;) LIMIT 1; args=()
+
+ a1.title
+
+ u&#39;Django \u6559\u7a0b_1&#39;
+
+ a1.author.name   # 嘻嘻，没有再次查询数据库！！
+
+ u&#39;zhen&#39;
+</code></pre>
+<h2 id="prefetch-related-优化一对多，多对多查询"><a href="#prefetch-related-优化一对多，多对多查询" class="headerlink" title="prefetch_related 优化一对多，多对多查询"></a>prefetch_related 优化一对多，多对多查询</h2><p>和 select_related 功能类似，但是实现不同。</p>
+<p>select_related 是使用 SQL JOIN 一次性取出相关的内容。</p>
+<p>prefetch_related 用于 一对多，多对多 的情况，这时 select_related 用不了，因为当前一条有好几条与之相关的内容。</p>
+<p>prefetch_related是通过再执行一条额外的SQL语句<strong>，</strong>然后用 Python 把两次SQL查询的内容关联（joining)到一起</p>
+<p>我们来看个例子，查询文章的同时，查询文章对应的标签。“文章”与“标签”是多对多的关系。</p>
+<pre><code>&gt;&gt;&gt; articles = Article.objects.all().prefetch_related(&#39;tags&#39;)[:10]
+&gt;&gt;&gt; articles
+(0.001) SELECT `blog_article`.`id`, `blog_article`.`title`, `blog_article`.`author_id`, `blog_article`.`content`, `blog_article`.`score` FROM `blog_article` LIMIT 10; args=()
+(0.002) SELECT (`blog_article_tags`.`article_id`) AS `_prefetch_related_val_article_id`, `blog_tag`.`id`, `blog_tag`.`name` FROM `blog_tag` INNER JOIN `blog_article_tags` ON (`blog_tag`.`id` = `blog_article_tags`.`tag_id`) WHERE `blog_article_tags`.`article_id` IN (1, 2, 3, 4, 5, 6, 7, 8, 9, 10); args=(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+&lt;QuerySet [&lt;Article: Django 教程_1&gt;, &lt;Article: Django 教程_2&gt;, &lt;Article: Django 教程_3&gt;, &lt;Article: Django 教程_4&gt;, &lt;Article: Django 教程_5&gt;, &lt;Article: Django 教程_6&gt;, &lt;Article: Django 教程_7&gt;, &lt;Article: Django 教程_8&gt;, &lt;Article: Django 教程_9&gt;, &lt;Article: Django 教程_10&gt;]&gt;
+</code></pre>
+<p>遍历查询结果</p>
+<p>不用prefetch_related时</p>
+<pre><code>&gt;&gt;&gt; articles = Article.objects.all()[:3]
+&gt;&gt;&gt; for a in articles:
+...  print a.title,a.tags.all()
+... 
+(0.001) SELECT `blog_article`.`id`, `blog_article`.`title`, `blog_article`.`author_id`, `blog_article`.`content`, `blog_article`.`score` FROM `blog_article` LIMIT 3; args=()
+(0.001) SELECT `blog_tag`.`id`, `blog_tag`.`name` FROM `blog_tag` INNER JOIN `blog_article_tags` ON (`blog_tag`.`id` = `blog_article_tags`.`tag_id`) WHERE `blog_article_tags`.`article_id` = 1 LIMIT 21; args=(1,)
+Django 教程_1 &lt;QuerySet [&lt;Tag: Django&gt;]&gt;
+(0.001) SELECT `blog_tag`.`id`, `blog_tag`.`name` FROM `blog_tag` INNER JOIN `blog_article_tags` ON (`blog_tag`.`id` = `blog_article_tags`.`tag_id`) WHERE `blog_article_tags`.`article_id` = 2 LIMIT 21; args=(2,)
+Django 教程_2 &lt;QuerySet [&lt;Tag: Django&gt;]&gt;
+(0.001) SELECT `blog_tag`.`id`, `blog_tag`.`name` FROM `blog_tag` INNER JOIN `blog_article_tags` ON (`blog_tag`.`id` = `blog_article_tags`.`tag_id`) WHERE `blog_article_tags`.`article_id` = 3 LIMIT 21; args=(3,)
+Django 教程_3 &lt;QuerySet [&lt;Tag: Django&gt;]&gt;
+&gt;&gt;&gt; 
+</code></pre>
+<p>使用prefetch_related时</p>
+<pre><code>&gt;&gt;&gt; articles = Article.objects.all().prefetch_related(&#39;tags&#39;)[:3]
+&gt;&gt;&gt; for a in articles:
+...  print a.title, a.tags.all()
+... 
+(0.030) SELECT `blog_article`.`id`, `blog_article`.`title`, `blog_article`.`author_id`, `blog_article`.`content`, `blog_article`.`score` FROM `blog_article` LIMIT 3; args=()
+(0.001) SELECT (`blog_article_tags`.`article_id`) AS `_prefetch_related_val_article_id`, `blog_tag`.`id`, `blog_tag`.`name` FROM `blog_tag` INNER JOIN `blog_article_tags` ON (`blog_tag`.`id` = `blog_article_tags`.`tag_id`) WHERE `blog_article_tags`.`article_id` IN (1, 2, 3); args=(1, 2, 3)
+Django 教程_1 &lt;QuerySet [&lt;Tag: Django&gt;]&gt;
+Django 教程_2 &lt;QuerySet [&lt;Tag: Django&gt;]&gt;
+Django 教程_3 &lt;QuerySet [&lt;Tag: Django&gt;]&gt;
+&gt;&gt;&gt; 
+</code></pre>
+<h2 id="defer-排除不需要的字段"><a href="#defer-排除不需要的字段" class="headerlink" title="defer 排除不需要的字段"></a>defer 排除不需要的字段</h2><p>在复杂的情况下，表中可能有些字段内容非常多，取出来转化成 Python 对象会占用大量的资源。</p>
+<p>这时候可以用 defer 来排除这些字段，比如我们在文章列表页，只需要文章的标题和作者，没有必要把文章的内容也获取出来（因为会转换成python对象，浪费内存）</p>
+<pre><code>Article.objects.all().defer(&#39;content&#39;)
+</code></pre>
+<h2 id="only-仅选择需要的字段"><a href="#only-仅选择需要的字段" class="headerlink" title="only 仅选择需要的字段"></a>only 仅选择需要的字段</h2><p>和 defer 相反，only 用于取出需要的字段，假如我们只需要查出 作者的名称</p>
+<pre><code> Author.objects.all().only(&#39;name&#39;)
+</code></pre>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8BDjango-QuerySet%E6%89%A7%E8%A1%8C%E7%9A%84SQL"><span class="toc-number">1.</span> <span class="toc-text">查看Django QuerySet执行的SQL</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#values-list-%E8%8E%B7%E5%8F%96%E5%85%83%E7%B4%A0%E5%BD%A2%E5%BC%8F%E7%BB%93%E6%9E%9C"><span class="toc-number">2.</span> <span class="toc-text">values_list 获取元素形式结果</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#values-%E8%8E%B7%E5%8F%96%E5%AD%97%E5%85%B8%E5%BD%A2%E5%BC%8F%E7%9A%84%E7%BB%93%E6%9E%9C"><span class="toc-number">3.</span> <span class="toc-text">values 获取字典形式的结果</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#list"><span class="toc-number">3.1.</span> <span class="toc-text">list</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#extra-%E5%AE%9E%E7%8E%B0-%E5%88%AB%E5%90%8D%EF%BC%8C%E6%9D%A1%E4%BB%B6%EF%BC%8C%E6%8E%92%E5%BA%8F%E7%AD%89"><span class="toc-number">4.</span> <span class="toc-text">extra 实现 别名，条件，排序等</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#annotate-%E8%81%9A%E5%90%88%E8%AE%A1%E6%95%B0%E3%80%81%E6%B1%82%E5%92%8C%E3%80%81%E5%B9%B3%E5%9D%87%E6%95%B0"><span class="toc-number">5.</span> <span class="toc-text">annotate 聚合计数、求和、平均数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%A1%E6%95%B0"><span class="toc-number">5.1.</span> <span class="toc-text">计数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B1%82%E5%92%8C-%E5%B9%B3%E5%9D%87%E5%80%BC"><span class="toc-number">5.2.</span> <span class="toc-text">求和 平均值</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#select-related%E4%BC%98%E5%8C%96%E4%B8%80%E5%AF%B9%E4%B8%80%EF%BC%8C%E5%A4%9A%E5%AF%B9%E4%B8%80%E6%9F%A5%E8%AF%A2"><span class="toc-number">6.</span> <span class="toc-text">select_related优化一对一，多对一查询</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#prefetch-related-%E4%BC%98%E5%8C%96%E4%B8%80%E5%AF%B9%E5%A4%9A%EF%BC%8C%E5%A4%9A%E5%AF%B9%E5%A4%9A%E6%9F%A5%E8%AF%A2"><span class="toc-number">7.</span> <span class="toc-text">prefetch_related 优化一对多，多对多查询</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#defer-%E6%8E%92%E9%99%A4%E4%B8%8D%E9%9C%80%E8%A6%81%E7%9A%84%E5%AD%97%E6%AE%B5"><span class="toc-number">8.</span> <span class="toc-text">defer 排除不需要的字段</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#only-%E4%BB%85%E9%80%89%E6%8B%A9%E9%9C%80%E8%A6%81%E7%9A%84%E5%AD%97%E6%AE%B5"><span class="toc-number">9.</span> <span class="toc-text">only 仅选择需要的字段</span></a></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

@@ -1,0 +1,1054 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Flink在k8s生产环境高可用部署 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="
+flink: 1.10.1
+kubernetes: 1.18.8
+
+1 前言目前参与的项目基本开发完成，打算开发的微服务和Flink任务统一部署到k8s上。之前几个项目都是跑在YARN上，Flin,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">Flink在k8s生产环境高可用部署</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/7.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/Flink"><b>「
+                    </b>FLINK<b> 」</b></a>
+                
+                November 02, 2020
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/flink-is-available-in-k8s-production-environment.html" title="Flink在k8s生产环境高可用部署" class="">Flink在k8s生产环境高可用部署</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    25k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    23 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Flink/" rel="tag">Flink</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <blockquote>
+<p>flink: 1.10.1</p>
+<p>kubernetes: 1.18.8</p>
+</blockquote>
+<h1 id="1-前言"><a href="#1-前言" class="headerlink" title="1 前言"></a>1 前言</h1><p>目前参与的项目基本开发完成，打算开发的微服务和Flink任务统一部署到k8s上。之前几个项目都是跑在YARN上，Flink on YARN的部署模式是在生产中比较常见，YARN的稳定性和资源调度能力也是有目共睹的，依托Hadoop生态Flink高可用也很容易实现。关于On YARN</p>
+<p>还是On K8S之前文章都有介绍，《Flink Cluster On YARN部署》和《Flink Cluster On Kubernetes部署》两篇文章里分别介绍了Flink以session以及per-job两种模式的部署。这篇文章将重点介绍per-job模式下如何在K8S中开启高可用，关于K8s上的高可用部署官网并没有提供相关文档，这里参考了Yarn以及Standalone部署的HA方案。相关代码已经提交到Github：<a target="_blank" rel="noopener" href="https://github.com/shirukai/flink-examples-k8s-cluster.git%EF%BC%8C%E5%8F%AF%E4%BB%A5%E5%85%88pull%E4%B8%8B%E4%BB%A3%E7%A0%81%EF%BC%8C%E7%84%B6%E5%90%8E%E8%B7%9F%E7%9D%80%E6%96%87%E7%AB%A0%E4%B8%80%E5%9D%97%E9%98%85%E8%AF%BB%EF%BC%8C%E9%A1%B9%E7%9B%AE%E4%B8%AD%E5%8C%85%E6%8B%AC%E4%B8%80%E4%B8%AA%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9A%84%E6%9C%89%E7%8A%B6%E6%80%81%E7%9A%84Flink%E4%BB%BB%E5%8A%A1%EF%BC%8C%E8%BF%98%E6%9C%89%E5%85%B3%E4%BA%8E%E9%83%A8%E7%BD%B2%E7%9A%84%E4%B8%80%E4%BA%9B%E8%B5%84%E6%BA%90%E5%AE%9A%E4%B9%89%E3%80%82">https://github.com/shirukai/flink-examples-k8s-cluster.git，可以先pull下代码，然后跟着文章一块阅读，项目中包括一个自定义的有状态的Flink任务，还有关于部署的一些资源定义。</a></p>
+<h1 id="2-准备镜像"><a href="#2-准备镜像" class="headerlink" title="2 准备镜像"></a>2 准备镜像</h1><p>Per-job模式这里采用将用户自定义的Jar打包进镜像的方式，在之前的文章里也有介绍过几种方式，这里采用基于官方镜像进行打包的方式。</p>
+<p>首先准备好Dockerfile，文件在flink-example-k8s-cluster/kubernetes/Dockerfile</p>
+<pre><code class="dockerfile">From flink:1.10.1
+
+ADD *.jar /opt/flink/usrlib/
+RUN chmod +x -R /opt/flink/usrlib
+RUN chown flink:flink -R /opt/flink/usrlib
+</code></pre>
+<p>Dockerfile定义很简单，镜像基于flink:1.10.1，然后将我们开发的jar 复制到/opt/flink/usrlib/目录下，最后给目录授权。</p>
+<p>构建镜像build.sh</p>
+<pre><code>cp ../target/flink-*.jar .
+docker build -t flink-job:1.10.1-example .
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20201031152713.png" alt="image-20201031152707683"></p>
+<h1 id="3-NFS或其他网络存储"><a href="#3-NFS或其他网络存储" class="headerlink" title="3 NFS或其他网络存储"></a>3 NFS或其他网络存储</h1><p>官网上在介绍Yarn或者Standalone高可用部署时都用到了HDFS，在k8s上我们就不考虑使用HDFS，我们使用k8s中的持久卷，将JobManager和TaskManager挂载相同的网络卷，以达到文件共享的目的。这里笔者为了测试方便，在k8s中使用的是mac操作系统中自带的NFS服务。关于mac上开启并在k8s中使用NFS服务可以参考我的另一篇文章《k8s使用mac上自带的NFS》。这里假设我们已有一个NFS服务，地址为20.5.1.21，共享目录为：Users/shirukai/opt/nfs_data。我们定义一个类型为PersistentVolume的k8s资源：</p>
+<p>flink-nfs-pv.yaml</p>
+<pre><code class="yaml">apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: flinknfspv
+spec:
+  mountOptions:
+    - nfsvers=3
+    - nolock
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Recycle
+  storageClassName: flink-nfs
+  nfs:
+    path: /Users/shirukai/opt/nfs_data
+    server: 20.5.1.21
+</code></pre>
+<p>定义一个类型为PersistentVolumeClaim的k8s资源：</p>
+<p>flink-nfs-pvc.yaml</p>
+<pre><code class="yaml">apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: flinknfspvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 6Gi
+  storageClassName: flink-nfs
+</code></pre>
+<p>创建PV：</p>
+<pre><code class="sh">kubectl apply -f flink-nfs-pv.yaml
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20201031155539.png" alt="image-20201031155539297"></p>
+<p>创建PVC</p>
+<pre><code class="sh">kubectl apply -f flink-nfs-pvc.yaml
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20201031155711.png" alt="image-20201031155711597"></p>
+<p>PVC创建好之后，我们就可以在后面部署Flink时，通过挂载卷的方式持久化数据路。一共有三个地方需要用到持久卷：</p>
+<ol>
+<li>zookeeper数据目录，将pvc挂载到zookeeper的数据目录，用以持久化zk的数据，防止数据丢失</li>
+<li>flink的状态后端采用filesystem的方式，指定的state.checkpoints.dir目录需要持久化</li>
+<li>flink开启高可用的元数据存储指定的high-availability.storageDir目录需要持久化</li>
+</ol>
+<h1 id="4-Flink资源定义"><a href="#4-Flink资源定义" class="headerlink" title="4 Flink资源定义"></a>4 Flink资源定义</h1><p>接下来就是定义一些列k8s资源用以部署Flink集群，其中包括ConfigMap，Zookeeper的Deployment、Service，JobManager的Deployment、Service，TaskManager的Deployment，下面将分别进行详细介绍。</p>
+<h2 id="4-1-ConfigMap"><a href="#4-1-ConfigMap" class="headerlink" title="4.1 ConfigMap"></a>4.1 ConfigMap</h2><p>统一将所有将来需要修改的配置都放到configmap里，包括flink的配置flink-conf.yaml，日志配置log4j.properties和log4j-console.properties，以及zookeeper的配置：zoo.cfg。</p>
+<p>定义类型为ConfigMap的k8s资源：</p>
+<p>flink-configuration-configmap.yaml</p>
+<pre><code class="yaml">apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: flink-config
+  labels:
+    app: flink
+data:
+  flink-conf.yaml: |+
+    jobmanager.rpc.address: flink-jobmanager
+    taskmanager.numberOfTaskSlots: 1
+    parallelism.default: 2
+    blob.server.port: 6124
+    jobmanager.rpc.port: 6123
+    taskmanager.rpc.port: 6122
+    jobmanager.heap.size: 1024m
+    taskmanager.memory.process.size: 1024m
+    state.backend: filesystem
+    state.checkpoints.dir: file:///data/flink/checkpoints
+    # 通过zookeeper开启HA
+    high-availability: zookeeper
+    # zk quorum的服务列表
+    high-availability.zookeeper.quorum: flink-zookeeper:2181
+    # 设置作业元数据的存储位置
+    high-availability.storageDir: file:///data/flink/ha
+    high-availability.jobmanager.port: 34560
+    metrics.internal.query-service.port: 34561
+
+  log4j.properties: |+
+    log4j.rootLogger=INFO, file
+    log4j.logger.akka=INFO
+    log4j.logger.org.apache.kafka=INFO
+    log4j.logger.org.apache.hadoop=INFO
+    log4j.logger.org.apache.zookeeper=INFO
+    log4j.appender.file=org.apache.log4j.FileAppender
+    log4j.appender.file.file=$&#123;log.file&#125;
+    log4j.appender.file.layout=org.apache.log4j.PatternLayout
+    log4j.appender.file.layout.ConversionPattern=%d&#123;yyyy-MM-dd HH:mm:ss,SSS&#125; %-5p %-60c %x - %m%n
+    log4j.logger.org.apache.flink.shaded.akka.org.jboss.netty.channel.DefaultChannelPipeline=ERROR, file
+  log4j-console.properties: |+
+    # This affects logging for both user code and Flink
+    log4j.rootLogger=INFO, console
+
+    # Uncomment this if you want to _only_ change Flink&#39;s logging
+    #log4j.logger.org.apache.flink=INFO
+
+    # The following lines keep the log level of common libraries/connectors on
+    # log level INFO. The root logger does not override this. You have to manually
+    # change the log levels here.
+    log4j.logger.akka=INFO
+    log4j.logger.org.apache.kafka=INFO
+    log4j.logger.org.apache.hadoop=INFO
+    log4j.logger.org.apache.zookeeper=INFO
+
+    # Log all infos to the console
+    log4j.appender.console=org.apache.log4j.ConsoleAppender
+    log4j.appender.console.layout=org.apache.log4j.PatternLayout
+    log4j.appender.console.layout.ConversionPattern=%d&#123;yyyy-MM-dd HH:mm:ss,SSS&#125; %-5p %-60c %x - %m%n
+
+    # Suppress the irrelevant (wrong) warnings from the Netty channel handler
+    log4j.logger.org.apache.flink.shaded.akka.org.jboss.netty.channel.DefaultChannelPipeline=ERROR, console
+  zoo.cfg: |+
+    clientPort=2181
+    dataDir=/data/zookeeper/
+    dataLogDir=/data/zookeeper/log
+    4lw.commands.whitelist=*
+</code></pre>
+<p><em>重点注意flink-conf.yaml的中几个配置</em></p>
+<pre><code class="yaml">    state.backend: filesystem
+    state.checkpoints.dir: file:///data/flink/checkpoints
+    # 通过zookeeper开启HA
+    high-availability: zookeeper
+    # zk quorum的服务列表
+    high-availability.zookeeper.quorum: flink-zookeeper:2181
+    # 设置作业元数据的存储位置
+    high-availability.storageDir: file:///data/flink/ha
+    # 固定JobManager的端口（不指定的话默认会随机生成，会导致Pod之间无法访问），并需要通过service暴露出去，否则在TaskManager中将访问不到改端口
+    high-availability.jobmanager.port: 34560
+    metrics.internal.query-service.port: 34561
+</code></pre>
+<p>创建configmap</p>
+<pre><code>kubectl apply -f flink-configuration-configmap.yaml
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20201031161900.png" alt="image-20201031161900149"></p>
+<h2 id="4-2-Zookeeper"><a href="#4-2-Zookeeper" class="headerlink" title="4.2 Zookeeper"></a>4.2 Zookeeper</h2><p>我们只开启一个单节点的zookeeper服务，需要定义Deployment和Service</p>
+<h3 id="4-2-1-zookeeper-deployment-yaml"><a href="#4-2-1-zookeeper-deployment-yaml" class="headerlink" title="4.2.1 zookeeper-deployment.yaml"></a>4.2.1 zookeeper-deployment.yaml</h3><p>定义Deployment如下：</p>
+<pre><code class="yaml">apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flink-zookeeper
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flink
+      component: zookeeper
+  template:
+    metadata:
+      labels:
+        app: flink
+        component: zookeeper
+
+    # -----
+    spec:
+      # restartPolicy: OnFailure
+      containers:
+        - name: zookeeper
+          image: zookeeper:3.6
+          ports:
+            - containerPort: 2181
+              name: port
+          livenessProbe:
+            tcpSocket:
+              port: 2181
+            initialDelaySeconds: 30
+            periodSeconds: 60
+          volumeMounts:
+            - name: zk-config-volume
+              mountPath: /conf
+            - name: flink-data
+              mountPath: /data
+
+          securityContext:
+            runAsUser: 9999
+      volumes:
+        - name: zk-config-volume
+          configMap:
+            name: flink-config
+            items:
+              - key: zoo.cfg
+                path: zoo.cfg
+        - name: flink-data
+          persistentVolumeClaim:
+            claimName: flinknfspvc
+</code></pre>
+<p>注意两点：</p>
+<ol>
+<li>从名称flink-config的configmap中取出zoo.cfg配置文件挂载到容器的/conf目录下</li>
+<li>将claim名称为flinknfspvc的持久卷挂载到容器的/data目录下</li>
+</ol>
+<p>资源定义好后，创建Deployment</p>
+<pre><code>kubectl create -f zookeeper-deployment.yaml
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20201031162318.png" alt="image-20201031162318722"></p>
+<p>进入容器，查看zookeeper是否正常</p>
+<pre><code> kubectl exec -it flink-zookeeper-6c698d5cc5-8v8tv -- bin/zkCli.sh
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20201031162728.png"></p>
+<h3 id="4-2-2-zookeeper-service-yaml"><a href="#4-2-2-zookeeper-service-yaml" class="headerlink" title="4.2.2 zookeeper-service.yaml"></a>4.2.2 zookeeper-service.yaml</h3><p>为zookeeper定义Service，向外暴露2181端口，其它的pod可以通过flink-zookeeper:2181的地址进行访问。</p>
+<pre><code class="yaml">apiVersion: v1
+kind: Service
+metadata:
+  name: flink-zookeeper
+spec:
+  type: ClusterIP
+  ports:
+    - name: port
+      port: 2181
+  selector:
+    app: flink
+    component: zookeeper
+</code></pre>
+<p>创建Service</p>
+<pre><code>kubectl create -f zookeeper-service.yaml 
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20201031163258.png" alt="image-20201031163258250"></p>
+<h2 id="4-3-JobManager"><a href="#4-3-JobManager" class="headerlink" title="4.3 JobManager"></a>4.3 JobManager</h2><p>JobManager需要定义三个资源，一个是用以部署的Deployment，另外是Pod间能够访问的Service，最后是对外能够通过NodPort的方式暴露REST UI的Service。</p>
+<h3 id="4-3-1-jobmanager-job-deployment-yaml"><a href="#4-3-1-jobmanager-job-deployment-yaml" class="headerlink" title="4.3.1 jobmanager-job-deployment.yaml"></a>4.3.1 jobmanager-job-deployment.yaml</h3><p>JobManager的Deployment定义，需要指定我们自己构建的镜像，并且在重写启动命令，指定job-class以及相关参数。</p>
+<pre><code class="yaml">apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flink-jobmanager
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flink
+      component: jobmanager
+  template:
+    metadata:
+      labels:
+        app: flink
+        component: jobmanager
+
+    # -----
+    spec:
+      # restartPolicy: OnFailure
+      containers:
+        - name: jobmanager
+          image: flink-job:1.10.1-example
+          command: [&quot;/bin/bash&quot;, &quot;-c&quot;, &quot;$FLINK_HOME/bin/standalone-job.sh start --job-classname flink.k8s.cluster.examples.EventCounterJob --socket-host 20.5.1.21;
+          sleep 3;
+          tail -f $FLINK_HOME/log/*.log&quot;]
+          ports:
+            - containerPort: 6123
+              name: rpc
+            - containerPort: 6124
+              name: blob-server
+            - containerPort: 8081
+              name: webui
+            # 需要指定该端口，否则将随机生成，导致TaskManager与JobManager通信异常
+            - containerPort: 34560
+              name: ha
+            - containerPort: 34561
+              name: query
+          livenessProbe:
+            tcpSocket:
+              port: 6124
+            initialDelaySeconds: 30
+            periodSeconds: 60
+          volumeMounts:
+            - name: flink-config-volume
+              mountPath: /opt/flink/conf
+            - name: flink-data
+              mountPath: /data
+           # - name: job-artifacts-volume
+           #   mountPath: /opt/flink/usrlib
+          securityContext:
+            runAsUser: 9999  # refers to user _flink_ from official flink image, change if necessary
+      volumes:
+        - name: flink-config-volume
+          configMap:
+            name: flink-config
+            items:
+              - key: flink-conf.yaml
+                path: flink-conf.yaml
+              - key: log4j.properties
+                path: log4j.properties
+              - key: log4j-console.properties
+                path: log4j-console.properties
+        - name: flink-data
+          persistentVolumeClaim:
+            claimName: flinknfspvc
+      #  - name: job-artifacts-volume
+       #   hostPath:
+        #    path: /host/path/to/job/artifacts
+</code></pre>
+<p>同样注意两点：</p>
+<ol>
+<li>从名称flink-config的configmap中取出flink-conf.yaml、log4j.properties、log4j-console.properties配置文件挂载到容器的/opt/flink/conf目录下</li>
+<li>将claim名称为flinknfspvc的持久卷挂载到容器的/data目录下</li>
+</ol>
+<p>创建Deployment</p>
+<pre><code class="sh">kubectl create -f jobmanager-job-deployment.yaml
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20201031163954.png" alt="image-20201031163954003"></p>
+<h3 id="4-3-2-jobmanager-service-yaml"><a href="#4-3-2-jobmanager-service-yaml" class="headerlink" title="4.3.2 jobmanager-service.yaml"></a>4.3.2 jobmanager-service.yaml</h3><p>JobManager的Service定义也相对比较简单，需要暴露出指定的几个端口即可</p>
+<pre><code class="yaml">apiVersion: v1
+kind: Service
+metadata:
+  name: flink-jobmanager
+spec:
+  type: ClusterIP
+  ports:
+  - name: rpc
+    port: 6123
+  - name: blob-server
+    port: 6124
+  - name: webui
+    port: 8081
+  - name: ha
+    port: 34560
+  - name: query
+    port: 34561
+  selector:
+    app: flink
+    component: jobmanager
+</code></pre>
+<p>创建Service</p>
+<pre><code>kubectl create -f jobmanager-service.yaml
+</code></pre>
+<h3 id="4-3-3-jobmanager-rest-service-yaml"><a href="#4-3-3-jobmanager-rest-service-yaml" class="headerlink" title="4.3.3 jobmanager-rest-service.yaml"></a>4.3.3 jobmanager-rest-service.yaml</h3><p>JobManager REST的Service定义，主要是通过NodPort的方式，将UI端口暴露出来，方便我们通过节点IP+端口号的方式访问Flink 的UI。</p>
+<pre><code class="yaml">apiVersion: v1
+kind: Service
+metadata:
+  name: flink-jobmanager-rest
+spec:
+  type: NodePort
+  ports:
+  - name: rest
+    port: 8081
+    targetPort: 8081
+    nodePort: 30081
+  selector:
+    app: flink
+    component: jobmanager
+</code></pre>
+<p>创建Service</p>
+<pre><code>kubectl create -f jobmanager-rest-service.yaml
+</code></pre>
+<p>此时我们就可以通过节点IP:30081访问Flink Web UI</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20201031164551.png" alt="image-20201031164551041"></p>
+<p>通过UI界面可以看到，我们已经有一个Flink Job在执行了，但是出于RESTARTING状态，这是由于我们的TaskManager还没有启动，Job没有足够的Slot的去执行每一个Task，接下来我们需要去定义TaskManager。</p>
+<h2 id="4-4-TaskManager"><a href="#4-4-TaskManager" class="headerlink" title="4.4 TaskManager"></a>4.4 TaskManager</h2><p>TaskManager只需要定义一个Deployment资源即可。</p>
+<h3 id="4-4-1-taskmanager-job-deployment-yaml"><a href="#4-4-1-taskmanager-job-deployment-yaml" class="headerlink" title="4.4.1 taskmanager-job-deployment.yaml"></a>4.4.1 taskmanager-job-deployment.yaml</h3><p>TaskManager的Deployment定义与JobManager几乎相同，只是启动命令有所不同。</p>
+<pre><code class="yaml">apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flink-taskmanager
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: flink
+      component: taskmanager
+  template:
+    metadata:
+      labels:
+        app: flink
+        component: taskmanager
+    spec:
+      containers:
+      - name: taskmanager
+        image: flink-job:1.10.1-example
+        command: [&quot;/bin/bash&quot;, &quot;-c&quot;, &quot;$FLINK_HOME/bin/taskmanager.sh start;
+        sleep 3;
+        tail -f $FLINK_HOME/log/*.log&quot;]
+        ports:
+        - containerPort: 6122
+          name: rpc
+        - containerPort: 6125
+          name: query-state
+        livenessProbe:
+          tcpSocket:
+            port: 6122
+          initialDelaySeconds: 30
+          periodSeconds: 60
+        volumeMounts:
+        - name: flink-config-volume
+          mountPath: /opt/flink/conf/
+        - name: flink-data
+          mountPath: /data
+        securityContext:
+          runAsUser: 9999  # refers to user _flink_ from official flink image, change if necessary
+      volumes:
+      - name: flink-config-volume
+        configMap:
+          name: flink-config
+          items:
+          - key: flink-conf.yaml
+            path: flink-conf.yaml
+          - key: log4j.properties
+            path: log4j.properties
+          - key: log4j-console.properties
+            path: log4j-console.properties
+      - name: flink-data
+        persistentVolumeClaim:
+          claimName: flinknfspvc
+</code></pre>
+<p>注意：</p>
+<p>这里在Deployment里指定了2个副本，意味着我们将启动两个Pod，因为我们再flink-conf.yaml中指定了默认的并行度为2，所以我们需要两个slort来执行我们的Flink task。</p>
+<p>创建Deployment</p>
+<pre><code>kubectl create -f taskmanager-job-deployment.yaml
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20201031165307.png" alt="image-20201031165307896"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20201031170815.png" alt="image-20201031170815866"></p>
+<p>等Taskmanager两个容器启动之后，可以在WebUI上看到TaskManager数量已经变成了2，Job的状态也变为Running状态了</p>
+<h1 id="5-高可用验证"><a href="#5-高可用验证" class="headerlink" title="5 高可用验证"></a>5 高可用验证</h1><p>通过上面的步骤我们已经能够在k8s上运行一个per-job模式的flink集群，并进行了高可用的配置。这一章节将进行高可用的验证，主要包括TaskManager意外退出、JobManager意外退出、整个集群意外退出的验证。</p>
+<h2 id="5-1-开发一个带状态的Flink任务"><a href="#5-1-开发一个带状态的Flink任务" class="headerlink" title="5.1 开发一个带状态的Flink任务"></a>5.1 开发一个带状态的Flink任务</h2><p>为了进行更直观的验证，我们需要开发一个带状态的Flink任务，方便观察各个服务意外退出之后Flink能否从checkpoint中进行状态恢复。在项目scala代码中的flink.k8s.cluster.examples包下查看EventCounterJob类</p>
+<pre><code class="scala">package flink.k8s.cluster.examples
+
+import org.apache.flink.api.common.state.&#123;ValueState, ValueStateDescriptor&#125;
+import org.apache.flink.api.java.utils.ParameterTool
+import org.apache.flink.streaming.api.scala.&#123;DataStream, StreamExecutionEnvironment&#125;
+import org.apache.flink.configuration.Configuration
+import org.apache.flink.streaming.api.environment.CheckpointConfig.ExternalizedCheckpointCleanup
+import org.apache.flink.streaming.api.functions.KeyedProcessFunction
+import org.apache.flink.util.Collector
+import org.apache.flink.api.scala._
+
+/**
+ * 实时计算事件总个数，以及value总和
+ *
+ * @author shirukai
+ */
+
+object EventCounterJob &#123;
+
+  def main(args: Array[String]): Unit = &#123;
+
+    // 获取执行环境
+    val env: StreamExecutionEnvironment = StreamExecutionEnvironment.getExecutionEnvironment
+
+    val params: ParameterTool = ParameterTool.fromArgs(args)
+
+
+    env.getConfig.setGlobalJobParameters(params)
+
+    // 配置checkpoint
+    // 做两个checkpoint的间隔为1秒
+    env.enableCheckpointing(10000)
+    // 表示下 Cancel 时是否需要保留当前的 Checkpoint，默认 Checkpoint 会在整个作业 Cancel 时被删除。Checkpoint 是作业级别的保存点。
+    env.getCheckpointConfig.enableExternalizedCheckpoints(ExternalizedCheckpointCleanup.RETAIN_ON_CANCELLATION)
+
+
+    // 1. 从socket中接收文本数据
+    val streamText: DataStream[String] = env.socketTextStream(params.get(&quot;socket-host&quot;,&quot;0.0.0.0&quot;), 9000)
+      .uid(&quot;SocketSource&quot;)
+
+    // 2. 将文本内容按照空格分割转换为事件样例类
+    val events = streamText.map(s =&gt; &#123;
+      val tokens = s.split(&quot; &quot;)
+      Event(tokens(0), tokens(1).toDouble, tokens(2).toLong)
+    &#125;).uid(&quot;String2CaseClass&quot;)
+    // 3. 按照事件id分区，然后进行聚合统计
+    val counterResult = events.keyBy(_.id)
+      .process(new EventCounterProcessFunction)
+      .uid(&quot;EventCounter&quot;)
+
+    // 4. 结果输出到控制台
+    counterResult.print().uid(&quot;Printer&quot;)
+
+    env.execute(&quot;EventCounterJob&quot;)
+  &#125;
+&#125;
+
+/**
+ * 定义事件样例类
+ *
+ * @param id    事件类型id
+ * @param value 事件值
+ * @param time  事件时间
+ */
+case class Event(id: String, value: Double, time: Long)
+
+/**
+ * 定义事件统计器样例类
+ *
+ * @param id    事件类型id
+ * @param sum   事件值总和
+ * @param count 事件个数
+ */
+case class EventCounter(id: String, var sum: Double, var count: Int)
+
+/**
+ * 继承KeyedProcessFunction实现事件统计
+ */
+class EventCounterProcessFunction extends KeyedProcessFunction[String, Event, EventCounter] &#123;
+  private var counterState: ValueState[EventCounter] = _
+
+  override def open(parameters: Configuration): Unit = &#123;
+    super.open(parameters)
+    // 从flink上下文中获取状态
+    counterState = getRuntimeContext.getState(new ValueStateDescriptor[EventCounter](&quot;event-counter&quot;, classOf[EventCounter]))
+  &#125;
+
+  override def processElement(i: Event,
+                              context: KeyedProcessFunction[String, Event, EventCounter]#Context,
+                              collector: Collector[EventCounter]): Unit = &#123;
+
+    // 从状态中获取统计器，如果统计器不存在给定一个初始值
+    val counter = Option(counterState.value()).getOrElse(EventCounter(i.id, 0.0, 0))
+
+    // 统计聚合
+    counter.count += 1
+    counter.sum += i.value
+
+    // 发送结果到下游
+    collector.collect(counter)
+
+    // 保存状态
+    counterState.update(counter)
+
+  &#125;
+&#125;
+</code></pre>
+<p>代码逻辑相对比较简单，主要包括下面几个过程：</p>
+<ol>
+<li>使用socketTextStream算子监听指定的Socket端口，用以接收文本数据</li>
+<li>使用map算子将接收的文本数据转换为事件样例类</li>
+<li>将事件按照id进行分区</li>
+<li>分区后的事件使用自定义的KeyedProcess算子进行统计聚合操作</li>
+<li>将结果输出控制台</li>
+</ol>
+<p>注意：</p>
+<p>在运行flink任务之前，需要使用<code>nc -lk 9000</code>命令监听9000端口，模拟Socket服务端</p>
+<h2 id="5-2-高可用验证：TaskManager意外退出"><a href="#5-2-高可用验证：TaskManager意外退出" class="headerlink" title="5.2 高可用验证：TaskManager意外退出"></a>5.2 高可用验证：TaskManager意外退出</h2><p>在进行验证之前，确保flink任务已经在集群中正常运行。</p>
+<p>1 在nc -lk 9000的命令行控制台输入一条数据：</p>
+<pre><code>event-1 1.0 1604280262000
+</code></pre>
+<p>2 查看TaskManager的输出，符合预期：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20201102093112.png" alt="image-20201102093112281"></p>
+<p>3 在nc -lk 9000的命令行控制台再输入一条数据：</p>
+<pre><code>event-1 2.0 1604280263000
+</code></pre>
+<p>4 刷新TaskManager的标准输出，符合预期：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20201102093329.png" alt="image-20201102093329211"></p>
+<p>5 现在将两个TaskManager的Pod删除</p>
+<pre><code>(base) shirukai@shirukaideMacBook-Pro nfs_data % kubectl get pods                                             
+NAME                                 READY   STATUS    RESTARTS   AGE
+flink-jobmanager-5cfcd4b77f-45pl2    1/1     Running   0          43m
+flink-taskmanager-5db58d75f5-lvpd4   1/1     Running   0          43m
+flink-taskmanager-5db58d75f5-rbtb8   1/1     Running   0          43m
+flink-zookeeper-6c698d5cc5-mm7g9     1/1     Running   0          43m
+(base) shirukai@shirukaideMacBook-Pro nfs_data % kubectl delete pod flink-taskmanager-5db58d75f5-lvpd4
+pod &quot;flink-taskmanager-5db58d75f5-lvpd4&quot; deleted
+(base) shirukai@shirukaideMacBook-Pro nfs_data % kubectl delete pod flink-taskmanager-5db58d75f5-rbtb8
+pod &quot;flink-taskmanager-5db58d75f5-rbtb8&quot; deleted
+</code></pre>
+<p>删除Pod之后，可以看到当前的Flink任务处于一个RESTARING状态，稍等片刻后会重新变为RUNNING状态</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20201102100937.png" alt="image-20201102100937047"></p>
+<p>6 在nc -lk 9000的命令行控制台重新输入一条数据：</p>
+<pre><code>event-1 3.0 1604280264000
+</code></pre>
+<p>7 刷新TaskManager的标准输出，发现当前的统计结果是在之前的结果基础上继续进行的：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20201102101316.png" alt="image-20201102101316152"></p>
+<h2 id="5-3-高可用验证：JobManager意外退出"><a href="#5-3-高可用验证：JobManager意外退出" class="headerlink" title="5.3 高可用验证：JobManager意外退出"></a>5.3 高可用验证：JobManager意外退出</h2><p>开始之前，需要停止之前集群，并清理掉NFS中的内容，然后启动集群。</p>
+<p>1 在nc -lk 9000的命令行控制台输入一条数据：</p>
+<pre><code>event-1 1.0 1604280262000
+</code></pre>
+<p>2 查看TaskManager的输出，符合预期：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20201102093112.png" alt="image-20201102093112281"></p>
+<p>3 在nc -lk 9000的命令行控制台再输入一条数据：</p>
+<pre><code>event-1 2.0 1604280263000
+</code></pre>
+<p>4 刷新TaskManager的标准输出，符合预期：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20201102093329.png" alt="image-20201102093329211"></p>
+<p>5 现在将JobManager的Pod删除</p>
+<pre><code>(base) shirukai@shirukaideMacBook-Pro nfs_data % kubectl get pods                                     
+NAME                                 READY   STATUS    RESTARTS   AGE
+flink-jobmanager-5cfcd4b77f-jqjbr    1/1     Running   0          105s
+flink-taskmanager-5db58d75f5-4sp9d   1/1     Running   0          103s
+flink-taskmanager-5db58d75f5-dg6d6   1/1     Running   0          103s
+flink-zookeeper-6c698d5cc5-qnhk4     1/1     Running   0          105s
+(base) shirukai@shirukaideMacBook-Pro nfs_data % kubectl delete pod flink-jobmanager-5cfcd4b77f-jqjbr
+pod &quot;flink-jobmanager-5cfcd4b77f-jqjbr&quot; deleted
+</code></pre>
+<p>删除Pod之后，等待JobManager启动，稍等片刻后会Flink任务会重新变为RUNNING状态</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20201102105234.png" alt="image-20201102105234827"></p>
+<p>6 在nc -lk 9000的命令行控制台重新输入一条数据：</p>
+<pre><code>event-1 3.0 1604280264000
+</code></pre>
+<p>7 刷新TaskManager的标准输出，发现当前的统计结果是在之前的结果基础上继续进行的：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20201102105146.png" alt="image-20201102105146738"></p>
+<h2 id="5-4-高可用验证：整个集群意外退出"><a href="#5-4-高可用验证：整个集群意外退出" class="headerlink" title="5.4 高可用验证：整个集群意外退出"></a>5.4 高可用验证：整个集群意外退出</h2><p>这个比较简单，在上面的基础上进行就可以了，现在将集群停止，并重新启动。</p>
+<p>1 在nc -lk 9000的命令行控制台输入一条数据:</p>
+<pre><code>event-1 4.0 1604280265000
+</code></pre>
+<p>2 刷新TaskManager的标准输出，符合预期:</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20201102105543.png" alt="image-20201102105543564"></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">1 前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E5%87%86%E5%A4%87%E9%95%9C%E5%83%8F"><span class="toc-number">2.</span> <span class="toc-text">2 准备镜像</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-NFS%E6%88%96%E5%85%B6%E4%BB%96%E7%BD%91%E7%BB%9C%E5%AD%98%E5%82%A8"><span class="toc-number">3.</span> <span class="toc-text">3 NFS或其他网络存储</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-Flink%E8%B5%84%E6%BA%90%E5%AE%9A%E4%B9%89"><span class="toc-number">4.</span> <span class="toc-text">4 Flink资源定义</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-ConfigMap"><span class="toc-number">4.1.</span> <span class="toc-text">4.1 ConfigMap</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-Zookeeper"><span class="toc-number">4.2.</span> <span class="toc-text">4.2 Zookeeper</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-1-zookeeper-deployment-yaml"><span class="toc-number">4.2.1.</span> <span class="toc-text">4.2.1 zookeeper-deployment.yaml</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-2-zookeeper-service-yaml"><span class="toc-number">4.2.2.</span> <span class="toc-text">4.2.2 zookeeper-service.yaml</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-3-JobManager"><span class="toc-number">4.3.</span> <span class="toc-text">4.3 JobManager</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-1-jobmanager-job-deployment-yaml"><span class="toc-number">4.3.1.</span> <span class="toc-text">4.3.1 jobmanager-job-deployment.yaml</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-2-jobmanager-service-yaml"><span class="toc-number">4.3.2.</span> <span class="toc-text">4.3.2 jobmanager-service.yaml</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-3-jobmanager-rest-service-yaml"><span class="toc-number">4.3.3.</span> <span class="toc-text">4.3.3 jobmanager-rest-service.yaml</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-4-TaskManager"><span class="toc-number">4.4.</span> <span class="toc-text">4.4 TaskManager</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-1-taskmanager-job-deployment-yaml"><span class="toc-number">4.4.1.</span> <span class="toc-text">4.4.1 taskmanager-job-deployment.yaml</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%E9%AB%98%E5%8F%AF%E7%94%A8%E9%AA%8C%E8%AF%81"><span class="toc-number">5.</span> <span class="toc-text">5 高可用验证</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#5-1-%E5%BC%80%E5%8F%91%E4%B8%80%E4%B8%AA%E5%B8%A6%E7%8A%B6%E6%80%81%E7%9A%84Flink%E4%BB%BB%E5%8A%A1"><span class="toc-number">5.1.</span> <span class="toc-text">5.1 开发一个带状态的Flink任务</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-2-%E9%AB%98%E5%8F%AF%E7%94%A8%E9%AA%8C%E8%AF%81%EF%BC%9ATaskManager%E6%84%8F%E5%A4%96%E9%80%80%E5%87%BA"><span class="toc-number">5.2.</span> <span class="toc-text">5.2 高可用验证：TaskManager意外退出</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-3-%E9%AB%98%E5%8F%AF%E7%94%A8%E9%AA%8C%E8%AF%81%EF%BC%9AJobManager%E6%84%8F%E5%A4%96%E9%80%80%E5%87%BA"><span class="toc-number">5.3.</span> <span class="toc-text">5.3 高可用验证：JobManager意外退出</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-4-%E9%AB%98%E5%8F%AF%E7%94%A8%E9%AA%8C%E8%AF%81%EF%BC%9A%E6%95%B4%E4%B8%AA%E9%9B%86%E7%BE%A4%E6%84%8F%E5%A4%96%E9%80%80%E5%87%BA"><span class="toc-number">5.4.</span> <span class="toc-text">5.4 高可用验证：整个集群意外退出</span></a></li></ol></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

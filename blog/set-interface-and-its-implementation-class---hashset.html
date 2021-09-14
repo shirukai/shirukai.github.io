@@ -1,0 +1,526 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Set接口及其实现类——HashSet - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="
+Set是元素无序并且不可以重复的集合，被称为集HashSet——哈希集，是Set的一个重要的实现类
+HashSet案例
+提供备选课程
+创建学生对象，并给该学生添加三门课程（添加正在学生的cours,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">Set接口及其实现类——HashSet</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/3.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/Java"><b>「
+                    </b>JAVA<b> 」</b></a>
+                
+                August 19, 2018
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/set-interface-and-its-implementation-class---hashset.html" title="Set接口及其实现类——HashSet" class="">Set接口及其实现类——HashSet</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    4.3k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    4 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6/" rel="tag">集合框架</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <blockquote>
+<h3 id="Set是元素无序并且不可以重复的集合，被称为集"><a href="#Set是元素无序并且不可以重复的集合，被称为集" class="headerlink" title="Set是元素无序并且不可以重复的集合，被称为集"></a>Set是元素无序并且不可以重复的集合，被称为集</h3><h3 id="HashSet——哈希集，是Set的一个重要的实现类"><a href="#HashSet——哈希集，是Set的一个重要的实现类" class="headerlink" title="HashSet——哈希集，是Set的一个重要的实现类"></a>HashSet——哈希集，是Set的一个重要的实现类</h3></blockquote>
+<h2 id="HashSet案例"><a href="#HashSet案例" class="headerlink" title="HashSet案例"></a>HashSet案例</h2><ul>
+<li><h4 id="提供备选课程"><a href="#提供备选课程" class="headerlink" title="提供备选课程"></a>提供备选课程</h4></li>
+<li><h4 id="创建学生对象，并给该学生添加三门课程（添加正在学生的courses——Set类型的属性中）"><a href="#创建学生对象，并给该学生添加三门课程（添加正在学生的courses——Set类型的属性中）" class="headerlink" title="创建学生对象，并给该学生添加三门课程（添加正在学生的courses——Set类型的属性中）"></a>创建学生对象，并给该学生添加三门课程（添加正在学生的courses——Set类型的属性中）</h4></li>
+</ul>
+<ol>
+<li>显示备选课程</li>
+<li>循环三次，每次输入课程ID</li>
+<li>往学生的courses属性中添加与输入的ID匹配的课程</li>
+<li>输出学生选择的课程<h2 id="代码清单"><a href="#代码清单" class="headerlink" title="代码清单"></a>代码清单</h2><h4 id="创建学生类"><a href="#创建学生类" class="headerlink" title="创建学生类"></a>创建学生类</h4></li>
+</ol>
+<pre><code>public class Student &#123;
+    public String sid;
+    public String sname;
+    public Set&lt;Course&gt; courses;
+    public Student(String sid, String sname)&#123;
+        this.sid = sid;
+        this.sname = sname;
+        this.courses = new HashSet&lt;Course&gt;();
+    &#125;
+&#125;
+</code></pre>
+<h4 id="创建SetTest类"><a href="#创建SetTest类" class="headerlink" title="创建SetTest类"></a>创建SetTest类</h4><pre><code>public class SetTest &#123;
+    public List&lt;Course&gt; coursesToSelect;
+    public SetTest()&#123;
+        coursesToSelect  = new ArrayList&lt;Course&gt;();
+    &#125;
+&#125;
+</code></pre>
+<h4 id="在SetTest类中构建-添加元素的方法testAdd"><a href="#在SetTest类中构建-添加元素的方法testAdd" class="headerlink" title="在SetTest类中构建 添加元素的方法testAdd()"></a>在SetTest类中构建 添加元素的方法testAdd()</h4><pre><code>public void testAdd()&#123;
+        Course cr1 = new Course(&quot;1&quot;,&quot;数据结构&quot;);
+        coursesToSelect.add(cr1);
+
+        Course cr2 = new Course(&quot;2&quot;,&quot;C语言&quot;);
+        coursesToSelect.add(0,cr2);
+
+        Course[] course = &#123;new Course(&quot;3&quot;,&quot;离散数学&quot;),new Course(&quot;4&quot;,&quot;汇编语言&quot;)&#125;;
+        coursesToSelect.addAll(Arrays.asList(course));
+
+
+        Course[] course2 = &#123;new Course(&quot;5&quot;,&quot;高等数学&quot;),new Course(&quot;6&quot;,&quot;大学英语&quot;)&#125;;
+        coursesToSelect.addAll(2,Arrays.asList(course2));
+    &#125;
+</code></pre>
+<h4 id="在SetTest中通过for-each方法遍历元素"><a href="#在SetTest中通过for-each方法遍历元素" class="headerlink" title="在SetTest中通过for each方法遍历元素"></a>在SetTest中通过for each方法遍历元素</h4><pre><code>ublic void testForEach()&#123;
+        System.out.println(&quot;有如下课程待选（通过foreach遍历）：&quot;);
+        for(Object obj:coursesToSelect)&#123;
+            Course course = (Course) obj;
+            System.out.println(&quot;课程：&quot;+course.cid+&quot;:&quot;+course.cname);
+        &#125;
+    &#125;
+</code></pre>
+<h4 id="打印输出，学生所选的课程"><a href="#打印输出，学生所选的课程" class="headerlink" title="打印输出，学生所选的课程"></a>打印输出，学生所选的课程</h4><pre><code>    public void testForEachForSet(Student student)&#123;
+        for(Course cr : student.courses)&#123;
+            System.out.println(&quot;选择了课程:&quot;+cr.cid+&quot;:&quot;+cr.cname);
+        &#125;
+    &#125;
+</code></pre>
+<h4 id="创建测试类主方法"><a href="#创建测试类主方法" class="headerlink" title="创建测试类主方法"></a>创建测试类主方法</h4><pre><code>    public static void main(String[] args)&#123;
+        SetTest st = new SetTest();
+        st.testAdd();
+        st.testForEach();
+        //创建一个学生对象
+        Student student = new Student(&quot;1&quot;,&quot;小明&quot;);
+        System.out.println(&quot;欢迎学生：&quot;+student.sname+&quot;选课！&quot;);
+        //创建一个Scanner对象，用来接收从键盘输入的课程ID
+        Scanner console = new Scanner(System.in);
+        for(int i=0;i&lt;3;i++)&#123;
+            System.out.println(&quot;请输入课程ID&quot;);
+            String courseId = console.next();
+            for (Course cr:st.coursesToSelect)&#123;
+                if (cr.cid.equals(courseId))&#123;
+                    student.courses.add(cr);
+                   /* Set中，添加某个对象，无论添加多少次
+                   * 最终只会保留一个该对象（的引用），
+                   * 并且，保留的是第一次添加的那一个*/
+                &#125;
+            &#125;
+        &#125;
+        st.testForEachForSet(student);
+    &#125;
+</code></pre>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Set%E6%98%AF%E5%85%83%E7%B4%A0%E6%97%A0%E5%BA%8F%E5%B9%B6%E4%B8%94%E4%B8%8D%E5%8F%AF%E4%BB%A5%E9%87%8D%E5%A4%8D%E7%9A%84%E9%9B%86%E5%90%88%EF%BC%8C%E8%A2%AB%E7%A7%B0%E4%B8%BA%E9%9B%86"><span class="toc-number">1.</span> <span class="toc-text">Set是元素无序并且不可以重复的集合，被称为集</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#HashSet%E2%80%94%E2%80%94%E5%93%88%E5%B8%8C%E9%9B%86%EF%BC%8C%E6%98%AFSet%E7%9A%84%E4%B8%80%E4%B8%AA%E9%87%8D%E8%A6%81%E7%9A%84%E5%AE%9E%E7%8E%B0%E7%B1%BB"><span class="toc-number">2.</span> <span class="toc-text">HashSet——哈希集，是Set的一个重要的实现类</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HashSet%E6%A1%88%E4%BE%8B"><span class="toc-number"></span> <span class="toc-text">HashSet案例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E6%B8%85%E5%8D%95"><span class="toc-number"></span> <span class="toc-text">代码清单</span></a>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

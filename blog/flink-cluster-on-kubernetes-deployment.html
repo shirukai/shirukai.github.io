@@ -1,0 +1,987 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Flink Cluster On Kubernetes部署 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="
+Flink版本：1.10.1
+kubernetes：1.16.5
+
+Flink 在Kubernetes上部署分为Job cluster和Session cluster两种模式。Job cluste,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">Flink Cluster On Kubernetes部署</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/3.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/Flink"><b>「
+                    </b>FLINK<b> 」</b></a>
+                
+                October 31, 2020
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/flink-cluster-on-kubernetes-deployment.html" title="Flink Cluster On Kubernetes部署" class="">Flink Cluster On Kubernetes部署</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    23k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    21 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Flink/" rel="tag">Flink</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <blockquote>
+<p>Flink版本：1.10.1</p>
+<p>kubernetes：1.16.5</p>
+</blockquote>
+<p>Flink 在Kubernetes上部署分为Job cluster和Session cluster两种模式。Job cluster需要我们将自己的Jar打到flink镜像里一块部署，session模式可以启动cluster之后，我们再提交jar到session cluster。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/dc5674d81d7611ea86bbd89ef325d4fd.png"></p>
+<h1 id="1-环境准备"><a href="#1-环境准备" class="headerlink" title="1 环境准备"></a>1 环境准备</h1><p>在YARN模式部署的文章里，我们是直接从官网下载编译后的包进行部署的。由于Job Cluster模式需要我们重新打镜像，在环境准备这一部分，我们尝试从github上拉去flink源码手动编译一下。</p>
+<h2 id="1-1-从Github上拉取Flink源码"><a href="#1-1-从Github上拉取Flink源码" class="headerlink" title="1.1 从Github上拉取Flink源码"></a>1.1 从Github上拉取Flink源码</h2><ol>
+<li><p>进入 flink github，地址：<a target="_blank" rel="noopener" href="https://github.com/apache/flink">https://github.com/apache/flink</a></p>
+</li>
+<li><p>点击【Releases】,查找我们需要下载版本的包，例如我们需要下载1.10.1的源码，我们就在Releases页面下载release-1.10.1这个包</p>
+<pre><code class="shell">wget https://github.com/apache/flink/archive/release-1.10.1.tar.gz
+</code></pre>
+<p><em>小技巧：由于网络原因我们可能下载代码失败，我们可以注册一个码云账号<a target="_blank" rel="noopener" href="https://gitee.com/%EF%BC%8C%E5%9C%A8%E7%A0%81%E4%BA%91%E4%B8%8A%E6%96%B0%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E4%BB%93%E5%BA%93%EF%BC%8C%E5%9C%A8%E5%AF%BC%E5%85%A5%E5%B7%B2%E6%9C%89%E4%BB%93%E5%BA%93%E9%80%89%E9%A1%B9%E4%B8%AD%E5%B0%86flink%E5%9C%A8github%E4%B8%8A%E7%9A%84%E5%9C%B0%E5%9D%80%E5%A1%AB%E5%85%A5%E8%BF%9B%E5%8E%BB%EF%BC%8C%E6%9C%80%E5%90%8E%E6%88%91%E4%BB%AC%E4%BB%8E%E7%A0%81%E4%BA%91%E4%B8%8A%E4%B8%8B%E8%BD%BD%E4%BB%A3%E7%A0%81%E5%B0%B1%E5%BE%88%E5%BF%AB%E4%BA%86%E3%80%82">https://gitee.com/，在码云上新创建一个仓库，在导入已有仓库选项中将flink在github上的地址填入进去，最后我们从码云上下载代码就很快了。</a></em></p>
+</li>
+<li><p>下载代码后进行解压</p>
+<pre><code class="shell">tar -zxvf flink-release-1.10.1.tar.gz
+</code></pre>
+</li>
+</ol>
+<h2 id="1-2-编译"><a href="#1-2-编译" class="headerlink" title="1.2 编译"></a>1.2 编译</h2><ol>
+<li><p>进入解压目录执行如下Maven命令进行编译</p>
+<pre><code class="bash">mvn clean package -DskipTests -Dfast
+</code></pre>
+<p>编译过程中可能遇到如下错误：</p>
+<p>Failure to find io.confluent:kafka-schema-registry-client:jar:3.3.1</p>
+<pre><code>[ERROR] Failed to execute goal on project flink-avro-confluent-registry: Could not resolve dependencies for project org.apache.flink:flink-avro-confluent-registry:jar:1.8.2: Failure to find io.confluent:kafka-schema-registry-client:jar:3.3.1 in https://maven.aliyun.com/repository/public was cached in the local repository, resolution will not be reattempted until the update interval of aliyunmaven has elapsed or updates are forced -&gt; [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/DependencyResolutionException
+[ERROR] 
+[ERROR] After correcting the problems, you can resume the build with the command
+[ERROR]   mvn &lt;goals&gt; -rf :flink-avro-confluent-registry
+</code></pre>
+<p>只是由于在maven仓库中找不到kafka-schema-registry-client:jar:3.3.1导致的，这里我尝试换用官方仓库和阿里仓库都没有找到该报，通过查阅资料，我们可以手动下载该包，然后安装到我们的maven仓库中。</p>
+<p>在flink代码目录创建lib包，用来存放下载的JAR，然后下载从io.confluent官网下载对应版本的JAR</p>
+<pre><code>mkdir lib
+cd lib
+wget http://packages.confluent.io/maven/io/confluent/kafka-schema-registry-client/3.3.1/kafka-schema-registry-client-3.3.1.jar
+</code></pre>
+<p>然后使用maven命令安装该JAR到本地仓库</p>
+<pre><code>mvn install:install-file -DgroupId=io.confluent -DartifactId=kafka-schema-registry-client -Dversion=3.3.1 -Dpackaging=jar -Dfile=kafka-schema-registry-client-3.3.1.jar
+</code></pre>
+<p>重新尝试编译。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200922142327.png" alt="image-20200922142327350"></p>
+</li>
+<li><p>build-target目录下就是我们编译后的文件</p>
+</li>
+</ol>
+<h2 id="1-3-Kubernetes环境"><a href="#1-3-Kubernetes环境" class="headerlink" title="1.3 Kubernetes环境"></a>1.3 Kubernetes环境</h2><p>我们也需要k8s环境，可以尝试在自己电脑上使用docker on desktop安装kubernetes<a target="_blank" rel="noopener" href="https://www.docker.com/products/docker-desktop%EF%BC%8C%E8%BF%99%E9%87%8C%E5%B0%B1%E4%B8%8D%E8%AF%A6%E7%BB%86%E4%BB%8B%E7%BB%8D%EF%BC%8C%E5%8F%AF%E4%BB%A5%E5%8F%82%E8%80%83%EF%BC%9Ahttps://blog.csdn.net/shirukai/article/details/103512497%E5%9C%A8%E8%87%AA%E5%B7%B1%E7%9A%84%E7%94%B5%E8%84%91%E4%B8%8A%E6%90%AD%E5%BB%BAk8s%E7%8E%AF%E5%A2%83%E3%80%82">https://www.docker.com/products/docker-desktop，这里就不详细介绍，可以参考：https://blog.csdn.net/shirukai/article/details/103512497在自己的电脑上搭建k8s环境。</a></p>
+<h1 id="2-Flink-session-cluster-on-Kubernetes"><a href="#2-Flink-session-cluster-on-Kubernetes" class="headerlink" title="2 Flink session cluster on Kubernetes"></a>2 Flink session cluster on Kubernetes</h1><p>Flink Session cluster是作为长期运行的Kubernetes Deployment。一个session cluster可以提交多个Flink job，集群部署后，需要将Job提交到集群。</p>
+<p>一个基础的Flink session 集群包含以下k8s资源组件：</p>
+<p><strong>Flink Conf ConfigMap</strong></p>
+<ul>
+<li>用于存储flink-conf.yaml,log4j-console.properties等配置信息</li>
+<li>Flink JM和TM Deployment启动时会自动获取配置</li>
+</ul>
+<p><strong>JobManager Service</strong></p>
+<ul>
+<li>通过Service Name和Port暴露JobManager服务，让TaskManager能够连接到JobManager</li>
+</ul>
+<p><strong>JobManager Deployment</strong></p>
+<ul>
+<li>定义JobManager Pod 副本数目，版本等，保证在Pods中至少有一个副本</li>
+</ul>
+<p><strong>TaskManager Deployment</strong></p>
+<ul>
+<li>定义TaskManager Pod副本数目，版本等，保证在Pods中至少有一个副本。</li>
+</ul>
+<h2 id="2-1-在K8S上部署Flink-Session-cluster"><a href="#2-1-在K8S上部署Flink-Session-cluster" class="headerlink" title="2.1 在K8S上部署Flink Session cluster"></a>2.1 在K8S上部署Flink Session cluster</h2><p>这里参考官网给的资源定义：<a target="_blank" rel="noopener" href="https://ci.apache.org/projects/flink/flink-docs-release-1.10/ops/deployment/kubernetes.html#session-cluster-resource-definitions">https://ci.apache.org/projects/flink/flink-docs-release-1.10/ops/deployment/kubernetes.html#session-cluster-resource-definitions</a></p>
+<h3 id="2-1-1-Flink-ConfigMap"><a href="#2-1-1-Flink-ConfigMap" class="headerlink" title="2.1.1 Flink ConfigMap"></a>2.1.1 Flink ConfigMap</h3><p>用来存放Flink的相关配置文件，如flink-conf.yaml、log4j.properties等。</p>
+<ol>
+<li><p>创建一个名为flink-configuration-configmap.yaml的文件。</p>
+<p>内容如下：</p>
+<pre><code class="yaml">apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: flink-config
+  labels:
+    app: flink
+data:
+  flink-conf.yaml: |+
+    jobmanager.rpc.address: flink-jobmanager
+    taskmanager.numberOfTaskSlots: 1
+    blob.server.port: 6124
+    jobmanager.rpc.port: 6123
+    taskmanager.rpc.port: 6122
+    jobmanager.heap.size: 1024m
+    taskmanager.memory.process.size: 1024m
+  log4j.properties: |+
+    log4j.rootLogger=INFO, file
+    log4j.logger.akka=INFO
+    log4j.logger.org.apache.kafka=INFO
+    log4j.logger.org.apache.hadoop=INFO
+    log4j.logger.org.apache.zookeeper=INFO
+    log4j.appender.file=org.apache.log4j.FileAppender
+    log4j.appender.file.file=$&#123;log.file&#125;
+    log4j.appender.file.layout=org.apache.log4j.PatternLayout
+    log4j.appender.file.layout.ConversionPattern=%d&#123;yyyy-MM-dd HH:mm:ss,SSS&#125; %-5p %-60c %x - %m%n
+    log4j.logger.org.apache.flink.shaded.akka.org.jboss.netty.channel.DefaultChannelPipeline=ERROR, file
+</code></pre>
+</li>
+<li><p>创建Flink Conf ConfigMap</p>
+<pre><code>kubectl create -f flink-configuration-configmap.yaml 
+</code></pre>
+</li>
+<li><p>查看已创建的configmap</p>
+<pre><code>kubectl get configmap
+</code></pre>
+</li>
+</ol>
+<h3 id="2-1-2-JobManager-Service"><a href="#2-1-2-JobManager-Service" class="headerlink" title="2.1.2  JobManager Service"></a>2.1.2  JobManager Service</h3><ol>
+<li><p>编辑jobmanager-service.yaml文件</p>
+<pre><code class="yaml">apiVersion: v1
+kind: Service
+metadata:
+  name: flink-jobmanager
+spec:
+  type: ClusterIP
+  ports:
+  - name: rpc
+    port: 6123
+  - name: blob
+    port: 6124
+  - name: ui
+    port: 8081
+  selector:
+    app: flink
+    component: jobmanager
+</code></pre>
+</li>
+<li><p>创建Flink jobmanager-service</p>
+<pre><code>kubectl create -f jobmanager-service.yaml
+</code></pre>
+</li>
+</ol>
+<h3 id="2-1-3-JobManager-Deployment"><a href="#2-1-3-JobManager-Deployment" class="headerlink" title="2.1.3  JobManager Deployment"></a>2.1.3  JobManager Deployment</h3><ol>
+<li><p>编辑jobmanager-deployment.yaml</p>
+<pre><code class="yaml">apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flink-jobmanager
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flink
+      component: jobmanager
+  template:
+    metadata:
+      labels:
+        app: flink
+        component: jobmanager
+    spec:
+      containers:
+      - name: jobmanager
+        image: flink:1.10.1
+        workingDir: /opt/flink
+        command: [&quot;/bin/bash&quot;, &quot;-c&quot;, &quot;$FLINK_HOME/bin/jobmanager.sh start;\
+          while :;
+          do
+            if [[ -f $(find log -name &#39;*jobmanager*.log&#39; -print -quit) ]];
+              then tail -f -n +1 log/*jobmanager*.log;
+            fi;
+          done&quot;]
+        ports:
+        - containerPort: 6123
+          name: rpc
+        - containerPort: 6124
+          name: blob
+        - containerPort: 8081
+          name: ui
+        livenessProbe:
+          tcpSocket:
+            port: 6123
+          initialDelaySeconds: 30
+          periodSeconds: 60
+        volumeMounts:
+        - name: flink-config-volume
+          mountPath: /opt/flink/conf
+        securityContext:
+          runAsUser: 9999  # refers to user _flink_ from official flink image, change if necessary
+      volumes:
+      - name: flink-config-volume
+        configMap:
+          name: flink-config
+          items:
+          - key: flink-conf.yaml
+            path: flink-conf.yaml
+          - key: log4j.properties
+            path: log4j.properties
+</code></pre>
+</li>
+<li><p>创建Flink jobmanager-deployment</p>
+<pre><code>kubectl create -f jobmanager-deployment.yaml
+</code></pre>
+</li>
+</ol>
+<h3 id="2-1-4-TaskManager-Deployment"><a href="#2-1-4-TaskManager-Deployment" class="headerlink" title="2.1.4 TaskManager Deployment"></a>2.1.4 TaskManager Deployment</h3><ol>
+<li><p>编辑taskmanager-deployment.yaml</p>
+<pre><code class="yaml">apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flink-taskmanager
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: flink
+      component: taskmanager
+  template:
+    metadata:
+      labels:
+        app: flink
+        component: taskmanager
+    spec:
+      containers:
+      - name: taskmanager
+        image: flink:1.10.1
+        workingDir: /opt/flink
+        command: [&quot;/bin/bash&quot;, &quot;-c&quot;, &quot;$FLINK_HOME/bin/taskmanager.sh start; \
+          while :;
+          do
+            if [[ -f $(find log -name &#39;*taskmanager*.log&#39; -print -quit) ]];
+              then tail -f -n +1 log/*taskmanager*.log;
+            fi;
+          done&quot;]
+        ports:
+        - containerPort: 6122
+          name: rpc
+        livenessProbe:
+          tcpSocket:
+            port: 6122
+          initialDelaySeconds: 30
+          periodSeconds: 60
+        volumeMounts:
+        - name: flink-config-volume
+          mountPath: /opt/flink/conf/
+        securityContext:
+          runAsUser: 9999  # refers to user _flink_ from official flink image, change if necessary
+      volumes:
+      - name: flink-config-volume
+        configMap:
+          name: flink-config
+          items:
+          - key: flink-conf.yaml
+            path: flink-conf.yaml
+          - key: log4j.properties
+            path: log4j.properties
+</code></pre>
+</li>
+<li><p>创建Flink taskmanager-deployment</p>
+<pre><code>kubectl create -f taskmanager-deployment.yaml
+</code></pre>
+</li>
+</ol>
+<h3 id="2-1-5-通过三种方式访问Flink-UI"><a href="#2-1-5-通过三种方式访问Flink-UI" class="headerlink" title="2.1.5 通过三种方式访问Flink UI"></a>2.1.5 通过三种方式访问Flink UI</h3><h4 id="2-1-5-1-kubectl-proxy"><a href="#2-1-5-1-kubectl-proxy" class="headerlink" title="2.1.5.1 kubectl proxy"></a>2.1.5.1 kubectl proxy</h4><ol>
+<li><p>在命令行执行<code>kubectl proxy</code></p>
+</li>
+<li><p>然后在浏览器访问 <a target="_blank" rel="noopener" href="http://localhost:8001/api/v1/namespaces/default/services/flink-jobmanager:ui/proxy">http://localhost:8001/api/v1/namespaces/default/services/flink-jobmanager:ui/proxy</a></p>
+</li>
+</ol>
+<h4 id="2-1-5-2-kubectl-port-forward"><a href="#2-1-5-2-kubectl-port-forward" class="headerlink" title="2.1.5.2 kubectl port forward"></a>2.1.5.2 kubectl port forward</h4><ol>
+<li>Run <code>kubectl port-forward $&#123;flink-jobmanager-pod&#125; 8081:8081</code> to forward your jobmanager’s web ui port to local 8081.</li>
+<li>Navigate to <a target="_blank" rel="noopener" href="http://localhost:8081/">http://localhost:8081</a> in your browser.</li>
+<li>Moreover, you could use the following command below to submit jobs to the cluster:</li>
+</ol>
+<p>获取所有pod</p>
+<pre><code>(base) shirukai@shirukaideMacBook-Pro session % kubectl get pods
+NAME                                READY   STATUS    RESTARTS   AGE
+flink-jobmanager-6b67975bc6-rshdt   1/1     Running   0          23m
+flink-taskmanager-9dbb6dbc4-lhdhr   1/1     Running   0          4m58s
+flink-taskmanager-9dbb6dbc4-mx7rn   1/1     Running   0          4m58s
+</code></pre>
+<p>查看jobmanager pod</p>
+<pre><code>kubectl describe pod flink-jobmanager-6b67975bc6-rshdt
+</code></pre>
+<p>端口转发</p>
+<pre><code>kubectl port-forward flink-jobmanager-6b67975bc6-rshdt 8081:8081
+</code></pre>
+<h4 id="2-1-5-3-NodePort方式"><a href="#2-1-5-3-NodePort方式" class="headerlink" title="2.1.5.3 NodePort方式"></a>2.1.5.3 NodePort方式</h4><ol>
+<li><p>编辑jobmanager-rest-service.yaml</p>
+<pre><code class="yaml">apiVersion: v1
+kind: Service
+metadata:
+  name: flink-jobmanager-rest
+spec:
+  type: NodePort
+  ports:
+  - name: rest
+    port: 8081 #Cluster IP 上监听的端口
+    targetPort: 8081 #Pod监听的端口
+    nodePort: 30081 #k8s节点上监听的端口
+  selector:
+    app: flink
+    component: jobmanager
+</code></pre>
+</li>
+<li><p>创建 jobmanager-rest-service</p>
+<pre><code>kubectl create -f jobmanager-rest-service.yaml
+</code></pre>
+</li>
+<li><p>通过kubectl get svc 查看对外端口</p>
+<pre><code>kubectl get svc
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200922105755.png" alt="image-20200922105755486"></p>
+<p>访问： localhost:30081</p>
+</li>
+</ol>
+<h4 id="2-1-5-4-提交任务到seesion集群"><a href="#2-1-5-4-提交任务到seesion集群" class="headerlink" title="2.1.5.4 提交任务到seesion集群"></a>2.1.5.4 提交任务到seesion集群</h4><p>假如本地有flink客户端，可以直接进入bin目录下，使用客户端进行任务提交</p>
+<pre><code> ./flink run -m localhost:30081  ../examples/streaming/WordCount.jar 
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200922133510.png" alt="image-20200922133322206"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200922133515.png" alt="image-20200922133334904"></p>
+<h4 id="2-1-5-5-停止集群"><a href="#2-1-5-5-停止集群" class="headerlink" title="2.1.5.5 停止集群"></a>2.1.5.5 停止集群</h4><pre><code>kubectl delete -f jobmanager-rest-service.yaml
+kubectl delete -f jobmanager-service.yaml
+kubectl delete -f jobmanager-deployment.yaml
+kubectl delete -f taskmanager-deployment.yaml
+kubectl delete -f flink-configuration-configmap.yaml
+</code></pre>
+<h2 id="2-2-Flink-Per-Job-on-Kubernetes"><a href="#2-2-Flink-Per-Job-on-Kubernetes" class="headerlink" title="2.2 Flink Per-Job on Kubernetes"></a>2.2 Flink Per-Job on Kubernetes</h2><p>Per-Job需要提前在容器内准备好Jar包，有两种方式，一种是重新构建镜像，将用户的Jar包打到镜像里，第二种是通过挂载卷的方式将用户存放Jar的存储，挂载到容器里的/opt/flink/usrlib下。</p>
+<h3 id="2-2-1-重新构建镜像"><a href="#2-2-1-重新构建镜像" class="headerlink" title="2.2.1 重新构建镜像"></a>2.2.1 重新构建镜像</h3><p>重构镜像也有两种方式，一种是基于源码编译后然后重新构建镜像。第二种是基于官方的镜像，将我们的Jar打进去。</p>
+<h4 id="2-2-1-1-基于编码编重新构建对象"><a href="#2-2-1-1-基于编码编重新构建对象" class="headerlink" title="2.2.1.1 基于编码编重新构建对象"></a>2.2.1.1 基于编码编重新构建对象</h4><p>源码编译完成之后，进入flink/flink-container/docker目录，执行如下命令进行构建镜像</p>
+<pre><code>sh build.sh --from-local-dist --image-name flink-job:1.10.1-source --job-artifacts ../../build-target/examples/streaming/WordCount.jar
+</code></pre>
+<h4 id="2-2-1-2-基于官方镜像重新构建"><a href="#2-2-1-2-基于官方镜像重新构建" class="headerlink" title="2.2.1.2 基于官方镜像重新构建"></a>2.2.1.2 基于官方镜像重新构建</h4><p>编写dockerfile</p>
+<pre><code>From flink:1.10.1
+ADD *.jar /opt/flink/usrlib/
+</code></pre>
+<p>构建镜像</p>
+<pre><code>docker build -t flink-job:1.10.1-image .
+</code></pre>
+<h4 id="2-2-1-3-定义k8s资源"><a href="#2-2-1-3-定义k8s资源" class="headerlink" title="2.2.1.3 定义k8s资源"></a>2.2.1.3 定义k8s资源</h4><p>flink-configuration-configmap.yaml</p>
+<pre><code class="yaml">apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: flink-config
+  labels:
+    app: flink
+data:
+  flink-conf.yaml: |+
+    jobmanager.rpc.address: flink-jobmanager
+    taskmanager.numberOfTaskSlots: 1
+    blob.server.port: 6124
+    jobmanager.rpc.port: 6123
+    taskmanager.rpc.port: 6122
+    jobmanager.heap.size: 1024m
+    taskmanager.memory.process.size: 1024m
+  log4j.properties: |+
+    log4j.rootLogger=INFO, file
+    log4j.logger.akka=INFO
+    log4j.logger.org.apache.kafka=INFO
+    log4j.logger.org.apache.hadoop=INFO
+    log4j.logger.org.apache.zookeeper=INFO
+    log4j.appender.file=org.apache.log4j.FileAppender
+    log4j.appender.file.file=$&#123;log.file&#125;
+    log4j.appender.file.layout=org.apache.log4j.PatternLayout
+    log4j.appender.file.layout.ConversionPattern=%d&#123;yyyy-MM-dd HH:mm:ss,SSS&#125; %-5p %-60c %x - %m%n
+    log4j.logger.org.apache.flink.shaded.akka.org.jboss.netty.channel.DefaultChannelPipeline=ERROR, file
+  log4j-console.properties: |+
+    log4j-console.properties: |+
+    # This affects logging for both user code and Flink
+    log4j.rootLogger=INFO, console
+
+    # Uncomment this if you want to _only_ change Flink&#39;s logging
+    #log4j.logger.org.apache.flink=INFO
+
+    # The following lines keep the log level of common libraries/connectors on
+    # log level INFO. The root logger does not override this. You have to manually
+    # change the log levels here.
+    log4j.logger.akka=INFO
+    log4j.logger.org.apache.kafka=INFO
+    log4j.logger.org.apache.hadoop=INFO
+    log4j.logger.org.apache.zookeeper=INFO
+
+    # Log all infos to the console
+    log4j.appender.console=org.apache.log4j.ConsoleAppender
+    log4j.appender.console.layout=org.apache.log4j.PatternLayout
+    log4j.appender.console.layout.ConversionPattern=%d&#123;yyyy-MM-dd HH:mm:ss,SSS&#125; %-5p %-60c %x - %m%n
+
+    # Suppress the irrelevant (wrong) warnings from the Netty channel handler
+    log4j.logger.org.apache.flink.shaded.akka.org.jboss.netty.channel.DefaultChannelPipeline=ERROR, console
+</code></pre>
+<p>jobmanager-service.yaml</p>
+<pre><code class="yaml">apiVersion: v1
+kind: Service
+metadata:
+  name: flink-jobmanager
+spec:
+  type: ClusterIP
+  ports:
+  - name: rpc
+    port: 6123
+  - name: blob-server
+    port: 6124
+  - name: webui
+    port: 8081
+  selector:
+    app: flink
+    component: jobmanager
+</code></pre>
+<p>jobmanager-rest-service.yaml</p>
+<pre><code class="yaml">apiVersion: v1
+kind: Service
+metadata:
+  name: flink-jobmanager-rest
+spec:
+  type: NodePort
+  ports:
+  - name: rest
+    port: 8081
+    targetPort: 8081
+    nodePort: 30081
+  selector:
+    app: flink
+    component: jobmanager
+</code></pre>
+<p>jobmanager-job-deployment.yaml</p>
+<pre><code class="yaml">apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flink-jobmanager
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flink
+      component: jobmanager
+  template:
+    metadata:
+      labels:
+        app: flink
+        component: jobmanager
+
+    # -----
+    spec:
+      # restartPolicy: OnFailure
+      containers:
+        - name: jobmanager
+          image: flink-job:1.10.1-image
+          env:
+          args: [&quot;standalone-job&quot;, &quot;--job-classname&quot;, &quot;org.apache.flink.streaming.examples.wordcount.WordCount&quot;] # optional arguments: [&quot;--job-id&quot;, &quot;&lt;job id&gt;&quot;, &quot;--fromSavepoint&quot;, &quot;/path/to/savepoint&quot;, &quot;--allowNonRestoredState&quot;]
+          ports:
+            - containerPort: 6123
+              name: rpc
+            - containerPort: 6124
+              name: blob-server
+            - containerPort: 8081
+              name: webui
+          livenessProbe:
+            tcpSocket:
+              port: 6123
+            initialDelaySeconds: 30
+            periodSeconds: 60
+          volumeMounts:
+            - name: flink-config-volume
+              mountPath: /opt/flink/conf
+           # - name: job-artifacts-volume
+           #   mountPath: /opt/flink/usrlib
+          securityContext:
+            runAsUser: 9999  # refers to user _flink_ from official flink image, change if necessary
+      volumes:
+        - name: flink-config-volume
+          configMap:
+            name: flink-config
+            items:
+              - key: flink-conf.yaml
+                path: flink-conf.yaml
+              - key: log4j.properties
+                path: log4j.properties
+              - key: log4j-console.properties
+                path: log4j-console.properties
+      #  - name: job-artifacts-volume
+       #   hostPath:
+        #    path: /host/path/to/job/artifacts
+</code></pre>
+<p>taskmanager-job-deployment.yaml</p>
+<pre><code class="yaml">apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flink-taskmanager
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: flink
+      component: taskmanager
+  template:
+    metadata:
+      labels:
+        app: flink
+        component: taskmanager
+    spec:
+      containers:
+      - name: taskmanager
+        image: flink-job:1.10.1-image
+        env:
+        args: [&quot;taskmanager&quot;]
+        ports:
+        - containerPort: 6122
+          name: rpc
+        - containerPort: 6125
+          name: query-state
+        livenessProbe:
+          tcpSocket:
+            port: 6122
+          initialDelaySeconds: 30
+          periodSeconds: 60
+        volumeMounts:
+        - name: flink-config-volume
+          mountPath: /opt/flink/conf/
+        #- name: job-artifacts-volume
+        #  mountPath: /opt/flink/usrlib
+        securityContext:
+          runAsUser: 9999  # refers to user _flink_ from official flink image, change if necessary
+      volumes:
+      - name: flink-config-volume
+        configMap:
+          name: flink-config
+          items:
+          - key: flink-conf.yaml
+            path: flink-conf.yaml
+          - key: log4j-console.properties
+            path: log4j-console.properties
+#      - name: job-artifacts-volume
+#        hostPath:
+#          path: /host/path/to/job/artifacts
+</code></pre>
+<h4 id="2-2-1-4-部署Per-Job集群"><a href="#2-2-1-4-部署Per-Job集群" class="headerlink" title="2.2.1.4 部署Per-Job集群"></a>2.2.1.4 部署Per-Job集群</h4><pre><code>kubectl create -f flink-configuration-configmap.yaml
+kubectl create -f jobmanager-rest-service.yaml
+kubectl create -f jobmanager-service.yaml
+kubectl create -f jobmanager-job-deployment.yaml
+kubectl create -f taskmanager-job-deployment.yaml
+</code></pre>
+<h4 id="2-2-1-5-停止集群"><a href="#2-2-1-5-停止集群" class="headerlink" title="2.2.1.5 停止集群"></a>2.2.1.5 停止集群</h4><pre><code>kubectl delete -f flink-configuration-configmap.yaml
+kubectl delete -f jobmanager-rest-service.yaml
+kubectl delete -f jobmanager-service.yaml
+kubectl delete -f jobmanager-job-deployment.yaml
+kubectl delete -f taskmanager-job-deployment.yaml
+</code></pre>
+<p>docker rm $(docker ps -a | grep Exit | awk ‘{print $1}’)</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87"><span class="toc-number">1.</span> <span class="toc-text">1 环境准备</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-%E4%BB%8EGithub%E4%B8%8A%E6%8B%89%E5%8F%96Flink%E6%BA%90%E7%A0%81"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 从Github上拉取Flink源码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-%E7%BC%96%E8%AF%91"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 编译</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3-Kubernetes%E7%8E%AF%E5%A2%83"><span class="toc-number">1.3.</span> <span class="toc-text">1.3 Kubernetes环境</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-Flink-session-cluster-on-Kubernetes"><span class="toc-number">2.</span> <span class="toc-text">2 Flink session cluster on Kubernetes</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-%E5%9C%A8K8S%E4%B8%8A%E9%83%A8%E7%BD%B2Flink-Session-cluster"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 在K8S上部署Flink Session cluster</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-1-Flink-ConfigMap"><span class="toc-number">2.1.1.</span> <span class="toc-text">2.1.1 Flink ConfigMap</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-2-JobManager-Service"><span class="toc-number">2.1.2.</span> <span class="toc-text">2.1.2  JobManager Service</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-3-JobManager-Deployment"><span class="toc-number">2.1.3.</span> <span class="toc-text">2.1.3  JobManager Deployment</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-4-TaskManager-Deployment"><span class="toc-number">2.1.4.</span> <span class="toc-text">2.1.4 TaskManager Deployment</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-5-%E9%80%9A%E8%BF%87%E4%B8%89%E7%A7%8D%E6%96%B9%E5%BC%8F%E8%AE%BF%E9%97%AEFlink-UI"><span class="toc-number">2.1.5.</span> <span class="toc-text">2.1.5 通过三种方式访问Flink UI</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-Flink-Per-Job-on-Kubernetes"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 Flink Per-Job on Kubernetes</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-1-%E9%87%8D%E6%96%B0%E6%9E%84%E5%BB%BA%E9%95%9C%E5%83%8F"><span class="toc-number">2.2.1.</span> <span class="toc-text">2.2.1 重新构建镜像</span></a></li></ol></li></ol></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

@@ -1,0 +1,923 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>利用POI实现表格导入导出功能 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="maven依赖
+&amp;lt;!--微软POI依赖--&amp;gt;
+&amp;lt;dependency&amp;gt;
+  &amp;lt;groupId&amp;gt;org.apache.poi&amp;lt;/groupId&amp;gt;
+  &amp;,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">利用POI实现表格导入导出功能</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/6.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/Spring"><b>「
+                    </b>SPRING<b> 」</b></a>
+                
+                August 21, 2018
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/import-export-function-using-poi-implementation.html" title="利用POI实现表格导入导出功能" class="">利用POI实现表格导入导出功能</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    21k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    19 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Spring/" rel="tag">Spring</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <p>maven依赖</p>
+<pre><code>&lt;!--微软POI依赖--&gt;
+&lt;dependency&gt;
+  &lt;groupId&gt;org.apache.poi&lt;/groupId&gt;
+  &lt;artifactId&gt;poi-ooxml&lt;/artifactId&gt;
+  &lt;version&gt;3.17&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+<h2 id="一、表格读取"><a href="#一、表格读取" class="headerlink" title="一、表格读取"></a>一、表格读取</h2><h3 id="HTML"><a href="#HTML" class="headerlink" title="HTML"></a>HTML</h3><p>引入jquery、bootstrap</p>
+<pre><code>&lt;div class=&quot;container&quot;&gt;
+    &lt;div class=&quot;panel&quot;&gt;
+        &lt;div class=&quot;panel-heading text-center&quot;&gt;
+            &lt;h3&gt;利用POI实现表格的读写&lt;/h3&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;panel-body&quot;&gt;
+            &lt;button class=&quot;btn btn-primary&quot; id=&quot;importExcel&quot;&gt;导入表格&lt;/button&gt;
+            &lt;a class=&quot;btn btn-info&quot; href=&quot;/plugins/excel/export&quot;&gt;导出表格&lt;/a&gt;
+            &lt;input type=&quot;file&quot; style=&quot;display: none&quot; id=&quot;upFile&quot;&gt;
+            &lt;hr&gt;
+            &lt;h4&gt;表格数据&lt;/h4&gt;
+            &lt;textarea id=&quot;tableContent&quot; class=&quot;text&quot; style=&quot;width: 40%&quot; readonly rows=&quot;10&quot;&gt;
+            &lt;/textarea&gt;
+            &lt;hr&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;script type=&quot;text/javascript&quot;&gt;
+    $(&#39;#importExcel&#39;).click(function () &#123;
+        $(&#39;#upFile&#39;).click();
+    &#125;);
+    $(&#39;#upFile&#39;).change(function () &#123;
+        //读取input里的文件
+        /* var files = $(this).prop(&#39;files&#39;);*/
+        /* var files = event.target.files;*/
+        const files = $(this)[0].files;
+
+        console.log(files[0].name);
+        //获取后缀名
+        const fileName = files[0].name;
+        const fileType = getExpandedName(fileName);
+        console.log(&quot;_____________&quot; + fileType)
+        if (fileType === &quot;xml&quot; || fileType === &quot;xlsx&quot;)&#123;
+            const formdata = new FormData();
+            formdata.append(&#39;file&#39;, files[0])
+            $.ajax(&#123;
+                url: &#39;/plugins/excel/upload&#39;,
+                type: &#39;POST&#39;,
+                data: formdata,
+                // 告诉jQuery不要去处理发送的数据
+                processData: false,
+                // 告诉jQuery不要去设置Content-Type请求头
+                contentType: false,
+                success: function (data) &#123;
+                    console.log(data.toString())
+                    $(&#39;#tableContent&#39;).val(data.toString())
+                &#125;
+            &#125;)
+        &#125;else &#123;
+            alert(&quot;文件格式为：xml、xlsx！&quot;)
+        &#125;
+    &#125;);
+
+    //封装获取扩展名的方法
+    function getExpandedName(fileName) &#123;
+        const index1 = fileName.lastIndexOf(&quot;.&quot;);
+        const index2 = fileName.length;
+        return fileName.substring(index1 + 1, index2);
+    &#125;
+&lt;/script&gt;
+</code></pre>
+<h4 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h4><h5 id="1-先设置一个button用来做点击按钮，然后设置一个隐藏的type为file的input，用来文件上传。当点击按钮的时候触发input的点击事件。"><a href="#1-先设置一个button用来做点击按钮，然后设置一个隐藏的type为file的input，用来文件上传。当点击按钮的时候触发input的点击事件。" class="headerlink" title="1.先设置一个button用来做点击按钮，然后设置一个隐藏的type为file的input，用来文件上传。当点击按钮的时候触发input的点击事件。"></a>1.先设置一个button用来做点击按钮，然后设置一个隐藏的type为file的input，用来文件上传。当点击按钮的时候触发input的点击事件。</h5><pre><code>$(&#39;#importExcel&#39;).click(function () &#123;
+    $(&#39;#upFile&#39;).click();
+&#125;);
+</code></pre>
+<h5 id="2-选择文件后，我们要根据input的change事件来触发我们的上传操作。"><a href="#2-选择文件后，我们要根据input的change事件来触发我们的上传操作。" class="headerlink" title="2.选择文件后，我们要根据input的change事件来触发我们的上传操作。"></a>2.选择文件后，我们要根据input的change事件来触发我们的上传操作。</h5><pre><code>    $(&#39;#upFile&#39;).change(function () &#123;
+      //上传操作
+    &#125;)
+</code></pre>
+<h5 id="3-上传操作只要包括，读取上传文件，存入formdata，然后利用ajax传到后端"><a href="#3-上传操作只要包括，读取上传文件，存入formdata，然后利用ajax传到后端" class="headerlink" title="3.上传操作只要包括，读取上传文件，存入formdata，然后利用ajax传到后端"></a>3.上传操作只要包括，读取上传文件，存入formdata，然后利用ajax传到后端</h5><p>a 读取input文件有三种方式</p>
+<h6 id="jquery-方法一："><a href="#jquery-方法一：" class="headerlink" title="jquery 方法一："></a>jquery 方法一：</h6><pre><code>var files = $(this).prop(&#39;files&#39;);
+</code></pre>
+<p>补充：jquery的prop与attr的区别用法</p>
+<p>prop 和attr都是获取jqury选种元素的属性的，如获取a标签的class属性：</p>
+<pre><code>$(&#39;a&#39;).prop(&#39;class&#39;)或者 $(&#39;a&#39;).attr(&#39;class&#39;)
+</code></pre>
+<p>既然都可以获取那么它们有什么区别呢?</p>
+<p>prop可以用来获取DOM里再W3C标准中包含的属性，而attr可以获取自定义的属性:</p>
+<pre><code>&lt;a id=&quot;delete&quot; class=&quot;btn&quot; href=&quot;#&quot; action=&quot;actionToDelete&quot;&gt;删除&lt;/a&gt;
+
+console.log(aId.attr(&quot;action&quot;))
+</code></pre>
+<p>action是自定义的属性，这时用prop就获取不到了</p>
+<p>另外：像checkbox、radio、select这样的元素，属性对应的”checked”、”selected”这也是固有属性，所以要用prop去获取</p>
+<h6 id="jquery方法二"><a href="#jquery方法二" class="headerlink" title="jquery方法二:"></a>jquery方法二:</h6><pre><code>var files = $(this)[0].files;
+</code></pre>
+<h6 id="js原生方法三："><a href="#js原生方法三：" class="headerlink" title="js原生方法三："></a>js原生方法三：</h6><pre><code>var files = event.target.files;
+</code></pre>
+<p>b 判断后缀名</p>
+<pre><code>//获取后缀名
+const fileName = files[0].name;
+const fileType = getExpandedName(fileName);
+if (fileType === &quot;xml&quot; || fileType === &quot;xlsx&quot;)&#123;
+  
+&#125;
+//封装获取后缀名的方法
+    function getExpandedName(fileName) &#123;
+        const index1 = fileName.lastIndexOf(&quot;.&quot;);
+        const index2 = fileName.length;
+        return fileName.substring(index1 + 1, index2);
+    &#125;
+</code></pre>
+<p>c将文件存入form</p>
+<pre><code>        const formdata = new FormData();
+        formdata.append(&#39;file&#39;, files[0])
+</code></pre>
+<p>d ajax请求</p>
+<pre><code>        $.ajax(&#123;
+            url: &#39;/plugins/excel/upload&#39;,
+            type: &#39;POST&#39;,
+            data: formdata,
+            // 告诉jQuery不要去处理发送的数据
+            processData: false,
+            // 告诉jQuery不要去设置Content-Type请求头
+            contentType: false,
+            success: function (data) &#123;
+                console.log(data.toString())
+                $(&#39;#tableContent&#39;).val(data.toString())
+            &#125;
+        &#125;)
+</code></pre>
+<p>注意一定要把：processData设置为false还有contentType设置为false</p>
+<h3 id="后端"><a href="#后端" class="headerlink" title="后端"></a>后端</h3><h3 id="封装工具类"><a href="#封装工具类" class="headerlink" title="封装工具类"></a>封装工具类</h3><p>在 util下创建ExcelUtil工具类</p>
+<pre><code>private final static String excel2003L = &quot;.xml&quot;;//2003-版本的excel
+private final static String excel2007U = &quot;.xlsx&quot;; //2007+版本的excel
+
+/*—————————————读取Excel文件—————————————————*/
+
+/**
+ * 获取读取Excel并返回list
+ *
+ * @param inputStream file.getInputStream
+ * @param fileName    文件名
+ * @return 返回list
+ * @throws Exception
+ */
+public static List&lt;List&lt;Object&gt;&gt; getBankListByExcel(InputStream inputStream, String fileName) throws Exception &#123;
+    List&lt;List&lt;Object&gt;&gt; list = null;
+    //常见Excel工作簿
+    Workbook workbook = getWorkbook(inputStream, fileName);
+    if (workbook == null) &#123;
+        throw new Exception(&quot;创建Excel工作簿为空&quot;);
+    &#125;
+    Sheet sheet = null;
+    Row row = null;
+    Cell cell = null;
+    list = new ArrayList&lt;List&lt;Object&gt;&gt;();
+    System.out.println(workbook.getNumberOfSheets());
+    //遍历Excel中所有的sheet
+    for (int i = 0; i &lt; workbook.getNumberOfSheets(); i++) &#123;
+        sheet = workbook.getSheetAt(i);
+        if (sheet == null) &#123;
+            continue;
+        &#125;
+        //遍历当前sheet中的所有行
+        for (int j = sheet.getFirstRowNum(); j &lt;= sheet.getLastRowNum(); j++) &#123;
+            row = sheet.getRow(j);
+            if (row == null) &#123;
+                continue;
+            &#125;
+            //遍历所有的列
+            List&lt;Object&gt; li = new ArrayList&lt;Object&gt;();
+            for (int y = row.getFirstCellNum(); y &lt; row.getLastCellNum(); y++) &#123;
+                cell = row.getCell(y);
+                li.add(getCellValue(cell));
+            &#125;
+            list.add(li);
+        &#125;
+    &#125;
+    return list;
+&#125;
+
+/**
+ * 根据后缀名,自适应上传文件的版本
+ *
+ * @param inputStream file.InputStream\ FileInputStream
+ * @param fileName    文件名
+ * @return 返回相应版本的工作表
+ * @throws Exception
+ */
+public static Workbook getWorkbook(InputStream inputStream, String fileName) throws Exception &#123;
+    Workbook workbook = null;
+    //获取后缀名
+    String fileType = fileName.substring(fileName.lastIndexOf(&quot;.&quot;));
+    if (excel2003L.equals(fileType)) &#123;
+        workbook = new HSSFWorkbook(inputStream);//2003-
+    &#125; else if (excel2007U.equals(fileType)) &#123;
+        workbook = new XSSFWorkbook(inputStream);//2007+
+    &#125; else &#123;
+        //文件格式不正确，前后端都可以做校验，最好在前端做校验
+    &#125;
+    return workbook;
+&#125;
+
+/**
+ * 格式化数据
+ * @param cell 列
+ * @return
+ */
+public static Object getCellValue(Cell cell) &#123;
+    Object value = null;
+    DecimalFormat decimalFormat = new DecimalFormat(&quot;0&quot;);//格式化number String字符
+    SimpleDateFormat simpleDateFormat = new SimpleDateFormat(&quot;yyyy-MM-dd&quot;);//日期格式化
+    DecimalFormat decimalFormat1 = new DecimalFormat(&quot;0.00&quot;); //格式化数字
+    CellType cellType = cell.getCellTypeEnum();
+    switch (cellType) &#123;
+        case STRING:
+            value = cell.getRichStringCellValue().getString();
+            break;
+        case NUMERIC:
+            if (&quot;General&quot;.equals(cell.getCellStyle().getDataFormatString())) &#123;
+                value = decimalFormat.format(cell.getNumericCellValue());
+            &#125; else if (&quot;m/d/yy&quot;.equals(cell.getCellStyle().getDataFormatString())) &#123;
+                value = simpleDateFormat.format(cell.getDateCellValue());
+            &#125; else &#123;
+                value = decimalFormat1.format(cell.getNumericCellValue());
+            &#125;
+            break;
+        case BOOLEAN:
+            value = cell.getBooleanCellValue();
+            break;
+        case BLANK:
+            value = &quot;&quot;;
+            break;
+        default:
+            break;
+    &#125;
+    return value;
+&#125;
+</code></pre>
+<h3 id="controller层"><a href="#controller层" class="headerlink" title="controller层"></a>controller层</h3><pre><code>@RequestMapping(&quot;/excel/upload&quot;)
+@ResponseBody
+public List&lt;List&lt;Object&gt;&gt; excelUpload(
+        MultipartFile file, HttpServletRequest request
+)&#123;
+    List&lt;List&lt;Object&gt;&gt; lists = new ArrayList&lt;List&lt;Object&gt;&gt;();
+    logger.info(&quot;_________________________file=&#123;&#125;&quot;,file.getOriginalFilename());
+    if (!file.isEmpty())&#123;
+        try &#123;
+            InputStream inputStream = file.getInputStream();
+            lists = ExcelUtils.getBankListByExcel(inputStream, file.getOriginalFilename());
+            inputStream.close();
+            logger.info(&quot;_________ExcelLIst=&#123;&#125;&quot;, lists);
+        &#125; catch (Exception e) &#123;
+            logger.error(e.getMessage(), e);
+        &#125;
+    &#125;
+    return lists;
+&#125;
+</code></pre>
+<h2 id="表格导出"><a href="#表格导出" class="headerlink" title="表格导出"></a>表格导出</h2><h3 id="封装工具类-1"><a href="#封装工具类-1" class="headerlink" title="封装工具类"></a>封装工具类</h3><pre><code>/*—————————————————生成Excel文件—————————————————————*/
+public static XSSFWorkbook createExcelFile(Class clazz, List objs, Map&lt;Integer, List&lt;ExcelBean&gt;&gt; map,
+                                           String sheetName) throws
+        IllegalArgumentException, IllegalAccessException, InvocationTargetException,
+        ClassNotFoundException, IntrospectionException, ParseException &#123;
+    //创建新的Excel工作簿
+    XSSFWorkbook workbook = new XSSFWorkbook();
+    //在Excel工作簿中创建一张工作表，其名为缺省值，也可以指定Sheet名称
+    XSSFSheet sheet = workbook.createSheet(sheetName);
+    //Excel样式配置
+    createFont(workbook);
+    //创建标题头
+   createTableHeader(sheet,map);
+    //创建内容
+    createTableRows(sheet,map,objs,clazz);
+    return workbook;
+&#125;
+
+private static XSSFCellStyle headStyle;
+private static XSSFCellStyle bodyStyle;
+
+/**
+ * 字体样式
+ *
+ * @param workbook 工作簿
+ */
+public static void createFont(XSSFWorkbook workbook) &#123;
+    //1:表头
+    headStyle = workbook.createCellStyle();
+    // 1)字体
+    XSSFFont headFont = workbook.createFont();
+    headFont.setBold(true);
+    headFont.setFontName(&quot;黑体&quot;);
+    headFont.setFontHeightInPoints((short) 12);
+    headStyle.setFont(headFont);
+    // 2)边框
+    headStyle.setBorderBottom(BorderStyle.THIN);//下边框
+    headStyle.setBorderTop(BorderStyle.THIN);//上边框
+    headStyle.setBorderLeft(BorderStyle.THIN);//左边框
+    headStyle.setBorderRight(BorderStyle.THIN);//右边框
+    headStyle.setAlignment(HorizontalAlignment.CENTER);//字体居中
+
+    //2:内容
+    bodyStyle = workbook.createCellStyle();
+    //1)字体
+    XSSFFont bodyFont = workbook.createFont();
+    bodyFont.setFontName(&quot;宋体&quot;);//字体
+    bodyFont.setFontHeightInPoints((short) 10);//字体大小
+    bodyStyle.setFont(bodyFont);
+    //2)边框
+    bodyStyle.setBorderBottom(BorderStyle.THIN);//下边框
+    bodyStyle.setBorderTop(BorderStyle.THIN);//上边框
+    bodyStyle.setBorderLeft(BorderStyle.THIN);//左边框
+    bodyStyle.setBorderRight(BorderStyle.THIN);//右边框
+    bodyStyle.setAlignment(HorizontalAlignment.CENTER);//字体居中
+&#125;
+
+public static final void createTableHeader(XSSFSheet sheet, Map&lt;Integer, List&lt;ExcelBean&gt;&gt; map) &#123;
+    int startIndex = 0;//起始位置
+    int endIndex = 0;//终止位置
+
+    for (Map.Entry&lt;Integer, List&lt;ExcelBean&gt;&gt; entry : map.entrySet()) &#123;
+        XSSFRow row = sheet.createRow(entry.getKey());
+        List&lt;ExcelBean&gt; excelBeans = entry.getValue();
+        for (int x = 0; x &lt; excelBeans.size(); x++) &#123;
+            //合并单元格
+            if (excelBeans.get(x).getCols() &gt; 1) &#123;
+                if (x == 0) &#123;
+                    endIndex += excelBeans.get(x).getCols() - 1;
+                    CellRangeAddress rangeAddress = new CellRangeAddress(0, 0, startIndex, endIndex);
+                    sheet.addMergedRegion(rangeAddress);
+                    startIndex += excelBeans.get(x).getCols();
+                &#125; else &#123;
+                    endIndex += excelBeans.get(x).getCols();
+                    CellRangeAddress rangeAddress = new CellRangeAddress(0, 0, startIndex, endIndex);
+                    sheet.addMergedRegion(rangeAddress);
+                    startIndex += excelBeans.get(x).getCols();
+                &#125;
+                XSSFCell cell = row.createCell(startIndex - excelBeans.get(x).getCols());
+                cell.setCellValue(excelBeans.get(x).getHeadTextName());//设置内容
+                if (excelBeans.get(x).getCellStyle() != null) &#123;
+                    cell.setCellStyle(excelBeans.get(x).getCellStyle());
+                &#125;
+                cell.setCellStyle(headStyle);
+            &#125; else &#123;
+                XSSFCell cell = row.createCell(x);
+                cell.setCellValue(excelBeans.get(x).getHeadTextName());//设置内容
+                if (excelBeans.get(x).getCellStyle() != null) &#123;
+                    cell.setCellStyle(excelBeans.get(x).getCellStyle());//设置格式
+                &#125;
+                cell.setCellStyle(headStyle);
+            &#125;
+        &#125;
+    &#125;
+&#125;
+
+@SuppressWarnings(&quot;rawtypes&quot;)
+public static void createTableRows(XSSFSheet sheet, Map&lt;Integer, List&lt;ExcelBean&gt;&gt; map, List objs, Class clazz)
+        throws IllegalArgumentException, IllegalAccessException,
+        InvocationTargetException, IntrospectionException, ClassNotFoundException &#123;
+    int rowIndex = map.size();
+    int maxKey = 0;
+    List&lt;ExcelBean&gt; excelBeans = new ArrayList&lt;ExcelBean&gt;();
+    for (Map.Entry&lt;Integer, List&lt;ExcelBean&gt;&gt; entry : map.entrySet()) &#123;
+        if (entry.getKey() &gt; maxKey) &#123;
+            maxKey = entry.getKey();
+        &#125;
+    &#125;
+    excelBeans = map.get(maxKey);
+    List&lt;Integer&gt; widths = new ArrayList&lt;Integer&gt;(excelBeans.size());
+    for (Object object : objs) &#123;
+        XSSFRow row = sheet.createRow(rowIndex);
+        for (int i = 0; i &lt; excelBeans.size(); i++) &#123;
+            ExcelBean em = (ExcelBean) excelBeans.get(i);
+            //获得get方法
+            PropertyDescriptor pd = new PropertyDescriptor(em.getPropertyName(), clazz);
+            Method getMethod = pd.getReadMethod();
+            Object rtn = getMethod.invoke(object);
+            String value = &quot;&quot;;
+            //如果是日期类型进行转换
+            if (rtn != null) &#123;
+                if (rtn instanceof Date) &#123;
+                    SimpleDateFormat format = new SimpleDateFormat(&quot;yyyy-MM-dd&quot;);
+                    value = format.format(rtn);
+                &#125; else if (rtn instanceof BigDecimal) &#123;
+                    NumberFormat nf = new DecimalFormat(&quot;#,##0.00&quot;);
+                    value = nf.format((BigDecimal) rtn).toString();
+                &#125; else if ((rtn instanceof Integer) &amp;&amp; (Integer.valueOf(rtn.toString()) &lt; 0)) &#123;
+                    value = &quot;--&quot;;
+                &#125; else &#123;
+                    value = rtn.toString();
+                &#125;
+            &#125;
+            XSSFCell cell = row.createCell(i);
+            cell.setCellValue(value);
+            cell.setCellType(CellType.STRING);
+            cell.setCellStyle(bodyStyle);
+            //获得最大列宽
+            int width = value.getBytes().length * 300;
+            //还未设置，设置当前
+            if (widths.size() &lt;= i) &#123;
+                widths.add(width);
+                continue;
+            &#125;
+            //比原来大,更新数据
+            if (width &gt; widths.get(i)) &#123;
+                widths.set(i, width);
+            &#125;
+        &#125;
+        rowIndex++;
+    &#125;
+    //设置列换
+    for (int index = 0; index &lt; widths.size(); index++) &#123;
+        Integer width = widths.get(index);
+        width = width &lt; 2500 ? 2500 : width + 300;
+        width = width &gt; 10000 ? 10000 + 300 : width + 300;
+        sheet.setColumnWidth(index,width);
+    &#125;
+&#125;
+</code></pre>
+<h3 id="controller层-1"><a href="#controller层-1" class="headerlink" title="controller层"></a>controller层</h3><pre><code>@RequestMapping(&quot;/excel/export&quot;)
+@ResponseBody
+public void excelExport(
+        HttpServletRequest request,
+        HttpServletResponse response
+)throws Exception&#123;
+            response.reset();
+    SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyyMMddhhmmssms&quot;);
+    String dataStr = sdf.format(new Date());
+    Map&lt;String,Object&gt; map = new HashMap&lt;String,Object&gt;();
+
+    //指定下载的文件名
+    response.setHeader(&quot;Content-Disposition&quot;,&quot;attachment;filename=&quot;+dataStr+&quot;.xlsx&quot;);
+    response.setContentType(&quot;application/vnd.ms-excel;charset=UTF-8&quot;);
+    response.setHeader(&quot;Pragma&quot;,&quot;no-cache&quot;);
+    response.setHeader(&quot;Cache-Control&quot;,&quot;no-cache&quot;);
+    response.setDateHeader(&quot;Expires&quot;,0);
+
+    //导出Excel表格
+    XSSFWorkbook workbook = null;
+    try &#123;
+        List&lt;User&gt; userList = mavenssmlrService.queryAll();
+        List&lt;ExcelBean&gt; ems = new ArrayList&lt;ExcelBean&gt;();
+        Map&lt;Integer,List&lt;ExcelBean&gt;&gt; map1 = new LinkedHashMap&lt;Integer, List&lt;ExcelBean&gt;&gt;();
+        //手动设置表头
+        Boolean autoHeader = true;
+        if (!autoHeader)&#123;
+            ems.add(new ExcelBean(&quot;id&quot;,&quot;id&quot;,0));
+            ems.add(new ExcelBean(&quot;用户名&quot;,&quot;uname&quot;,0));
+            ems.add(new ExcelBean(&quot;创建时间&quot;,&quot;createTime&quot;,0));
+            ems.add(new ExcelBean(&quot;修改时间&quot;,&quot;modifyTime&quot;,0));
+            map1.put(0,ems);
+        &#125;else &#123;
+            User user = new User();
+            String fieldName;
+            Field[] fields = user.getClass().getDeclaredFields();
+            for (int i = 0; i&lt;fields.length;i++)&#123;
+                fieldName = fields[i].getName();
+                ems.add(new ExcelBean(fieldName,fieldName,0));
+                logger.info(&quot;fieldsName=&#123;&#125;&quot;,fieldName);
+            &#125;
+            map1.put(0,ems);
+        &#125;
+        workbook = ExcelUtils.createExcelFile(User.class,userList,map1,&quot;用户表&quot;);
+
+    &#125; catch (Exception e) &#123;
+        logger.error(e.getMessage(), e);
+    &#125;
+    OutputStream outputStream;
+    try &#123;
+        outputStream = response.getOutputStream();
+        BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(outputStream);
+        bufferedOutputStream.flush();
+        workbook.write(bufferedOutputStream);
+        bufferedOutputStream.close();
+    &#125; catch (Exception e) &#123;
+        logger.error(e.getMessage(), e);
+    &#125;
+
+&#125;
+</code></pre>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E8%A1%A8%E6%A0%BC%E8%AF%BB%E5%8F%96"><span class="toc-number">1.</span> <span class="toc-text">一、表格读取</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#HTML"><span class="toc-number">1.1.</span> <span class="toc-text">HTML</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%8E%E7%AB%AF"><span class="toc-number">1.2.</span> <span class="toc-text">后端</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%81%E8%A3%85%E5%B7%A5%E5%85%B7%E7%B1%BB"><span class="toc-number">1.3.</span> <span class="toc-text">封装工具类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#controller%E5%B1%82"><span class="toc-number">1.4.</span> <span class="toc-text">controller层</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A1%A8%E6%A0%BC%E5%AF%BC%E5%87%BA"><span class="toc-number">2.</span> <span class="toc-text">表格导出</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%81%E8%A3%85%E5%B7%A5%E5%85%B7%E7%B1%BB-1"><span class="toc-number">2.1.</span> <span class="toc-text">封装工具类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#controller%E5%B1%82-1"><span class="toc-number">2.2.</span> <span class="toc-text">controller层</span></a></li></ol></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

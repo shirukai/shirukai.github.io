@@ -1,0 +1,728 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Spark DataFrame列的合并和拆分 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="
+版本说明：Spark-2.3.0
+
+使用Spark SQL在对数据进行处理的过程中，可能会遇到对一列数据拆分为多列，或者把多列数据合并为一列。这里记录一下目前想到的对DataFrame列数据进行合,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">Spark DataFrame列的合并和拆分</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/4.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/Spark"><b>「
+                    </b>SPARK<b> 」</b></a>
+                
+                September 13, 2018
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/spark-dataframe-columns-merge-and-split.html" title="Spark DataFrame列的合并和拆分" class="">Spark DataFrame列的合并和拆分</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    11k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    10 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Spark/" rel="tag">Spark</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <blockquote>
+<p>版本说明：Spark-2.3.0</p>
+</blockquote>
+<p>使用Spark SQL在对数据进行处理的过程中，可能会遇到对一列数据拆分为多列，或者把多列数据合并为一列。这里记录一下目前想到的对DataFrame列数据进行合并和拆分的几种方法。</p>
+<h2 id="1-DataFrame列数据的合并"><a href="#1-DataFrame列数据的合并" class="headerlink" title="1 DataFrame列数据的合并"></a>1 DataFrame列数据的合并</h2><p>例如：我们有如下数据，想要将三列数据合并为一列，并以“,”分割</p>
+<pre><code>+----+---+-----------+
+|name|age|      phone|
++----+---+-----------+
+|Ming| 20|15552211521|
+|hong| 19|13287994007|
+| zhi| 21|15552211523|
++----+---+-----------+
+</code></pre>
+<h3 id="1-1-使用map方法重写"><a href="#1-1-使用map方法重写" class="headerlink" title="1.1 使用map方法重写"></a>1.1 使用map方法重写</h3><p>使用map方法重写就是将DataFrame使用map取值之后，然后使用toSeq方法转成Seq格式，最后使用Seq的foldLeft方法拼接数据，并返回，如下所示：</p>
+<pre><code class="scala">//方法1：利用map重写
+    val separator = &quot;,&quot;
+    df.map(_.toSeq.foldLeft(&quot;&quot;)(_ + separator + _).substring(1)).show()
+
+    /**
+      * +-------------------+
+      * |              value|
+      * +-------------------+
+      * |Ming,20,15552211521|
+      * |hong,19,13287994007|
+      * | zhi,21,15552211523|
+      * +-------------------+
+      */
+</code></pre>
+<h3 id="1-2-使用内置函数concat-ws"><a href="#1-2-使用内置函数concat-ws" class="headerlink" title="1.2 使用内置函数concat_ws"></a>1.2 使用内置函数concat_ws</h3><p>合并多列数据也可以使用SparkSQL的内置函数concat_ws()</p>
+<pre><code class="java"> //方法2： 使用内置函数 concat_ws
+    import org.apache.spark.sql.functions._
+    df.select(concat_ws(separator, $&quot;name&quot;, $&quot;age&quot;, $&quot;phone&quot;).cast(StringType).as(&quot;value&quot;)).show()
+
+    /**
+      * +-------------------+
+      * |              value|
+      * +-------------------+
+      * |Ming,20,15552211521|
+      * |hong,19,13287994007|
+      * | zhi,21,15552211523|
+      * +-------------------+
+      */
+</code></pre>
+<h3 id="1-3-使用自定义UDF函数"><a href="#1-3-使用自定义UDF函数" class="headerlink" title="1.3 使用自定义UDF函数"></a>1.3 使用自定义UDF函数</h3><p>自己编写UDF函数，实现多列合并</p>
+<pre><code class="scala">    //方法3：使用自定义UDF函数
+
+    // 编写udf函数
+    def mergeCols(row: Row): String = &#123;
+      row.toSeq.foldLeft(&quot;&quot;)(_ + separator + _).substring(1)
+    &#125;
+
+    val mergeColsUDF = udf(mergeCols _)
+    df.select(mergeColsUDF(struct($&quot;name&quot;, $&quot;age&quot;, $&quot;phone&quot;)).as(&quot;value&quot;)).show()
+</code></pre>
+<p>完整代码：</p>
+<pre><code class="scala">package com.hollysys.spark.sql
+
+import org.apache.spark.sql.&#123;Row, SparkSession&#125;
+import org.apache.spark.sql.types.StringType
+
+/**
+  * Created by shirukai on 2018/9/12
+  * DataFrame 合并列
+  */
+object MergeColsTest &#123;
+  def main(args: Array[String]): Unit = &#123;
+    val spark = SparkSession
+      .builder()
+      .appName(this.getClass.getSimpleName)
+      .master(&quot;local&quot;)
+      .getOrCreate()
+
+    //从内存创建一组DataFrame数据
+    import spark.implicits._
+    val df = Seq((&quot;Ming&quot;, 20, 15552211521L), (&quot;hong&quot;, 19, 13287994007L), (&quot;zhi&quot;, 21, 15552211523L))
+      .toDF(&quot;name&quot;, &quot;age&quot;, &quot;phone&quot;)
+    df.show()
+    /**
+      * +----+---+-----------+
+      * |name|age|      phone|
+      * +----+---+-----------+
+      * |Ming| 20|15552211521|
+      * |hong| 19|13287994007|
+      * | zhi| 21|15552211523|
+      * +----+---+-----------+
+      */
+    //方法1：利用map重写
+    val separator = &quot;,&quot;
+    df.map(_.toSeq.foldLeft(&quot;&quot;)(_ + separator + _).substring(1)).show()
+
+    /**
+      * +-------------------+
+      * |              value|
+      * +-------------------+
+      * |Ming,20,15552211521|
+      * |hong,19,13287994007|
+      * | zhi,21,15552211523|
+      * +-------------------+
+      */
+    //方法2： 使用内置函数 concat_ws
+    import org.apache.spark.sql.functions._
+    df.select(concat_ws(separator, $&quot;name&quot;, $&quot;age&quot;, $&quot;phone&quot;).cast(StringType).as(&quot;value&quot;)).show()
+
+    /**
+      * +-------------------+
+      * |              value|
+      * +-------------------+
+      * |Ming,20,15552211521|
+      * |hong,19,13287994007|
+      * | zhi,21,15552211523|
+      * +-------------------+
+      */
+    //方法3：使用自定义UDF函数
+
+    // 编写udf函数
+    def mergeCols(row: Row): String = &#123;
+      row.toSeq.foldLeft(&quot;&quot;)(_ + separator + _).substring(1)
+    &#125;
+
+    val mergeColsUDF = udf(mergeCols _)
+    df.select(mergeColsUDF(struct($&quot;name&quot;, $&quot;age&quot;, $&quot;phone&quot;)).as(&quot;value&quot;)).show()
+
+    /**
+      * /**
+      * * +-------------------+
+      * * |              value|
+      * * +-------------------+
+      * * |Ming,20,15552211521|
+      * * |hong,19,13287994007|
+      * * | zhi,21,15552211523|
+      * * +-------------------+
+      **/
+      */
+      spark.stop()
+  &#125;
+&#125;
+</code></pre>
+<h2 id="2-DataFrame列数据的拆分"><a href="#2-DataFrame列数据的拆分" class="headerlink" title="2 DataFrame列数据的拆分"></a>2 DataFrame列数据的拆分</h2><p>上面我们将DataFrame的多列数据合并为一列如下所示，有时候我们也需要将单列数据，以某种拆分规则，将一列拆分为多列。下面提供几种将一列拆分为多列的方法。</p>
+<pre><code>+-------------------+
+|              value|
++-------------------+
+|Ming,20,15552211521|
+|hong,19,13287994007|
+| zhi,21,15552211523|
++-------------------+
+</code></pre>
+<h3 id="2-1-使用内置函数split，然后遍历添加列"><a href="#2-1-使用内置函数split，然后遍历添加列" class="headerlink" title="2.1 使用内置函数split，然后遍历添加列"></a>2.1 使用内置函数split，然后遍历添加列</h3><p>该方法，先利用内置函数split将单列的数据拆分，然后遍历使用getItem(角标)方法获取拆分后的数据，依次使用withColumn方法添加新列，代码如下所示：</p>
+<pre><code class="scala">    //方法1： 使用内置函数split，然后遍历添加列
+    val separator = &quot;,&quot;
+    lazy val first = df.first()
+
+    val numAttrs = first.toString().split(separator).length
+    val attrs = Array.tabulate(numAttrs)(n =&gt; &quot;col_&quot; + n)
+    //按指定分隔符拆分value列，生成splitCols列
+    var newDF = df.withColumn(&quot;splitCols&quot;, split($&quot;value&quot;, separator))
+    attrs.zipWithIndex.foreach(x =&gt; &#123;
+      newDF = newDF.withColumn(x._1, $&quot;splitCols&quot;.getItem(x._2))
+    &#125;)
+    newDF.show()
+  /**
+      * +-------------------+--------------------+-----+-----+-----------+
+      * |              value|           splitCols|col_0|col_1|      col_2|
+      * +-------------------+--------------------+-----+-----+-----------+
+      * |Ming,20,15552211521|[Ming, 20, 155522...| Ming|   20|15552211521|
+      * |hong,19,13287994007|[hong, 19, 132879...| hong|   19|13287994007|
+      * | zhi,21,15552211523|[zhi, 21, 1555221...|  zhi|   21|15552211523|
+      * +-------------------+--------------------+-----+-----+-----------+
+      */
+</code></pre>
+<h3 id="2-2-使用UDF函数创建多列数据，然后合并"><a href="#2-2-使用UDF函数创建多列数据，然后合并" class="headerlink" title="2.2 使用UDF函数创建多列数据，然后合并"></a>2.2 使用UDF函数创建多列数据，然后合并</h3><p>该方法是使用udf函数，生成多个列，然后合并到原来的数据。该方法参考了VectorDisassembler（与spark ml官网提供的VectorAssembler相反），这是一个第三方的spark ml向量拆分算法，该方法github地址：<a target="_blank" rel="noopener" href="https://github.com/jamesbconner/VectorDisassembler%E3%80%82%E4%BB%A3%E7%A0%81%E5%A6%82%E4%B8%8B%E6%89%80%E7%A4%BA%EF%BC%9A">https://github.com/jamesbconner/VectorDisassembler。代码如下所示：</a></p>
+<pre><code class="scala">//方法2：使用udf函数创建多列，然后合并
+    val attributes: Array[Attribute] = &#123;
+      val numAttrs = first.toString().split(separator).length
+      //生成attributes
+      Array.tabulate(numAttrs)(i =&gt; NumericAttribute.defaultAttr.withName(&quot;value&quot; + &quot;_&quot; + i))
+    &#125;
+    //创建多列数据
+    val fieldCols = attributes.zipWithIndex.map(x =&gt; &#123;
+      val assembleFunc = udf &#123;
+        str: String =&gt;
+          str.split(separator)(x._2)
+      &#125;
+      assembleFunc(df(&quot;value&quot;).cast(StringType)).as(x._1.name.get, x._1.toMetadata())
+    &#125;)
+    //合并数据
+    df.select(col(&quot;*&quot;) +: fieldCols: _*).show()
+
+    /**
+      * +-------------------+-------+-------+-----------+
+      * |              value|value_0|value_1|    value_2|
+      * +-------------------+-------+-------+-----------+
+      * |Ming,20,15552211521|   Ming|     20|15552211521|
+      * |hong,19,13287994007|   hong|     19|13287994007|
+      * | zhi,21,15552211523|    zhi|     21|15552211523|
+      * +-------------------+-------+-------+-----------+
+      */
+</code></pre>
+<p>完整代码：</p>
+<pre><code class="scala">package com.hollysys.spark.sql
+
+import org.apache.spark.ml.attribute.&#123;Attribute, NumericAttribute&#125;
+import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.types.StringType
+
+/**
+  * Created by shirukai on 2018/9/12
+  * 拆分列
+  */
+object SplitColTest &#123;
+  def main(args: Array[String]): Unit = &#123;
+    val spark = SparkSession
+      .builder()
+      .appName(this.getClass.getSimpleName)
+      .master(&quot;local&quot;)
+      .getOrCreate()
+
+    //从内存中创建DataFrame
+    import spark.implicits._
+    val df = Seq(&quot;Ming,20,15552211521&quot;, &quot;hong,19,13287994007&quot;, &quot;zhi,21,15552211523&quot;)
+      .toDF(&quot;value&quot;)
+    df.show()
+
+    /**
+      * +-------------------+
+      * |              value|
+      * +-------------------+
+      * |Ming,20,15552211521|
+      * |hong,19,13287994007|
+      * | zhi,21,15552211523|
+      * +-------------------+
+      */
+
+    import org.apache.spark.sql.functions._
+    //方法1： 使用内置函数split，然后遍历添加列
+    val separator = &quot;,&quot;
+    lazy val first = df.first()
+
+    val numAttrs = first.toString().split(separator).length
+    val attrs = Array.tabulate(numAttrs)(n =&gt; &quot;col_&quot; + n)
+    //按指定分隔符拆分value列，生成splitCols列
+    var newDF = df.withColumn(&quot;splitCols&quot;, split($&quot;value&quot;, separator))
+    attrs.zipWithIndex.foreach(x =&gt; &#123;
+      newDF = newDF.withColumn(x._1, $&quot;splitCols&quot;.getItem(x._2))
+    &#125;)
+    newDF.show()
+
+    /**
+      * +-------------------+--------------------+-----+-----+-----------+
+      * |              value|           splitCols|col_0|col_1|      col_2|
+      * +-------------------+--------------------+-----+-----+-----------+
+      * |Ming,20,15552211521|[Ming, 20, 155522...| Ming|   20|15552211521|
+      * |hong,19,13287994007|[hong, 19, 132879...| hong|   19|13287994007|
+      * | zhi,21,15552211523|[zhi, 21, 1555221...|  zhi|   21|15552211523|
+      * +-------------------+--------------------+-----+-----+-----------+
+      */
+
+    //方法2：使用udf函数创建多列，然后合并
+    val attributes: Array[Attribute] = &#123;
+      val numAttrs = first.toString().split(separator).length
+      //生成attributes
+      Array.tabulate(numAttrs)(i =&gt; NumericAttribute.defaultAttr.withName(&quot;value&quot; + &quot;_&quot; + i))
+    &#125;
+    //创建多列数据
+    val fieldCols = attributes.zipWithIndex.map(x =&gt; &#123;
+      val assembleFunc = udf &#123;
+        str: String =&gt;
+          str.split(separator)(x._2)
+      &#125;
+      assembleFunc(df(&quot;value&quot;).cast(StringType)).as(x._1.name.get, x._1.toMetadata())
+    &#125;)
+    //合并数据
+    df.select(col(&quot;*&quot;) +: fieldCols: _*).show()
+
+    /**
+      * +-------------------+-------+-------+-----------+
+      * |              value|value_0|value_1|    value_2|
+      * +-------------------+-------+-------+-----------+
+      * |Ming,20,15552211521|   Ming|     20|15552211521|
+      * |hong,19,13287994007|   hong|     19|13287994007|
+      * | zhi,21,15552211523|    zhi|     21|15552211523|
+      * +-------------------+-------+-------+-----------+
+      */
+       spark.stop()
+  &#125;
+&#125;
+</code></pre>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-DataFrame%E5%88%97%E6%95%B0%E6%8D%AE%E7%9A%84%E5%90%88%E5%B9%B6"><span class="toc-number">1.</span> <span class="toc-text">1 DataFrame列数据的合并</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E4%BD%BF%E7%94%A8map%E6%96%B9%E6%B3%95%E9%87%8D%E5%86%99"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 使用map方法重写</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E4%BD%BF%E7%94%A8%E5%86%85%E7%BD%AE%E5%87%BD%E6%95%B0concat-ws"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 使用内置函数concat_ws</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-%E4%BD%BF%E7%94%A8%E8%87%AA%E5%AE%9A%E4%B9%89UDF%E5%87%BD%E6%95%B0"><span class="toc-number">1.3.</span> <span class="toc-text">1.3 使用自定义UDF函数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-DataFrame%E5%88%97%E6%95%B0%E6%8D%AE%E7%9A%84%E6%8B%86%E5%88%86"><span class="toc-number">2.</span> <span class="toc-text">2 DataFrame列数据的拆分</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E4%BD%BF%E7%94%A8%E5%86%85%E7%BD%AE%E5%87%BD%E6%95%B0split%EF%BC%8C%E7%84%B6%E5%90%8E%E9%81%8D%E5%8E%86%E6%B7%BB%E5%8A%A0%E5%88%97"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 使用内置函数split，然后遍历添加列</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E4%BD%BF%E7%94%A8UDF%E5%87%BD%E6%95%B0%E5%88%9B%E5%BB%BA%E5%A4%9A%E5%88%97%E6%95%B0%E6%8D%AE%EF%BC%8C%E7%84%B6%E5%90%8E%E5%90%88%E5%B9%B6"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 使用UDF函数创建多列数据，然后合并</span></a></li></ol></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

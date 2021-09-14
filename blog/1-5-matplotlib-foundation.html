@@ -1,0 +1,607 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>1-5 matplotlib基础 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="matplotlib 基础import numpy as np
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+
+x = np.li,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">1-5 matplotlib基础</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/8.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/机器学习"><b>「
+                    </b>机器学习<b> 」</b></a>
+                
+                August 20, 2018
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/1-5-matplotlib-foundation.html" title="1-5 matplotlib基础" class="">1-5 matplotlib基础</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    8.7k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    8 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/python3%E5%85%A5%E9%97%A8%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">python3入门机器学习</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <h1 id="matplotlib-基础"><a href="#matplotlib-基础" class="headerlink" title="matplotlib 基础"></a>matplotlib 基础</h1><pre><code class="python">import numpy as np
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+</code></pre>
+<pre><code class="python">x = np.linspace(0,10,100)
+</code></pre>
+<pre><code class="python">x
+</code></pre>
+<pre><code>array([ 0.        ,  0.1010101 ,  0.2020202 ,  0.3030303 ,  0.4040404 ,
+        0.50505051,  0.60606061,  0.70707071,  0.80808081,  0.90909091,
+        1.01010101,  1.11111111,  1.21212121,  1.31313131,  1.41414141,
+        1.51515152,  1.61616162,  1.71717172,  1.81818182,  1.91919192,
+        2.02020202,  2.12121212,  2.22222222,  2.32323232,  2.42424242,
+        2.52525253,  2.62626263,  2.72727273,  2.82828283,  2.92929293,
+        3.03030303,  3.13131313,  3.23232323,  3.33333333,  3.43434343,
+        3.53535354,  3.63636364,  3.73737374,  3.83838384,  3.93939394,
+        4.04040404,  4.14141414,  4.24242424,  4.34343434,  4.44444444,
+        4.54545455,  4.64646465,  4.74747475,  4.84848485,  4.94949495,
+        5.05050505,  5.15151515,  5.25252525,  5.35353535,  5.45454545,
+        5.55555556,  5.65656566,  5.75757576,  5.85858586,  5.95959596,
+        6.06060606,  6.16161616,  6.26262626,  6.36363636,  6.46464646,
+        6.56565657,  6.66666667,  6.76767677,  6.86868687,  6.96969697,
+        7.07070707,  7.17171717,  7.27272727,  7.37373737,  7.47474747,
+        7.57575758,  7.67676768,  7.77777778,  7.87878788,  7.97979798,
+        8.08080808,  8.18181818,  8.28282828,  8.38383838,  8.48484848,
+        8.58585859,  8.68686869,  8.78787879,  8.88888889,  8.98989899,
+        9.09090909,  9.19191919,  9.29292929,  9.39393939,  9.49494949,
+        9.5959596 ,  9.6969697 ,  9.7979798 ,  9.8989899 , 10.        ])
+</code></pre>
+<pre><code class="python">y = np.sin(x)
+</code></pre>
+<pre><code class="python">y
+</code></pre>
+<pre><code>array([ 0.        ,  0.10083842,  0.20064886,  0.2984138 ,  0.39313661,
+        0.48385164,  0.56963411,  0.64960951,  0.72296256,  0.78894546,
+        0.84688556,  0.8961922 ,  0.93636273,  0.96698762,  0.98775469,
+        0.99845223,  0.99897117,  0.98930624,  0.96955595,  0.93992165,
+        0.90070545,  0.85230712,  0.79522006,  0.73002623,  0.65739025,
+        0.57805259,  0.49282204,  0.40256749,  0.30820902,  0.21070855,
+        0.11106004,  0.01027934, -0.09060615, -0.19056796, -0.28858706,
+       -0.38366419, -0.47483011, -0.56115544, -0.64176014, -0.7158225 ,
+       -0.7825875 , -0.84137452, -0.89158426, -0.93270486, -0.96431712,
+       -0.98609877, -0.99782778, -0.99938456, -0.99075324, -0.97202182,
+       -0.94338126, -0.90512352, -0.85763861, -0.80141062, -0.73701276,
+       -0.66510151, -0.58640998, -0.50174037, -0.41195583, -0.31797166,
+       -0.22074597, -0.12126992, -0.0205576 ,  0.0803643 ,  0.18046693,
+        0.27872982,  0.37415123,  0.46575841,  0.55261747,  0.63384295,
+        0.7086068 ,  0.77614685,  0.83577457,  0.8868821 ,  0.92894843,
+        0.96154471,  0.98433866,  0.99709789,  0.99969234,  0.99209556,
+        0.97438499,  0.94674118,  0.90944594,  0.86287948,  0.8075165 ,
+        0.74392141,  0.6727425 ,  0.59470541,  0.51060568,  0.42130064,
+        0.32770071,  0.23076008,  0.13146699,  0.03083368, -0.07011396,
+       -0.17034683, -0.26884313, -0.36459873, -0.45663749, -0.54402111])
+</code></pre>
+<pre><code class="python">plt.plot(x,y)
+</code></pre>
+<pre><code>[&lt;matplotlib.lines.Line2D at 0x10b4c1860&gt;]
+</code></pre>
+<p><img src="https://shirukai.gitee.io/images/8c9a7860dbe041c9ed32c6c672b8df01.jpg"></p>
+<pre><code class="python">cosy = np.cos(x)
+</code></pre>
+<pre><code class="python">cosy
+</code></pre>
+<pre><code>array([ 1.        ,  0.99490282,  0.97966323,  0.95443659,  0.91948007,
+        0.87515004,  0.8218984 ,  0.76026803,  0.69088721,  0.61446323,
+        0.53177518,  0.44366602,  0.35103397,  0.25482335,  0.15601496,
+        0.0556161 , -0.04534973, -0.14585325, -0.24486989, -0.34139023,
+       -0.43443032, -0.52304166, -0.60632092, -0.68341913, -0.75355031,
+       -0.81599952, -0.87013012, -0.91539031, -0.95131866, -0.97754893,
+       -0.9938137 , -0.99994717, -0.9958868 , -0.981674  , -0.95745366,
+       -0.92347268, -0.88007748, -0.82771044, -0.76690542, -0.69828229,
+       -0.6225406 , -0.54045251, -0.45285485, -0.36064061, -0.26474988,
+       -0.16616018, -0.06587659,  0.03507857,  0.13567613,  0.23489055,
+        0.33171042,  0.4251487 ,  0.51425287,  0.59811455,  0.67587883,
+        0.74675295,  0.8100144 ,  0.86501827,  0.91120382,  0.94810022,
+        0.97533134,  0.99261957,  0.99978867,  0.99676556,  0.98358105,
+        0.96036956,  0.9273677 ,  0.88491192,  0.83343502,  0.77346177,
+        0.70560358,  0.63055219,  0.54907273,  0.46199582,  0.37020915,
+        0.27464844,  0.17628785,  0.07613012, -0.0248037 , -0.12548467,
+       -0.2248864 , -0.32199555, -0.41582217, -0.50540974, -0.58984498,
+       -0.66826712, -0.7398767 , -0.8039437 , -0.859815  , -0.90692104,
+       -0.94478159, -0.97301068, -0.99132055, -0.99952453, -0.99753899,
+       -0.98538417, -0.96318398, -0.93116473, -0.88965286, -0.83907153])
+</code></pre>
+<pre><code class="python">siny = y.copy()
+</code></pre>
+<pre><code class="python">plt.plot(x,siny)
+plt.plot(x,cosy,color=&quot;red&quot;)
+plt.show()
+</code></pre>
+<p><img src="http://ov1a6etyz.bkt.clouddn.com/bdf568cd9faf83b689234c82fc04b15d.jpg"></p>
+<pre><code class="python">plt.plot(x,siny)
+plt.plot(x,cosy,color=&quot;red&quot;,linestyle=&quot;--&quot;)
+plt.show()
+</code></pre>
+<p><img src="https://shirukai.gitee.io/images/c9922753a894de41873df7c9911f3bc6.jpg"></p>
+<pre><code class="python">plt.plot(x,siny,linestyle= &quot;-.&quot;)
+plt.plot(x,cosy,color=&quot;red&quot;,linestyle=&quot;:&quot;)
+plt.show()
+</code></pre>
+<p><img src="https://shirukai.gitee.io/images/a56ea1f410c61f2d690b326f61739319.jpg"></p>
+<pre><code class="python">plt.plot(x,siny,linestyle= &quot;-.&quot;)
+plt.plot(x,cosy,color=&quot;red&quot;,linestyle=&quot;-&quot;)
+plt.show()
+</code></pre>
+<p><img src="https://shirukai.gitee.io/images/550121f77381b15045dce28222a9e186.jpg"></p>
+<pre><code class="python">plt.plot(x,siny,linestyle= &quot;-.&quot;)
+plt.plot(x,cosy,color=&quot;red&quot;,linestyle=&quot;:&quot;)
+plt.xlim(-5,15)
+plt.show()
+</code></pre>
+<p><img src="https://shirukai.gitee.io/images/7eb0b5274755cc02e1a11dd5f176bfee.jpg"></p>
+<pre><code class="python">plt.plot(x,siny,linestyle= &quot;-.&quot;)
+plt.plot(x,cosy,color=&quot;red&quot;,linestyle=&quot;:&quot;)
+plt.xlim(-5,15)
+plt.ylim(0,1.5)
+plt.show()
+</code></pre>
+<p><img src="https://shirukai.gitee.io/images/46fb61c4d15440cd4ca7a7480ec47788.jpg"></p>
+<pre><code class="python">plt.plot(x,siny,linestyle= &quot;-.&quot;)
+plt.plot(x,cosy,color=&quot;red&quot;,linestyle=&quot;:&quot;)
+plt.axis((-1,11,-2,2))
+plt.show()
+</code></pre>
+<p><img src="https://shirukai.gitee.io/images/1afc6807e114741e68e558aaf61525aa.jpg"></p>
+<pre><code class="python">plt.plot(x,siny,linestyle= &quot;-.&quot;)
+plt.plot(x,cosy,color=&quot;red&quot;,linestyle=&quot;:&quot;)
+plt.xlabel(&quot;x axis&quot;)
+plt.ylabel(&quot;y value&quot;)
+plt.show()
+</code></pre>
+<p><img src="https://shirukai.gitee.io/images/14540df2bfafe3f389c74a3d718c8cc9.jpg"></p>
+<pre><code class="python">plt.plot(x,siny,linestyle= &quot;-.&quot;,label = &quot;sin(x)&quot;)
+plt.plot(x,cosy,color=&quot;red&quot;,linestyle=&quot;:&quot;,label = &quot;cos(x)&quot;)
+plt.xlabel(&quot;x axis&quot;)
+plt.ylabel(&quot;y value&quot;)
+plt.legend()
+plt.show()
+</code></pre>
+<p><img src="https://shirukai.gitee.io/images/5f790e6c0d84eda23b015a011e26c2c3.jpg"></p>
+<pre><code class="python">plt.plot(x,siny,linestyle= &quot;-.&quot;,label = &quot;sin(x)&quot;)
+plt.plot(x,cosy,color=&quot;red&quot;,linestyle=&quot;:&quot;,label = &quot;cos(x)&quot;)
+plt.xlabel(&quot;x axis&quot;)
+plt.ylabel(&quot;y value&quot;)
+plt.legend()
+plt.title(&quot;Welcome to the ML world!&quot;)
+plt.show()
+</code></pre>
+<p><img src="https://shirukai.gitee.io/images/bb37f3777afe2455187762df6dfad4e3.jpg"></p>
+<h3 id="Scatter-Plot"><a href="#Scatter-Plot" class="headerlink" title="Scatter Plot"></a>Scatter Plot</h3><pre><code class="python">plt.scatter(x,siny)
+plt.show()
+</code></pre>
+<p><img src="https://shirukai.gitee.io/images/e55219ce24505d9f96ee45f9e17be994.jpg"></p>
+<pre><code class="python">plt.scatter(x,siny)
+plt.scatter(x,cosy,color=&quot;red&quot;)
+plt.show()
+</code></pre>
+<p><img src="https://shirukai.gitee.io/images/5bbb863f78a33ac688646d13869ac9a9.jpg"></p>
+<pre><code class="python">x = np.random.normal(0,1,10000)
+y = np.random.normal(0,1,10000)
+plt.scatter(x,y,alpha=0.1)
+plt.show()
+</code></pre>
+<p><img src="https://shirukai.gitee.io/images/3ef42d7f862b7bd85006177a284a1f33.jpg"></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#matplotlib-%E5%9F%BA%E7%A1%80"><span class="toc-number">1.</span> <span class="toc-text">matplotlib 基础</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Scatter-Plot"><span class="toc-number">1.0.1.</span> <span class="toc-text">Scatter Plot</span></a></li></ol></li></ol></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

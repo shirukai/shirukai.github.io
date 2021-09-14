@@ -1,0 +1,577 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>k8s使用mac上自带的NFS - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="
+之前文章里有记录如何在mac电脑上使用docker，并搭建k8s集群。最近在开发测试的时候，遇到k8s挂载持久卷的问题。本来想在开发的电脑上搭建一个NFS服务，经过在网上一番搜索发现mac电脑本身,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">k8s使用mac上自带的NFS</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/5.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/开发工具使用"><b>「
+                    </b>开发工具使用<b> 」</b></a>
+                
+                October 31, 2020
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/k8s-uses-mac-nfs.html" title="k8s使用mac上自带的NFS" class="">k8s使用mac上自带的NFS</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    5.3k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    5 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/" rel="tag">开发工具使用</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <blockquote>
+<p>之前文章里有记录如何在mac电脑上使用docker，并搭建k8s集群。最近在开发测试的时候，遇到k8s挂载持久卷的问题。本来想在开发的电脑上搭建一个NFS服务，经过在网上一番搜索发现mac电脑本身就带有一个NFS服务。这篇文章主要记录一下如何在mac上开启并配置NFS服务，以及如何在k8s上使用NFS。</p>
+</blockquote>
+<h1 id="1-配置并开启NFS服务"><a href="#1-配置并开启NFS服务" class="headerlink" title="1 配置并开启NFS服务"></a>1 配置并开启NFS服务</h1><p>Mac上的NFS服务是作为系统服务提供的，可以使用<code>nfsd status</code>命令查看nfsd当前的状态。</p>
+<h2 id="1-1-配置共享目录"><a href="#1-1-配置共享目录" class="headerlink" title="1.1 配置共享目录"></a>1.1 配置共享目录</h2><p>Mac自带的NFS服务的配置文件路径为/etc/exports，默认该文件是不存在的，需要使用sudo权限进行创建。</p>
+<pre><code class="shell">sudo vi /etc/exports
+</code></pre>
+<p>添加如下内容：</p>
+<pre><code>/Users/shirukai/opt/nfs_data -alldirs -maproot=root:wheel -network 20.5.1.0 -mask 255.255.255.0
+</code></pre>
+<p><em>说明：</em></p>
+<ol>
+<li>/Users/shirukai/opt/nfs_data 指定共享目录</li>
+<li>-alldirs 共享目录下的所有目录</li>
+<li>-maproot 把client端的root用户映射为Mac OS上的root，client端的root组映射为Mac OS上的wheel (gid=0) 组</li>
+<li>-network -mask 指定本工作网段</li>
+</ol>
+<p>配置文件修改完成后使用<code>nfsd checkexports</code>检查配置是否正确：</p>
+<pre><code>nfsd checkexports
+</code></pre>
+<h2 id="1-2-配置NFS"><a href="#1-2-配置NFS" class="headerlink" title="1.2 配置NFS"></a>1.2 配置NFS</h2><p>要想在k8s使用，需要修改NFS的一个配置文件/etc/nfs.conf并添加如下内容：</p>
+<pre><code>nfs.server.mount.require_resv_port = 0
+</code></pre>
+<p>配置说明，执行命令<code>man nfs.conf</code>查看</p>
+<h2 id="1-3-启动服务"><a href="#1-3-启动服务" class="headerlink" title="1.3 启动服务"></a>1.3 启动服务</h2><p>使用 <code>nfsd start</code>启动NFS服务，如下为常用的服务命令：</p>
+<pre><code>sudo nfsd start # 启动服务
+sudo nfsd stop # 停止服务
+sudo nfsd restart # 重启服务
+sudo nfsd status # 查看状态
+sudo nfsd enable # 开机自启
+sudo nfsd disable # 禁止开机自启
+</code></pre>
+<p>服务启动后，通过<code>  showmount -e</code>查看共享状态:</p>
+<pre><code class="shell">Exports list on localhost:
+/Users/shirukai/opt/nfs_data        20.5.1.0
+</code></pre>
+<h1 id="2-k8s中使用NFS"><a href="#2-k8s中使用NFS" class="headerlink" title="2 k8s中使用NFS"></a>2 k8s中使用NFS</h1><h2 id="2-1-NFS-PersistentVolume"><a href="#2-1-NFS-PersistentVolume" class="headerlink" title="2.1 NFS PersistentVolume"></a>2.1 NFS PersistentVolume</h2><p>前面我们已经在mac上启动了一个NFS服务，现在通过在k8s上创建一个PersistentVolume来使用NFS。</p>
+<p>创建一个PV，编辑配置文件nfs-pv-1.yaml，内容如下：</p>
+<pre><code class="yaml">apiVersion: v1
+kind: PersistentVolume # ①
+metadata:
+  name: nfspv1 # ②
+spec:
+  mountOptions:
+    - nfsvers=3
+    - nolock
+  capacity:
+    storage: 10Gi # ③
+  accessModes:
+    - ReadWriteOnce # ④
+  persistentVolumeReclaimPolicy: Recycle # ⑤
+  storageClassName: nfs # ⑥
+  nfs:
+    path: /Users/shirukai/opt/nfs_data # ⑦
+    server: 20.5.1.123 # ⑧
+</code></pre>
+<p>① 指定k8s资源类型为PersistentVolume</p>
+<p>② 指定PV名称为nfspv1</p>
+<p>③ 指定PV容量为10G</p>
+<p>④ accessMode指定访问模式为ReadWriteOnce，支持的访问模式有3种：</p>
+<p>​    ReadWriteOnce 表示PV能以read-write模式mount到单个节点</p>
+<p>​    ReadWriteMany表示PV能以read-write模式mount到多个节点</p>
+<p>​    ReadOnlyMany表示PV能以read-only模式mount到多个节点</p>
+<p>⑤ persistentVolumeReclaimPolicy指定PV的回收策略为Recycle，支持的策略有3种：</p>
+<p>​     Retain表示需要管理员手工回收</p>
+<p>​     Recycle表示清除PV中的数据，效果相当于执行rm -rf /thevolume/*</p>
+<p>​     Delete表示删除Storage Provider上的对应存储资源</p>
+<p>⑥ storageClassName指定PV的class为nfs。相当于为PV设置了一个分类，PVC可以指定class申请相应class的PV</p>
+<p>⑦ 指定PV在NFS服务器上对应的目录</p>
+<p>⑧ 指定NFS服务器的地址</p>
+<p>配置文件编写完成后，使用如下命令创建对应的PV</p>
+<pre><code class="shell">kubectl apply -f nfs-pv-1.yaml
+</code></pre>
+<p>查看pv状态</p>
+<pre><code>kubectl get pv
+
+NAME     CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS      CLAIM   STORAGECLASS   REASON   AGE
+nfspv1   10Gi       RWO            Recycle          Available           nfs                     42m
+</code></pre>
+<p>STATUS为Available表示nfspv1就绪，可以被PVC申请。</p>
+<h2 id="2-2-PersistentVolumeClaim"><a href="#2-2-PersistentVolumeClaim" class="headerlink" title="2.2 PersistentVolumeClaim"></a>2.2 PersistentVolumeClaim</h2><p>下面创建PVC，编辑nfs-pvc-1.yaml文件</p>
+<pre><code class="yaml">apiVersion: v1
+kind: PersistentVolumeClaim # ①
+metadata:
+  name: nfspvc1 # ②
+spec:
+  accessModes:
+    - ReadWriteOnce # ③
+  resources:
+    requests:
+      storage: 6Gi # ④
+  storageClassName: nfs # ⑤
+</code></pre>
+<p>① 指定资源类型为PersistentVolumeClaim</p>
+<p>② 指定pvc名称</p>
+<p>③ 访问模式</p>
+<p>④ 申请PV的容量</p>
+<p>⑤ PV的class</p>
+<p>创建PVC</p>
+<pre><code>kubectl apply -f nfs-pvc-1.yaml 
+</code></pre>
+<pre><code>(base) shirukai@shirukaideMacBook-Pro pv % kubectl get pvc
+NAME      STATUS   VOLUME   CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+nfspvc1   Bound    nfspv1   10Gi       RWO            nfs            85s
+</code></pre>
+<h2 id="2-3-使用存储"><a href="#2-3-使用存储" class="headerlink" title="2.3 使用存储"></a>2.3 使用存储</h2><p>pvc创建好之后，我们就可以在pod里使用了，下面创建一个简单的pod来测试一下。编辑pod1.yaml </p>
+<pre><code class="yaml">apiVersion: v1
+kind: Pod
+metadata:
+  name: mypod1
+spec:
+  containers:
+    - name: mypod1
+      image: busybox
+      args:
+      - /bin/sh
+      - -c
+      - sleep 30000
+      volumeMounts:
+      - mountPath: &quot;/mydata&quot;
+        name: mydata
+  volumes:
+    - name: mydata
+      persistentVolumeClaim:
+        claimName: nfspvc1
+</code></pre>
+<p>创建Pod</p>
+<pre><code>kubectl apply -f pod1.yaml
+</code></pre>
+<p>在容器里创建一个文件</p>
+<pre><code>kubectl exec mypod1 touch /mydata/hello
+</code></pre>
+<p>NFS共享目录</p>
+<pre><code>(base) shirukai@shirukaideMacBook-Pro nfs_data % ls
+hello
+</code></pre>
+<p>参考：<a target="_blank" rel="noopener" href="https://xiaozhuanlan.com/topic/8560297431">https://xiaozhuanlan.com/topic/8560297431</a></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E9%85%8D%E7%BD%AE%E5%B9%B6%E5%BC%80%E5%90%AFNFS%E6%9C%8D%E5%8A%A1"><span class="toc-number">1.</span> <span class="toc-text">1 配置并开启NFS服务</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-%E9%85%8D%E7%BD%AE%E5%85%B1%E4%BA%AB%E7%9B%AE%E5%BD%95"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 配置共享目录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-%E9%85%8D%E7%BD%AENFS"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 配置NFS</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3-%E5%90%AF%E5%8A%A8%E6%9C%8D%E5%8A%A1"><span class="toc-number">1.3.</span> <span class="toc-text">1.3 启动服务</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-k8s%E4%B8%AD%E4%BD%BF%E7%94%A8NFS"><span class="toc-number">2.</span> <span class="toc-text">2 k8s中使用NFS</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-NFS-PersistentVolume"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 NFS PersistentVolume</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-PersistentVolumeClaim"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 PersistentVolumeClaim</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-%E4%BD%BF%E7%94%A8%E5%AD%98%E5%82%A8"><span class="toc-number">2.3.</span> <span class="toc-text">2.3 使用存储</span></a></li></ol></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

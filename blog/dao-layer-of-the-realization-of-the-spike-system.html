@@ -1,0 +1,1100 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>秒杀系统的实现之DAO层 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="一、maven创建项目mvn archetype:generate -DgroupId=org.seckill -DartifactId=seckill -DarchetypeArtifactId=,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">秒杀系统的实现之DAO层</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/2.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/项目开发记录"><b>「
+                    </b>项目开发记录<b> 」</b></a>
+                
+                August 19, 2018
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/dao-layer-of-the-realization-of-the-spike-system.html" title="秒杀系统的实现之DAO层" class="">秒杀系统的实现之DAO层</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    25k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    23 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E7%A7%92%E6%9D%80%E9%AB%98%E5%B9%B6%E5%8F%91%E6%A1%88%E4%BE%8B/" rel="tag">秒杀高并发案例</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91%E8%AE%B0%E5%BD%95/" rel="tag">项目开发记录</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <h2 id="一、maven创建项目"><a href="#一、maven创建项目" class="headerlink" title="一、maven创建项目"></a>一、maven创建项目</h2><pre><code>mvn archetype:generate -DgroupId=org.seckill -DartifactId=seckill -DarchetypeArtifactId=maven-archetype-webapp
+</code></pre>
+<h2 id="配置web-xml"><a href="#配置web-xml" class="headerlink" title="配置web.xml"></a>配置web.xml</h2><p>修改servlet版本未3.1</p>
+<pre><code>&lt;web-app xmlns=&quot;http://xmlns.jcp.org/xml/ns/javaee&quot;
+         xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+         xsi:schemaLocation=&quot;http://xmlns.jcp.org/xml/ns/javaee
+                      http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd&quot;
+         version=&quot;3.1&quot;
+         metadata-complete=&quot;true&quot;&gt;
+  &lt;!--修改servlet版本为3.1--&gt;
+
+&lt;/web-app&gt;
+</code></pre>
+<h3 id="补全目录"><a href="#补全目录" class="headerlink" title="补全目录"></a>补全目录</h3><p>打开Module settings 在Modules里创建目录</p>
+<p>在src/main目录下创建名字为java的Sources目录</p>
+<p>在src/main目录下创建名字resource的Resource目录</p>
+<p>在src下创建test目录</p>
+<p>在src/test下创建创建名字为java的Tests目录</p>
+<p>在src/test下创建创建名字为Test Resource目录</p>
+<h2 id="二、-处理依赖"><a href="#二、-处理依赖" class="headerlink" title="二、 处理依赖"></a>二、 处理依赖</h2><pre><code>&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+         xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd&quot;&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;groupId&gt;org.seckill&lt;/groupId&gt;
+    &lt;artifactId&gt;seckill&lt;/artifactId&gt;
+    &lt;packaging&gt;war&lt;/packaging&gt;
+    &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+    &lt;name&gt;seckill Maven Webapp&lt;/name&gt;
+    &lt;url&gt;http://maven.apache.org&lt;/url&gt;
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;!--使用junit4--&gt;
+            &lt;!--为什么使用junit4？因为junit3是采用编程的方式运行junit，而junit4是采用注解的方式运行junit --&gt;
+            &lt;groupId&gt;junit&lt;/groupId&gt;
+            &lt;artifactId&gt;junit&lt;/artifactId&gt;
+            &lt;version&gt;4.12&lt;/version&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+        &lt;!--补全项目依赖--&gt;
+        &lt;!--1：日志 java日志：slf4j，log4j，logback，common-logging
+        slf4j 是规范/接口
+        日志实现：log4j，logback，common-logging
+        使用：slf4j + logback
+        --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.slf4j&lt;/groupId&gt;
+            &lt;artifactId&gt;slf4j-api&lt;/artifactId&gt;
+            &lt;version&gt;1.7.12&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;ch.qos.logback&lt;/groupId&gt;
+            &lt;artifactId&gt;logback-core&lt;/artifactId&gt;
+            &lt;version&gt;1.1.1&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;!--实现slf4j接口并整合--&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;ch.qos.logback&lt;/groupId&gt;
+            &lt;artifactId&gt;logback-classic&lt;/artifactId&gt;
+            &lt;version&gt;1.1.1&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;!--2：数据库相关的依赖--&gt;
+        &lt;!--数据库连接驱动--&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;mysql&lt;/groupId&gt;
+            &lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;
+            &lt;version&gt;5.1.35&lt;/version&gt;
+            &lt;scope&gt;runtime&lt;/scope&gt;
+        &lt;/dependency&gt;
+        &lt;!--数据库连接池--&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;c3p0&lt;/groupId&gt;
+            &lt;artifactId&gt;c3p0&lt;/artifactId&gt;
+            &lt;version&gt;0.9.1.2&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;!--3：DAO框架：mybatis依赖--&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.mybatis&lt;/groupId&gt;
+            &lt;artifactId&gt;mybatis&lt;/artifactId&gt;
+            &lt;version&gt;3.3.0&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;!--mybatis自身实现的spring整合依赖--&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.mybatis&lt;/groupId&gt;
+            &lt;artifactId&gt;mybatis-spring&lt;/artifactId&gt;
+            &lt;version&gt;1.2.3&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;!--servlet web相关依赖--&gt;
+        &lt;!--jsp标签--&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;taglibs&lt;/groupId&gt;
+            &lt;artifactId&gt;standard&lt;/artifactId&gt;
+            &lt;version&gt;1.1.2&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;!--jsp servlet--&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
+            &lt;artifactId&gt;jstl&lt;/artifactId&gt;
+            &lt;version&gt;1.2&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;!--jackson--&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.fasterxml.jackson.core&lt;/groupId&gt;
+            &lt;artifactId&gt;jackson-databind&lt;/artifactId&gt;
+            &lt;version&gt;2.7.5&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
+            &lt;artifactId&gt;javax.servlet-api&lt;/artifactId&gt;
+            &lt;version&gt;3.1.0&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;!--4：spring依赖--&gt;
+        &lt;!--1)spring核心依赖--&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-core&lt;/artifactId&gt;
+            &lt;version&gt;4.3.6.RELEASE&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-beans&lt;/artifactId&gt;
+            &lt;version&gt;4.3.6.RELEASE&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-context&lt;/artifactId&gt;
+            &lt;version&gt;4.3.6.RELEASE&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;!--2）spring DAO层依赖--&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-jdbc&lt;/artifactId&gt;
+            &lt;version&gt;4.3.6.RELEASE&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-tx&lt;/artifactId&gt;
+            &lt;version&gt;4.3.6.RELEASE&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;!--3)spring web 相关依赖--&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-web&lt;/artifactId&gt;
+            &lt;version&gt;4.3.6.RELEASE&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-webmvc&lt;/artifactId&gt;
+            &lt;version&gt;4.3.6.RELEASE&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;!--4) spring test 相关依赖--&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-test&lt;/artifactId&gt;
+            &lt;version&gt;4.3.6.RELEASE&lt;/version&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+    &lt;build&gt;
+        &lt;finalName&gt;seckill&lt;/finalName&gt;
+    &lt;/build&gt;
+&lt;/project&gt;
+</code></pre>
+<h2 id="三、创建数据库表"><a href="#三、创建数据库表" class="headerlink" title="三、创建数据库表"></a>三、创建数据库表</h2><pre><code>-- 初始化数据库脚本
+
+-- 创建数据库
+CREATE DATABASE seckill;
+-- 使用数据库
+USE seckill;
+-- 创建表
+CREATE TABLE seckill (
+  `seckill_id`  BIGINT       NOT NULL AUTO_INCREMENT
+  COMMENT &#39;商品库存id&#39;,
+  `name`        VARCHAR(120) NOT NULL
+  COMMENT &#39;商品名称&#39;,
+  `number`      INT          NOT NULL
+  COMMENT &#39;库存数量&#39;,
+  `start_time`  TIMESTAMP    NOT NULL
+  COMMENT &#39;秒杀开启时间&#39;,
+  `end_time`    TIMESTAMP    NOT NULL
+  COMMENT &#39;秒杀结束时间&#39;,
+  `create_time` TIMESTAMP    NOT NULL DEFAULT current_timestamp
+  COMMENT &#39;创建时间&#39;,
+  PRIMARY KEY (seckill_id),
+  KEY idx_start_time(start_time),
+  KEY idx_end_time(end_time),
+  KEY idx_create_time(create_time)
+)
+  ENGINE = InnoDB
+  AUTO_INCREMENT = 1000
+  DEFAULT CHARSET utf8
+  COMMENT =&#39;秒杀库存表&#39;;
+-- 初始化数据
+INSERT INTO seckill (name, number, start_time, end_time)
+VALUES
+  (&#39;1000元秒杀iPhone6&#39;, 100, &#39;2017-10-10 00:00:00&#39;, &#39;2017-10-11 00:00:00&#39;),
+  (&#39;500元秒杀iPad2&#39;, 200, &#39;2017-10-10 00:00:00&#39;, &#39;2017-10-11 00:00:00&#39;),
+  (&#39;300元秒杀小米4&#39;, 300, &#39;2017-10-10 00:00:00&#39;, &#39;2017-10-11 00:00:00&#39;),
+  (&#39;200元秒杀红米note&#39;, 400, &#39;2017-10-10 00:00:00&#39;, &#39;2017-10-11 00:00:00&#39;);
+
+-- 秒杀成功明细表
+-- 用户登录认证相关的信息
+CREATE TABLE success_killed (
+  `seckill_id`  BIGINT    NOT NULL
+  COMMENT &#39;秒杀商品id&#39;,
+  `user_phone`  BIGINT    NOT NULL
+  COMMENT &#39;用户手机号&#39;,
+  `state`       TINYINT   NOT NULL  DEFAULT -1
+  COMMENT &#39;状态标识：-1无效；0成功；1已付款；2已发货&#39;,
+  `create_time` TIMESTAMP NOT NULL  DEFAULT current_timestamp
+  COMMENT &#39;创建时间&#39;,
+  PRIMARY KEY (seckill_id, user_phone)/*联合主键*/,
+  KEY idx_create_time(create_time)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET utf8
+  COMMENT =&#39;秒杀成功明细表&#39;;
+</code></pre>
+<h2 id="四、DAO-相关接口与编码"><a href="#四、DAO-相关接口与编码" class="headerlink" title="四、DAO 相关接口与编码"></a>四、DAO 相关接口与编码</h2><h4 id="1-在org-seckill-entity包下创建Seckill实体类："><a href="#1-在org-seckill-entity包下创建Seckill实体类：" class="headerlink" title="1. 在org.seckill.entity包下创建Seckill实体类："></a>1. 在org.seckill.entity包下创建Seckill实体类：</h4><pre><code>package org.seckill.entity;
+
+import java.util.Date;
+
+/**
+ * Created by shirukai on 2017/10/9.
+ *
+ */
+public class Seckill &#123;
+    private long seckillId;
+    private String name;
+    private int number;
+    private Date startTime;
+    private Date endTime;
+    private Date createTime;
+    public long getSeckillId() &#123;
+        return seckillId;
+    &#125;
+
+    public void setSeckillId(long seckillId) &#123;
+        this.seckillId = seckillId;
+    &#125;
+
+    public String getName() &#123;
+        return name;
+    &#125;
+
+    public void setName(String name) &#123;
+        this.name = name;
+    &#125;
+
+    public int getNumber() &#123;
+        return number;
+    &#125;
+
+    public void setNumber(int number) &#123;
+        this.number = number;
+    &#125;
+
+    public Date getStartTime() &#123;
+        return startTime;
+    &#125;
+
+    public void setStartTime(Date startTime) &#123;
+        this.startTime = startTime;
+    &#125;
+
+    public Date getEndTime() &#123;
+        return endTime;
+    &#125;
+
+    public void setEndTime(Date endTime) &#123;
+        this.endTime = endTime;
+    &#125;
+
+    public Date getCreateTime() &#123;
+        return createTime;
+    &#125;
+
+    public void setCreateTime(Date createTime) &#123;
+        this.createTime = createTime;
+    &#125;
+
+    @Override
+    public String toString() &#123;
+        return &quot;Seckill&#123;&quot; +
+                &quot;seckillId=&quot; + seckillId +
+                &quot;, name=&#39;&quot; + name + &#39;\&#39;&#39; +
+                &quot;, number=&quot; + number +
+                &quot;, startTime=&quot; + startTime +
+                &quot;, endTime=&quot; + endTime +
+                &quot;, createTime=&quot; + createTime +
+                &#39;&#125;&#39;;
+    &#125;
+&#125;
+</code></pre>
+<h4 id="2-在org-seckill-entity包下创建SuccessKilled实体类："><a href="#2-在org-seckill-entity包下创建SuccessKilled实体类：" class="headerlink" title="2. 在org.seckill.entity包下创建SuccessKilled实体类："></a>2. 在org.seckill.entity包下创建SuccessKilled实体类：</h4><pre><code>package org.seckill.entity;
+
+import java.util.Date;
+
+/**
+ * Created by shirukai on 2017/10/9.
+ *
+ */
+public class SuccessKilled &#123;
+    private long seckillId;
+    private long userPhone;
+    private  short state;
+    private Date createTime;
+    //变通
+    //多对一
+    private Seckill seckill;
+    public long getSeckillId() &#123;
+        return seckillId;
+    &#125;
+
+    public void setSeckillId(long seckillId) &#123;
+        this.seckillId = seckillId;
+    &#125;
+
+    public long getUserPhone() &#123;
+        return userPhone;
+    &#125;
+
+    public void setUserPhone(long userPhone) &#123;
+        this.userPhone = userPhone;
+    &#125;
+
+    public short getState() &#123;
+        return state;
+    &#125;
+
+    public void setState(short state) &#123;
+        this.state = state;
+    &#125;
+
+    public Date getCreateTime() &#123;
+        return createTime;
+    &#125;
+
+    public void setCreateTime(Date createTime) &#123;
+        this.createTime = createTime;
+    &#125;
+
+    public Seckill getSeckill() &#123;
+        return seckill;
+    &#125;
+
+    public void setSeckill(Seckill seckill) &#123;
+        this.seckill = seckill;
+    &#125;
+
+    @Override
+    public String toString() &#123;
+        return &quot;SuccessKilled&#123;&quot; +
+                &quot;seckillId=&quot; + seckillId +
+                &quot;, userPhone=&quot; + userPhone +
+                &quot;, state=&quot; + state +
+                &quot;, createTime=&quot; + createTime +
+                &#39;&#125;&#39;;
+    &#125;
+&#125;
+</code></pre>
+<h4 id="3-在org-seckill-dao-下编写dao层接口"><a href="#3-在org-seckill-dao-下编写dao层接口" class="headerlink" title="3. 在org.seckill.dao 下编写dao层接口"></a>3. 在org.seckill.dao 下编写dao层接口</h4><p>SeckillDao</p>
+<pre><code>package org.seckill.dao;
+
+import org.apache.ibatis.annotations.Param;
+import org.seckill.entity.Seckill;
+
+import java.util.Date;
+import java.util.List;
+
+/**
+ * Created by shirukai on 2017/10/9.
+ *
+ */
+public interface SeckillDao &#123;
+    /**
+     * 减库存
+     * @param seckillId
+     * @param killTime
+     * @return 如果影响行数&gt;1，表示更新行的记录行数
+     */
+    int reduceNumber(@Param(&quot;seckillId&quot;) long seckillId,@Param(&quot;killTime&quot;) Date killTime);
+
+    /**
+     * 根据id查询秒杀对象
+     * @param seckillId
+     * @return
+     */
+    Seckill queryById(long seckillId);
+
+    /**
+     * 根据偏移量查询商品列表
+     * @param offset
+     * @param limit
+     * @return
+     */
+    List&lt;Seckill&gt; queryAll(@Param(&quot;offset&quot;) int offset, @Param(&quot;limit&quot;) int limit);
+&#125;
+</code></pre>
+<p>SuccessKilledDao</p>
+<pre><code>package org.seckill.dao;
+
+import org.apache.ibatis.annotations.Param;
+import org.seckill.entity.SuccessKilled;
+
+/**
+ * Created by shirukai on 2017/10/9.
+ *
+ */
+public interface SuccessKilledDao &#123;
+    /**
+     * 插入购买明细，可过滤重复
+     * @param seckillId
+     * @param userPhone
+     * @return 插入的行数
+     */
+    int insertSuccessKilled(@Param(&quot;seckillId&quot;) long seckillId, @Param(&quot;userPhone&quot;) long userPhone);
+
+    /**
+     * 根据id查询SuccessKilled并携带产品对象实体
+     * @param seckillId
+     * @return
+     */
+    SuccessKilled queryByIdWithSeckill(@Param(&quot;seckillId&quot;) long seckillId, @Param(&quot;userPhone&quot;) long userPhone);
+&#125;
+</code></pre>
+<h4 id="4-基于myBatis实现DAO"><a href="#4-基于myBatis实现DAO" class="headerlink" title="4. 基于myBatis实现DAO"></a>4. 基于myBatis实现DAO</h4><p>利用myBatis来做ORM（对象关系型映射object relationship mapping）</p>
+<p>xml编写sql、mapper自动实现DAO接口</p>
+<h5 id="配置mybatis"><a href="#配置mybatis" class="headerlink" title="配置mybatis"></a>配置mybatis</h5><p>在resources下创建一个名字为mybatis-config.xml的文件</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
+&lt;!DOCTYPE configuration
+        PUBLIC &quot;-//mybatis.org//DTD Config 3.0//EN&quot;
+        &quot;http://mybatis.org/dtd/mybatis-3-config.dtd&quot;&gt;
+&lt;configuration&gt;
+    &lt;!--配置全局属性--&gt;
+    &lt;settings&gt;
+        &lt;!--使用jdbc的getGeneratedKeys 获取数据库自增主键值--&gt;
+        &lt;setting name=&quot;useGeneratedKeys&quot; value=&quot;true&quot;/&gt;
+        &lt;!--使用列别名替换列名 默认true--&gt;
+        &lt;setting name=&quot;useColumnLabel&quot; value=&quot;true&quot;/&gt;
+        &lt;!--开启驼峰命名转换--&gt;
+        &lt;setting name=&quot;mapUnderscoreToCamelCase&quot; value=&quot;true&quot;/&gt;
+
+    &lt;/settings&gt;
+&lt;/configuration&gt;
+</code></pre>
+<h5 id="创建mapper"><a href="#创建mapper" class="headerlink" title="创建mapper"></a>创建mapper</h5><p>在resourcees目录下创建名字为mapper的文件夹，然后根据DAO接口编写sql</p>
+<p>SeckillDAO.xml</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
+&lt;!DOCTYPE mapper
+        PUBLIC &quot;-//mybatis.org//DTD Mapper 3.0//EN&quot;
+        &quot;http://mybatis.org/dtd/mybatis-3-mapper.dtd&quot;&gt;
+&lt;mapper namespace=&quot;org.seckill.dao.SeckillDao&quot;&gt;
+    &lt;!--目的为DAO接口方法提供sql语句配置--&gt;
+    &lt;update id=&quot;reduceNumber&quot;&gt;
+        &lt;!--具体的sql--&gt;
+        UPDATE
+        seckill
+        SET
+        number = number - 1
+        WHERE seckill_id = #&#123;seckillId&#125;
+        AND start_time &lt;![CDATA[ &lt;= ]]&gt; #&#123;killTime&#125;
+        AND end_time &gt;= #&#123;killTime&#125;
+        AND number &gt; 0;
+    &lt;/update&gt;
+    &lt;select id=&quot;queryById&quot; resultType=&quot;Seckill&quot; parameterType=&quot;long&quot;&gt;
+        SELECT seckill_id,name,number,start_time,end_time,create_time
+        FROM seckill
+        WHERE seckill_id = #&#123;seckillId&#125;
+    &lt;/select&gt;
+    &lt;select id=&quot;queryAll&quot; resultType=&quot;Seckill&quot;&gt;
+        SELECT seckill_id,name,number,start_time,end_time,create_time
+        FROM seckill
+        ORDER BY create_time DESC
+        limit #&#123;offset&#125;,#&#123;limit&#125;
+    &lt;/select&gt;
+&lt;/mapper&gt;
+</code></pre>
+<p>SuccessKillDao.xml</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
+&lt;!DOCTYPE mapper
+        PUBLIC &quot;-//mybatis.org//DTD Mapper 3.0//EN&quot;
+        &quot;http://mybatis.org/dtd/mybatis-3-mapper.dtd&quot;&gt;
+&lt;mapper namespace=&quot;org.seckill.dao.SuccessKilledDao&quot;&gt;
+    &lt;insert id=&quot;insertSuccessKilled&quot;&gt;
+        &lt;!--主键冲突，报错--&gt;
+        INSERT ignore INTO success_killed(seckill_id,user_phone,state)
+        VALUE (#&#123;seckillId&#125;,#&#123;userPhone&#125;,0)
+    &lt;/insert&gt;
+    &lt;select id=&quot;queryByIdWithSeckill&quot; resultType=&quot;SuccessKilled&quot;&gt;
+        &lt;!-- 根据id查询Succe并携带秒杀产品对象实体--&gt;
+        &lt;!-- 如何告诉mybatis把结果映射到SuccessKilled同时映射到seckill属性--&gt;
+        SELECT
+        sk.seckill_id,
+        sk.user_phone,
+        sk.create_time,
+        sk.state,
+        s.seckill_id &quot;seckill.seckill_id&quot;,
+        s.name &quot;seckill.name&quot;,
+        s.number&quot;seckill.number&quot;,
+        s.start_time &quot;seckill.start_time&quot;,
+        s.end_time &quot;seckill.end_time&quot;,
+        s.create_time &quot;seckill.create_time&quot;
+        FROM  success_killed sk
+        INNER JOIN  seckill s ON  sk.seckill_id = s.seckill_id
+        WHERE sk.seckill_id = #&#123;seckillId&#125; AND sk.user_phone = #&#123;userPhone&#125;
+    &lt;/select&gt;
+&lt;/mapper&gt;
+</code></pre>
+<h5 id="配置spring与mybatis整合"><a href="#配置spring与mybatis整合" class="headerlink" title="配置spring与mybatis整合"></a>配置spring与mybatis整合</h5><p>在resources目录下创建spring目录，然后新建spring-dao.xml</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+       xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+       xmlns:context=&quot;http://www.springframework.org/schema/context&quot;
+       xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+                    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd&quot;&gt;
+    &lt;!--配置整合mybatis过程--&gt;
+    &lt;!--1：配置数据库相关参数properties的属性：$&#123;url&#125;--&gt;
+    &lt;context:property-placeholder location=&quot;classpath:jdbc.properties&quot;/&gt;
+    &lt;!--2：数据库连接池--&gt;
+    &lt;bean id=&quot;dataSource&quot; class=&quot;com.mchange.v2.c3p0.ComboPooledDataSource&quot;&gt;
+        &lt;!--配置连接池属性--&gt;
+        &lt;property name=&quot;driverClass&quot; value=&quot;$&#123;driver&#125;&quot;/&gt;
+        &lt;property name=&quot;jdbcUrl&quot; value=&quot;$&#123;url&#125;&quot;/&gt;
+        &lt;property name=&quot;user&quot; value=&quot;$&#123;jdbc.username&#125;&quot;/&gt;
+        &lt;property name=&quot;password&quot; value=&quot;$&#123;password&#125;&quot;/&gt;
+
+        &lt;!--c3po连接池的私有属性--&gt;
+        &lt;property name=&quot;maxPoolSize&quot; value=&quot;30&quot;/&gt;
+        &lt;property name=&quot;minPoolSize&quot; value=&quot;10&quot;/&gt;
+        &lt;!--关闭连接后不自动commit--&gt;
+        &lt;property name=&quot;autoCommitOnClose&quot; value=&quot;false&quot;/&gt;
+        &lt;!--获取连接超时时间--&gt;
+        &lt;property name=&quot;checkoutTimeout&quot; value=&quot;1000&quot;/&gt;
+        &lt;!--当获取连接失败重试次数--&gt;
+        &lt;property name=&quot;acquireRetryAttempts&quot; value=&quot;2&quot;/&gt;
+    &lt;/bean&gt;
+    &lt;!--约定大于配置--&gt;
+    &lt;!--3：配置sqlSessionFactory对象--&gt;
+    &lt;bean id=&quot;sqlSessionFactory&quot; class=&quot;org.mybatis.spring.SqlSessionFactoryBean&quot;&gt;
+        &lt;!--注入数据库连接池--&gt;
+        &lt;property name=&quot;dataSource&quot; ref=&quot;dataSource&quot;/&gt;
+        &lt;!--配置mybatis全局配置文件：mybatis-config.xml--&gt;
+        &lt;property name=&quot;configLocation&quot; value=&quot;classpath:mybatis-config&quot;/&gt;
+        &lt;!--扫描entity包 使用别名--&gt;
+        &lt;property name=&quot;typeAliasesPackage&quot; value=&quot;org.seckill.entity&quot;/&gt;
+        &lt;!--扫描sql配置文件：mapper需要的xml文件--&gt;
+        &lt;property name=&quot;mapperLocations&quot; value=&quot;classpath:mapper/*.xml&quot;/&gt;
+    &lt;/bean&gt;
+    &lt;!--4：配置扫描Dao接口包，动态实现Dao接口，并注入到spring容器中--&gt;
+    &lt;bean class=&quot;org.mybatis.spring.mapper.MapperScannerConfigurer&quot;&gt;
+        &lt;!--注入sqlSessionFactory--&gt;
+        &lt;property name=&quot;sqlSessionFactoryBeanName&quot; value=&quot;sqlSessionFactory&quot;/&gt;
+        &lt;!--给出扫描dao接口包--&gt;
+        &lt;property name=&quot;basePackage&quot; value=&quot;org.seckill.dao&quot;/&gt;
+    &lt;/bean&gt;
+&lt;/beans&gt;
+</code></pre>
+<p>在resources目录下创建数据库位置文件 jdbc.properties</p>
+<pre><code>driver=com.mysql.jdbc.Driver
+url=jdbc:mysql://localhost:3306/seckill?characterEncoding=UTF-8
+jdbc.username=root
+password=inspur
+</code></pre>
+<h2 id="五、junit单元测试"><a href="#五、junit单元测试" class="headerlink" title="五、junit单元测试"></a>五、junit单元测试</h2><p>在dao层选中接口后，快捷键 ctrl+shift+t生成单元测试</p>
+<pre><code>package org.seckill.dao;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.seckill.entity.Seckill;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import javax.annotation.Resource;
+
+import java.util.Date;
+import java.util.List;
+
+import static org.junit.Assert.*;
+
+/**
+ * 配置spring和junit整合，junit启动时加载springIOC容器
+ */
+@RunWith(SpringJUnit4ClassRunner.class)
+//告诉junit spring配置文件
+@ContextConfiguration(&#123;&quot;classpath:spring/spring-dao.xml&quot;&#125;)
+public class SeckillDaoTest &#123;
+    //注入Dao实体类依赖
+    @Resource
+    private SeckillDao seckillDao;
+
+    @Test
+    public void reduceNumber() throws Exception &#123;
+        Date killTime = new Date();
+        int updateCount = seckillDao.reduceNumber(1000L,killTime);
+        System.out.println(&quot;updateCount=&quot;+updateCount);
+    &#125;
+
+    @Test
+    public void queryById() throws Exception &#123;
+        long id = 1000;
+        Seckill seckill = seckillDao.queryById(id);
+        System.out.println(seckill.getName());
+        System.out.println(seckill);
+    &#125;
+
+    /**
+     * org.mybatis.spring.MyBatisSystemException: nested exception is org.apache.ibatis.binding.BindingException:
+     * Parameter &#39;offset&#39; not found. Available parameters are [1, 0, param1, param2]
+     *
+     * @throws Exception
+     */
+    //List&lt;Seckill&gt; queryAll(int offset,int limit);
+    //java没有保存形参的记录：queryAll(int offset,int limit) =&gt; queryAll(arg0,arg1)
+    @Test
+    public void queryAll() throws Exception &#123;
+        List&lt;Seckill&gt; seckills = seckillDao.queryAll(0, 1000);
+        for (Seckill seckill : seckills) &#123;
+            System.out.println(seckill);
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<pre><code>package org.seckill.dao;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.seckill.entity.SuccessKilled;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import javax.annotation.Resource;
+
+import static org.junit.Assert.*;
+
+/**
+ * 配置spring和junit整合，junit启动时加载springIOC容器
+ */
+@RunWith(SpringJUnit4ClassRunner.class)
+//告诉junit spring配置文件
+@ContextConfiguration(&#123;&quot;classpath:spring/spring-dao.xml&quot;&#125;)
+public class SuccessKilledDaoTest &#123;
+    @Resource
+    private SuccessKilledDao successKilledDao;
+    @Test
+    public void insertSuccessKilled() throws Exception &#123;
+        long id = 1000L;
+        long phone = 1552211520L;
+        int insertCount = successKilledDao.insertSuccessKilled(id,phone);
+        System.out.println(&quot;insertCount=&quot;+insertCount);
+    &#125;
+
+    @Test
+    public void queryByIdWithSeckill() throws Exception &#123;
+        long id = 1000L;
+        long phone = 1552211520L;
+        SuccessKilled successKilled = successKilledDao.queryByIdWithSeckill(id,phone);
+        System.out.println(successKilled);
+        System.out.println(successKilled.getSeckill());
+    &#125;
+
+&#125;
+</code></pre>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81maven%E5%88%9B%E5%BB%BA%E9%A1%B9%E7%9B%AE"><span class="toc-number">1.</span> <span class="toc-text">一、maven创建项目</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%8D%E7%BD%AEweb-xml"><span class="toc-number">2.</span> <span class="toc-text">配置web.xml</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A1%A5%E5%85%A8%E7%9B%AE%E5%BD%95"><span class="toc-number">2.1.</span> <span class="toc-text">补全目录</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81-%E5%A4%84%E7%90%86%E4%BE%9D%E8%B5%96"><span class="toc-number">3.</span> <span class="toc-text">二、 处理依赖</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%88%9B%E5%BB%BA%E6%95%B0%E6%8D%AE%E5%BA%93%E8%A1%A8"><span class="toc-number">4.</span> <span class="toc-text">三、创建数据库表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81DAO-%E7%9B%B8%E5%85%B3%E6%8E%A5%E5%8F%A3%E4%B8%8E%E7%BC%96%E7%A0%81"><span class="toc-number">5.</span> <span class="toc-text">四、DAO 相关接口与编码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81junit%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95"><span class="toc-number">6.</span> <span class="toc-text">五、junit单元测试</span></a></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

@@ -1,0 +1,933 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>generate_api、jenkins_api使用说明 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="准备pip安装python_jenkins包pip install python-jenkins
+
+复制自定义python包复制项目中的indata_pack目录到python的site-packa,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">generate_api、jenkins_api使用说明</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/1.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/项目开发记录"><b>「
+                    </b>项目开发记录<b> 」</b></a>
+                
+                August 20, 2018
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/generate_api-jenkins_api-instructions.html" title="generate_api、jenkins_api使用说明" class="">generate_api、jenkins_api使用说明</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    19k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    17 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE%E8%A7%84%E5%88%92%E5%B7%A5%E5%85%B7/" rel="tag">大数据集群配置规划工具</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91%E8%AE%B0%E5%BD%95/" rel="tag">项目开发记录</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><h4 id="pip安装python-jenkins包"><a href="#pip安装python-jenkins包" class="headerlink" title="pip安装python_jenkins包"></a>pip安装python_jenkins包</h4><pre><code>pip install python-jenkins
+</code></pre>
+<h4 id="复制自定义python包"><a href="#复制自定义python包" class="headerlink" title="复制自定义python包"></a>复制自定义python包</h4><p>复制项目中的indata_pack目录到python的site-packages下。</p>
+<blockquote>
+<p>位置：indata_dev\indata_tool_api\indata_pack</p>
+</blockquote>
+<h4 id="indata-pack说明"><a href="#indata-pack说明" class="headerlink" title="indata_pack说明"></a>indata_pack说明</h4><h5 id="目录结构："><a href="#目录结构：" class="headerlink" title="目录结构："></a>目录结构：</h5><p><img src="https://shirukai.gitee.io/images/201801311507_372.png"></p>
+<h5 id="config-base目录"><a href="#config-base目录" class="headerlink" title="config_base目录"></a>config_base目录</h5><p>主要存放jenkins执行时需要的配置文件config.xml以及其他的一些脚本文件</p>
+<h5 id="config-template目录"><a href="#config-template目录" class="headerlink" title="config_template目录"></a>config_template目录</h5><p>存放生成配置文件的模板</p>
+<h5 id="generate-api-py"><a href="#generate-api-py" class="headerlink" title="generate_api .py"></a>generate_api .py</h5><p>生成配置文件的类</p>
+<h5 id="jenkins-api-py"><a href="#jenkins-api-py" class="headerlink" title="jenkins_api.py"></a>jenkins_api.py</h5><p>调用jenkins的类</p>
+<h5 id="params-py"><a href="#params-py" class="headerlink" title="params.py"></a>params.py</h5><p>定义相关变量，如生成文件的位置、复制文件位置、目录结构、jenkins的所在ip、端口号、用户名、密码等信息</p>
+<h2 id="一、generate-api-说明"><a href="#一、generate-api-说明" class="headerlink" title="一、generate_api 说明"></a>一、generate_api 说明</h2><pre><code>def generate_config():
+    # 定义配置生成配置文件的名字
+    config_name = &#39;TestApi&#39;
+    # 从本地文件读取json数据
+    data_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), &#39;data.json&#39;)
+    with open(data_path) as f:
+        data = f.read()
+    # 调用 generate_api
+    gr = generate_api.GenerateApi(config_name)
+    # 构建生成配置文件的参数
+    params = gr.generate_params(json.loads(data))
+    # 生成配置文件
+    gr.generate_config(params)
+    # 输出 文件路径
+    print(gr.config_path)
+    return gr.config_path
+</code></pre>
+<p>需要的json格式：</p>
+<pre><code>&#123;
+  &quot;blueprint&quot;: &#123;
+    &quot;atlas_rest_address&quot;: &quot;indatatest-10-110-13-164.test.com&quot;,
+    &quot;range_admin_db_name&quot;: &quot;ranger&quot;,
+    &quot;ranger_plugin_kafka_policy_rest_url&quot;: &quot;indatatest-10-110-13-164.test.com&quot;,
+    &quot;db_root_user&quot;: &quot;root&quot;,
+    &quot;range_admin_db_password&quot;: &quot;123456Aa?&quot;,
+    &quot;hbase_rest_kerberos_principal&quot;: &quot;TEST.COM&quot;,
+    &quot;admin_server_host&quot;: &quot;10.110.13.166&quot;,
+    &quot;range_kms_db_name&quot;: &quot;rangerkms&quot;,
+    &quot;ranger_plugin_nifi_policy_rest_url&quot;: &quot;indatatest-10-110-13-164.test.com&quot;,
+    &quot;javax_jdo_option_ConnectionPassword&quot;: &quot;hive11111&quot;,
+    &quot;logsearch_nginx_cluster&quot;: &quot;10.110.13.163&quot;,
+    &quot;nifi_security_encrypt_configuration_password&quot;: &quot;1234567890a?&quot;,
+    &quot;ranger_ks_jpa_jdbc_url&quot;: &quot;indatatest-10-110-13-163.test.com&quot;,
+    &quot;KMS_MASTER_KEY_PASSWD&quot;: &quot;123456Aa?&quot;,
+    &quot;hadoop_kms_key_provider_path&quot;: &quot;indatatest-10-110-13-164.test.com&quot;,
+    &quot;knox_request_hostip&quot;: &quot;10.110.13.163&quot;,
+    &quot;ranger_privelege_user_jdbc_url&quot;: &quot;indatatest-10-110-13-163.test.com&quot;,
+    &quot;nifi_realm&quot;: &quot;tenant&quot;,
+    &quot;range_kms_db_password&quot;: &quot;123456Aa?&quot;,
+    &quot;ranger_admin_password&quot;: &quot;123456Aa?&quot;,
+    &quot;ranger_plugin_knox_policy_rest_url&quot;: &quot;indatatest-10-110-13-164.test.com&quot;,
+    &quot;kdc_hosts&quot;: &quot;10.110.13.166&quot;,
+    &quot;ranger_plugin_hive_policy_rest_url&quot;: &quot;indatatest-10-110-13-164.test.com&quot;,
+    &quot;nifi_security_user_knox_url&quot;: &quot;10.110.13.163&quot;,
+    &quot;blueprint_name&quot;: &quot;indata&quot;,
+    &quot;nifi_nginx_dev&quot;: &quot;10.110.13.163&quot;,
+    &quot;nifi_initial_admin_identity&quot;: &quot;nifiadmin-tenant&quot;,
+    &quot;ranger_plugin_yarn_policy_rest_url&quot;: &quot;indatatest-10-110-13-164.test.com&quot;,
+    &quot;range_kms_db_user&quot;: &quot;rangerkms&quot;,
+    &quot;range_admin_db_user&quot;: &quot;rangeradmin&quot;,
+    &quot;logsearch_auth_jwt_provider_url&quot;: &quot;10.110.13.163&quot;,
+    &quot;nifi_nginx_cluster&quot;: &quot;10.110.13.163&quot;,
+    &quot;keycloak_dev_realm&quot;: &quot;tenant&quot;,
+    &quot;ranger_audit_solr_zookeepers&quot;: &quot;indatatest-10-110-13-163.test.com:2181,indatatest-10-110-13-164.test.com:2181,indatatest-10-110-13-165.test.com:2181&quot;,
+    &quot;ranger_plugin_hdfs_policy_rest_url&quot;: &quot;indatatest-10-110-13-164.test.com&quot;,
+    &quot;ranger_jpa_jdbc_url&quot;: &quot;indatatest-10-110-13-163.test.com&quot;,
+    &quot;host_groups&quot;: [
+      &#123;
+        &quot;cardinality&quot;: 1,
+        &quot;name&quot;: &quot;master1&quot;,
+        &quot;components&quot;: [
+          &#123;
+            &quot;name&quot;: &quot;KERBEROS_CLIENT&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;LOGSEARCH_LOGFEEDER&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;ZOOKEEPER_SERVER&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;KNOX_GATEWAY&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;ES_SERVER&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;HBASE_REGIONSERVER&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;NIFI_CA&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;METRICS_MONITOR&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;DATANODE&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;KAFKA_BROKER&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;NIFI_MASTER&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;ATLAS_CLIENT&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;SQOOP&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;JOURNALNODE&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;NODEMANAGER&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;LOGSEARCH_SERVER&quot;
+          &#125;
+        ]
+      &#125;,
+      &#123;
+        &quot;cardinality&quot;: 1,
+        &quot;name&quot;: &quot;master2&quot;,
+        &quot;components&quot;: [
+          &#123;
+            &quot;name&quot;: &quot;INFRA_SOLR_CLIENT&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;KERBEROS_CLIENT&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;LOGSEARCH_LOGFEEDER&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;METRICS_COLLECTOR&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;RANGER_TAGSYNC&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;ZOOKEEPER_SERVER&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;NAMENODE&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;HBASE_CLIENT&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;ES_SERVER&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;HBASE_REGIONSERVER&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;METRICS_MONITOR&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;DATANODE&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;RANGER_USERSYNC&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;KAFKA_BROKER&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;NIFI_MASTER&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;ATLAS_CLIENT&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;SQOOP&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;ZOOKEEPER_CLIENT&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;JOURNALNODE&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;MAPREDUCE2_CLIENT&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;SPARK2_CLIENT&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;INFRA_SOLR&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;HDFS_CLIENT&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;RANGER_KMS_SERVER&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;RANGER_ADMIN&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;NODEMANAGER&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;ZKFC&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;HCAT&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;METRICS_GRAFANA&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;HIVE_METASTORE&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;RESOURCEMANAGER&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;HIVE_CLIENT&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;YARN_CLIENT&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;WEBHCAT_SERVER&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;HBASE_MASTER&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;HIVE_SERVER&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;ATLAS_SERVER&quot;
+          &#125;
+        ]
+      &#125;,
+      &#123;
+        &quot;cardinality&quot;: 1,
+        &quot;name&quot;: &quot;master3&quot;,
+        &quot;components&quot;: [
+          &#123;
+            &quot;name&quot;: &quot;KERBEROS_CLIENT&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;LOGSEARCH_LOGFEEDER&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;HISTORYSERVER&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;METRICS_COLLECTOR&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;PIG&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;ZOOKEEPER_SERVER&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;NAMENODE&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;TEZ_CLIENT&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;ES_SERVER&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;HBASE_REGIONSERVER&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;SPARK2_THRIFTSERVER&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;METRICS_MONITOR&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;DATANODE&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;KAFKA_BROKER&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;NIFI_MASTER&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;SPARK2_JOBHISTORYSERVER&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;ATLAS_CLIENT&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;SQOOP&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;JOURNALNODE&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;NODEMANAGER&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;ZKFC&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;SLIDER&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;HIVE_METASTORE&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;RESOURCEMANAGER&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;WEBHCAT_SERVER&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;HBASE_MASTER&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;APP_TIMELINE_SERVER&quot;
+          &#125;,
+          &#123;
+            &quot;name&quot;: &quot;HIVE_SERVER&quot;
+          &#125;
+        ]
+      &#125;
+    ],
+    &quot;keycloak_auth_url&quot;: &quot;10.110.13.163&quot;,
+    &quot;javax_jdo_option_ConnectionURL&quot;: &quot;10.110.13.163&quot;,
+    &quot;nifi_security_user_knox_cookieName&quot;: &quot;tenant-jw&quot;,
+    &quot;policymgr_external_url&quot;: &quot;indatatest-10-110-13-164.test.com&quot;,
+    &quot;nifi_admin_ssl_config_content&quot;: &quot;&lt;property name=&#39;Node Identity1&#39;&gt;CN=indatatest-10-110-13-163.test.com, OU=NIFI&lt;/property&gt;\n&lt;property name=&#39;Node Identity2&#39;&gt;CN=indatatest-10-110-13-164.test.com, OU=NIFI&lt;/property&gt;\n&lt;property name=&#39;Node Identity3&#39;&gt;CN=indatatest-10-110-13-165.test.com, OU=NIFI&lt;/property&gt;&quot;,
+    &quot;db_host&quot;: &quot;10.110.13.163&quot;,
+    &quot;ranger_plugin_hbase_policy_rest_url&quot;: &quot;indatatest-10-110-13-164.test.com&quot;,
+    &quot;db_root_password&quot;: &quot;123456Aa?&quot;,
+    &quot;domains&quot;: &quot;TEST.COM&quot;,
+    &quot;hbase_rest_authentication_kerberos_principal&quot;: &quot;TEST.COM&quot;,
+    &quot;ranger_plugin_atlas_policy_rest_url&quot;: &quot;indatatest-10-110-13-164.test.com&quot;
+  &#125;,
+  &quot;new_cluster&quot;: &#123;
+    &quot;mysql_idap_password&quot;: &quot;idap&quot;,
+    &quot;ambari_nifi_hostip&quot;: [
+      &quot;10.110.13.163&quot;,
+      &quot;10.110.13.164&quot;,
+      &quot;10.110.13.165&quot;
+    ],
+    &quot;keycloak_dev_realm&quot;: &quot;tenant&quot;,
+    &quot;ambari_logsearch_hostip&quot;: &quot;10.110.13.163&quot;,
+    &quot;ldap_rootdn_password&quot;: &quot;123456a?&quot;,
+    &quot;interface&quot;: &quot;eth0&quot;,
+    &quot;manager_hosts&quot;: [
+      &quot;10.110.13.163&quot;,
+      &quot;10.110.13.164&quot;
+    ],
+    &quot;openldap_base&quot;: &quot;dc=test,dc=com&quot;,
+    &quot;mysql_root_password&quot;: &quot;123456Aa?&quot;,
+    &quot;mysql_keycloak_password&quot;: &quot;123456Aa?&quot;,
+    &quot;ambari_knox_hostip&quot;: &quot;10.110.13.163&quot;,
+    &quot;floating_ip_map&quot;: &#123;&#125;,
+    &quot;blueprint_name&quot;: &quot;indata&quot;,
+    &quot;krb5kdc_admin_principal&quot;: &quot;root&quot;,
+    &quot;mysql_hive_password&quot;: &quot;hive11111&quot;,
+    &quot;virtual_ipaddress&quot;: &quot;10.110.13.166&quot;,
+    &quot;controler_hosts&quot;: [
+      &quot;10.110.13.163&quot;,
+      &quot;10.110.13.164&quot;,
+      &quot;10.110.13.165&quot;
+    ],
+    &quot;ambari_clustername&quot;: &quot;InDataTest&quot;,
+    &quot;krb5kdc_realm&quot;: &quot;TEST.COM&quot;,
+    &quot;hostinfo&quot;: [
+      &#123;
+        &quot;password&quot;: &quot;123456a?&quot;,
+        &quot;hostname&quot;: &quot;indatatest-10-110-13-163.test.com&quot;,
+        &quot;hostip&quot;: &quot;10.110.13.163&quot;
+      &#125;,
+      &#123;
+        &quot;password&quot;: &quot;123456a?&quot;,
+        &quot;hostname&quot;: &quot;indatatest-10-110-13-164.test.com&quot;,
+        &quot;hostip&quot;: &quot;10.110.13.164&quot;
+      &#125;,
+      &#123;
+        &quot;password&quot;: &quot;123456a?&quot;,
+        &quot;hostname&quot;: &quot;indatatest-10-110-13-165.test.com&quot;,
+        &quot;hostip&quot;: &quot;10.110.13.165&quot;
+      &#125;
+    ],
+    &quot;ambari_kafka_hostip&quot;: &quot;10.110.13.163&quot;,
+    &quot;virtual_ipfqdn&quot;: &quot;indatatest-10-110-13-166.test.com&quot;,
+    &quot;ambari_ranger_hostip&quot;: &quot;10.110.13.164&quot;
+  &#125;,
+  &quot;shell&quot;: &#123;
+    &quot;root_pwd&quot;: &quot;123456a?&quot;,
+    &quot;ambari_server_ip&quot;: &quot;10.110.13.163&quot;
+  &#125;,
+  &quot;node_info&quot;: [
+    &#123;
+      &quot;passwd&quot;: &quot;123456a?&quot;,
+      &quot;ip&quot;: &quot;10.110.13.243&quot;,
+      &quot;hostname&quot;: &quot;indatatest-10-110-13-243.test.com&quot;
+    &#125;,
+    &#123;
+      &quot;passwd&quot;: &quot;123456a?&quot;,
+      &quot;ip&quot;: &quot;10.110.13.243&quot;,
+      &quot;hostname&quot;: &quot;indatatest-10-110-13-243.test.com&quot;
+    &#125;,
+    &#123;
+      &quot;passwd&quot;: &quot;123456a?&quot;,
+      &quot;ip&quot;: &quot;10.110.13.243&quot;,
+      &quot;hostname&quot;: &quot;indatatest-10-110-13-243.test.com&quot;
+    &#125;
+  ],
+  &quot;host_map&quot;: &#123;
+    &quot;blueprint&quot;: &quot;indata&quot;,
+    &quot;kerberos_user&quot;: &quot;root&quot;,
+    &quot;kerberos_admin_pwd&quot;: &quot;123456a?&quot;,
+    &quot;cluster_name&quot;: &quot;InDataTest&quot;,
+    &quot;host_groups&quot;: [
+      &#123;
+        &quot;hosts&quot;: [
+          &#123;
+            &quot;fqdn&quot;: &quot;indatatest-10-110-13-163.test.com&quot;
+          &#125;
+        ],
+        &quot;name&quot;: &quot;master1&quot;
+      &#125;,
+      &#123;
+        &quot;hosts&quot;: [
+          &#123;
+            &quot;fqdn&quot;: &quot;indatatest-10-110-13-164.test.com&quot;
+          &#125;
+        ],
+        &quot;name&quot;: &quot;master2&quot;
+      &#125;,
+      &#123;
+        &quot;hosts&quot;: [
+          &#123;
+            &quot;fqdn&quot;: &quot;indatatest-10-110-13-165.test.com&quot;
+          &#125;
+        ],
+        &quot;name&quot;: &quot;master3&quot;
+      &#125;
+    ],
+    &quot;default_password&quot;: &quot;123456a?&quot;
+  &#125;,
+  &quot;disk_partition&quot;: []
+&#125;
+</code></pre>
+<h2 id="二、jenkins-api说明"><a href="#二、jenkins-api说明" class="headerlink" title="二、jenkins_api说明"></a>二、jenkins_api说明</h2><pre><code># 启动
+def start_jenkins():
+    # config_path 生成配置文件后返回的路径
+    config_path = &#39;D:\\tmp\indata_config\TestApi1517384088.06&#39;
+    # 节点用户名
+    username = &#39;root&#39;
+    # root 密码
+    password = &#39;123456a?&#39;
+    # 节点ip
+    node_ip = &#39;10.110.13.243&#39;
+    # node_name
+    node_name = &#39;ambari_server&#39; + node_ip
+    # job_name 带时间戳的配置名
+    job_name = &#39;TestApi&#39; + str(time.time())
+    jenkins = jenkins_api.JenkinsApi()
+    # 复制文件，将生成的配置文件复制到 指定节点的/opt目录下
+    (sh_state, output) = jenkins.copy_file(config_path)
+    # sh_state=0表示执行成功，output为输出信息
+    if sh_state == 0:
+        # 创建 node
+        jenkins.create_node(node_name, job_name, username, password, node_ip)
+        # 创建job 并启动
+        jenkins.create_job(node_name, job_name, node_ip)
+    else:
+        print(output)
+
+
+# 停止
+def stop_jenkins():
+    job_name = &quot;TestApi1517386158.76&quot;
+    jenkins = jenkins_api.JenkinsApi()
+    jenkins.stop_job(job_name)
+
+
+# 重新开始
+def restart_jenkins():
+    job_name = &quot;TestApi1517386158.76&quot;
+    jenkins = jenkins_api.JenkinsApi()
+    jenkins.start_job(job_name)
+</code></pre>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%86%E5%A4%87"><span class="toc-number">1.</span> <span class="toc-text">准备</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81generate-api-%E8%AF%B4%E6%98%8E"><span class="toc-number">2.</span> <span class="toc-text">一、generate_api 说明</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81jenkins-api%E8%AF%B4%E6%98%8E"><span class="toc-number">3.</span> <span class="toc-text">二、jenkins_api说明</span></a></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

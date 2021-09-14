@@ -1,0 +1,682 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Springmvc 文件上传 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="Spring mvc 单文件上传jsp
+&amp;lt;!DOCTYPE html&amp;gt;
+&amp;lt;%@ page contentType=&amp;quot;text/html;charset=UTF-8&amp;quo,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">Springmvc 文件上传</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/4.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/Spring"><b>「
+                    </b>SPRING<b> 」</b></a>
+                
+                August 19, 2018
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/springmvc-file-upload.html" title="Springmvc 文件上传" class="">Springmvc 文件上传</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    9.6k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    9 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Spring/" rel="tag">Spring</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <h2 id="Spring-mvc-单文件上传"><a href="#Spring-mvc-单文件上传" class="headerlink" title="Spring mvc 单文件上传"></a>Spring mvc 单文件上传</h2><p>jsp</p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;%@ page contentType=&quot;text/html;charset=UTF-8&quot; language=&quot;java&quot; %&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;%--引入meta标签--%&gt;
+    &lt;%@include file=&quot;common/meta.jsp&quot; %&gt;
+    &lt;title&gt;bootstrap上传&lt;/title&gt;
+    &lt;%--引入css、js--%&gt;
+    &lt;%@include file=&quot;common/upload.jsp&quot; %&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;container&quot;&gt;
+    &lt;form enctype=&quot;multipart/form-data&quot;&gt;
+        &lt;div class=&quot;file-loading&quot;&gt;
+            &lt;input id=&quot;uploadInput&quot; type=&quot;file&quot; multiple name=&quot;file&quot;&gt;
+        &lt;/div&gt;
+    &lt;/form&gt;
+&lt;/div&gt;
+&lt;script type=&quot;text/javascript&quot;&gt;
+    var uploadInput = $(&#39;#uploadInput&#39;);
+    uploadInput.fileinput(&#123;
+        language: &#39;zh&#39;,
+        showUpload: true,
+        showCaption: true,
+        browseClass: &quot;btn btn-primary&quot;,//选择按钮样式
+        showPreview: true,//是否开启预览
+        uploadUrl: &#39;/plugins/upload/up&#39;,//拖拽同时上传
+        overwriteInitial: false,//覆盖初始
+        maxFileSize: 1000,//最大文件大小
+        maxFilesNum: 10,//最大文件数量
+        //fileType: &quot;any&quot;,
+        allowedFileExtensions: [&#39;jpg&#39;, &#39;png&#39;, &#39;gif&#39;],//允许上传的格式
+        //allowedFileTypes: [&#39;image&#39;, &#39;video&#39;, &#39;flash&#39;],//文件类型
+    &#125;);
+    uploadInput.on(&quot;fileuploaded&quot;, function (event, data, previewId, index) &#123;
+        console.log(data.response)
+    &#125;);//上传完成后的事件
+    uploadInput.on(&#39;fileclear&#39;, function (event) &#123;
+        console.log(&quot;fileclear&quot;, event)
+    &#125;)//当预览被关闭后执行的事件
+    uploadInput.on(&#39;fileloaded&#39;, function (event, file, previewId, index, reade) &#123;
+        console.log(file)
+    &#125;)//上传文件加载完成后执行的事件
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p>配置依赖</p>
+<pre><code>&lt;!--配置上传依赖--&gt;
+&lt;dependency&gt;
+  &lt;groupId&gt;commons-fileupload&lt;/groupId&gt;
+  &lt;artifactId&gt;commons-fileupload&lt;/artifactId&gt;
+  &lt;version&gt;1.3.1&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+<p>上传配置</p>
+<pre><code>&lt;bean id=&quot;multipartResolver&quot;
+      class=&quot;org.springframework.web.multipart.commons.CommonsMultipartResolver&quot;&gt;
+    &lt;property name=&quot;maxUploadSize&quot; value=&quot;209715200&quot; /&gt;
+    &lt;property name=&quot;defaultEncoding&quot; value=&quot;UTF-8&quot; /&gt;
+    &lt;property name=&quot;resolveLazily&quot; value=&quot;true&quot; /&gt;
+&lt;/bean&gt;
+</code></pre>
+<p>Controller</p>
+<pre><code>@RequestMapping(&quot;/upload/up&quot;)
+@ResponseBody
+public Map&lt;String, String&gt; uploadUp(
+        MultipartFile file, HttpServletRequest request
+) &#123;
+    //开始时间
+    long startTime = System.currentTimeMillis();
+    String timeString = String.valueOf(startTime);
+    logger.info(&quot;______________开始时间:=&#123;&#125;&quot;, startTime);
+    Map&lt;String, String&gt; map = new HashMap&lt;String, String&gt;();
+    logger.info(&quot;______________文件名:=&#123;&#125;&quot;, file.getOriginalFilename());
+    //获取当前路径
+    String uploadPath = request.getServletContext().getRealPath(&quot;WEB-INF/classes/upload&quot;);
+    //判断目录是否存在
+    File file1 = new File(uploadPath);
+    if (!file1.exists()) &#123;
+        //不存在创建目录
+        file1.mkdirs();
+        logger.info(&quot;_____________创建目录=&#123;&#125;&quot;, &quot;ok&quot;);
+    &#125;
+    logger.info(&quot;______________路径:=&#123;&#125;&quot;, uploadPath);
+
+    if (!file.isEmpty()) &#123;
+        String fileName = timeString + file.getOriginalFilename();
+        try &#123;
+            String path = uploadPath + &quot;\\&quot; + fileName;
+            file.transferTo(new File(path));
+            map.put(&quot;state&quot;, &quot;0&quot;);
+            map.put(&quot;fileName&quot;, fileName);
+            map.put(&quot;fileUrl&quot;, path);
+        &#125; catch (Exception e) &#123;
+            logger.error(e.getMessage(), e);
+        &#125;
+    &#125;
+    //结束时间
+    long endTime = System.currentTimeMillis();
+    logger.info(&quot;______________用时:=&#123;&#125;&quot;, endTime - startTime + &quot;ms&quot;);
+    return map;
+&#125;
+</code></pre>
+<h2 id="Spring-mvc-文件列表显示"><a href="#Spring-mvc-文件列表显示" class="headerlink" title="Spring mvc 文件列表显示"></a>Spring mvc 文件列表显示</h2><p>controller</p>
+<pre><code>@RequestMapping(&quot;/upload/list&quot;)
+public String uploadList(
+        Model model,
+        HttpServletRequest request
+) &#123;
+    Map&lt;String, Object&gt; map = new HashMap&lt;String, Object&gt;();
+    List&lt;Map&gt; list = new ArrayList&lt;Map&gt;();
+    //获取上传路径
+    String path = request.getServletContext().getRealPath(&quot;WEB-INF/classes/upload&quot;);
+    File file = new File(path);
+    //获取目录下的所有文件和绝对路径
+    File[] fs = file.listFiles();
+    for (File f : fs
+            ) &#123;
+        map.put(&quot;fileName&quot;, f.getName());
+        map.put(&quot;filePath&quot;, f.getAbsolutePath());
+        list.add(map);
+        logger.info(&quot;_______file=&#123;&#125;&quot;, f);
+    &#125;
+    model.addAttribute(&quot;fileList&quot;, list);
+    return &quot;uploadlist&quot;;
+
+&#125;
+</code></pre>
+<p>jsp</p>
+<pre><code>&lt;%@ page contentType=&quot;text/html;charset=UTF-8&quot; language=&quot;java&quot; %&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;%--引入meta标签--%&gt;
+    &lt;%@include file=&quot;common/meta.jsp&quot; %&gt;
+    &lt;title&gt;上传文件列表&lt;/title&gt;
+    &lt;%--引入jsp标签--%&gt;
+    &lt;%@include file=&quot;common/tag.jsp&quot; %&gt;
+    &lt;%--引入css、js--%&gt;
+    &lt;%@include file=&quot;common/head.jsp&quot; %&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;table class=&quot;table table-bordered&quot;&gt;
+    &lt;thead&gt;
+    &lt;tr&gt;
+        &lt;th&gt;文件名&lt;/th&gt;
+        &lt;th&gt;路径&lt;/th&gt;
+        &lt;th&gt;操作&lt;/th&gt;
+    &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+    &lt;c:forEach var=&quot;file&quot; items=&quot;$&#123;fileList&#125;&quot;&gt;
+        &lt;tr&gt;
+            &lt;td&gt;$&#123;file.fileName&#125;&lt;/td&gt;
+            &lt;td&gt;$&#123;file.filePath&#125;&lt;/td&gt;
+            &lt;td&gt;&lt;a href=&quot;/plugins/download?fileName=$&#123;file.fileName&#125;&quot; class=&quot;btn btn-info btn-sm&quot;&gt;下载&lt;/a&gt;
+                &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                &lt;button class=&quot;btn btn-danger btn-sm&quot; onclick=&quot;deleteFile(&#39;$&#123;file.fileName&#125;&#39;)&quot;&gt;删除&lt;/button&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/c:forEach&gt;
+    &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;script type=&quot;text/javascript&quot;&gt;
+    var context = &#39;&lt;%=request.getContextPath()%&gt;&#39;;
+    function deleteFile(fileName) &#123;
+        $.ajax(&#123;
+            type:&quot;POST&quot;,
+            data:&#123;&quot;fileName&quot;:fileName&#125;,
+            url:context+&quot;/plugins/upload/delete&quot;,
+            success:function (data) &#123;
+                console.log(data);
+                if (data.state = 1)&#123;
+                    window.location.reload();
+                &#125;
+            &#125;
+        &#125;)
+    &#125;
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<h2 id="文件删除"><a href="#文件删除" class="headerlink" title="文件删除"></a>文件删除</h2><pre><code>@RequestMapping(&quot;/upload/delete&quot;)
+@ResponseBody
+public Map&lt;String, Object&gt; uploadDelete(
+        @RequestParam(&quot;fileName&quot;) String fileName,
+        HttpServletRequest request
+) &#123;
+    Map&lt;String, Object&gt; map = new HashMap&lt;String, Object&gt;();
+    //文件路径
+    String path = request.getServletContext().getRealPath(&quot;WEB-INF/classes/upload&quot;);
+    File file = new File(path, fileName);
+    //如果文件存在删除
+    if (file.exists()) &#123;
+        file.delete();
+        map.put(&quot;state&quot;, 1);
+        map.put(&quot;info&quot;, &quot;删除成功&quot;);
+    &#125; else &#123;
+        map.put(&quot;state&quot;, 0);
+        map.put(&quot;info&quot;, &quot;文件不存在&quot;);
+    &#125;
+    return map;
+&#125;
+</code></pre>
+<h2 id="文件下载"><a href="#文件下载" class="headerlink" title="文件下载"></a>文件下载</h2><pre><code>@RequestMapping(&quot;/download&quot;)
+@ResponseBody
+public void download(
+        @RequestParam(&quot;fileName&quot;) String fileName,
+        HttpServletRequest request,
+        HttpServletResponse response
+)&#123;
+    Map&lt;String,Object&gt; map = new HashMap&lt;String,Object&gt;();
+    //设置响应投和客户端保存文件名
+    response.setCharacterEncoding(&quot;utf-8&quot;);
+    response.setContentType(&quot;multipart/form-data&quot;);
+    response.setHeader(&quot;Content-Disposition&quot;, &quot;attachment;fileName=&quot; + fileName);
+    //用于记录以完成的下载的数据量，单位是byte
+    long downloadedLength = 0l;
+    String filePath = request.getServletContext().getRealPath(&quot;WEB-INF/classes/upload/&quot;)+fileName;
+    try &#123;
+        //打开本地文件流
+        InputStream inputStream = new FileInputStream(filePath);
+        //激活下载操作
+        OutputStream os = response.getOutputStream();
+        //循环写入输出流
+        byte[] bytes = new byte[2048];
+        int length;
+        while ((length = inputStream.read(bytes))&gt;0)&#123;
+            os.write(bytes,0,length);
+            downloadedLength += bytes.length;
+        &#125;
+        map.put(&quot;downLength&quot;,downloadedLength);
+        //关闭输出流
+        os.close();
+        inputStream.close();
+    &#125; catch (IOException e) &#123;
+        logger.error(e.getMessage(), e);
+    &#125;
+&#125;
+</code></pre>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Spring-mvc-%E5%8D%95%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0"><span class="toc-number">1.</span> <span class="toc-text">Spring mvc 单文件上传</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Spring-mvc-%E6%96%87%E4%BB%B6%E5%88%97%E8%A1%A8%E6%98%BE%E7%A4%BA"><span class="toc-number">2.</span> <span class="toc-text">Spring mvc 文件列表显示</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E5%88%A0%E9%99%A4"><span class="toc-number">3.</span> <span class="toc-text">文件删除</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD"><span class="toc-number">4.</span> <span class="toc-text">文件下载</span></a></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

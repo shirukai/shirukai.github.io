@@ -1,0 +1,939 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ambari多语言处理 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="1.ambari-web在ambari-web/app下新建目录locales，然后在locales目录下创建zh、en目录，分别存放中文、英文语言js文件。
+en下的message.js为英文语言,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">Ambari多语言处理</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/5.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/Ambari二次开发"><b>「
+                    </b>AMBARI二次开发<b> 」</b></a>
+                
+                August 20, 2018
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/ambari-multilingual-processing.html" title="Ambari多语言处理" class="">Ambari多语言处理</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    31k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    28 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Ambari%E4%BA%8C%E6%AC%A1%E5%BC%80%E5%8F%91/" rel="tag">Ambari二次开发</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <h2 id="1-ambari-web"><a href="#1-ambari-web" class="headerlink" title="1.ambari-web"></a>1.ambari-web</h2><p>在ambari-web/app下新建目录locales，然后在locales目录下创建zh、en目录，分别存放中文、英文语言js文件。</p>
+<p>en下的message.js为英文语言，跟app目录下的message.js相同</p>
+<p>zh下的使我们要汉化的语言。翻译相对应的字段即可。</p>
+<h3 id="1-1状态修改"><a href="#1-1状态修改" class="headerlink" title="1.1状态修改"></a>1.1状态修改</h3><p><img src="https://shirukai.gitee.io/images/1510818136223clipboard.png"></p>
+<h4 id="修改modes-host-component-js-243行"><a href="#修改modes-host-component-js-243行" class="headerlink" title="修改modes/host_component.js 243行"></a>修改modes/host_component.js 243行</h4><pre><code>    getTextStatus: function (value) &#123;
+        switch (value) &#123;
+            case this.installing:
+                //return &#39;Installing...&#39;;
+                return Em.I18n.t(&#39;services.textStatus.installing&#39;);
+            case this.install_failed:
+                //return &#39;Install Failed&#39;;
+                return Em.I18n.t(&#39;services.textStatus.installFailed&#39;);
+            case this.stopped:
+                //return &#39;Stopped&#39;;
+                return Em.I18n.t(&#39;services.textStatus.stopped&#39;);
+            case this.started:
+                //return &#39;Started&#39;;
+                return Em.I18n.t(&#39;services.textStatus.started&#39;);
+            case this.starting:
+                //return &#39;Starting...&#39;;
+                return Em.I18n.t(&#39;services.textStatus.starting&#39;);
+            case this.stopping:
+                //return &#39;Stopping...&#39;;
+                return Em.I18n.t(&#39;services.textStatus.stopping&#39;);
+            case this.unknown:
+                //return &#39;Heartbeat Lost&#39;;
+                return Em.I18n.t(&#39;services.textStatus.upgradeFailed&#39;);
+            case this.upgrade_failed:
+                //return &#39;Upgrade Failed&#39;;
+                return Em.I18n.t(&#39;services.textStatus.upgradeFailed&#39;);
+            case this.disabled:
+                //return &#39;Disabled&#39;;
+                return Em.I18n.t(&#39;services.textStatus.disabled&#39;);
+            case this.init:
+                //return &#39;Install Pending...&#39;;
+                return Em.I18n.t(&#39;services.textStatus.installPending&#39;);
+        &#125;
+        //return &#39;Unknown&#39;;
+        return Em.I18n.t(&#39;services.textStatus.unknown&#39;);
+    &#125;,
+</code></pre>
+<h4 id="zh-message-js下添加"><a href="#zh-message-js下添加" class="headerlink" title="zh/message.js下添加"></a>zh/message.js下添加</h4><pre><code>    &#39;services.textStatus.installing&#39;: &#39;安装中...&#39;,
+    &#39;services.textStatus.installFailed&#39;: &#39;安装失败&#39;,
+    &#39;services.textStatus.stopped&#39;: &#39;已停止&#39;,
+    &#39;services.textStatus.started&#39;: &#39;已启动&#39;,
+    &#39;services.textStatus.starting&#39;: &#39;启动中...&#39;,
+    &#39;services.textStatus.stopping&#39;: &#39;停止中...&#39;,
+    &#39;services.textStatus.heartbeatLost&#39;: &#39;心跳丢失&#39;,
+    &#39;services.textStatus.upgradeFailed&#39;: &#39;升级失败&#39;,
+    &#39;services.textStatus.disabled&#39;: &#39;已禁用&#39;,
+    &#39;services.textStatus.installPending&#39;: &#39;安装等待...&#39;,
+    &#39;services.textStatus.unknown&#39;: &#39;未知&#39;,
+</code></pre>
+<h4 id="在en-message-js中添加"><a href="#在en-message-js中添加" class="headerlink" title="在en/message.js中添加"></a>在en/message.js中添加</h4><pre><code>&#39;services.textStatus.installing&#39;: &#39;Installing...&#39;,
+&#39;services.textStatus.installFailed&#39;: &#39;Install Failed&#39;,
+&#39;services.textStatus.stopped&#39;: &#39;Stopped&#39;,
+&#39;services.textStatus.started&#39;: &#39;Started&#39;,
+&#39;services.textStatus.starting&#39;: &#39;Starting...&#39;,
+&#39;services.textStatus.stopping&#39;: &#39;Stopping...&#39;,
+&#39;services.textStatus.heartbeatLost&#39;: &#39;Heartbeat Lost&#39;,
+&#39;services.textStatus.upgradeFailed&#39;: &#39;Upgrade Failed&#39;,
+&#39;services.textStatus.disabled&#39;: &#39;Disabled&#39;,
+&#39;services.textStatus.installPending&#39;: &#39;Install Pending...&#39;,
+&#39;services.textStatus.unknown&#39;: &#39;Unknown&#39;,
+</code></pre>
+<h3 id="1-2登录错误信息汉化"><a href="#1-2登录错误信息汉化" class="headerlink" title="1.2登录错误信息汉化"></a>1.2登录错误信息汉化</h3><p><img src="https://shirukai.gitee.io/images/201711171545_179.png"></p>
+<h4 id="修改app-controllers-login-controller-js下文件"><a href="#修改app-controllers-login-controller-js下文件" class="headerlink" title="修改app/controllers/login_controller.js下文件"></a>修改app/controllers/login_controller.js下文件</h4><p><img src="https://shirukai.gitee.io/images/201711171634_7.png"></p>
+<h4 id="修改en-messages-js"><a href="#修改en-messages-js" class="headerlink" title="修改en/messages.js"></a>修改en/messages.js</h4><pre><code>/*登录错误信息*/
+&#39;login.error.unable&#39;:&#39;Unable to sign in. Invalid username/password combination.&#39;,
+</code></pre>
+<h4 id="修改zh-messages-js"><a href="#修改zh-messages-js" class="headerlink" title="修改zh/messages.js"></a>修改zh/messages.js</h4><pre><code>/*登录错误信息*/
+&#39;login.error.unable&#39;:&#39;无法登录，无效的用户名/密码组合。&#39;,
+</code></pre>
+<h3 id="1-3下载所有客户端配置"><a href="#1-3下载所有客户端配置" class="headerlink" title="1.3下载所有客户端配置"></a>1.3下载所有客户端配置</h3><p><img src="https://shirukai.gitee.io/images/201711171548_943.png"></p>
+<h4 id="在en-messages-js添加"><a href="#在en-messages-js添加" class="headerlink" title="在en/messages.js添加"></a>在en/messages.js添加</h4><pre><code>/*下载所有客户端配置*/
+&#39;services.service.downloadAllClientConfigs&#39;: &#39;Download All Client Configs&#39;,
+</code></pre>
+<h4 id="在zh-messages-js添加"><a href="#在zh-messages-js添加" class="headerlink" title="在zh/messages.js添加"></a>在zh/messages.js添加</h4><pre><code>/*下载所有客户端配置*/
+&#39;services.service.downloadAllClientConfigs&#39;: &#39;下载所有客户端配置&#39;,
+</code></pre>
+<h3 id="1-4警告状态"><a href="#1-4警告状态" class="headerlink" title="1.4警告状态"></a>1.4警告状态</h3><p><img src="https://shirukai.gitee.io/images/201711201027_967.png"></p>
+<h4 id="修改文件"><a href="#修改文件" class="headerlink" title="修改文件"></a>修改文件</h4><p>ambari-web\app\views\main\alerts\alert_definition\alert_definition_summary.js</p>
+<p>ambari-web\app\models\alerts\alert_definition.js 258行</p>
+<p>大约55行位置</p>
+<pre><code>/*多语言处理*/
+_stateSummary.count = Em.I18n.t(&#39;zh_count.&#39;+count);
+</code></pre>
+<p><img src="https://shirukai.gitee.io/images/201711201029_756.png"></p>
+<h4 id="修改en-messages-js-1"><a href="#修改en-messages-js-1" class="headerlink" title="修改en/messages.js"></a>修改en/messages.js</h4><pre><code>/*count*/
+&#39;zh_count.OK&#39;:&#39;OK&#39;,
+&#39;zh_count.WARN&#39;:&#39;WARN&#39;,
+&#39;zh_count.CRIT&#39;:&#39;CRIT&#39;,
+&#39;zh_count.UNKWN&#39;:&#39;UNKWN&#39;,
+&#39;zh_count.NONE&#39;:&#39;NONE&#39;,
+</code></pre>
+<h4 id="修改zh-messages-js-1"><a href="#修改zh-messages-js-1" class="headerlink" title="修改zh/messages.js"></a>修改zh/messages.js</h4><pre><code>/*count*/
+&#39;zh_count.OK&#39;:&#39;正常&#39;,
+&#39;zh_count.WARN&#39;:&#39;警告&#39;,
+&#39;zh_count.CRIT&#39;:&#39;严重&#39;,
+&#39;zh_count.UNKWN&#39;:&#39;未知&#39;,
+&#39;zh_count.NONE&#39;:&#39;无&#39;,
+</code></pre>
+<h3 id="1-5-导航警告"><a href="#1-5-导航警告" class="headerlink" title="1.5 导航警告"></a>1.5 导航警告</h3><p><img src="https://shirukai.gitee.io/images/201711201034_970.png"></p>
+<h4 id="修改文件-1"><a href="#修改文件-1" class="headerlink" title="修改文件"></a>修改文件</h4><p>ambari-web\app\templates\application.hbs</p>
+<p>大约在51和55行</p>
+<p><img src="https://shirukai.gitee.io/images/201711201036_646.png"></p>
+<h4 id="修改en-messages-js-2"><a href="#修改en-messages-js-2" class="headerlink" title="修改en/messages.js"></a>修改en/messages.js</h4><pre><code>&#39;alerts&#39;:&#39;alerts&#39;,
+</code></pre>
+<h4 id="修改en-messages-js-3"><a href="#修改en-messages-js-3" class="headerlink" title="修改en/messages.js"></a>修改en/messages.js</h4><pre><code>&#39;alerts&#39;:&#39;个警告&#39;,
+</code></pre>
+<h3 id="1-6警告状态下拉"><a href="#1-6警告状态下拉" class="headerlink" title="1.6警告状态下拉"></a>1.6警告状态下拉</h3><p><img src="https://shirukai.gitee.io/images/201711201038_252.png"></p>
+<h4 id="修改文件-2"><a href="#修改文件-2" class="headerlink" title="修改文件"></a>修改文件</h4><p>ambari-web\app\views\main\alert_definitions_view.js</p>
+<p>大约185行</p>
+<pre><code>  stateFilterView: filters.createSelectView(&#123;
+    column: 2,
+    fieldType: &#39;filter-input-width&#39;,
+    content: [
+      &#123;
+        value: &#39;&#39;,
+        label: Em.I18n.t(&#39;common.all&#39;)
+      &#125;,
+      &#123;
+        value: &#39;OK&#39;,
+        label: Em.I18n.t(&#39;zh_alert_state.OK&#39;)
+      &#125;,
+      &#123;
+        value: &#39;WARNING&#39;,
+        label: Em.I18n.t(&#39;zh_alert_state.WARNING&#39;)
+      &#125;,
+      &#123;
+        value: &#39;CRITICAL&#39;,
+        label:Em.I18n.t(&#39;zh_alert_state.CRITICAL&#39;)
+      &#125;,
+      &#123;
+        value: &#39;UNKNOWN&#39;,
+        label: Em.I18n.t(&#39;zh_alert_state.UNKNOWN&#39;)
+      &#125;,
+      &#123;
+        value: &#39;PENDING&#39;,
+        label: Em.I18n.t(&#39;zh_alert_state.NONE&#39;)
+      &#125;
+    ],
+</code></pre>
+<h4 id="修改en-messages-js-4"><a href="#修改en-messages-js-4" class="headerlink" title="修改en/messages.js"></a>修改en/messages.js</h4><pre><code>    /*zh_alert_state*/
+    &#39;zh_alert_state.OK&#39;:&#39;OK&#39;,
+    &#39;zh_alert_state.WARNING&#39;:&#39;WARNING&#39;,
+    &#39;zh_alert_state.CRITICAL&#39;:&#39;CRITICAL&#39;,
+    &#39;zh_alert_state.UNKNOWN&#39;:&#39;UNKNOWN&#39;,
+    &#39;zh_alert_state.NONE&#39;:&#39;NONE&#39;,
+</code></pre>
+<h4 id="修改zh-messages-js-2"><a href="#修改zh-messages-js-2" class="headerlink" title="修改zh/messages.js"></a>修改zh/messages.js</h4><pre><code>    /*zh_alert_state*/
+    &#39;zh_alert_state.OK&#39;:&#39;正常&#39;,
+    &#39;zh_alert_state.WARNING&#39;:&#39;警告&#39;,
+    &#39;zh_alert_state.CRITICAL&#39;:&#39;严重&#39;,
+    &#39;zh_alert_state.UNKNOWN&#39;:&#39;未知&#39;,
+    &#39;zh_alert_state.NONE&#39;:&#39;无&#39;,
+</code></pre>
+<h3 id="1-7主机警告下拉"><a href="#1-7主机警告下拉" class="headerlink" title="1.7主机警告下拉"></a>1.7主机警告下拉</h3><p><img src="https://shirukai.gitee.io/images/201711201059_566.png"></p>
+<h4 id="修改文件-3"><a href="#修改文件-3" class="headerlink" title="修改文件"></a>修改文件</h4><p>W:\ambari-web\app\views\main\host\host_alerts_view.js</p>
+<p>大约145行</p>
+<pre><code>  stateFilterView: filters.createSelectView(&#123;
+    column: 4,
+    fieldType: &#39;filter-input-width&#39;,
+    content: [
+      &#123;
+        value: &#39;&#39;,
+        label: Em.I18n.t(&#39;common.all&#39;)
+      &#125;,
+        &#123;
+            value: &#39;OK&#39;,
+            label: Em.I18n.t(&#39;zh_alert_state.OK&#39;)
+        &#125;,
+        &#123;
+            value: &#39;WARNING&#39;,
+            label: Em.I18n.t(&#39;zh_alert_state.WARNING&#39;)
+        &#125;,
+        &#123;
+            value: &#39;CRITICAL&#39;,
+            label:Em.I18n.t(&#39;zh_alert_state.CRITICAL&#39;)
+        &#125;,
+        &#123;
+            value: &#39;UNKNOWN&#39;,
+            label: Em.I18n.t(&#39;zh_alert_state.UNKNOWN&#39;)
+        &#125;
+</code></pre>
+<h3 id="1-8主机警告状态"><a href="#1-8主机警告状态" class="headerlink" title="1.8主机警告状态"></a>1.8主机警告状态</h3><p><img src="https://shirukai.gitee.io/images/201711201151_883.png"></p>
+<h4 id="修改文件-4"><a href="#修改文件-4" class="headerlink" title="修改文件"></a>修改文件</h4><p>ambari-web\app\models\alerts\alert_instance.js大约165行</p>
+<pre><code>    shortState: &#123;
+        &#39;CRITICAL&#39;: Em.I18n.t(&#39;zh_count.CRIT&#39;),
+        &#39;WARNING&#39;:  Em.I18n.t(&#39;zh_count.WARN&#39;),
+        &#39;OK&#39;: Em.I18n.t(&#39;zh_count.OK&#39;),
+        &#39;UNKNOWN&#39;:  Em.I18n.t(&#39;zh_count.UNKWN&#39;),
+        &#39;PENDING&#39;:  Em.I18n.t(&#39;zh_count.NONE&#39;)
+    &#125;
+</code></pre>
+<h3 id="1-9恢复主机"><a href="#1-9恢复主机" class="headerlink" title="1.9恢复主机"></a>1.9恢复主机</h3><p><img src="https://shirukai.gitee.io/images/201711201153_417.png"></p>
+<h4 id="en-messages-js"><a href="#en-messages-js" class="headerlink" title="en/messages.js"></a>en/messages.js</h4><pre><code>/*recoverHost*/
+&#39;hosts.host.details.recoverHost&#39;: &#39;Recover Host&#39;,
+</code></pre>
+<h4 id="zh-messages-js"><a href="#zh-messages-js" class="headerlink" title="zh/messages.js"></a>zh/messages.js</h4><pre><code>/*recoverHost*/
+&#39;hosts.host.details.recoverHost&#39;: &#39;恢复主机&#39;,
+</code></pre>
+<h3 id="1-10-警告配置信息"><a href="#1-10-警告配置信息" class="headerlink" title="1.10 警告配置信息"></a>1.10 警告配置信息</h3><p><img src="https://shirukai.gitee.io/images/201711201459_895.png"></p>
+<h4 id="修改文件-5"><a href="#修改文件-5" class="headerlink" title="修改文件"></a>修改文件</h4><p>ambari-web\app\models\alerts\alert_config.js 大约 在531、549、568行，添加内容如下：</p>
+<h5 id="OK"><a href="#OK" class="headerlink" title="OK"></a>OK</h5><p><img src="https://shirukai.gitee.io/images/201711201504_672.png"></p>
+<h5 id="WARNING"><a href="#WARNING" class="headerlink" title="WARNING"></a>WARNING</h5><p><img src="https://shirukai.gitee.io/images/201711201504_75.png"></p>
+<h5 id="CRITICAL"><a href="#CRITICAL" class="headerlink" title="CRITICAL"></a>CRITICAL</h5><p><img src="https://shirukai.gitee.io/images/201711201505_172.png"></p>
+<h4 id="然后修改文件"><a href="#然后修改文件" class="headerlink" title="然后修改文件"></a>然后修改文件</h4><p>ambari-web\app\templates\main\alerts\configs\alert_config_threshold.hbs 大约在20行，将原来的badge换成state</p>
+<p><img src="https://shirukai.gitee.io/images/201711201506_307.png"></p>
+<h4 id="1-11警告配置下拉"><a href="#1-11警告配置下拉" class="headerlink" title="1.11警告配置下拉"></a>1.11警告配置下拉</h4><p><img src="https://shirukai.gitee.io/images/201711201517_789.png"></p>
+<h4 id="修改文件-6"><a href="#修改文件-6" class="headerlink" title="修改文件"></a>修改文件</h4><p>ambari-web\app\views\main\alerts\definition_details_view.js  177行</p>
+<pre><code>    content: [
+      &#123;
+        value: &#39;&#39;,
+        label: Em.I18n.t(&#39;common.all&#39;)
+      &#125;,
+        &#123;
+            value: &#39;OK&#39;,
+            label: Em.I18n.t(&#39;zh_alert_state.OK&#39;)
+        &#125;,
+        &#123;
+            value: &#39;WARNING&#39;,
+            label: Em.I18n.t(&#39;zh_alert_state.WARNING&#39;)
+        &#125;,
+        &#123;
+            value: &#39;CRITICAL&#39;,
+            label:Em.I18n.t(&#39;zh_alert_state.CRITICAL&#39;)
+        &#125;,
+        &#123;
+            value: &#39;UNKNOWN&#39;,
+            label: Em.I18n.t(&#39;zh_alert_state.UNKNOWN&#39;)
+        &#125;,
+        &#123;
+            value: &#39;PENDING&#39;,
+            label: Em.I18n.t(&#39;zh_alert_state.NONE&#39;)
+        &#125;
+    ],
+</code></pre>
+<h4 id="服务警告"><a href="#服务警告" class="headerlink" title="服务警告"></a>服务警告</h4><p>V:\apache-ambari-2.6.0-src\ambari-web\app\templates\main\service\info\summary.hbs</p>
+<p>V:\apache-ambari-2.6.0-src\ambari-web\app\templates\main\service\info\summary\master_components.hbs</p>
+<p><img src="https://shirukai.gitee.io/images/201711271957_207.png"></p>
+<h4 id="进度条隐藏加速"><a href="#进度条隐藏加速" class="headerlink" title="进度条隐藏加速"></a>进度条隐藏加速</h4><p>X:\apache-ambari-2.5.1-src\ambari-web\app\templates\main.hbs</p>
+<p>注释25-28行</p>
+<p><img src="https://shirukai.gitee.io/images/201712041429_305.png"></p>
+<p>clusterDataLoadedPercent</p>
+<p>X:\apache-ambari-2.5.1-src\ambari-web\app\controllers\global\cluster_controller.js</p>
+<p>修改方法</p>
+<p><img src="https://shirukai.gitee.io/images/201712041431_233.png"></p>
+<pre><code>      if (item === &#39;stackComponents&#39;) &#123;
+          this.set(&#39;isLoaded&#39;, false);
+          //this.set(&#39;clusterDataLoadedPercent&#39;, &#39;width:50%&#39;);
+      &#125; else &#123;
+          this.set(&#39;isLoaded&#39;, true);
+          //this.set(&#39;clusterDataLoadedPercent&#39;, &#39;width:100%&#39;);
+      &#125;
+</code></pre>
+<h3 id="后台运行弹窗-乱码"><a href="#后台运行弹窗-乱码" class="headerlink" title="后台运行弹窗 乱码"></a>后台运行弹窗 乱码</h3><p><img src="https://shirukai.gitee.io/images/201712110853_135.png" alt="img"></p>
+<p>后台运行弹窗乱码的原因是在修改多集群的时候，将存入数据库的值进行了url编码encodeUrl，所以会生成乱码，我们需要在取出数据库值的时候，将其解码。</p>
+<h4 id="编码的地方"><a href="#编码的地方" class="headerlink" title="编码的地方"></a>编码的地方</h4><p>X:\apache-ambari-2.5.1-src\ambari-web\app\controllers\main\host\details.js</p>
+<pre><code>sendComponentCommand: function (component, context, state) &#123;
+    var data = &#123;
+        hostName: this.get(&#39;content.hostName&#39;),
+        context: encodeURI(context),
+        component: component,
+        HostRoles: &#123;
+            state: state
+        &#125;
+    &#125;;
+    if (Array.isArray(component)) &#123;
+        data.query = &quot;HostRoles/component_name.in(&quot; + component.mapProperty(&#39;componentName&#39;).join(&#39;,&#39;) + &quot;)&quot;;
+    &#125; else &#123;
+        data.componentName = component.get(&#39;componentName&#39;);
+        data.serviceName = component.get(&#39;service.serviceName&#39;);
+    &#125;
+    App.ajax.send(&#123;
+        name: (Array.isArray(component)) ? &#39;common.host.host_components.update&#39; : &#39;common.host.host_component.update&#39;,
+        sender: this,
+        data: data,
+        success: &#39;sendComponentCommandSuccessCallback&#39;,
+        error: &#39;ajaxErrorCallback&#39;,
+        showLoadingPopup: true
+    &#125;);
+&#125;,
+</code></pre>
+<h4 id="解码的地方："><a href="#解码的地方：" class="headerlink" title="解码的地方："></a>解码的地方：</h4><p>X:\apache-ambari-2.5.1-src\ambari-web\app\controllers\global\background_operations_controller.js</p>
+<pre><code>parseRequestContext: function (requestContext) &#123;
+  var parsedRequestContext;
+  var service;
+  var contextCommand;
+  if (requestContext) &#123;
+    if (requestContext.indexOf(App.BackgroundOperationsController.CommandContexts.PREFIX) !== -1) &#123;
+      var contextSplits = requestContext.split(&#39;.&#39;);
+      contextCommand = contextSplits[1];
+      service = contextSplits[2];
+      switch(contextCommand)&#123;
+      case &quot;STOP&quot;:
+      case &quot;START&quot;:
+        if (service === &#39;ALL_SERVICES&#39;) &#123;
+          parsedRequestContext = Em.I18n.t(&quot;requestInfo.&quot; + contextCommand.toLowerCase()).format(Em.I18n.t(&#39;common.allServices&#39;));
+        &#125; else &#123;
+          parsedRequestContext = Em.I18n.t(&quot;requestInfo.&quot; + contextCommand.toLowerCase()).format(App.format.role(service, true));
+        &#125;
+        break;
+      case &quot;ROLLING-RESTART&quot;:
+        parsedRequestContext = Em.I18n.t(&quot;rollingrestart.rest.context&quot;).format(App.format.role(service, true), contextSplits[3], contextSplits[4]);
+        break;
+      &#125;
+    &#125; else &#123;
+      parsedRequestContext = decodeURI(requestContext);
+    &#125;
+  &#125; else &#123;
+    parsedRequestContext = Em.I18n.t(&#39;requestInfo.unspecified&#39;);
+  &#125;
+  return &#123;
+    requestContext: parsedRequestContext,
+    dependentService: service,
+    contextCommand: contextCommand
+  &#125;
+&#125;,
+</code></pre>
+<h3 id="加载安装集群的位置"><a href="#加载安装集群的位置" class="headerlink" title="加载安装集群的位置"></a>加载安装集群的位置</h3><p>X:\apache-ambari-2.5.1-src\ambari-web\app\router.js</p>
+<pre><code>/**
+ * Is true, if cluster.provisioning_state is equal to &#39;INSTALLED&#39;
+ * @type &#123;Boolean&#125;
+ */
+clusterInstallCompleted: false,
+</code></pre>
+<h3 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h3><p><img src="https://shirukai.gitee.io/images/201711171644_221.png"></p>
+<h3 id="添加组件"><a href="#添加组件" class="headerlink" title="添加组件"></a>添加组件</h3><p><img src="https://shirukai.gitee.io/images/201711280857_132.png"></p>
+<p>参考：<a target="_blank" rel="noopener" href="https://issues.apache.org/jira/secure/attachment/12846157/AMBARI-19376-web.patch">https://issues.apache.org/jira/secure/attachment/12846157/AMBARI-19376-web.patch</a></p>
+<h2 id="2-ambari-admin"><a href="#2-ambari-admin" class="headerlink" title="2. ambari-admin"></a>2. ambari-admin</h2><p>替换/opt/apache-ambari-2.6.0-src/ambari-admin/src/main/resources/ui/admin-web/app/scripts目录下的</p>
+<p>i18n.config.js文件即可</p>
+<h3 id="2-1汉化角色部分"><a href="#2-1汉化角色部分" class="headerlink" title="2.1汉化角色部分"></a>2.1汉化角色部分</h3><p><img src="https://shirukai.gitee.io/images/201711191709_882.png"></p>
+<h4 id="2-1-1修改ClustersManageAccessCtrl-js"><a href="#2-1-1修改ClustersManageAccessCtrl-js" class="headerlink" title="2.1.1修改ClustersManageAccessCtrl.js"></a>2.1.1修改ClustersManageAccessCtrl.js</h4><p>在apache-ambari-2.6.0-src\ambari-admin\src\main\resources\ui\admin-web\app\scripts\controllers\clusters\ClustersManageAccessCtrl.js文件大约40行位置新增如下代码</p>
+<pre><code>for (var key in orderedRoles) &#123;
+    var data = $scope.permissions[orderedRoles[key]];
+    data.PermissionInfo.permission_label = $t(&#39;zh_orderedRoles.&#39;+orderedRoles[key]);
+    data.PermissionInfo.permission_name = $t(&#39;zh_orderedRoles.&#39;+orderedRoles[key]);
+    pms.push(data);
+&#125;
+</code></pre>
+<p><img src="https://shirukai.gitee.io/images/201711191712_215.png"></p>
+<h4 id="2-1-2修改i18n-config-js文件"><a href="#2-1-2修改i18n-config-js文件" class="headerlink" title="2.1.2修改i18n.config.js文件"></a>2.1.2修改i18n.config.js文件</h4><h5 id="英文部分"><a href="#英文部分" class="headerlink" title="英文部分"></a>英文部分</h5><pre><code>&#39;zh_orderedRoles&#39;: &#123;
+    &#39;CLUSTER.ADMINISTRATOR&#39;: &#39;CLUSTER ADMINISTRATOR&#39;,
+    &#39;CLUSTER.OPERATOR&#39;: &#39;CLUSTER OPERATOR&#39;,
+    &#39;SERVICE.ADMINISTRATOR&#39;: &#39;SERVICE.ADMINISTRATOR&#39;,
+    &#39;SERVICE.OPERATOR&#39;: &#39;SERVICE OPERATOR&#39;,
+    &#39;CLUSTER.USER&#39;: &#39;CLUSTER USER&#39;,
+    &#39;AMBARI.ADMINISTRATOR&#39;: &#39;AMBARI ADMINISTRATOR &#39;
+&#125;,
+</code></pre>
+<h5 id="汉语部分"><a href="#汉语部分" class="headerlink" title="汉语部分"></a>汉语部分</h5><pre><code>&#39;zh_orderedRoles&#39;: &#123;
+    &#39;CLUSTER.ADMINISTRATOR&#39;: &#39;集群管理员&#39;,
+    &#39;CLUSTER.OPERATOR&#39;: &#39;集群操作者&#39;,
+    &#39;SERVICE.ADMINISTRATOR&#39;: &#39;服务管理员&#39;,
+    &#39;SERVICE.OPERATOR&#39;: &#39;服务操作者&#39;,
+    &#39;CLUSTER.USER&#39;: &#39;集群用户&#39;,
+    &#39;AMBARI.ADMINISTRATOR&#39;: &#39;Ambari管理员&#39;
+</code></pre>
+<h3 id="2-2汉化角色弹框"><a href="#2-2汉化角色弹框" class="headerlink" title="2.2汉化角色弹框"></a>2.2汉化角色弹框</h3><p><img src="https://shirukai.gitee.io/images/201711191716_636.png"></p>
+<h4 id="2-2-1修改RoleDetailsModal-js文件"><a href="#2-2-1修改RoleDetailsModal-js文件" class="headerlink" title="2.2.1修改RoleDetailsModal.js文件"></a>2.2.1修改RoleDetailsModal.js文件</h4><p>修改apache-ambari-2.6.0-src\ambari-admin\src\main\resources\ui\admin-web\app\scripts\services\RoleDetailsModal.js文件</p>
+<p>首先引入多语言处理，添加下图红框里的代码</p>
+<p><img src="https://shirukai.gitee.io/images/201711191720_687.png"></p>
+<p>然后对两处数据进行重新渲染</p>
+<p>第一处是authHash，第二处是roles。大约在76行左右添加如下代码：</p>
+<pre><code>/*authHash数据重新渲染*/
+var zh_authHash = $scope.authHash;
+//var aa=[];
+angular.forEach(zh_authHash, function (value,key) &#123;
+    angular.forEach(value,function (value,key) &#123;
+        if(key !== &quot;order&quot;)&#123;
+            //aa.push(&#39;\&#39;&#39;+key+&#39;\&#39;&#39;+&#39;:&#39;+&#39;\&#39;&#39;+value.name+&#39;\&#39;&#39;)
+            value.name = $t(&#39;zh_authHash.&#39;+key)
+        &#125;
+    &#125;)
+&#125;);
+$scope.authHash = zh_authHash;
+
+/*roles数据重新渲染*/
+var zh_roles = $scope.roles;
+angular.forEach(zh_roles, function (value, key) &#123;
+    value.permission_label= $t(&#39;zh_orderedRoles.&#39; + value.permission_name);
+&#125;);
+$scope.roles = zh_roles;
+</code></pre>
+<p>如下图所示:</p>
+<p><img src="https://shirukai.gitee.io/images/201711191724_489.png"></p>
+<h4 id="修改i18n-config-js文件"><a href="#修改i18n-config-js文件" class="headerlink" title="修改i18n.config.js文件"></a>修改i18n.config.js文件</h4><h5 id="英语部分"><a href="#英语部分" class="headerlink" title="英语部分"></a>英语部分</h5><pre><code>&#39;zh_authHash&#39;: &#123;
+    &#39;AMBARI.ADD_DELETE_CLUSTERS&#39;: &#39;Create new clusters&#39;,
+    &#39;AMBARI.ASSIGN_ROLES&#39;: &#39;Assign roles&#39;,
+    &#39;AMBARI.EDIT_STACK_REPOS&#39;: &#39;Edit stack repository URLs&#39;,
+    &#39;AMBARI.MANAGE_GROUPS&#39;: &#39;Manage groups&#39;,
+    &#39;AMBARI.MANAGE_SETTINGS&#39;: &#39;Manage administrative settings&#39;,
+    &#39;AMBARI.MANAGE_STACK_VERSIONS&#39;: &#39;Manage stack versions&#39;,
+    &#39;AMBARI.MANAGE_USERS&#39;: &#39;Manage users&#39;,
+    &#39;AMBARI.MANAGE_VIEWS&#39;: &#39;Manage Ambari Views&#39;,
+    &#39;AMBARI.RENAME_CLUSTER&#39;: &#39;Rename clusters&#39;,
+    &#39;AMBARI.RUN_CUSTOM_COMMAND&#39;: &#39;Perform custom administrative actions&#39;,
+    &#39;CLUSTER.MANAGE_ALERTS&#39;: &#39;Manage cluster-level alerts&#39;,
+    &#39;CLUSTER.MANAGE_ALERT_NOTIFICATIONS&#39;: &#39;Manage alert notifications configuration&#39;,
+    &#39;CLUSTER.MANAGE_AUTO_START&#39;: &#39;Manage service auto-start configuration&#39;,
+    &#39;CLUSTER.MANAGE_CONFIG_GROUPS&#39;: &#39;Manage cluster config groups&#39;,
+    &#39;CLUSTER.MANAGE_CREDENTIALS&#39;: &#39;Manage external credentials&#39;,
+    &#39;CLUSTER.MANAGE_USER_PERSISTED_DATA&#39;: &#39;Manage cluster-level user persisted data&#39;,
+    &#39;CLUSTER.MODIFY_CONFIGS&#39;: &#39;Modify cluster configurations&#39;,
+    &#39;CLUSTER.RUN_CUSTOM_COMMAND&#39;: &#39;Perform custom cluster-level actions&#39;,
+    &#39;CLUSTER.TOGGLE_ALERTS&#39;: &#39;Enable/disable cluster-level alerts&#39;,
+    &#39;CLUSTER.TOGGLE_KERBEROS&#39;: &#39;Enable/disable Kerberos&#39;,
+    &#39;CLUSTER.UPGRADE_DOWNGRADE_STACK&#39;: &#39;Upgrade/downgrade stack&#39;,
+    &#39;CLUSTER.VIEW_ALERTS&#39;: &#39;View cluster-level alerts&#39;,
+    &#39;CLUSTER.VIEW_CONFIGS&#39;: &#39;View configuration&#39;,
+    &#39;CLUSTER.VIEW_METRICS&#39;: &#39;View metrics&#39;,
+    &#39;CLUSTER.VIEW_STACK_DETAILS&#39;: &#39;View stack version details&#39;,
+    &#39;CLUSTER.VIEW_STATUS_INFO&#39;: &#39;View status information&#39;,
+    &#39;HOST.ADD_DELETE_COMPONENTS&#39;: &#39;Install components&#39;,
+    &#39;HOST.ADD_DELETE_HOSTS&#39;: &#39;Add/Delete hosts&#39;,
+    &#39;HOST.TOGGLE_MAINTENANCE&#39;: &#39;Turn on/off maintenance mode&#39;,
+    &#39;HOST.VIEW_CONFIGS&#39;: &#39;View configuration&#39;,
+    &#39;HOST.VIEW_METRICS&#39;: &#39;View metrics&#39;,
+    &#39;HOST.VIEW_STATUS_INFO&#39;: &#39;View status information&#39;,
+    &#39;SERVICE.ADD_DELETE_SERVICES&#39;: &#39;Add/delete services&#39;,
+    &#39;SERVICE.COMPARE_CONFIGS&#39;: &#39;Compare configurations&#39;,
+    &#39;SERVICE.DECOMMISSION_RECOMMISSION&#39;: &#39;Decommission/recommission&#39;,
+    &#39;SERVICE.ENABLE_HA&#39;: &#39;Enable HA&#39;,
+    &#39;SERVICE.MANAGE_ALERTS&#39;: &#39;Manage service-level alerts&#39;,
+    &#39;SERVICE.MANAGE_AUTO_START&#39;: &#39;Manage service auto-start&#39;,
+    &#39;SERVICE.MANAGE_CONFIG_GROUPS&#39;: &#39;Manage configuration groups&#39;,
+    &#39;SERVICE.MODIFY_CONFIGS&#39;: &#39;Modify configurations&#39;,
+    &#39;SERVICE.MOVE&#39;: &#39;Move to another host&#39;,
+    &#39;SERVICE.RUN_CUSTOM_COMMAND&#39;: &#39;Perform service-specific tasks&#39;,
+    &#39;SERVICE.RUN_SERVICE_CHECK&#39;: &#39;Run service checks&#39;,
+    &#39;SERVICE.SET_SERVICE_USERS_GROUPS&#39;: &#39;Set service users and groups&#39;,
+    &#39;SERVICE.START_STOP&#39;: &#39;Start/Stop/Restart Service&#39;,
+    &#39;SERVICE.TOGGLE_ALERTS&#39;: &#39;Enable/disable service-level alerts&#39;,
+    &#39;SERVICE.TOGGLE_MAINTENANCE&#39;: &#39;Turn on/off maintenance mode&#39;,
+    &#39;SERVICE.VIEW_ALERTS&#39;: &#39;View service-level alerts&#39;,
+    &#39;SERVICE.VIEW_CONFIGS&#39;: &#39;View configurations&#39;,
+    &#39;SERVICE.VIEW_METRICS&#39;: &#39;View metrics&#39;,
+    &#39;SERVICE.VIEW_OPERATIONAL_LOGS&#39;: &#39;View service operational logs&#39;,
+    &#39;SERVICE.VIEW_STATUS_INFO&#39;: &#39;View status information&#39;
+&#125;,
+</code></pre>
+<h5 id="汉语部分-1"><a href="#汉语部分-1" class="headerlink" title="汉语部分"></a>汉语部分</h5><pre><code>&#39;zh_authHash&#39;: &#123;
+    &#39;AMBARI.ADD_DELETE_CLUSTERS&#39;: &#39;创建新集群&#39;,
+    &#39;AMBARI.ASSIGN_ROLES&#39;: &#39;分配角色&#39;,
+    &#39;AMBARI.EDIT_STACK_REPOS&#39;: &#39;编辑软件栈存储库的URL&#39;,
+    &#39;AMBARI.MANAGE_GROUPS&#39;: &#39;管理组&#39;,
+    &#39;AMBARI.MANAGE_SETTINGS&#39;: &#39;管理行政设置&#39;,
+    &#39;AMBARI.MANAGE_STACK_VERSIONS&#39;: &#39;管理软件栈版本&#39;,
+    &#39;AMBARI.MANAGE_USERS&#39;: &#39;用户管理&#39;,
+    &#39;AMBARI.MANAGE_VIEWS&#39;: &#39;管理 Ambari 视图&#39;,
+    &#39;AMBARI.RENAME_CLUSTER&#39;: &#39;重命名集群&#39;,
+    &#39;AMBARI.RUN_CUSTOM_COMMAND&#39;: &#39;执行自定义管理操作&#39;,
+    &#39;CLUSTER.MANAGE_ALERTS&#39;: &#39;管理群集级别警报&#39;,
+    &#39;CLUSTER.MANAGE_ALERT_NOTIFICATIONS&#39;: &#39;管理配置警报通知&#39;,
+    &#39;CLUSTER.MANAGE_AUTO_START&#39;: &#39;管理服务自动启动配置&#39;,
+    &#39;CLUSTER.MANAGE_CONFIG_GROUPS&#39;: &#39;管理群集配置组&#39;,
+    &#39;CLUSTER.MANAGE_CREDENTIALS&#39;: &#39;管理外部凭证&#39;,
+    &#39;CLUSTER.MANAGE_USER_PERSISTED_DATA&#39;: &#39;管理集群级用户持久数据&#39;,
+    &#39;CLUSTER.MODIFY_CONFIGS&#39;: &#39;修改群集配置&#39;,
+    &#39;CLUSTER.RUN_CUSTOM_COMMAND&#39;: &#39;执行自定义集群级操作&#39;,
+    &#39;CLUSTER.TOGGLE_ALERTS&#39;: &#39;启用/禁用群集级警报&#39;,
+    &#39;CLUSTER.TOGGLE_KERBEROS&#39;: &#39;启用/禁用 Kerberos&#39;,
+    &#39;CLUSTER.UPGRADE_DOWNGRADE_STACK&#39;: &#39;升级/降级软件栈&#39;,
+    &#39;CLUSTER.VIEW_ALERTS&#39;: &#39;查看群集级别警报&#39;,
+    &#39;CLUSTER.VIEW_CONFIGS&#39;: &#39;查看配置&#39;,
+    &#39;CLUSTER.VIEW_METRICS&#39;: &#39;查看指标&#39;,
+    &#39;CLUSTER.VIEW_STACK_DETAILS&#39;: &#39;查看软件栈版本详细信息&#39;,
+    &#39;CLUSTER.VIEW_STATUS_INFO&#39;: &#39;查看视图信息&#39;,
+    &#39;HOST.ADD_DELETE_COMPONENTS&#39;: &#39;安装组件&#39;,
+    &#39;HOST.ADD_DELETE_HOSTS&#39;: &#39;添加/删除主机&#39;,
+    &#39;HOST.TOGGLE_MAINTENANCE&#39;: &#39;打开/关闭维修模式&#39;,
+    &#39;HOST.VIEW_CONFIGS&#39;: &#39;查看配置&#39;,
+    &#39;HOST.VIEW_METRICS&#39;: &#39;查看指标&#39;,
+    &#39;HOST.VIEW_STATUS_INFO&#39;: &#39;查看状态信息&#39;,
+    &#39;SERVICE.ADD_DELETE_SERVICES&#39;: &#39;添加/删除服务&#39;,
+    &#39;SERVICE.COMPARE_CONFIGS&#39;: &#39;比较配置&#39;,
+    &#39;SERVICE.DECOMMISSION_RECOMMISSION&#39;: &#39;Decommission/recommission&#39;,
+    &#39;SERVICE.ENABLE_HA&#39;: &#39;使用 HA&#39;,
+    &#39;SERVICE.MANAGE_ALERTS&#39;: &#39;管理服务级别警报&#39;,
+    &#39;SERVICE.MANAGE_AUTO_START&#39;: &#39;管理服务自动启动&#39;,
+    &#39;SERVICE.MANAGE_CONFIG_GROUPS&#39;: &#39;管理配置组&#39;,
+    &#39;SERVICE.MODIFY_CONFIGS&#39;: &#39;修改配置&#39;,
+    &#39;SERVICE.MOVE&#39;: &#39;移到另一个主机&#39;,
+    &#39;SERVICE.RUN_CUSTOM_COMMAND&#39;: &#39;执行 service-specific 任务&#39;,
+    &#39;SERVICE.RUN_SERVICE_CHECK&#39;: &#39;运行服务检查&#39;,
+    &#39;SERVICE.SET_SERVICE_USERS_GROUPS&#39;: &#39;设置服务用户和组&#39;,
+    &#39;SERVICE.START_STOP&#39;: &#39;启动/停止/重新启动服务&#39;,
+    &#39;SERVICE.TOGGLE_ALERTS&#39;: &#39;启用/禁用服务级别警报&#39;,
+    &#39;SERVICE.TOGGLE_MAINTENANCE&#39;: &#39;打开/关闭维修模式&#39;,
+    &#39;SERVICE.VIEW_ALERTS&#39;: &#39;查看服务级别警报&#39;,
+    &#39;SERVICE.VIEW_CONFIGS&#39;: &#39;查看配置&#39;,
+    &#39;SERVICE.VIEW_METRICS&#39;: &#39;查看指标&#39;,
+    &#39;SERVICE.VIEW_OPERATIONAL_LOGS&#39;: &#39;查看服务操作日志&#39;,
+    &#39;SERVICE.VIEW_STATUS_INFO&#39;: &#39;查看状态信息&#39;
+&#125;,
+</code></pre>
+<p>注意：angular的foreach循环，Function里面第一个参数是value,第二个参数为key</p>
+<h3 id="效果-1"><a href="#效果-1" class="headerlink" title="效果"></a>效果</h3><p><img src="https://shirukai.gitee.io/images/201711171642_955.png"></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-ambari-web"><span class="toc-number">1.</span> <span class="toc-text">1.ambari-web</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1%E7%8A%B6%E6%80%81%E4%BF%AE%E6%94%B9"><span class="toc-number">1.1.</span> <span class="toc-text">1.1状态修改</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2%E7%99%BB%E5%BD%95%E9%94%99%E8%AF%AF%E4%BF%A1%E6%81%AF%E6%B1%89%E5%8C%96"><span class="toc-number">1.2.</span> <span class="toc-text">1.2登录错误信息汉化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3%E4%B8%8B%E8%BD%BD%E6%89%80%E6%9C%89%E5%AE%A2%E6%88%B7%E7%AB%AF%E9%85%8D%E7%BD%AE"><span class="toc-number">1.3.</span> <span class="toc-text">1.3下载所有客户端配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-4%E8%AD%A6%E5%91%8A%E7%8A%B6%E6%80%81"><span class="toc-number">1.4.</span> <span class="toc-text">1.4警告状态</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-5-%E5%AF%BC%E8%88%AA%E8%AD%A6%E5%91%8A"><span class="toc-number">1.5.</span> <span class="toc-text">1.5 导航警告</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-6%E8%AD%A6%E5%91%8A%E7%8A%B6%E6%80%81%E4%B8%8B%E6%8B%89"><span class="toc-number">1.6.</span> <span class="toc-text">1.6警告状态下拉</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-7%E4%B8%BB%E6%9C%BA%E8%AD%A6%E5%91%8A%E4%B8%8B%E6%8B%89"><span class="toc-number">1.7.</span> <span class="toc-text">1.7主机警告下拉</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-8%E4%B8%BB%E6%9C%BA%E8%AD%A6%E5%91%8A%E7%8A%B6%E6%80%81"><span class="toc-number">1.8.</span> <span class="toc-text">1.8主机警告状态</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-9%E6%81%A2%E5%A4%8D%E4%B8%BB%E6%9C%BA"><span class="toc-number">1.9.</span> <span class="toc-text">1.9恢复主机</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-10-%E8%AD%A6%E5%91%8A%E9%85%8D%E7%BD%AE%E4%BF%A1%E6%81%AF"><span class="toc-number">1.10.</span> <span class="toc-text">1.10 警告配置信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%8E%E5%8F%B0%E8%BF%90%E8%A1%8C%E5%BC%B9%E7%AA%97-%E4%B9%B1%E7%A0%81"><span class="toc-number">1.11.</span> <span class="toc-text">后台运行弹窗 乱码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A0%E8%BD%BD%E5%AE%89%E8%A3%85%E9%9B%86%E7%BE%A4%E7%9A%84%E4%BD%8D%E7%BD%AE"><span class="toc-number">1.12.</span> <span class="toc-text">加载安装集群的位置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%88%E6%9E%9C"><span class="toc-number">1.13.</span> <span class="toc-text">效果</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E7%BB%84%E4%BB%B6"><span class="toc-number">1.14.</span> <span class="toc-text">添加组件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-ambari-admin"><span class="toc-number">2.</span> <span class="toc-text">2. ambari-admin</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1%E6%B1%89%E5%8C%96%E8%A7%92%E8%89%B2%E9%83%A8%E5%88%86"><span class="toc-number">2.1.</span> <span class="toc-text">2.1汉化角色部分</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2%E6%B1%89%E5%8C%96%E8%A7%92%E8%89%B2%E5%BC%B9%E6%A1%86"><span class="toc-number">2.2.</span> <span class="toc-text">2.2汉化角色弹框</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%88%E6%9E%9C-1"><span class="toc-number">2.3.</span> <span class="toc-text">效果</span></a></li></ol></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

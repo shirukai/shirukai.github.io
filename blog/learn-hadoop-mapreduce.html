@@ -1,0 +1,475 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>学习Hadoop之MapReduce - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="MapReduce最简单的例子
+如下图所示，假如我们要计算一份海报的数据，那么我们应该怎么快速计算出结果呢？
+
+​    首先，我们要知道的是，我们对于一份非常大的文件上传到我们的HDFS分布式系统,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">学习Hadoop之MapReduce</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/2.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/Hadoop"><b>「
+                    </b>HADOOP<b> 」</b></a>
+                
+                August 19, 2018
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/learn-hadoop-mapreduce.html" title="学习Hadoop之MapReduce" class="">学习Hadoop之MapReduce</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    4.5k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    4 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Hadoop/" rel="tag">Hadoop</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <h2 id="MapReduce最简单的例子"><a href="#MapReduce最简单的例子" class="headerlink" title="MapReduce最简单的例子"></a>MapReduce最简单的例子</h2><blockquote>
+<p>如下图所示，假如我们要计算一份海报的数据，那么我们应该怎么快速计算出结果呢？</p>
+</blockquote>
+<p>​    首先，我们要知道的是，我们对于一份非常大的文件上传到我们的HDFS分布式系统上时，它已经不是一个文件了，而是被物理分割成了很多份，至于被分成多少块那就要看文件的大小了，假如文件的大小是1g，HDFS默认的Block Size（区块）大小是128M，那么1g的文件就被分成了8个区块，每个区块对应一个Mapper，8个区块对应着8个Mapper，每个Mapper执行完自己任务之后把结果传到Reducer ，等Mapper执行完毕之后Reducer把八个子结果综合起来就是我们要的最后结果。</p>
+<p>​    我们以下面这个简单的例子来说，假如我们要计算1+5+7+3+4+9+3+5+6的值，我们为了快速计算，先把1+5+7、3+4+9、3+5+6 分成三个区块，这三个区块分别用三台电脑来计算，每台电脑都相当于一个Map，当三台电脑各自计算完自己分到的数字之和后传到Reducer，Reducer再把三个Map计算出来的中间值13、16、14相加，这样就可以得到最终结果43，这就是简单的MapRdeuce原理。</p>
+<p><img src="http://img.blog.csdn.net/20160916095459034?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="http://img.blog.csdn.net/20160916095459034?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center"></p>
+<h2 id="MapReduce概述"><a href="#MapReduce概述" class="headerlink" title="MapReduce概述"></a>MapReduce概述</h2><ul>
+<li>Mapreduce 作业是一种大规模数据集的并行计算的编程模型，我们可以将HDFS中存放的海量数据，通过MapReduce作业进行计算，得到目标数据。</li>
+<li>MR由两个阶段组成：Map和Reduce，用户只需要实现map()和reduce() 两个函数，即可实现分布式计算，非常简单。</li>
+<li>这两个函数的形参是key、value对，表示函数的输入信息。</li>
+</ul>
+<h2 id="MapReduce架构"><a href="#MapReduce架构" class="headerlink" title="MapReduce架构"></a>MapReduce架构</h2><blockquote>
+<p>在Hadoop2.0中MapReduce是运行在Yarn之上的，Yarn的老大是ResourceManager，小弟是NodeManager，ResourceManager用来管理资源的分配调度，NodeManager负责做具体的事情，那么对于分布式处理来说，框架的原理是什么呢？</p>
+</blockquote>
+<h3 id="第1步"><a href="#第1步" class="headerlink" title="第1步"></a>第1步</h3><p>Client端会把可运行的Jar包先上传到HDFS分布式系统，那么大家有可能会问既然ResourceManager是资源管理者，那么为什么不把资源直接上传到ResourceManager上呢？这是因为每一个可运行的Jar包都可能包含很多依赖的内容，资源所占的大小可能很大，当成千上万个运行资源都上传到ResourceManager时势必会导致ResourceManager崩溃，而我们的HDFS分布式系统则刚好就是用来处理大数据的，它可以处理海量数据，当然也就可以存储运行所需要的资源文件了。因此我们把资源都上传到HDFS分布式系统上。</p>
+<h3 id="第2步"><a href="#第2步" class="headerlink" title="第2步"></a>第2步</h3><p>Client把在HDFS上的存储信息列表发送给ResourceManager，存储信息包括文件的大小，文件在HDFS系统上存放的路径，该文件被物理分割成了几块，每个块分别放在了什么位置等信息。</p>
+<h3 id="第3步"><a href="#第3步" class="headerlink" title="第3步"></a>第3步</h3><p>ResourceManager和NodeManager之间是通过心跳机制来保持联系的，就是NodeManager每隔一段时间就要向ResourceManager报告一下自己还活着的信息，如果ResourceManager长期得不到NodeManager的信息，那么就认为该NodeManager已经挂掉了，需要再启动一台设备做为NodeManager。那么我们思考一下，我们是让ResourceManager把主动把任务下发给各个NodeManager好呢还是NodeManager主动向ResourceManager领任务好呢？我想大家肯定很明确的就会做出答复：那就是NodeManager主动向ResourceManager领取任务的方式比较好，因为这样可以大大减轻ResourceManager做为管理者的压力。</p>
+<h3 id="第4步"><a href="#第4步" class="headerlink" title="第4步"></a>第4步</h3><p>NodeManager向ResourceManager领取到任务后便通过HTTP协议从HDFS系统上下载运行所需要的资源，NodeManager当中一个Block块对应着一个Map，每个Map处理一个块的内容，当所有Map都处理完之后再通过Reducer进行合并。</p>
+<h3 id="第5步"><a href="#第5步" class="headerlink" title="第5步"></a>第5步</h3><p>NodeManager把处理好的内容再上传给HDFS分布式系统，从而完成了整个流程。</p>
+<p><img src="http://img.blog.csdn.net/20160917083936556?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="http://img.blog.csdn.net/20160917083936556?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center"></p>
+<p><strong>上面我们说了MapReduce的架构，接下来我们具体来看一下MapReduce的原理，也就是NodeManager当中具体发生了什么，如下图所示。我们看页面左下角，我们发现一个file文件有可能被物理切分成block1、block2…blockN个块，一个块又被切分成了两个切片，每个切片对应着一个MapperTask，每个Mapper把处理后的结果（Map）传给shuffle处理，shuffle处理完之后再交给Reducer进行处理，Reducer处理完之后把处理结果写到结果文件当中，每个Reducer对应一个结果文件。</strong></p>
+<p><img src="http://img.blog.csdn.net/20160916184801674?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="http://img.blog.csdn.net/20160916184801674?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center"></p>
+<h2 id="MapReduce的四个阶段"><a href="#MapReduce的四个阶段" class="headerlink" title="MapReduce的四个阶段"></a>MapReduce的四个阶段</h2><ul>
+<li>Split阶段 分片输入阶段</li>
+<li>Map阶段（需要编码）</li>
+<li>Shuffle阶段</li>
+<li>Reduce阶段（需要编码）</li>
+</ul>
+<h2 id="从分片输入到map"><a href="#从分片输入到map" class="headerlink" title="从分片输入到map"></a>从分片输入到map</h2><p>block块的大小：</p>
+<p>Hadoop1.x默认大小是64MB</p>
+<p>Hadoop2.x默认大小是128MB</p>
+<p>可以在hdfs-site.xml设置参数：dfs.block.size</p>
+<h3 id="分片输入阶段-split"><a href="#分片输入阶段-split" class="headerlink" title="分片输入阶段 split"></a>分片输入阶段 split</h3><p>摘录参考文章：<a target="_blank" rel="noopener" href="http://blog.csdn.net/u012453843/article/details/52554125">http://blog.csdn.net/u012453843/article/details/52554125</a></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#MapReduce%E6%9C%80%E7%AE%80%E5%8D%95%E7%9A%84%E4%BE%8B%E5%AD%90"><span class="toc-number">1.</span> <span class="toc-text">MapReduce最简单的例子</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MapReduce%E6%A6%82%E8%BF%B0"><span class="toc-number">2.</span> <span class="toc-text">MapReduce概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MapReduce%E6%9E%B6%E6%9E%84"><span class="toc-number">3.</span> <span class="toc-text">MapReduce架构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC1%E6%AD%A5"><span class="toc-number">3.1.</span> <span class="toc-text">第1步</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC2%E6%AD%A5"><span class="toc-number">3.2.</span> <span class="toc-text">第2步</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC3%E6%AD%A5"><span class="toc-number">3.3.</span> <span class="toc-text">第3步</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC4%E6%AD%A5"><span class="toc-number">3.4.</span> <span class="toc-text">第4步</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC5%E6%AD%A5"><span class="toc-number">3.5.</span> <span class="toc-text">第5步</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MapReduce%E7%9A%84%E5%9B%9B%E4%B8%AA%E9%98%B6%E6%AE%B5"><span class="toc-number">4.</span> <span class="toc-text">MapReduce的四个阶段</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%8E%E5%88%86%E7%89%87%E8%BE%93%E5%85%A5%E5%88%B0map"><span class="toc-number">5.</span> <span class="toc-text">从分片输入到map</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E7%89%87%E8%BE%93%E5%85%A5%E9%98%B6%E6%AE%B5-split"><span class="toc-number">5.1.</span> <span class="toc-text">分片输入阶段 split</span></a></li></ol></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

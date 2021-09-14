@@ -1,0 +1,904 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Hadoop分布式缓存 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="
+背景：在执行MapReduce时，可能Mapper之间需要共享一些信息，如果信息量不大，可以将其从HDFS加载到内存中，这就是Hadoop分布式缓存机制
+
+矩阵相乘的例子
+需求及思路
+需求：给出两,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">Hadoop分布式缓存</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/1.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/Hadoop"><b>「
+                    </b>HADOOP<b> 」</b></a>
+                
+                August 20, 2018
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/hadoop-distributed-cache.html" title="Hadoop分布式缓存" class="">Hadoop分布式缓存</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    16k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    15 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Hadoop/" rel="tag">Hadoop</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <blockquote>
+<p>背景：在执行MapReduce时，可能Mapper之间需要共享一些信息，如果信息量不大，可以将其从HDFS加载到内存中，这就是Hadoop分布式缓存机制</p>
+</blockquote>
+<h2 id="矩阵相乘的例子"><a href="#矩阵相乘的例子" class="headerlink" title="矩阵相乘的例子"></a>矩阵相乘的例子</h2><p><img src="https://shirukai.gitee.io/images/15101022384539Y_J62__RMA_55~DYK6T4HI.png" alt="https://shirukai.gitee.io/images/15101022384539Y_J62__RMA_55~DYK6T4HI.png"></p>
+<h3 id="需求及思路"><a href="#需求及思路" class="headerlink" title="需求及思路"></a>需求及思路</h3><blockquote>
+<p>需求：给出两个矩阵，要利用MapReduce做矩阵相乘操作</p>
+<p>思路：</p>
+<p>矩阵相乘：左矩阵的列数 = 右矩阵的行数</p>
+<p>相乘得到新的矩阵：行数 = 左矩阵的行 </p>
+<p>​                   列数 = 右矩阵的列  </p>
+<p>step1：</p>
+<p>将矩阵以固定的格式加上行号和列号保存到两个文件中。</p>
+<p>因为MapReduce是按行读取文件，所以我们要利用MapReduce将右侧矩阵转置处理</p>
+<p>将转置后的矩阵输出到指定文件</p>
+<p>step2：</p>
+<p>获取step1的输出文件并存入HDFS的分布式缓存中</p>
+<p>在进行mapper操作的setup方法中，读取缓存文件，并存入java的List容器中</p>
+<p>mapper左侧矩阵，并遍历右侧矩阵，然后相乘</p>
+<p>Reducer 操作得到新的矩阵并输出到指定文件中</p>
+</blockquote>
+<h3 id="矩阵文件及表示方式"><a href="#矩阵文件及表示方式" class="headerlink" title="矩阵文件及表示方式"></a>矩阵文件及表示方式</h3><p><img src="https://shirukai.gitee.io/images/1510101926767%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20171108084342.png" alt="https://shirukai.gitee.io/images/1510101926767微信图片_20171108084342.png"></p>
+<p>matrix1.txt</p>
+<pre><code>1    1_1,2_2,3_-2,4_0
+2    1_3,2_3,3_4,4_-3
+3    1_-2,2_0,3_2,4_3
+4    1_5,2_3,3_-1,4_2
+5    1_-4,2_2,3_0,4_2
+</code></pre>
+<p>matrix2.txt</p>
+<pre><code>1    1_0,2_3,3_-1,4_2,5_-3
+2    1_1,2_3,3_5,4_-2,5_-1
+3    1_0,2_1,3_4,4_-1,5_2
+4    1_-2,2_2,3_-1,4_1,5_2
+</code></pre>
+<h2 id="编码"><a href="#编码" class="headerlink" title="编码"></a>编码</h2><h3 id="step1"><a href="#step1" class="headerlink" title="step1"></a>step1</h3><p>在之前的IDEA向hadoop集群提交MapReduce作业那一篇文章我们创建的项目中，继续创建利用分布式缓存进行矩阵相乘的案例。</p>
+<p>在org.hadoop.mrs下创建matrix.step1包。</p>
+<p>在step1包下</p>
+<h4 id="创建Mapper1类"><a href="#创建Mapper1类" class="headerlink" title="创建Mapper1类"></a>创建Mapper1类</h4><pre><code>package org.hadoop.mrs.matrix.step1;
+
+import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Mapper;
+
+import java.io.IOException;
+
+/**
+ * 将右侧矩阵转置
+ * LongWritable 行号类型
+ * Text value 类型
+ * Text 输出key类型
+ * Text 输出Value类型
+ * Created by shirukai on 2017/11/9.
+ */
+public class Mapper1 extends Mapper&lt;LongWritable, Text, Text, Text&gt; &#123;
+    //定义输出key
+    private Text outKey = new Text();
+    //定义输出value
+    private Text outValue = new Text();
+
+    /**
+     * map
+     *
+     * @param key     行号
+     * @param value   值 1 1_0,2_3,3_-1,4_2,5_-3
+     * @param context 输出
+     * @throws IOException
+     * @throws InterruptedException
+     */
+    @Override
+    protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException &#123;
+        String[] rowAndLine = value.toString().split(&quot;\t&quot;);
+        //矩阵的行号
+        String row = rowAndLine[0];
+        //将1_0,2_3,3_-1,4_2,5_-3以逗号分隔并添加到数组中
+        String[] lines = rowAndLine[1].split(&quot;,&quot;);
+        //lines = [1_0,2_3,3_-1,4_2,5_-3]
+        for (int i = 0; i &lt; lines.length; i++) &#123;
+            //列号
+            String column = lines[i].split(&quot;_&quot;)[0];
+            //值
+            String valueStr = lines[i].split(&quot;_&quot;)[1];
+            outKey.set(column);
+            outValue.set(row + &quot;_&quot; + valueStr);
+            context.write(outKey,outValue);
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<h4 id="创建Reducer1类"><a href="#创建Reducer1类" class="headerlink" title="创建Reducer1类"></a>创建Reducer1类</h4><pre><code>package org.hadoop.mrs.matrix.step1;
+
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Reducer;
+
+import java.io.IOException;
+
+/**
+ * Reducer1
+ * Created by shirukai on 2017/11/9.
+ */
+public class Reducer1 extends Reducer&lt;Text, Text, Text, Text&gt; &#123;
+    private Text outKey = new Text();
+    private Text outValue = new Text();
+
+    /**
+     * @param key    map key 列号
+     * @param values  map values 1_0 2_1 3_0 4_-2
+     * @param context
+     * @throws IOException
+     * @throws InterruptedException
+     */
+
+    @Override
+    protected void reduce(Text key, Iterable&lt;Text&gt; values, Context context) throws IOException, InterruptedException &#123;
+        StringBuilder sb = new StringBuilder();
+        for (Text text : values) &#123;
+            //text:行号_值
+            sb.append(text + &quot;,&quot;);
+        &#125;
+        String line = null;
+        if (sb.toString().endsWith(&quot;,&quot;)) &#123;
+            line = sb.substring(0, sb.length() - 1);
+        &#125;
+        outKey.set(key);
+        outValue.set(line);
+        context.write(outKey, outValue);
+    &#125;
+&#125;
+</code></pre>
+<h4 id="创建MR1类"><a href="#创建MR1类" class="headerlink" title="创建MR1类"></a>创建MR1类</h4><pre><code>package org.hadoop.mrs.matrix.step1;
+
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Job;
+import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.hadoop.conf.Conf;
+
+import java.io.IOException;
+
+/**
+ *
+ * Created by shirukai on 2017/11/7.
+ */
+public class MR1 &#123;
+    //输入文件的相对路径
+    private static String inPath = &quot;/matrix/step1_input/matrix2.txt&quot;;
+    //输出文件的相对路径
+    private static String outPath = &quot;/matrix/step1_output&quot;;
+
+    public int run()&#123;
+        try &#123;
+            Configuration conf = Conf.get();
+            //创建一个job实例
+            Job job = Job.getInstance(conf,&quot;step1&quot;);
+
+            //设置job的主类
+            job.setJarByClass(MR1.class);
+            //设置job的Mapper类和Reducer类
+            job.setMapperClass(Mapper1.class);
+            job.setReducerClass(Reducer1.class);
+
+            //设置Mapper的输出类型
+            job.setMapOutputKeyClass(Text.class);
+            job.setMapOutputValueClass(Text.class);
+
+            //设置Reducer的输出类型
+            job.setOutputKeyClass(Text.class);
+            job.setOutputValueClass(Text.class);
+
+            //设置输入和输出路径
+            FileSystem fs = FileSystem.get(conf);
+            Path inputPath = new Path(inPath);
+            if (fs.exists(inputPath))&#123;
+                FileInputFormat.addInputPath(job,inputPath);
+            &#125;
+            Path outputPath = new Path(outPath);
+            fs.delete(outputPath,true);
+
+            FileOutputFormat.setOutputPath(job,outputPath);
+            return job.waitForCompletion(true)?1:-1;
+        &#125;catch (IOException e)&#123;
+            e.printStackTrace();
+        &#125;catch (ClassNotFoundException e)&#123;
+            e.printStackTrace();
+        &#125;catch (InterruptedException e)&#123;
+            e.printStackTrace();
+        &#125;
+        return -1;
+    &#125;
+
+&#125;
+</code></pre>
+<h3 id="step2"><a href="#step2" class="headerlink" title="step2"></a>step2</h3><p>在org.hadoop.mrs下创建matrix.step2包。</p>
+<h4 id="创建Mapper2类"><a href="#创建Mapper2类" class="headerlink" title="创建Mapper2类"></a>创建Mapper2类</h4><pre><code>package org.hadoop.mrs.matrix.step2;
+
+import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Mapper;
+import org.apache.log4j.Logger;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ *
+ * Created by shirukai on 2017/11/7.
+ */
+public class Mapper2 extends Mapper&lt;LongWritable,Text,Text,Text&gt; &#123;
+    private static Logger logger = Logger.getLogger(&quot;this.class&quot;);
+    private Text outKey = new Text();
+    private Text outValue = new Text();
+    private List&lt;String&gt; cacheList= new ArrayList&lt;String&gt;();
+    @Override
+    protected void setup(Context context) throws IOException, InterruptedException &#123;
+        super.setup(context);
+        //通过输入流将全局缓存中的右侧矩阵读入List&lt;String&gt;
+        FileReader fr = new FileReader(&quot;matrix2&quot;);
+        BufferedReader br = new BufferedReader(fr);
+        //每一行的格式是： 行 tab 列_值
+        String line = null;
+        while ((line = br.readLine())!=null)&#123;
+            cacheList.add(line);
+        &#125;
+        fr.close();
+        br.close();
+    &#125;
+
+
+    /**
+     *
+     * @param key 行号
+     * @param value 行 tab 列_值
+     * @param context c
+     * @throws IOException
+     * @throws InterruptedException
+     */
+    @Override
+    protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException &#123;
+       //行
+        String row_matrix1 = value.toString().split(&quot;\t&quot;)[0];
+        String[] column_value_array_matrix1 = value.toString().split(&quot;\t&quot;)[1].split(&quot;,&quot;);
+        for (String line : cacheList)&#123;
+            //右侧矩阵的行
+            //格式：行 tab 列_值
+            String row_matrix2 = line.split(&quot;\t&quot;)[0];
+            String[] column_value_array_matrix2 = line.split(&quot;\t&quot;)[1].split(&quot;,&quot;);
+
+            //矩阵两行相乘得到的结果
+            int result = 0;
+            //遍历左矩阵的每一行每一列
+            for (String column_value_matrix1 : column_value_array_matrix1)&#123;
+                String column_matrix1 = column_value_matrix1.split(&quot;_&quot;)[0];
+                String value_matrix1 = column_value_matrix1.split(&quot;_&quot;)[1];
+
+                //遍历右矩阵的每一行每一列
+
+                for (String column_value_matrix2: column_value_array_matrix2)&#123;
+                    if (column_value_matrix2.startsWith(column_matrix1+&quot;_&quot;))&#123;
+                        String value_matrix2 = column_value_matrix2.split(&quot;_&quot;)[1];
+                        //将两列相乘并累加
+                        result += Integer.valueOf(value_matrix1)* Integer.valueOf(value_matrix2);
+                    &#125;
+                &#125;
+            &#125;
+
+            //result 是结果矩阵中的某个元素，坐标为 行：row_matrix1 列： row_matrix2(因为矩阵已经转置)
+            outKey.set(row_matrix1);
+            outValue.set(row_matrix2+&quot;_&quot;+result);
+            //输出格式 key 行 value 列_值
+            context.write(outKey,outValue);
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<h4 id="创建Reducer2类"><a href="#创建Reducer2类" class="headerlink" title="创建Reducer2类"></a>创建Reducer2类</h4><pre><code>package org.hadoop.mrs.matrix.step2;
+
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Reducer;
+
+import java.io.IOException;
+
+/**
+ *
+ * Created by shirukai on 2017/11/7.
+ */
+public class Reducer2 extends Reducer&lt;Text,Text,Text,Text&gt;&#123;
+    private Text outKey = new Text();
+    private Text outValue = new Text();
+
+
+    /**
+     *
+     * @param key
+     * @param values
+     * @param context
+     * @throws IOException
+     * @throws InterruptedException
+     */
+    @Override
+    protected void reduce(Text key, Iterable&lt;Text&gt; values, Context context) throws IOException, InterruptedException &#123;
+        StringBuilder sb = new StringBuilder();
+        for (Text value : values)&#123;
+            sb.append(value+&quot;,&quot;);
+        &#125;
+        String result = null;
+        if (sb.toString().endsWith(&quot;,&quot;))&#123;
+            result = sb.substring(0,sb.length()-1);
+        &#125;
+        //outKey:行 outValue:列_值
+        outKey.set(key);
+        outValue.set(result);
+        context.write(outKey,outValue);
+    &#125;
+&#125;
+</code></pre>
+<h4 id="创建MR2类"><a href="#创建MR2类" class="headerlink" title="创建MR2类"></a>创建MR2类</h4><pre><code>package org.hadoop.mrs.matrix.step2;
+
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Job;
+import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.apache.log4j.Logger;
+import org.hadoop.conf.Conf;
+
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+
+/**
+ *
+ * Created by shirukai on 2017/11/7.
+ */
+public class MR2 &#123;
+    private static Logger logger = Logger.getLogger(&quot;this.class&quot;);
+    //输入文件的相对路径
+    private static String inPath = &quot;/matrix/step2_input/matrix1.txt&quot;;
+    //输出文件的相对路径
+    private static String outPath = &quot;/matrix/output&quot;;
+
+    //将step1输出的转置矩阵作为全局缓存
+    private static String cache = &quot;/matrix/step1_output/part-r-00000&quot;;
+
+    public int run()&#123;
+        try &#123;
+            //创建job配置类
+            Configuration conf = Conf.get();
+            //创建一个job实例
+            Job job = Job.getInstance(conf,&quot;step2&quot;);
+
+            //添加分布式缓存文件
+            job.addCacheArchive(new URI(cache+&quot;#matrix2&quot;));
+            //设置job的主类
+            job.setJarByClass(MR2.class);
+            //设置job的Mapper类和Reducer类
+            job.setMapperClass(Mapper2.class);
+            job.setReducerClass(Reducer2.class);
+
+            //设置Mapper的输出类型
+            job.setMapOutputKeyClass(Text.class);
+            job.setMapOutputValueClass(Text.class);
+
+            //设置Reducer的输出类型
+            job.setOutputKeyClass(Text.class);
+            job.setOutputValueClass(Text.class);
+
+            //设置输入和输出路径
+            FileSystem fs = FileSystem.get(conf);
+            Path inputPath = new Path(inPath);
+            if (fs.exists(inputPath))&#123;
+                FileInputFormat.addInputPath(job,inputPath);
+            &#125;
+            Path outputPath = new Path(outPath);
+            fs.delete(outputPath,true);
+
+            FileOutputFormat.setOutputPath(job,outputPath);
+            return job.waitForCompletion(true)?1:-1;
+        &#125;catch (Exception e)&#123;
+            logger.error(e.getMessage());
+        &#125;
+        return -1;
+
+    &#125;
+&#125;
+</code></pre>
+<h4 id="在matrix包下创建RunMatrix类"><a href="#在matrix包下创建RunMatrix类" class="headerlink" title="在matrix包下创建RunMatrix类"></a>在matrix包下创建RunMatrix类</h4><pre><code>package org.hadoop.mrs.matrix;
+
+
+import org.apache.hadoop.fs.Path;
+import org.apache.log4j.Logger;
+import org.hadoop.files.Files;
+import org.hadoop.mrs.matrix.step1.MR1;
+import org.hadoop.mrs.matrix.step2.MR2;
+
+/**
+ *
+ * Created by shirukai on 2017/11/7.
+ */
+public class RunMatrix &#123;
+    private static Logger logger = Logger.getLogger(&quot;this.class&quot;);
+    public static void Run() &#123;
+
+        //创建文件夹
+        try &#123;
+            Files.getFiles().delete(new Path(&quot;/matrix/step1_input&quot;),true);
+            Files.getFiles().delete(new Path(&quot;/matrix/step2_input&quot;),true);
+            Files.getFiles().delete(new Path(&quot;/matrix/step1_output&quot;),true);
+            Files.getFiles().delete(new Path(&quot;/matrix/output&quot;),true);
+
+            Files.mkdirFolder(&quot;/matrix/step1_input&quot;);
+            Files.mkdirFolder(&quot;/matrix/step2_input&quot;);
+            Files.mkdirFolder(&quot;/matrix/step1_output&quot;);
+            Files.mkdirFolder(&quot;/matrix/output&quot;);
+        &#125;catch (Exception e)&#123;
+            logger.error(e.getMessage());
+        &#125;
+        //上传文件
+        Files.uploadFile(&quot;D:\\Hadoop\\upload\\&quot;,&quot;matrix2.txt&quot;,&quot;/matrix/step1_input/&quot;);
+        Files.uploadFile(&quot;D:\\Hadoop\\upload\\&quot;,&quot;matrix1.txt&quot;,&quot;/matrix/step2_input/&quot;);
+
+        int resultStep1 = -1;
+        resultStep1 = new MR1().run();
+        if (resultStep1 == 1) &#123;
+            logger.info(&quot;step1执行成功了&quot;);
+        &#125; else &#123;
+            logger.error(&quot;step1执行失败了&quot;);
+        &#125;
+
+        int resultStep2 = -1;
+        resultStep2 = new MR2().run();
+        if (resultStep2 == 1) &#123;
+            logger.info(&quot;step2执行成功了&quot;);
+        &#125; else &#123;
+            logger.error(&quot;step2执行失败了&quot;);
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<p>在主方法RunHadoop中添加RunMatrix方法</p>
+<pre><code>public class RunHadoop &#123;
+    private static Logger logger = Logger.getLogger(&quot;this.class&quot;);
+    public static void main(String[] args) &#123;
+        RunMatrix.Run();
+    &#125;
+&#125;
+</code></pre>
+<h3 id="运行主方法"><a href="#运行主方法" class="headerlink" title="运行主方法"></a>运行主方法</h3><p>运行结果</p>
+<pre><code>1    2_7,3_1,1_2,4_0,5_-9
+2    1_9,2_16,3_31,4_-7,5_-10
+3    3_7,5_16,4_-3,2_2,1_-6
+4    1_-1,2_27,3_4,4_7,5_-16
+5    1_-2,2_-2,3_12,4_-10,5_14
+</code></pre>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9F%A9%E9%98%B5%E7%9B%B8%E4%B9%98%E7%9A%84%E4%BE%8B%E5%AD%90"><span class="toc-number">1.</span> <span class="toc-text">矩阵相乘的例子</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9C%80%E6%B1%82%E5%8F%8A%E6%80%9D%E8%B7%AF"><span class="toc-number">1.1.</span> <span class="toc-text">需求及思路</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9F%A9%E9%98%B5%E6%96%87%E4%BB%B6%E5%8F%8A%E8%A1%A8%E7%A4%BA%E6%96%B9%E5%BC%8F"><span class="toc-number">1.2.</span> <span class="toc-text">矩阵文件及表示方式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%96%E7%A0%81"><span class="toc-number">2.</span> <span class="toc-text">编码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#step1"><span class="toc-number">2.1.</span> <span class="toc-text">step1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#step2"><span class="toc-number">2.2.</span> <span class="toc-text">step2</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C%E4%B8%BB%E6%96%B9%E6%B3%95"><span class="toc-number">2.3.</span> <span class="toc-text">运行主方法</span></a></li></ol></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

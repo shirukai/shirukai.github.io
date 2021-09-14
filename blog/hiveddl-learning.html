@@ -1,0 +1,1288 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>hiveDDL学习 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="https://cwiki.apache.org/confluence/display/Hive/LanguageManual+DDL
+1 创建/删除/修改/使用数据库CREATE (DATABAS,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">hiveDDL学习</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/5.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/Hadoop"><b>「
+                    </b>HADOOP<b> 」</b></a>
+                
+                August 20, 2018
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/hiveddl-learning.html" title="hiveDDL学习" class="">hiveDDL学习</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    57k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    52 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Hadoop/" rel="tag">Hadoop</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <p><a target="_blank" rel="noopener" href="https://cwiki.apache.org/confluence/display/Hive/LanguageManual+DDL">https://cwiki.apache.org/confluence/display/Hive/LanguageManual+DDL</a></p>
+<h2 id="1-创建-删除-修改-使用数据库"><a href="#1-创建-删除-修改-使用数据库" class="headerlink" title="1 创建/删除/修改/使用数据库"></a>1 创建/删除/修改/使用数据库</h2><pre><code>CREATE (DATABASE|SCHEMA) [IF NOT EXISTS] database_name
+  [COMMENT database_comment]
+  [LOCATION hdfs_path]
+  [WITH DBPROPERTIES (property_name=property_value, ...)];
+</code></pre>
+<h3 id="1-1-创建一个简单的数据库"><a href="#1-1-创建一个简单的数据库" class="headerlink" title="1.1 创建一个简单的数据库"></a>1.1 创建一个简单的数据库</h3><p>database 跟 schema 作用是一样的。</p>
+<pre><code>create database newdb;
+</code></pre>
+<p>这时候会在hdfs的/user/hive/warehouse目录中生成一个newdb.db目录，在这个数据库中创建的内部表都会存在这个目录。</p>
+<p><img src="https://shirukai.gitee.io/images/201711301517_202.png"></p>
+<h3 id="1-2-创建一个指定位置的数据库-（如果目录不存在会自动创建）"><a href="#1-2-创建一个指定位置的数据库-（如果目录不存在会自动创建）" class="headerlink" title="1.2 创建一个指定位置的数据库 （如果目录不存在会自动创建）"></a>1.2 创建一个指定位置的数据库 （如果目录不存在会自动创建）</h3><blockquote>
+<p>指定hdfs中的位置为hive数据库的目录位置</p>
+</blockquote>
+<p>创建一个名字为 foreign_path_hiveDB的数据库，指定它的目录为 /hiveLearn/foreign_path_hiveDB</p>
+<pre><code>create database foreign_path_hiveDB location &#39;/hiveLearn/foreign_path_hiveDB&#39;;
+</code></pre>
+<h3 id="1-3-修改数据库"><a href="#1-3-修改数据库" class="headerlink" title="1.3 修改数据库"></a>1.3 修改数据库</h3><pre><code>ALTER (DATABASE|SCHEMA) database_name SET DBPROPERTIES (property_name=property_value, ...);   -- (Note: SCHEMA added in Hive 0.14.0)
+ 
+ALTER (DATABASE|SCHEMA) database_name SET OWNER [USER|ROLE] user_or_role;   -- (Note: Hive 0.13.0 and later; SCHEMA added in Hive 0.14.0)
+ 
+ALTER (DATABASE|SCHEMA) database_name SET LOCATION hdfs_path; -- (Note: Hive 2.2.1, 2.4.0 and later)
+</code></pre>
+<h4 id="1-3-1-修改数据库属性"><a href="#1-3-1-修改数据库属性" class="headerlink" title="1.3.1 修改数据库属性"></a>1.3.1 修改数据库属性</h4><pre><code>alter database foreign_path_hiveDB set DBPROPERTIES(&#39;testName&#39;=&#39;testValue&#39;);
+</code></pre>
+<pre><code>0: jdbc:hive2://localhost:10000&gt; show create database foreign_path_hiveDB;
++----------------------------------------------------+
+|                   createdb_stmt                    |
++----------------------------------------------------+
+| CREATE DATABASE `foreign_path_hivedb`              |
+| LOCATION                                           |
+|   &#39;hdfs://Master.Hadoop:9000/hiveLearn/foreign_path_hiveDB&#39; |
+| WITH DBPROPERTIES (                                |
+|   &#39;testName&#39;=&#39;testValue&#39;)                          |
++----------------------------------------------------+
+</code></pre>
+<h4 id="1-3-2-修改数据库所有者和角色"><a href="#1-3-2-修改数据库所有者和角色" class="headerlink" title="1.3.2 修改数据库所有者和角色"></a>1.3.2 修改数据库所有者和角色</h4><pre><code>ALTER (DATABASE|SCHEMA) database_name SET OWNER [USER|ROLE] user_or_role;   -- (Note: Hive 0.13.0 and later; SCHEMA added in Hive 0.14.0)
+</code></pre>
+<h3 id="1-4-修改数据库目录位置"><a href="#1-4-修改数据库目录位置" class="headerlink" title="1.4 修改数据库目录位置"></a>1.4 修改数据库目录位置</h3><p>ALTER DATABASE ……SET LOCATION 语句不会讲数据库当前目录的内容移动到新指定的位置，它不会更改与指定数据库下的任何表/分区关联的位置。它只会改变默认的父目录，这个数据库将会添加新的表格，这种行为（应该是2.4.0之后才可以使用）</p>
+<pre><code>ALTER (DATABASE|SCHEMA) database_name SET LOCATION hdfs_path; -- (Note: Hive 2.2.1, 2.4.0 and later)
+</code></pre>
+<h3 id="1-5-删除数据库"><a href="#1-5-删除数据库" class="headerlink" title="1.5 删除数据库"></a>1.5 删除数据库</h3><pre><code>0: jdbc:hive2://localhost:10000&gt; drop database whatisschema;
+No rows affected (0.588 seconds)
+</code></pre>
+<h3 id="1-6-查看所有数据库"><a href="#1-6-查看所有数据库" class="headerlink" title="1.6 查看所有数据库"></a>1.6 查看所有数据库</h3><pre><code>0: jdbc:hive2://localhost:10000&gt; show databases;
++----------------------+
+|    database_name     |
++----------------------+
+| default              |
+| foreign_path_hivedb  |
+| newdb                |
++----------------------+
+3 rows selected (0.337 seconds)
+</code></pre>
+<h3 id="1-7-使用数据库"><a href="#1-7-使用数据库" class="headerlink" title="1.7 使用数据库"></a>1.7 使用数据库</h3><pre><code>use newdb;
+</code></pre>
+<h3 id="1-8-查看当前使用的数据库"><a href="#1-8-查看当前使用的数据库" class="headerlink" title="1.8 查看当前使用的数据库"></a>1.8 查看当前使用的数据库</h3><pre><code> select current_database();
+</code></pre>
+<h2 id="2-创建-删除-截断表"><a href="#2-创建-删除-截断表" class="headerlink" title="2 创建/删除/截断表"></a>2 创建/删除/截断表</h2><h3 id="2-1-创建表格"><a href="#2-1-创建表格" class="headerlink" title="2.1 创建表格"></a>2.1 创建表格</h3><pre><code>CREATE [TEMPORARY] [EXTERNAL] TABLE [IF NOT EXISTS] [db_name.]table_name    -- (Note: TEMPORARY available in Hive 0.14.0 and later)
+  [(col_name data_type [COMMENT col_comment], ... [constraint_specification])]
+  [COMMENT table_comment]
+  [PARTITIONED BY (col_name data_type [COMMENT col_comment], ...)] --(将字段设置为分区)
+  [CLUSTERED BY (col_name, col_name, ...) [SORTED BY (col_name [ASC|DESC], ...)] INTO num_buckets BUCKETS] --(CLUSTERED BY按哪个字段分桶，SORTED BY按照哪个字段排序，升序or降序，INTO放进几个桶里)
+  [SKEWED BY (col_name, col_name, ...)                  -- (Note: Available in Hive 0.10.0 and later)]
+     ON ((col_value, col_value, ...), (col_value, col_value, ...), ...)
+     [STORED AS DIRECTORIES]
+  [
+   [ROW FORMAT row_format] 
+   [STORED AS file_format]
+     | STORED BY &#39;storage.handler.class.name&#39; [WITH SERDEPROPERTIES (...)]  -- (Note: Available in Hive 0.6.0 and later)
+  ]
+  [LOCATION hdfs_path]
+  [TBLPROPERTIES (property_name=property_value, ...)]   -- (Note: Available in Hive 0.6.0 and later)
+  [AS select_statement];   -- (Note: Available in Hive 0.5.0 and later; not supported for external tables)
+ 
+CREATE [TEMPORARY] [EXTERNAL] TABLE [IF NOT EXISTS] [db_name.]table_name
+  LIKE existing_table_or_view_name
+  [LOCATION hdfs_path];
+ 
+data_type
+  : primitive_type
+  | array_type
+  | map_type
+  | struct_type
+  | union_type  -- (Note: Available in Hive 0.7.0 and later)
+ 
+primitive_type
+  : TINYINT
+  | SMALLINT
+  | INT
+  | BIGINT
+  | BOOLEAN
+  | FLOAT
+  | DOUBLE
+  | DOUBLE PRECISION -- (Note: Available in Hive 2.2.0 and later)
+  | STRING
+  | BINARY      -- (Note: Available in Hive 0.8.0 and later)
+  | TIMESTAMP   -- (Note: Available in Hive 0.8.0 and later)
+  | DECIMAL     -- (Note: Available in Hive 0.11.0 and later)
+  | DECIMAL(precision, scale)  -- (Note: Available in Hive 0.13.0 and later)
+  | DATE        -- (Note: Available in Hive 0.12.0 and later)
+  | VARCHAR     -- (Note: Available in Hive 0.12.0 and later)
+  | CHAR        -- (Note: Available in Hive 0.13.0 and later)
+ 
+array_type
+  : ARRAY &lt; data_type &gt;
+ 
+map_type
+  : MAP &lt; primitive_type, data_type &gt;
+ 
+struct_type
+  : STRUCT &lt; col_name : data_type [COMMENT col_comment], ...&gt;
+ 
+union_type
+   : UNIONTYPE &lt; data_type, data_type, ... &gt;  -- (Note: Available in Hive 0.7.0 and later)
+ 
+row_format
+  : DELIMITED [FIELDS TERMINATED BY char [ESCAPED BY char]] [COLLECTION ITEMS TERMINATED BY char]
+        [MAP KEYS TERMINATED BY char] [LINES TERMINATED BY char]
+        [NULL DEFINED AS char]   -- (Note: Available in Hive 0.13 and later)
+  | SERDE serde_name [WITH SERDEPROPERTIES (property_name=property_value, property_name=property_value, ...)]
+ 
+file_format:
+  : SEQUENCEFILE
+  | TEXTFILE    -- (Default, depending on hive.default.fileformat configuration)
+  | RCFILE      -- (Note: Available in Hive 0.6.0 and later)
+  | ORC         -- (Note: Available in Hive 0.11.0 and later)
+  | PARQUET     -- (Note: Available in Hive 0.13.0 and later)
+  | AVRO        -- (Note: Available in Hive 0.14.0 and later)
+  | INPUTFORMAT input_format_classname OUTPUTFORMAT output_format_classname
+ 
+constraint_specification:
+  : [, PRIMARY KEY (col_name, ...) DISABLE NOVALIDATE ]
+    [, CONSTRAINT constraint_name FOREIGN KEY (col_name, ...) REFERENCES table_name(col_name, ...) DISABLE NOVALIDATE 
+</code></pre>
+<h3 id="2-2-存储格式"><a href="#2-2-存储格式" class="headerlink" title="2.2 存储格式"></a>2.2 存储格式</h3><table>
+<thead>
+<tr>
+<th>Storage Format</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>STORED AS TEXTFILE</td>
+<td>存储为纯文本，TEXTFILE是默认的文件格式，除非配置参数hive.default.fileformat</td>
+</tr>
+<tr>
+<td>STORED AS SEQUENCEFILE</td>
+<td>存储为压缩序列文件</td>
+</tr>
+<tr>
+<td>STORED AS ORC</td>
+<td>存储为ORC文件格式，支持ACID事务和基于成本的优化器。存储列级元素。</td>
+</tr>
+<tr>
+<td>STORED AS PARQUET</td>
+<td>以Parquet列存储格式存储为Parquet格式</td>
+</tr>
+<tr>
+<td>STORED AS AVRO</td>
+<td>存储为Avro格式</td>
+</tr>
+<tr>
+<td>STORED AS RCFILE</td>
+<td>存储为记录列文件格式</td>
+</tr>
+<tr>
+<td>STORED BY</td>
+<td>以非本地表格式存储，创建或连接到非本地表，例如HIBase，Druid或Accumulo支持的表</td>
+</tr>
+<tr>
+<td>INPUTFORMAT and OUTPUTFORMAT</td>
+<td>在file_format中指定一个相应的InputFormat和OutputFormat类的名字作为一个字符串。</td>
+</tr>
+</tbody></table>
+<h3 id="2-3-分区表"><a href="#2-3-分区表" class="headerlink" title="2.3 分区表"></a>2.3 分区表</h3><p>可以使用PARTITIONED BY 子句创建分区表，一个表可以有一个或多个分区列，并为分区列中的每个不同的值组合创建单独的数据目录。此外可以使用   CLUSTERED BY 列   将表或分区分区，并且可以通过   SORT BY 列    在该分区内对数据进行排序，这可以提高某些查询的性能。</p>
+<p>如果在创建表的时候出现：”FAILED: Error in semantic analysis: Column repeated in partitioning columns,” 这个错误，这意味着我们尝试去创建的分区列在之前已经出现过了。</p>
+<h4 id="2-3-1-作用"><a href="#2-3-1-作用" class="headerlink" title="2.3.1 作用"></a>2.3.1 作用</h4><p>分区是hive在处理大型表时常用的方法。分区（partition）在hive的物理存储中，体现为表名下的某个目录（按列分区），这个目录下存储着这个分区下对应的数据。分区的好处在于缩小查询扫描范围，从而提高速度。</p>
+<h4 id="2-3-2-动态分区、静态分区"><a href="#2-3-2-动态分区、静态分区" class="headerlink" title="2.3.2 动态分区、静态分区"></a>2.3.2 动态分区、静态分区</h4><p>分区分为两种：静态分区static partition和动态分区dynamic partition。静态分区和动态分区的区别在于导入数据时，是手动输入分区名称，还是通过数据来判断数据分区。对于大数据批量导入来说，显然采用动态分区更为简单方便。</p>
+<p>创建一个分区表 </p>
+<pre><code>CREATE TABLE page_view(viewTime INT, userid BIGINT,
+     page_url STRING, referrer_url STRING,
+     ip STRING COMMENT &#39;IP Address of the User&#39;)
+ COMMENT &#39;This is the page view table&#39;
+ PARTITIONED BY(dt STRING, country STRING)
+ STORED AS SEQUENCEFILE;
+</code></pre>
+<h4 id="2-3-3-静态分区"><a href="#2-3-3-静态分区" class="headerlink" title="2.3.3 静态分区"></a>2.3.3 静态分区</h4><h5 id="设置开启静态分区"><a href="#设置开启静态分区" class="headerlink" title="设置开启静态分区"></a>设置开启静态分区</h5><pre><code>0: jdbc:hive2://localhost:10000&gt; set hvie.exec.dynamic.partition=false;
+</code></pre>
+<h5 id="创建静态分区表"><a href="#创建静态分区表" class="headerlink" title="创建静态分区表"></a>创建静态分区表</h5><pre><code>0: jdbc:hive2://localhost:10000&gt; create table static_par_tab (name string,nation string) partitioned by (sex string) row format delimited fields terminated by &quot;,&quot;;
+</code></pre>
+<h5 id="查看表结构"><a href="#查看表结构" class="headerlink" title="查看表结构"></a>查看表结构</h5><pre><code>0: jdbc:hive2://localhost:10000&gt; desc static_par_tab;
++--------------------------+-----------------------+-----------------------+
+|         col_name         |       data_type       |        comment        |
++--------------------------+-----------------------+-----------------------+
+| name                     | string                |                       |
+| nation                   | string                |                       |
+| sex                      | string                |                       |
+|                          | NULL                  | NULL                  |
+| # Partition Information  | NULL                  | NULL                  |
+| # col_name               | data_type             | comment               |
+|                          | NULL                  | NULL                  |
+| sex                      | string                |                       |
++--------------------------+-----------------------+-----------------------+
+8 rows selected (0.81 seconds)
+</code></pre>
+<h5 id="准备本地数据文件par-tab-txt-内容是姓名-逗号-国籍，将以性别作为分区-假设这些人的性别都是man"><a href="#准备本地数据文件par-tab-txt-内容是姓名-逗号-国籍，将以性别作为分区-假设这些人的性别都是man" class="headerlink" title="准备本地数据文件par_tab.txt 内容是姓名+逗号+国籍，将以性别作为分区 假设这些人的性别都是man"></a>准备本地数据文件par_tab.txt 内容是姓名+逗号+国籍，将以性别作为分区 假设这些人的性别都是man</h5><pre><code>jan,china
+mary,america
+lilei,china
+yiku,japan
+emoji,japan
+</code></pre>
+<h5 id="load-本地数据到静态分区表"><a href="#load-本地数据到静态分区表" class="headerlink" title="load 本地数据到静态分区表"></a>load 本地数据到静态分区表</h5><pre><code>0: jdbc:hive2://localhost:10000&gt; load data local inpath &#39;/root/hiveTest/par_tab.txt&#39; into table static_par_tab partition (sex=&#39;man&#39;);
+No rows affected (2.011 seconds)
+</code></pre>
+<h5 id="查看表数据"><a href="#查看表数据" class="headerlink" title="查看表数据"></a>查看表数据</h5><pre><code>0: jdbc:hive2://localhost:10000&gt; select * from static_par_tab;
++----------------------+------------------------+---------------------+
+| static_par_tab.name  | static_par_tab.nation  | static_par_tab.sex  |
++----------------------+------------------------+---------------------+
+| jan                  | china                  | man                 |
+| mary                 | america                | man                 |
+| lilei                | china                  | man                 |
+| yiku                 | japan                  | man                 |
+| emoji                | japan                  | man                 |
++----------------------+------------------------+---------------------+
+5 rows selected (2.07 seconds)
+</code></pre>
+<p>我们load的数据是两列，加到分区表中后变成了三列。</p>
+<h5 id="hdfs变化"><a href="#hdfs变化" class="headerlink" title="hdfs变化"></a>hdfs变化</h5><p>查看分区表在hdfs中的目录，可以看出，生成了一个名字为sex=man的目录，里面存放的是我们刚刚load上去的数据。</p>
+<p><img src="https://shirukai.gitee.io/images/201712130927_498.png"></p>
+<h5 id="再准备本地数据-par-tab1-txt，内容如下，假设这些人的性别都为woman"><a href="#再准备本地数据-par-tab1-txt，内容如下，假设这些人的性别都为woman" class="headerlink" title="再准备本地数据 par_tab1.txt，内容如下，假设这些人的性别都为woman"></a>再准备本地数据 par_tab1.txt，内容如下，假设这些人的性别都为woman</h5><pre><code>lily,china
+nancy,china
+cls,japan
+</code></pre>
+<h5 id="load以上数据到分区表中"><a href="#load以上数据到分区表中" class="headerlink" title="load以上数据到分区表中"></a>load以上数据到分区表中</h5><pre><code>0: jdbc:hive2://localhost:10000&gt; load data local inpath &#39;/root/hiveTest/par_tab1.txt&#39; into table static_par_tab partition (sex=&#39;woman&#39;);
+No rows affected (1.124 seconds)
+</code></pre>
+<h5 id="查看表数据-1"><a href="#查看表数据-1" class="headerlink" title="查看表数据"></a>查看表数据</h5><pre><code>0: jdbc:hive2://localhost:10000&gt; select * from static_par_tab;
++----------------------+------------------------+---------------------+
+| static_par_tab.name  | static_par_tab.nation  | static_par_tab.sex  |
++----------------------+------------------------+---------------------+
+| jan                  | china                  | man                 |
+| mary                 | america                | man                 |
+| lilei                | china                  | man                 |
+| yiku                 | japan                  | man                 |
+| emoji                | japan                  | man                 |
+| lily                 | china                  | woman               |
+| nancy                | china                  | woman               |
+| cls                  | japan                  | woman               |
++----------------------+------------------------+---------------------+
+8 rows selected (0.395 seconds)
+</code></pre>
+<p>这时候会发现，表中的多了三行数据，并且数据的sex列都为woman</p>
+<h5 id="hdfs变化-1"><a href="#hdfs变化-1" class="headerlink" title="hdfs变化"></a>hdfs变化</h5><p>可以看出，hdfs目录下又生成了一个新目录 sex=woman</p>
+<p><img src="https://shirukai.gitee.io/images/201712130936_842.png"></p>
+<h4 id="创建多列分区"><a href="#创建多列分区" class="headerlink" title="创建多列分区"></a>创建多列分区</h4><h5 id="上面创建的是以sex这一列分区的表，下面我们来创建以sex-和data分区的表"><a href="#上面创建的是以sex这一列分区的表，下面我们来创建以sex-和data分区的表" class="headerlink" title="上面创建的是以sex这一列分区的表，下面我们来创建以sex 和data分区的表"></a>上面创建的是以sex这一列分区的表，下面我们来创建以sex 和data分区的表</h5><pre><code>0: jdbc:hive2://localhost:10000&gt; create table static_par_tb_muilt (name string,nation string) partitioned by (sex string,dat string) row format delimited fields terminated by &quot;,&quot;;
+No rows affected (0.288 seconds)
+</code></pre>
+<h5 id="查看表结构-1"><a href="#查看表结构-1" class="headerlink" title="查看表结构"></a>查看表结构</h5><pre><code>0: jdbc:hive2://localhost:10000&gt; desc static_par_tb_muilt;
++--------------------------+-----------------------+-----------------------+
+|         col_name         |       data_type       |        comment        |
++--------------------------+-----------------------+-----------------------+
+| name                     | string                |                       |
+| nation                   | string                |                       |
+| sex                      | string                |                       |
+| dat                      | string                |                       |
+|                          | NULL                  | NULL                  |
+| # Partition Information  | NULL                  | NULL                  |
+| # col_name               | data_type             | comment               |
+|                          | NULL                  | NULL                  |
+| sex                      | string                |                       |
+| dat                      | string                |                       |
++--------------------------+-----------------------+-----------------------+
+10 rows selected (0.378 seconds)
+</code></pre>
+<h5 id="load之前创建好的本地数据"><a href="#load之前创建好的本地数据" class="headerlink" title="load之前创建好的本地数据"></a>load之前创建好的本地数据</h5><pre><code>jan,china
+mary,america
+lilei,china
+yiku,japan
+emoji,japan
+</code></pre>
+<p>设置性别分区为man，dat 为2017-12-12</p>
+<pre><code>0: jdbc:hive2://localhost:10000&gt; load data local inpath &#39;/root/hiveTest/par_tab.txt&#39; into table static_par_tb_muilt partition (sex=&#39;man&#39;,dat=&#39;2017-12-12&#39;);
+No rows affected (1.392 seconds)
+</code></pre>
+<pre><code>lily,china
+nancy,china
+cls,japan
+</code></pre>
+<p>设置性别分区为woman，dat 为2017-12-11</p>
+<p><img src="https://shirukai.gitee.io/images/201712130955_432.png"></p>
+<h5 id="查看hdfs变化"><a href="#查看hdfs变化" class="headerlink" title="查看hdfs变化"></a>查看hdfs变化</h5><p><img src="https://shirukai.gitee.io/images/201712130956_597.png"></p>
+<p>同样在表目录下又生成了两个目录 sex=man 和sex=woman,但是请注意了，我们不是创建了两个分区列吗，怎么就生成了sex目录，那dat目录去哪了？</p>
+<p><img src="https://shirukai.gitee.io/images/201712130958_137.png"></p>
+<p>发现了吗，在每个sex目录下都会生成一个dat目录。</p>
+<p>可见，新建表时定义的分区顺序partitioned by (sex string,dat string) ，决定了hdfs中目录顺序（排在前面的为父目录，后面的为子目录。正是有了这个层级关系，当我们查询性别为man的数据时，man目录下所有日期下的所有数据都会被查询到。而如果我们查询日期dat的时候，无论是man目录、还是womam目录，只要包含这个时间段的数据都会被查询出来。</p>
+<h4 id="2-3-4-动态分区"><a href="#2-3-4-动态分区" class="headerlink" title="2.3.4 动态分区"></a>2.3.4 动态分区</h4><p>通过上面的静态分区的创建和数据导入，我们发现，每次导入数据的时候都要手动去设置将数据导入到哪个分区，有几个分区，我们既要load几次。显然是很麻烦的，那能不能只load一次，根据要load的数据，来判断我要把数据放到哪个分区里？答案是可以的，这就需要动态分区。</p>
+<h5 id="设置启用动态分区"><a href="#设置启用动态分区" class="headerlink" title="设置启用动态分区"></a>设置启用动态分区</h5><pre><code>0: jdbc:hive2://localhost:10000&gt; set hvie.exec.dynamic.partition=true;
+No rows affected (0.026 seconds)
+</code></pre>
+<h5 id="创建动态分区表"><a href="#创建动态分区表" class="headerlink" title="创建动态分区表"></a>创建动态分区表</h5><pre><code>0: jdbc:hive2://localhost:10000&gt; create table dynamic_par_tb (name string,nation string) partitioned by (sex string) row format delimited fields terminated by &quot;,&quot;;
+No rows affected (0.367 seconds)
+</code></pre>
+<h5 id="load-本地数据到分区表"><a href="#load-本地数据到分区表" class="headerlink" title="load 本地数据到分区表"></a>load 本地数据到分区表</h5><p>本地数据如下</p>
+<pre><code>jan,china,man
+mary,america,woman
+lilei,china,man
+yiku,japan,woman
+emoji,japan,woman
+</code></pre>
+<p>结果发现，如果用load方法像表中插入数据时，必须要指定分区的，不会自动去分配分区的。</p>
+<h5 id="insert……select插入数据"><a href="#insert……select插入数据" class="headerlink" title="insert……select插入数据"></a>insert……select插入数据</h5><p>下面我们来用insert……select语句来插入数据</p>
+<pre><code>insert into table dynamic_par_tb partition(sex) select name,nation,sex from static_par_tab;
+</code></pre>
+<p>发现报错</p>
+<pre><code>Error: Error while compiling statement: FAILED: SemanticException [Error 10096]: Dynamic partition strict mode requires at least one static partition column. To turn this off set hive.exec.dynamic.partition.mode=nonstrict (state=42000,code=10096)
+</code></pre>
+<p>hive的hive.exec.dynamic.partition.mode这个属性默认是strict，即不允许分区列全部是动态的，这是为了防止用户有可能只愿意在自分区内进行动态建分区，但是由于疏忽忘记为主分区列指定值了，这将导致一个dml语句在短时间内创建大量的新的分区（对应大量新的文件夹），对系统性能带来影响。</p>
+<p>为了使语句能执行，我们需要设置</p>
+<pre><code>set hive.exec.dynamic.partition.mode=nonstrict
+</code></pre>
+<h5 id="查看数据"><a href="#查看数据" class="headerlink" title="查看数据"></a>查看数据</h5><pre><code>0: jdbc:hive2://localhost:10000&gt; select * from dynamic_par_tb;
++----------------------+------------------------+---------------------+
+| dynamic_par_tb.name  | dynamic_par_tb.nation  | dynamic_par_tb.sex  |
++----------------------+------------------------+---------------------+
+| jan                  | china                  | man                 |
+| mary                 | america                | man                 |
+| lilei                | china                  | man                 |
+| yiku                 | japan                  | man                 |
+| emoji                | japan                  | man                 |
+| lily                 | china                  | woman               |
+| nancy                | china                  | woman               |
+| cls                  | japan                  | woman               |
++----------------------+------------------------+---------------------+
+8 rows selected (0.269 seconds)
+</code></pre>
+<h5 id="hdfs变化-2"><a href="#hdfs变化-2" class="headerlink" title="hdfs变化"></a>hdfs变化</h5><p><img src="https://shirukai.gitee.io/images/201712131051_106.png"></p>
+<p>并且在每个目录下会生成一个经过MapReduce后生成的文件。</p>
+<p><img src="https://shirukai.gitee.io/images/201712131052_55.png"></p>
+<h4 id="2-3-5分区操作"><a href="#2-3-5分区操作" class="headerlink" title="2.3.5分区操作"></a>2.3.5分区操作</h4><p><a target="_blank" rel="noopener" href="http://blog.csdn.net/skywalker_only/article/details/30224309">http://blog.csdn.net/skywalker_only/article/details/30224309</a></p>
+<h5 id="新增分区"><a href="#新增分区" class="headerlink" title="新增分区"></a>新增分区</h5><p>新增分区可以新增一个空的分区，指定分区名即可，这时会在hdfs对应的表目录下创建相应的目录。</p>
+<p>也可以新增一个有数据的分区，比如我们在/hivetest/gender=S下存放着数据，我们需要把它加到表t_partition中分区名为gender=S里，在添加分区的时候，指定目录即可。</p>
+<p>如：</p>
+<p>先查看表t_partition的表结构</p>
+<pre><code>0: jdbc:hive2://localhost:10000&gt; desc partition_table;
++--------------------------+-----------------------+-----------------------+
+|         col_name         |       data_type       |        comment        |
++--------------------------+-----------------------+-----------------------+
+| sid                      | int                   |                       |
+| name                     | string                |                       |
+| gender                   | string                |                       |
+|                          | NULL                  | NULL                  |
+| # Partition Information  | NULL                  | NULL                  |
+| # col_name               | data_type             | comment               |
+|                          | NULL                  | NULL                  |
+| gender                   | string                |                       |
++--------------------------+-----------------------+-----------------------+
+</code></pre>
+<p>可以看出这个表的分区列为gender。</p>
+<p>查看这个表的分区</p>
+<pre><code>0: jdbc:hive2://localhost:10000&gt; show partitions partition_table;
++------------+
+| partition  |
++------------+
+| gender=F   |
+| gender=M   |
++------------+
+2 rows selected (0.229 seconds)
+</code></pre>
+<p>hdfs 目录</p>
+<p><img src="https://shirukai.gitee.io/images/201711290942_424.png"></p>
+<h5 id="现在我们需要新增一个分区gender-S，空分区无数据。"><a href="#现在我们需要新增一个分区gender-S，空分区无数据。" class="headerlink" title="现在我们需要新增一个分区gender=S，空分区无数据。"></a>现在我们需要新增一个分区gender=S，空分区无数据。</h5><pre><code>0: jdbc:hive2://localhost:10000&gt; alter table partition_table add partition(gender=&#39;S&#39;);
+No rows affected (0.252 seconds)
+</code></pre>
+<p>查看表的分区</p>
+<pre><code>0: jdbc:hive2://localhost:10000&gt; show partitions partition_table;
++------------+
+| partition  |
++------------+
+| gender=F   |
+| gender=M   |
+| gender=S   |
++------------+
+3 rows selected (0.313 seconds)
+</code></pre>
+<p>查看对应的hdfs目录</p>
+<p><img src="https://shirukai.gitee.io/images/201711290945_209.png"></p>
+<p>添加本地数据到新建分区</p>
+<blockquote>
+<p>在添加分区之前，我们需要查看一下表是以什么分割的，这样我们才能插入固定的格式。</p>
+</blockquote>
+<pre><code>0: jdbc:hive2://localhost:10000&gt; show create table partition_table;
++----------------------------------------------------+
+|                   createtab_stmt                   |
++----------------------------------------------------+
+| CREATE TABLE `partition_table`(                    |
+|   `sid` int,                                       |
+|   `name` string)                                   |
+| PARTITIONED BY (                                   |
+|   `gender` string)                                 |
+| ROW FORMAT SERDE                                   |
+|   &#39;org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe&#39;  |
+| WITH SERDEPROPERTIES (                             |
+|   &#39;field.delim&#39;=&#39;,&#39;,                               |
+|   &#39;serialization.format&#39;=&#39;,&#39;)                      |
+| STORED AS INPUTFORMAT                              |
+|   &#39;org.apache.hadoop.mapred.TextInputFormat&#39;       |
+| OUTPUTFORMAT                                       |
+|   &#39;org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat&#39; |
+| LOCATION                                           |
+|   &#39;hdfs://Master.Hadoop:9000/user/hive/warehouse/partition_table&#39; |
+| TBLPROPERTIES (                                    |
+|   &#39;transient_lastDdlTime&#39;=&#39;1511398771&#39;)            |
+</code></pre>
+<p>通过上面的信息，我们可以知道当前表之间的数据是以“，”分割。所所以我们在linux本地新建一个文本文件，然后按照表结构创建数据如下：</p>
+<p>/root/testpartition.txt</p>
+<pre><code>22,shirukai
+</code></pre>
+<p>然后我们将本地数据load到新建分区里</p>
+<pre><code>load data local inpath &#39;/root/testpartition.txt&#39; into table partition_table partition(gender=&#39;S&#39;);
+</code></pre>
+<p>查看数据</p>
+<pre><code>0: jdbc:hive2://localhost:10000&gt; select * from partition_table;
++----------------------+-----------------------+-------------------------+
+| partition_table.sid  | partition_table.name  | partition_table.gender  |
++----------------------+-----------------------+-------------------------+
+| 2                    | Mary                  | F                       |
+| 5                    | Mike                  | F                       |
+| 1                    | Tom                   | M                       |
+| 3                    | Jerry                 | M                       |
+| 4                    | Rose                  | M                       |
+| 22                   | shirukai              | S                       |
++----------------------+-----------------------+-------------------------+
+6 rows selected (0.312 seconds)
+</code></pre>
+<p>可以看出我们新数据已经存在新建分区了。</p>
+<h5 id="删除分区"><a href="#删除分区" class="headerlink" title="删除分区"></a>删除分区</h5><p>删除分区，会将我们的元数据、以及hdfs文件中的数据一起删除。</p>
+<pre><code>0: jdbc:hive2://localhost:10000&gt; alter table partition_table drop partition(gender=&#39;S&#39;);
+No rows affected (0.316 seconds)
+</code></pre>
+<p><img src="https://shirukai.gitee.io/images/201711291011_47.png"></p>
+<p>hdfs中的数据也被删除了。</p>
+<h5 id="现在我们要新建一个分区，并将hdfs中已经存在的一个目录，及里面的数据加载到这个表分区里"><a href="#现在我们要新建一个分区，并将hdfs中已经存在的一个目录，及里面的数据加载到这个表分区里" class="headerlink" title="现在我们要新建一个分区，并将hdfs中已经存在的一个目录，及里面的数据加载到这个表分区里"></a>现在我们要新建一个分区，并将hdfs中已经存在的一个目录，及里面的数据加载到这个表分区里</h5><p>首先需要在hdfs中创建一个目录，然后将数据文件上传到这个目录里。</p>
+<p>如我们要新建一个分区，名字为gender=W  数据是hdfs中的/hivetest/gender=W目录下的数据文件。</p>
+<p>具体操作：</p>
+<p>1 在linux下创建一个gender=w.txt文件</p>
+<pre><code>22,test1
+23,test2
+24,test3
+</code></pre>
+<p>2 将文件传到hdfs的/hivetest/gender=W目录下</p>
+<p>创建目录</p>
+<pre><code>hdfs dfs -mkdir -p /hivetest/gender=W
+</code></pre>
+<p>上传文件</p>
+<pre><code>hdfs dfs -put /root/gender\=w.txt /hivetest/gender=W
+</code></pre>
+<p>3 为partition_table表创建分区，并指定目录/hivetest/gender=W</p>
+<pre><code>0: jdbc:hive2://localhost:10000&gt; alter table partition_table add partition(gender=&#39;W&#39;) location &#39;/hivetest/gender=W&#39;;
+No rows affected (0.22 seconds)
+</code></pre>
+<p>4 查看分区</p>
+<pre><code>0: jdbc:hive2://localhost:10000&gt; show partitions partition_table;
++------------+
+| partition  |
++------------+
+| gender=F   |
+| gender=M   |
+| gender=W   |
++------------+
+3 rows selected (0.234 seconds)
+</code></pre>
+<p>5 查看数据</p>
+<pre><code>0: jdbc:hive2://localhost:10000&gt; select * from partition_table;
++----------------------+-----------------------+-------------------------+
+| partition_table.sid  | partition_table.name  | partition_table.gender  |
++----------------------+-----------------------+-------------------------+
+| 2                    | Mary                  | F                       |
+| 5                    | Mike                  | F                       |
+| 1                    | Tom                   | M                       |
+| 3                    | Jerry                 | M                       |
+| 4                    | Rose                  | M                       |
+| 22                   | test1                 | W                       |
+| 23                   | test2                 | W                       |
+| 24                   | test3                 | W                       |
++----------------------+-----------------------+-------------------------+
+8 rows selected (0.51 seconds)
+</code></pre>
+<p>6 删除分区</p>
+<p>这时，我们删除分区。删除表中元数据并将hdfs中/hivetest目录下的gender=W目录以及内容给删除</p>
+<pre><code>0: jdbc:hive2://localhost:10000&gt; alter table partition_table drop partition(gender=&#39;W&#39;);
+No rows affected (0.396 seconds)
+</code></pre>
+<h5 id="重命名分区"><a href="#重命名分区" class="headerlink" title="重命名分区"></a>重命名分区</h5><pre><code>0: jdbc:hive2://localhost:10000&gt; alter table partition_table partition(gender=&#39;M&#39;) rename to partition(gender=&#39;S&#39;);
+No rows affected (0.57 seconds)
+</code></pre>
+<h3 id="2-4-外部表"><a href="#2-4-外部表" class="headerlink" title="2.4 外部表"></a>2.4 外部表</h3><p>EXTERNAL关键字允许您创建一个表并提供LOCATION，以便Hive不使用此表的默认位置。如果您已经有数据生成，这个就派上用场了。删除EXTERNAL表时，表中的数据<em>不会</em>从文件系统中删除。</p>
+<p>EXTERNAL表指向任何HDFS存储位置，而不是存储在由配置属性指定的文件夹中<code>hive.metastore.warehouse.dir</code>。</p>
+<h4 id="2-4-1-创建外部表"><a href="#2-4-1-创建外部表" class="headerlink" title="2.4.1 创建外部表"></a>2.4.1 创建外部表</h4><p>比如我在hdfs上hiveLearn目录下有个 student的目录，目录里存放着如下格式的文件</p>
+<p>1.txt</p>
+<pre><code>201457507201,student1,18,01
+201457507202,student2,19,01
+201457507203,student3,18,02
+</code></pre>
+<p>2.txt</p>
+<pre><code>201457507204,student3,18,01
+201457507205,student4,19,01
+201457507206,student5,18,02
+</code></pre>
+<p>现在我们创建一个名字为student的外部表，表结构包括 sno int, sname string, sage int, sex int</p>
+<pre><code>create external table student
+(sno bigint,
+sname string,
+sage int,
+sex string) 
+row format delimited fields terminated by &#39;,&#39; 
+stored as textfile
+location &#39;/hiveLearn/student&#39;;
+</code></pre>
+<p>用关键字location来指向hdfs中的存储位置。</p>
+<p>查询表数据</p>
+<pre><code>0: jdbc:hive2://localhost:10000&gt; select * from student;
++---------------+----------------+---------------+--------------+
+|  student.sno  | student.sname  | student.sage  | student.sex  |
++---------------+----------------+---------------+--------------+
+| 201457507201  | student1       | 18            | 01           |
+| 201457507202  | student2       | 19            | 01           |
+| 201457507203  | student3       | 18            | 02           |
+| 201457507204  | student3       | 18            | 01           |
+| 201457507205  | student4       | 19            | 01           |
+| 201457507206  | student5       | 18            | 02           |
++---------------+----------------+---------------+--------------+
+6 rows selected (0.535 seconds)
+</code></pre>
+<h4 id="2-4-2-通过查询别的表的数据来创建一个新表（CTAS）（结构、数据都复制）"><a href="#2-4-2-通过查询别的表的数据来创建一个新表（CTAS）（结构、数据都复制）" class="headerlink" title="2.4.2 通过查询别的表的数据来创建一个新表（CTAS）（结构、数据都复制）"></a>2.4.2 通过查询别的表的数据来创建一个新表（CTAS）（结构、数据都复制）</h4><p>也可以通过在一个create-table-as-select（CTAS）语句中查询的结果来创建和填充表。由CTAS创建的表是原子的，这意味着在填充所有查询结果之前，表不会被其他用户看到。所以其他用户将会看到带有完整查询结果的表格，或根本看不到表格。</p>
+<p>在CTAS中有两个部分，SELECT部分可以是HiveQL支持的任何<a target="_blank" rel="noopener" href="https://cwiki.apache.org/confluence/display/Hive/LanguageManual+Select">SELECT语句</a>。CTAS的CREATE部分从SELECT部分获取生成的模式，并使用其他表格属性（如SerDe和存储格式）创建目标表。</p>
+<p>CTAS有这些限制：</p>
+<ul>
+<li>目标表不能是分区表。</li>
+<li>目标表不能是外部表。</li>
+<li>目标表不能是列表分段表。</li>
+</ul>
+<h5 id="例如我要创建一个学生表student2"><a href="#例如我要创建一个学生表student2" class="headerlink" title="例如我要创建一个学生表student2"></a>例如我要创建一个学生表student2</h5><p>要将每个人的学号+10 ，然后修改每个学生名为goodSD1、goodSD2……，如果为sex如果为01改为girl，02改为boy。</p>
+<pre><code>create table student2 
+stored as textfile 
+as 
+select 
+sno+10 sno,
+concat(&#39;goodSD&#39;,
+substr(sname,8,1))sname,
+sage,
+case sex when&#39;01&#39;then&#39;girl&#39; else &#39;boy&#39; end as sex 
+from student 
+sort by sno,sname,sage,sex;
+</code></pre>
+<p>查看新创建的表</p>
+<pre><code>0: jdbc:hive2://localhost:10000&gt; select * from student2;
++---------------+-----------------+----------------+---------------+
+| student2.sno  | student2.sname  | student2.sage  | student2.sex  |
++---------------+-----------------+----------------+---------------+
+| 201457507211  | goodSD1         | 18             | girl          |
+| 201457507212  | goodSD2         | 19             | girl          |
+| 201457507213  | goodSD3         | 18             | boy           |
+| 201457507214  | goodSD3         | 18             | girl          |
+| 201457507215  | goodSD4         | 19             | girl          |
+| 201457507216  | goodSD5         | 18             | boy           |
++---------------+-----------------+----------------+---------------+
+6 rows selected (0.35 seconds)
+</code></pre>
+<h4 id="2-4-3-用like新建表-（只复制表结构，不复制表数据）"><a href="#2-4-3-用like新建表-（只复制表结构，不复制表数据）" class="headerlink" title="2.4.3 用like新建表 （只复制表结构，不复制表数据）"></a>2.4.3 用like新建表 （只复制表结构，不复制表数据）</h4><p>创建一个新表student3，表结构与student一样</p>
+<pre><code>0: jdbc:hive2://localhost:10000&gt; create table student3 like student;
+No rows affected (0.261 seconds)
+</code></pre>
+<p>表结构</p>
+<pre><code>0: jdbc:hive2://localhost:10000&gt; desc student3;
++-----------+------------+----------+
+| col_name  | data_type  | comment  |
++-----------+------------+----------+
+| sno       | bigint     |          |
+| sname     | string     |          |
+| sage      | int        |          |
+| sex       | string     |          |
++-----------+------------+----------+
+4 rows selected (0.383 seconds)
+</code></pre>
+<h3 id="2-5-桶表"><a href="#2-5-桶表" class="headerlink" title="2.5 桶表"></a>2.5 桶表</h3><p>桶表是对数据进行哈希取值，然后放到不同文件中存储。</p>
+<p>数据加载到桶表时，会对字段取hash值，然后与桶的数量取模。把数据放到对应的文件中。<br>物理上，每个桶就是表(或分区）目录里的一个文件，一个作业产生的桶(输出文件)和reduce任务个数相同</p>
+<h4 id="2-5-1-作用："><a href="#2-5-1-作用：" class="headerlink" title="2.5.1 作用："></a>2.5.1 作用：</h4><p>桶表专门用于抽样查询，是很专业性的，不是日常用来存储数据的表，需要抽样查询时，才创建和使用桶表。</p>
+<h4 id="2-5-2-首先创建表格"><a href="#2-5-2-首先创建表格" class="headerlink" title="2.5.2  首先创建表格"></a>2.5.2  首先创建表格</h4><pre><code>create table bucket_t1
+(id string)
+clustered by (id) 
+sorted by (id) 
+into 10 buckets;
+</code></pre>
+<p>clustered by ：以哪个字段分桶，对id进行哈希取值</p>
+<p>sorted by： 按照id字段排序</p>
+<p>into10 buckets：分到10 个桶里。</p>
+<h4 id="2-5-3-插入数据"><a href="#2-5-3-插入数据" class="headerlink" title="2.5.3 插入数据"></a>2.5.3 插入数据</h4><p>这里有两种方式插入数据，一种是查询别的表，将数据放到创建的桶表里。另一种是直接load数据来，sqoop数据可以嘛？待测试。</p>
+<h5 id="a-利用insert-select-进行插入"><a href="#a-利用insert-select-进行插入" class="headerlink" title="a 利用insert-select 进行插入"></a>a 利用insert-select 进行插入</h5><p>首先创建一个number_tb的普通内部表，然后load本地数据（本地数据是999条随机数）</p>
+<pre><code>create table number_tb(id string);
+load data local inpath&#39;/root/hiveTest/number.txt&#39; into table number_tb;
+</code></pre>
+<p>查询number_tb中的数据，并将数据插入到 桶表 bucket_t1中</p>
+<pre><code>insert overwrite table bucket_t1 select id from number_tb;
+</code></pre>
+<p>这时候会开启MapReduce任务。Reducer个数为表的桶数</p>
+<p>并且在 bucket_t1桶表hdfs目录下会产生10个数据文件，如图：</p>
+<p><img src="https://shirukai.gitee.io/images/201711302044_593.png"></p>
+<h5 id="b-直接load-data"><a href="#b-直接load-data" class="headerlink" title="b 直接load data"></a>b 直接load data</h5><p>我们再创建一个桶表 名字为 bucket_t2</p>
+<pre><code>reate table bucket_t2(id string) clustered by (id) sorted by (id) into 10 buckets;
+</code></pre>
+<p>直接load本地数据会怎样？</p>
+<pre><code>0: jdbc:hive2://localhost:10000&gt; load data local inpath &#39;/root/hiveTest/number.txt&#39; into table bucket_t2;
+Error: Error while compiling statement: FAILED: SemanticException Please load into an intermediate table and use &#39;insert... select&#39; to allow Hive to enforce bucketing. Load into bucketed tables are disabled for safety reasons. If you know what you are doing, please sethive.strict.checks.bucketing to false and that hive.mapred.mode is not set to &#39;strict&#39; to proceed. Note that if you may get errors or incorrect results if you make a mistake while using some of the unsafe features. (state=42000,code=40000)
+</code></pre>
+<p>错误提示我们用insert…select方法去load data到bucket 表里。 所以现在不允许我们去load data 到桶表里了。不过人家也告诉我们了，如果我们真的想要LOAD data数据到桶表，可以设置strict.checks.bucketing to false</p>
+<pre><code>set hive.strict.checks.bucketing = false;
+</code></pre>
+<p>然后我们再load数据</p>
+<pre><code>load data local inpath &#39;/root/hiveTest/number.txt&#39; into table bucket_t2;
+</code></pre>
+<p><img src="https://shirukai.gitee.io/images/201711302113_593.png"></p>
+<p>在hdfs中对应的表数据目录下只有一个文件，并没有对数据进行分桶，所以这种插入数据的方法是错误的，官网默认也是不允许的。</p>
+<p>那么sqoop数据可以吗？我们来测试一下。 经测试sqoop方法是不可以的。</p>
+<h3 id="2-6-倾斜表-Skewed-Tables"><a href="#2-6-倾斜表-Skewed-Tables" class="headerlink" title="2.6 倾斜表 Skewed Tables"></a>2.6 倾斜表 Skewed Tables</h3><p>此功能可用于提高一列或多列具有<a target="_blank" rel="noopener" href="https://cwiki.apache.org/confluence/display/Hive/Skewed+Join+Optimization">倾斜</a>值的表的性能。通过指定经常出现的值（严重偏斜），Hive会自动将它们分割成单独的文件（或<a target="_blank" rel="noopener" href="https://cwiki.apache.org/confluence/display/Hive/ListBucketing">列表</a>中的<a target="_blank" rel="noopener" href="https://cwiki.apache.org/confluence/display/Hive/ListBucketing">目录</a>），并在查询期间考虑到这一点，以便跳过或包含整个文件（或目录的情况下<a target="_blank" rel="noopener" href="https://cwiki.apache.org/confluence/display/Hive/ListBucketing">列表桶装</a>），如果可能的话。</p>
+<h4 id="创建倾斜表"><a href="#创建倾斜表" class="headerlink" title="创建倾斜表"></a>创建倾斜表</h4><pre><code>0: jdbc:hive2://localhost:10000&gt; create table list_bucket_multiple(col1 string,col2 int,col3 string)
+. . . . . . . . . . . . . . . .&gt; skewed by (col1,col2) on ((&#39;s1&#39;,1),(&#39;s3&#39;,3),(&#39;s13&#39;,13),(&#39;s79&#39;,79));
+</code></pre>
+<h3 id="2-7-临时表"><a href="#2-7-临时表" class="headerlink" title="2.7 临时表"></a>2.7 临时表</h3><p>已经创建为临时表的表格只对当前会话可见。数据将存储在用户的暂存目录中，并在会话结束时被删除。</p>
+<p>如果使用数据库中已存在的永久表的数据库/表名创建临时表，那么在该会话中，对该表的任何引用都将解析为临时表，而不是永久表。用户将无法访问该会话中的原始表，而不会删除临时表或将其重命名为非冲突的名称。</p>
+<p>临时表具有以下限制：</p>
+<ul>
+<li>分区列不受支持。</li>
+<li>不支持创建索引</li>
+</ul>
+<p>创建临时表 </p>
+<pre><code>create temporary table tmp_tb (key string,value string);
+</code></pre>
+<p>查看表结构</p>
+<pre><code>0: jdbc:hive2://localhost:10000&gt; show create table tmp_tb;
++----------------------------------------------------+
+|                   createtab_stmt                   |
++----------------------------------------------------+
+| CREATE TEMPORARY TABLE `tmp_tb`(                   |
+|   `key` string,                                    |
+|   `value` string)                                  |
+| ROW FORMAT SERDE                                   |
+|   &#39;org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe&#39;  |
+| STORED AS INPUTFORMAT                              |
+|   &#39;org.apache.hadoop.mapred.TextInputFormat&#39;       |
+| OUTPUTFORMAT                                       |
+|   &#39;org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat&#39; |
+| LOCATION                                           |
+|   &#39;hdfs://Master.Hadoop:9000/tmp/hive/root/4a5b13c3-6210-473a-963c-6355e45d04bf/_tmp_space.db/965fb4c8-dc6d-4a45-b7a1-05b79c6054bb&#39; |
+| TBLPROPERTIES (                                    |
+| )                                                  |
++----------------------------------------------------+
+13 rows selected (0.071 seconds)
+</code></pre>
+<p> 可以看出，表属性中的LOCATION指向的是hdfs中的一个临时文件。</p>
+<h3 id="2-8-约束"><a href="#2-8-约束" class="headerlink" title="2.8 约束"></a>2.8 约束</h3><h4 id="2-8-1-主键约束"><a href="#2-8-1-主键约束" class="headerlink" title="2.8.1 主键约束"></a>2.8.1 主键约束</h4><pre><code>0: jdbc:hive2://localhost:10000&gt; create table pk(id1 integer,id2 integer,primary key (id1,id2) disable novalidate);
+No rows affected (0.393 seconds)
+</code></pre>
+<h4 id="2-8-2-外键约束"><a href="#2-8-2-外键约束" class="headerlink" title="2.8.2 外键约束"></a>2.8.2 外键约束</h4><pre><code>0: jdbc:hive2://localhost:10000&gt; create table fk(id1 integer, id2 integer,
+. . . . . . . . . . . . . . . .&gt;   constraint c1 foreign key(id1, id2) references pk(id2, id1) disable novalidate);
+No rows affected (0.278 seconds)
+</code></pre>
+<h4 id="2-9-删除表"><a href="#2-9-删除表" class="headerlink" title="2.9 删除表"></a>2.9 删除表</h4><pre><code>DROP TABLE [IF EXISTS] table_name [PURGE];     -- (Note: PURGE available in Hive 0.14.0 and later)
+</code></pre>
+<p>DROP TABLE删除此表的元数据和数据。如果配置了垃圾箱（并且未指定PURGE），则实际将数据移至.Trash / Current目录。元数据完全丢失。</p>
+<p>删除EXTERNAL表时，表中的数据<em>不会</em>从文件系统中删除。</p>
+<p>删除视图引用的表时，不会给出任何警告（视图将被视为无效，并且必须由用户删除或重新创建）。</p>
+<p>否则，表格信息将从Metastore中删除，原始数据将被删除，就像“hadoop dfs -rm”一样。在许多情况下，这会导致表数据被移动到其主目录中用户的.Trash文件夹中; 错误地使用DROP TABLE的用户可以通过重新创建具有相同模式的表来恢复其丢失的数据，重新创建任何必要的分区，然后使用Hadoop手动将数据移回原位。这个解决方案随着时间的推移或者在安装过程中可能会发生变化，因为它依赖于底层实现。强烈建议用户不要反复丢弃表格</p>
+<h2 id="3-修改表-分区-列"><a href="#3-修改表-分区-列" class="headerlink" title="3 修改表 /分区 /列"></a>3 修改表 /分区 /列</h2><h3 id="3-1-修改表"><a href="#3-1-修改表" class="headerlink" title="3.1 修改表"></a>3.1 修改表</h3><h4 id="3-1-1-重命名表"><a href="#3-1-1-重命名表" class="headerlink" title="3.1.1 重命名表"></a>3.1.1 重命名表</h4><pre><code>ALTER TABLE table_name RENAME TO new_table_name;
+</code></pre>
+<p>例如：将test表重名名为test1</p>
+<pre><code>0: jdbc:hive2://localhost:10000&gt; alter table test rename to test1;
+No rows affected (0.519 seconds)
+</code></pre>
+<h4 id="3-1-2-修改表的属性"><a href="#3-1-2-修改表的属性" class="headerlink" title="3.1.2 修改表的属性"></a>3.1.2 修改表的属性</h4><pre><code>ALTER TABLE table_name SET TBLPROPERTIES table_properties;
+ 
+table_properties:
+  : (property_name = property_value, property_name = property_value, ... )
+</code></pre>
+<p>您可以使用此语句将您自己的元数据添加到表中。目前last_modified_user，last_modified_time属性是由Hive自动添加和管理的。用户可以将自己的属性添加到此列表中。你可以做DESCRIBE EXTENDED TABLE来获得这个信息。</p>
+<pre><code>0: jdbc:hive2://localhost:10000&gt; desc extended test1;
++-----------------------------+----------------------------------------------------+----------+
+|          col_name           |                     data_type                      | comment  |
++-----------------------------+----------------------------------------------------+----------+
+| id                          | int                                                |          |
+| name                        | string                                             |          |
+|                             | NULL                                               | NULL     |
+| Detailed Table Information  | Table(tableName:test1, dbName:foreign_path_hivedb, owner:root, createTime:1513143808, lastAccessTime:0, retention:0, sd:StorageDescriptor(cols:[FieldSchema(name:id, type:int, comment:null), FieldSchema(name:name, type:string, comment:null)], location:hdfs://Master.Hadoop:9000/hiveLearn/foreign_path_hiveDB/test1, inputFormat:org.apache.hadoop.hive.ql.io.orc.OrcInputFormat, outputFormat:org.apache.hadoop.hive.ql.io.orc.OrcOutputFormat, compressed:false, numBuckets:2, serdeInfo:SerDeInfo(name:null, serializationLib:org.apache.hadoop.hive.ql.io.orc.OrcSerde, parameters:&#123;serialization.format=1&#125;), bucketCols:[id], sortCols:[], parameters:&#123;&#125;, skewedInfo:SkewedInfo(skewedColNames:[], skewedColValues:[], skewedColValueLocationMaps:&#123;&#125;), storedAsSubDirectories:false), partitionKeys:[], parameters:&#123;last_modified_time=1513236181, totalSize=1753, numRows=0, rawDataSize=0, numFiles=3, transient_lastDdlTime=1513236182, last_modified_by=root, transactional=true&#125;, viewOriginalText:null, viewExpandedText:null, tableType:MANAGED_TABLE, rewriteEnabled:false) |          |
++-----------------------------+-
+</code></pre>
+<p>如我要修改这个表的描述</p>
+<pre><code>0: jdbc:hive2://localhost:10000&gt; alter table test1 set tblproperties(&#39;comment&#39; = &#39;this is a test table&#39;);
+No rows affected (0.352 seconds)
+</code></pre>
+<h4 id="3-1-3-添加SerDe属性"><a href="#3-1-3-添加SerDe属性" class="headerlink" title="3.1.3 添加SerDe属性"></a>3.1.3 添加SerDe属性</h4><pre><code>ALTER TABLE table_name [PARTITION partition_spec] SET SERDE serde_class_name [WITH SERDEPROPERTIES serde_properties];
+ 
+ALTER TABLE table_name [PARTITION partition_spec] SET SERDEPROPERTIES serde_properties;
+ 
+serde_properties:
+  : (property_name = property_value, property_name = property_value, ... )
+</code></pre>
+<p>SerDe属性在被Hive初始化时被传递给表的SerDe，以序列化和反序列化数据。因此，用户可以在这里存储自定义SerDe所需的任何信息。有关更多信息，请参阅开发人员指南中的<a target="_blank" rel="noopener" href="https://cwiki.apache.org/confluence/display/Hive/SerDe">SerDe文档</a>和<a target="_blank" rel="noopener" href="https://cwiki.apache.org/confluence/display/Hive/DeveloperGuide#DeveloperGuide-HiveSerDe">Hive SerDe</a>，有关在CREATE TABLE语句中设置表的SerDe和SERDEPROPERTIES的详细信息，请参阅上面的<a target="_blank" rel="noopener" href="https://cwiki.apache.org/confluence/display/Hive/LanguageManual+DDL#LanguageManualDDL-RowFormat,StorageFormat,andSerDe">行格式，存储格式和SerDe</a>。</p>
+<p>请注意这两个<code>property_name</code>和<code>property_value</code>必须加引号。</p>
+<pre><code>ALTER TABLE test1 SET SERDEPROPERTIES (&#39;field.delim&#39; = &#39;,&#39;);
+</code></pre>
+<h4 id="3-1-4-改变表格存储属性"><a href="#3-1-4-改变表格存储属性" class="headerlink" title="3.1.4 改变表格存储属性"></a>3.1.4 改变表格存储属性</h4><pre><code>ALTER TABLE table_name CLUSTERED BY (col_name, col_name, ...) [SORTED BY (col_name, ...)]
+  INTO num_buckets BUCKETS;
+</code></pre>
+<p>例：</p>
+<p>创建一个普通的表</p>
+<pre><code>0: jdbc:hive2://localhost:10000&gt; create table test2 (key string,value string);
+No rows affected (1.069 seconds)
+</code></pre>
+<p>查看表属性</p>
+<pre><code>0: jdbc:hive2://localhost:10000&gt; show create table test2;
++----------------------------------------------------+
+|                   createtab_stmt                   |
++----------------------------------------------------+
+| CREATE TABLE `test2`(                              |
+|   `key` string,                                    |
+|   `value` string)                                  |
+| ROW FORMAT SERDE                                   |
+|   &#39;org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe&#39;  |
+| STORED AS INPUTFORMAT                              |
+|   &#39;org.apache.hadoop.mapred.TextInputFormat&#39;       |
+| OUTPUTFORMAT                                       |
+|   &#39;org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat&#39; |
+| LOCATION                                           |
+|   &#39;hdfs://Master.Hadoop:9000/hiveLearn/foreign_path_hiveDB/test2&#39; |
+| TBLPROPERTIES (                                    |
+|   &#39;transient_lastDdlTime&#39;=&#39;1513236960&#39;)            |
++-------------------------------
+</code></pre>
+<p>修改表存储属性</p>
+<pre><code>0: jdbc:hive2://localhost:10000&gt; alter table test2 clustered by (key) sorted by (key) into 2 buckets;
+No rows affected (0.358 seconds)
+</code></pre>
+<p>查看修改后的属性</p>
+<pre><code>0: jdbc:hive2://localhost:10000&gt; show create table test2;
++----------------------------------------------------+
+|                   createtab_stmt                   |
++----------------------------------------------------+
+| CREATE TABLE `test2`(                              |
+|   `key` string,                                    |
+|   `value` string)                                  |
+| CLUSTERED BY (                                     |
+|   key)                                             |
+| SORTED BY (                                        |
+|   key ASC)                                         |
+| INTO 2 BUCKETS                                     |
+| ROW FORMAT SERDE                                   |
+|   &#39;org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe&#39;  |
+| STORED AS INPUTFORMAT                              |
+|   &#39;org.apache.hadoop.mapred.TextInputFormat&#39;       |
+| OUTPUTFORMAT                                       |
+|   &#39;org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat&#39; |
+| LOCATION                                           |
+|   &#39;hdfs://Master.Hadoop:9000/hiveLearn/foreign_path_hiveDB/test2&#39; |
+| TBLPROPERTIES (                                    |
+|   &#39;last_modified_by&#39;=&#39;root&#39;,                       |
+|   &#39;last_modified_time&#39;=&#39;1513237030&#39;,               |
+|   &#39;transient_lastDdlTime&#39;=&#39;1513237030&#39;)            |
++----------------------------------------------------+
+20 rows selected (0.312 seconds)
+</code></pre>
+<h4 id="3-1-5修改表倾斜后存储为目录"><a href="#3-1-5修改表倾斜后存储为目录" class="headerlink" title="3.1.5修改表倾斜后存储为目录"></a>3.1.5修改表倾斜后存储为目录</h4><h5 id="修改表倾斜"><a href="#修改表倾斜" class="headerlink" title="修改表倾斜"></a>修改表倾斜</h5><pre><code>ALTER TABLE table_name SKEWED BY (col_name1, col_name2, ...)
+  ON ([(col_name1_value, col_name2_value, ...) [, (col_name1_value, col_name2_value), ...]
+  [STORED AS DIRECTORIES];
+</code></pre>
+<p>STORED AS DIRECTORIES选项确定<a target="_blank" rel="noopener" href="https://cwiki.apache.org/confluence/display/Hive/Skewed+Join+Optimization">倾斜的</a>表是否使用<a target="_blank" rel="noopener" href="https://cwiki.apache.org/confluence/display/Hive/ListBucketing">列表分区</a>功能，该功能会为倾斜的值创建子目录。</p>
+<h5 id="修改表不倾斜"><a href="#修改表不倾斜" class="headerlink" title="修改表不倾斜"></a>修改表不倾斜</h5><pre><code>ALTER TABLE table_name NOT SKEWED;
+</code></pre>
+<p>NOT SKEWED选项使表格无偏斜，并关闭列表分段功能（因为列表分段表总是倾斜的）。这将影响在ALTER语句之后创建的分区，但对在ALTER语句之前创建的分区没有影响。</p>
+<h5 id="修改表为不保存为目录"><a href="#修改表为不保存为目录" class="headerlink" title="修改表为不保存为目录"></a>修改表为不保存为目录</h5><pre><code>ALTER TABLE table_name NOT STORED AS DIRECTORIES;
+</code></pre>
+<p>这将关闭列表bucketing功能，尽管表仍然倾斜。</p>
+<h5 id="修改表的倾斜-位置"><a href="#修改表的倾斜-位置" class="headerlink" title="修改表的倾斜 位置"></a>修改表的倾斜 位置</h5><pre><code>ALTER TABLE table_name SET SKEWED LOCATION (col_name1=&quot;location1&quot; [, col_name2=&quot;location2&quot;, ...] );
+</code></pre>
+<p>这将更改列表分段的位置。</p>
+<h5 id="3-1-6-修改表的约束"><a href="#3-1-6-修改表的约束" class="headerlink" title="3.1.6 修改表的约束"></a>3.1.6 修改表的约束</h5><p>表约束可以通过ALTER TABLE语句添加或删除。</p>
+<pre><code>ALTER TABLE table_name ADD CONSTRAINT constraint_name PRIMARY KEY (column, ...) DISABLE NOVALIDATE;
+ALTER TABLE table_name ADD CONSTRAINT constraint_name FOREIGN KEY (column, ...) REFERENCES table_name(column, ...) DISABLE NOVALIDATE RELY;
+ALTER TABLE table_name DROP CONSTRAINT constraint_name;
+</code></pre>
+<p>例如</p>
+<pre><code>0: jdbc:hive2://localhost:10000&gt; alter table test1 add constraint test_pk primary key (id) disable novalidate;
+No rows affected (2.762 seconds)
+</code></pre>
+<h3 id="3-2-修改分区"><a href="#3-2-修改分区" class="headerlink" title="3.2 修改分区"></a>3.2 修改分区</h3><p>分区可以通过在ALTER TABLE语句中使用PARTITION子句添加，重命名，交换（移动），删除或（un）归档，如下所述。要使直接添加到HDFS的分区的Metastore知道，您可以使用Metastore检查命令（<a target="_blank" rel="noopener" href="https://cwiki.apache.org/confluence/display/Hive/LanguageManual+DDL#LanguageManualDDL-RecoverPartitions(MSCKREPAIRTABLE)">MSCK </a>），或在Amazon EMR上使用ALTER TABLE的RECOVER PARTITIONS选项。请参阅下面的<a target="_blank" rel="noopener" href="https://cwiki.apache.org/confluence/display/Hive/LanguageManual+DDL#LanguageManualDDL-AlterEitherTableorPartition">Alter Either Table或Partition </a>以获取更多方法来更改分区。</p>
+<h4 id="3-2-1-添加分区"><a href="#3-2-1-添加分区" class="headerlink" title="3.2.1 添加分区"></a>3.2.1 添加分区</h4><pre><code>ALTER TABLE table_name ADD [IF NOT EXISTS] PARTITION partition_spec [LOCATION &#39;location&#39;][, PARTITION partition_spec [LOCATION &#39;location&#39;], ...];
+ 
+partition_spec:
+  : (partition_column = partition_col_value, partition_column = partition_col_value, ...)
+</code></pre>
+<p>您可以使用ALTER TABLE ADD PARTITION将分区添加到表中。分区值只有在字符串的情况下才能被引用。该位置必须是数据文件所在的目录。（ADD PARTITION更改表元数据，但不加载数据，如果分区位置中不存在数据，则查询不会返回任何结果。）如果表的partition_spec已存在，则会引发错误。您可以使用IF NOT EXISTS来跳过错误。</p>
+<h4 id="3-2-2-重命名分区"><a href="#3-2-2-重命名分区" class="headerlink" title="3.2.2 重命名分区"></a>3.2.2 重命名分区</h4><pre><code>ALTER TABLE table_name PARTITION partition_spec RENAME TO PARTITION partition_spec;
+</code></pre>
+<p>此语句允许您更改分区列的值。其中一种用例是，您可以使用此语句来标准化旧版分区列值以符合其类型。在这种情况下，类型转换和规范化不会在旧的列值启用<em>partition_spec</em>甚至财产<a target="_blank" rel="noopener" href="https://cwiki.apache.org/confluence/display/Hive/Configuration+Properties#ConfigurationProperties-hive.typecheck.on.insert">hive.typecheck.on.insert</a>设置为true（默认值），它允许你在老指定字符串形式的任何遗留数据<em>partition_spec</em>。</p>
+<h4 id="3-2-3-交换分区"><a href="#3-2-3-交换分区" class="headerlink" title="3.2.3 交换分区"></a>3.2.3 交换分区</h4><p>分区可以在表之间交换（移动）</p>
+<pre><code>-- Move partition from table_name_1 to table_name_2
+ALTER TABLE table_name_2 EXCHANGE PARTITION (partition_spec) WITH TABLE table_name_1;
+-- multiple partitions
+ALTER TABLE table_name_2 EXCHANGE PARTITION (partition_spec, partition_spec2, ...) WITH TABLE table_name_1;
+</code></pre>
+<p>此语句允许您将分区中的数据从表移动到另一个具有相同模式但尚未拥有该分区的表。<br>有关此功能的更多详细信息，请参阅<a target="_blank" rel="noopener" href="https://cwiki.apache.org/confluence/display/Hive/Exchange+Partition">Exchange分区</a>和<a target="_blank" rel="noopener" href="https://issues.apache.org/jira/browse/HIVE-4095">HIVE-4095 </a>。</p>
+<h4 id="3-2-4-恢复分区（MSCK-REPAIR-TABLE）"><a href="#3-2-4-恢复分区（MSCK-REPAIR-TABLE）" class="headerlink" title="3.2.4 恢复分区（MSCK REPAIR TABLE）"></a>3.2.4 恢复分区（MSCK REPAIR TABLE）</h4><p>Hive存储Metastore中每个表的分区列表。但是，如果直接将新分区添加到HDFS（例如通过使用<code>hadoop fs -put</code>命令），Metastore（因此Hive）将不会意识到这些分区，除非用户<code>ALTER TABLE table_name ADD PARTITION</code>在每个新添加的分区上运行命令。</p>
+<p>但是，用户可以使用修复表选项运行Metastore检查命令：</p>
+<pre><code>MSCK REPAIR TABLE table_name;
+</code></pre>
+<p>这会将关于分区的元数据添加到Hive Metastore，以获取这些元数据尚不存在的分区。换句话说，它将添加存在于HDFS但不在Metastore中的任何分区。有关更多详细信息，请参阅<a target="_blank" rel="noopener" href="https://issues.apache.org/jira/browse/HIVE-874">HIVE-874</a>。当有大量未跟踪的分区时，可以批量运行MSCK REPAIR TABLE来避免OOME（内存不足错误）。通过为属性<strong>hive.msck.repair.batch.size</strong>提供配置的批处理大小，它可以在内部批处理中运行。该属性的默认值是零，这意味着它将一次执行所有的分区。</p>
+<p>Amazon Elastic MapReduce（EMR）版本的Hive上的等价命令是：</p>
+<pre><code>ALTER TABLE table_name RECOVER PARTITIONS;
+</code></pre>
+<h4 id="3-2-5-删除分区"><a href="#3-2-5-删除分区" class="headerlink" title="3.2.5 删除分区"></a>3.2.5 删除分区</h4><pre><code>ALTER TABLE table_name DROP [IF EXISTS] PARTITION partition_spec[, PARTITION partition_spec, ...]
+  [IGNORE PROTECTION] [PURGE];  
+</code></pre>
+<p>您可以使用ALTER TABLE DROP PARTITION来删除表的分区。这将删除此分区的数据和元数据。如果配置了垃圾桶，则实际上将数据移动到.Trash / Current目录，除非指定了PURGE，但元数据完全丢失（请参阅上面的<a target="_blank" rel="noopener" href="https://cwiki.apache.org/confluence/display/Hive/LanguageManual+DDL#LanguageManualDDL-DropTable">丢弃表</a>）。</p>
+<p>对于受<a target="_blank" rel="noopener" href="https://cwiki.apache.org/confluence/display/Hive/LanguageManual+DDL#LanguageManualDDL-AlterTable/PartitionProtections">NO_DROP CASCADE</a>保护的表，可以使用谓词IGNORE PROTECTION删除指定的分区或一组分区（例如，在两个Hadoop集群之间拆分表时）：</p>
+<pre><code>ALTER TABLE table_name DROP [IF EXISTS] PARTITION partition_spec IGNORE PROTECTION;
+</code></pre>
+<p>无论保护状态如何，上述命令都会删除该分区。</p>
+<h4 id="3-2-6-归档分区"><a href="#3-2-6-归档分区" class="headerlink" title="3.2.6 归档分区"></a>3.2.6 归档分区</h4><pre><code>ALTER TABLE table_name ARCHIVE PARTITION partition_spec;
+ALTER TABLE table_name UNARCHIVE PARTITION partition_spec;
+</code></pre>
+<p>归档是将分区文件移动到Hadoop存档（HAR）中的功能。请注意，只有文件数量会减少; HAR不提供任何压缩。有关更多信息，请参阅<a target="_blank" rel="noopener" href="https://cwiki.apache.org/confluence/display/Hive/LanguageManual+Archiving">LanguageManual Archiving</a></p>
+<h3 id="3-3-修改表或者分区"><a href="#3-3-修改表或者分区" class="headerlink" title="3.3 修改表或者分区"></a>3.3 修改表或者分区</h3><h4 id="3-3-1修改表-分区文件格式"><a href="#3-3-1修改表-分区文件格式" class="headerlink" title="3.3.1修改表/分区文件格式"></a>3.3.1修改表/分区文件格式</h4><pre><code>ALTER TABLE table_name [PARTITION partition_spec] SET FILEFORMAT file_format;
+</code></pre>
+<h4 id="3-3-2-修改表-分区位置"><a href="#3-3-2-修改表-分区位置" class="headerlink" title="3.3.2 修改表/分区位置"></a>3.3.2 修改表/分区位置</h4><pre><code>ALTER TABLE table_name [PARTITION partition_spec] SET LOCATION &quot;new location&quot;;
+</code></pre>
+<h4 id="3-3-3修改表-分区TOUCH"><a href="#3-3-3修改表-分区TOUCH" class="headerlink" title="3.3.3修改表/分区TOUCH"></a>3.3.3修改表/分区TOUCH</h4><pre><code>
+ALTER TABLE table_name TOUCH [PARTITION partition_spec];
+</code></pre>
+<p>TOUCH读取元数据，并将其写回。这有导致前/后执行挂钩的效果。一个示例用例是，如果您有一个挂钩，它会记录所有已修改的表/分区以及直接更改HDFS上的文件的外部脚本。由于脚本修改了配置单元之外的文件，修改将不会被挂钩记录。外部脚本可以调用TOUCH来启动钩子并将所述表或分区标记为已修改。</p>
+<p>另外，如果我们合并可靠的最后修改时间，它可能会很有用。然后触摸也会更新那个时间。</p>
+<p>请注意，如果TOUCH不存在，TOUCH不会创建表或分区。（请参见<a target="_blank" rel="noopener" href="https://cwiki.apache.org/confluence/display/Hive/LanguageManual+DDL#LanguageManualDDL-CreateTable">创建表</a>）</p>
+<h4 id="3-3-4-修改表-分区保护"><a href="#3-3-4-修改表-分区保护" class="headerlink" title="3.3.4 修改表/分区保护"></a>3.3.4 修改表/分区保护</h4><pre><code>ALTER TABLE table_name [PARTITION partition_spec] ENABLE|DISABLE NO_DROP [CASCADE];
+ 
+ALTER TABLE table_name [PARTITION partition_spec] ENABLE|DISABLE OFFLINE;
+</code></pre>
+<p>数据保护可以在表或分区级别进行设置。启用NO_DROP可防止<a target="_blank" rel="noopener" href="https://cwiki.apache.org/confluence/display/Hive/LanguageManual+DDL#LanguageManualDDL-DropPartitions">删除</a>表。启用OFFLINE可防止查询表或分区中的数据，但仍可访问元数据。</p>
+<p>如果表中的任何分区启用了NO_DROP，则该表也不能被丢弃。相反，如果一个表启用了NO_DROP，那么分区可能会被删除，但是NO_DROP CASCADE分区不能被删除，除非<a target="_blank" rel="noopener" href="https://cwiki.apache.org/confluence/display/Hive/LanguageManual+DDL#LanguageManualDDL-DropPartitions">drop partition命令</a>指定了IGNORE PROTECTION 。</p>
+<h4 id="3-3-5修改表-分区COMPACT"><a href="#3-3-5修改表-分区COMPACT" class="headerlink" title="3.3.5修改表/分区COMPACT"></a>3.3.5修改表/分区COMPACT</h4><pre><code>
+</code></pre>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%88%9B%E5%BB%BA-%E5%88%A0%E9%99%A4-%E4%BF%AE%E6%94%B9-%E4%BD%BF%E7%94%A8%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">1.</span> <span class="toc-text">1 创建&#x2F;删除&#x2F;修改&#x2F;使用数据库</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 创建一个简单的数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E6%8C%87%E5%AE%9A%E4%BD%8D%E7%BD%AE%E7%9A%84%E6%95%B0%E6%8D%AE%E5%BA%93-%EF%BC%88%E5%A6%82%E6%9E%9C%E7%9B%AE%E5%BD%95%E4%B8%8D%E5%AD%98%E5%9C%A8%E4%BC%9A%E8%87%AA%E5%8A%A8%E5%88%9B%E5%BB%BA%EF%BC%89"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 创建一个指定位置的数据库 （如果目录不存在会自动创建）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-%E4%BF%AE%E6%94%B9%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">1.3.</span> <span class="toc-text">1.3 修改数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-4-%E4%BF%AE%E6%94%B9%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9B%AE%E5%BD%95%E4%BD%8D%E7%BD%AE"><span class="toc-number">1.4.</span> <span class="toc-text">1.4 修改数据库目录位置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-5-%E5%88%A0%E9%99%A4%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">1.5.</span> <span class="toc-text">1.5 删除数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-6-%E6%9F%A5%E7%9C%8B%E6%89%80%E6%9C%89%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">1.6.</span> <span class="toc-text">1.6 查看所有数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-7-%E4%BD%BF%E7%94%A8%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">1.7.</span> <span class="toc-text">1.7 使用数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-8-%E6%9F%A5%E7%9C%8B%E5%BD%93%E5%89%8D%E4%BD%BF%E7%94%A8%E7%9A%84%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">1.8.</span> <span class="toc-text">1.8 查看当前使用的数据库</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%88%9B%E5%BB%BA-%E5%88%A0%E9%99%A4-%E6%88%AA%E6%96%AD%E8%A1%A8"><span class="toc-number">2.</span> <span class="toc-text">2 创建&#x2F;删除&#x2F;截断表</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E5%88%9B%E5%BB%BA%E8%A1%A8%E6%A0%BC"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 创建表格</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E5%AD%98%E5%82%A8%E6%A0%BC%E5%BC%8F"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 存储格式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E5%88%86%E5%8C%BA%E8%A1%A8"><span class="toc-number">2.3.</span> <span class="toc-text">2.3 分区表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-%E5%A4%96%E9%83%A8%E8%A1%A8"><span class="toc-number">2.4.</span> <span class="toc-text">2.4 外部表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-%E6%A1%B6%E8%A1%A8"><span class="toc-number">2.5.</span> <span class="toc-text">2.5 桶表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-6-%E5%80%BE%E6%96%9C%E8%A1%A8-Skewed-Tables"><span class="toc-number">2.6.</span> <span class="toc-text">2.6 倾斜表 Skewed Tables</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-7-%E4%B8%B4%E6%97%B6%E8%A1%A8"><span class="toc-number">2.7.</span> <span class="toc-text">2.7 临时表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-8-%E7%BA%A6%E6%9D%9F"><span class="toc-number">2.8.</span> <span class="toc-text">2.8 约束</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E4%BF%AE%E6%94%B9%E8%A1%A8-%E5%88%86%E5%8C%BA-%E5%88%97"><span class="toc-number">3.</span> <span class="toc-text">3 修改表 &#x2F;分区 &#x2F;列</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E4%BF%AE%E6%94%B9%E8%A1%A8"><span class="toc-number">3.1.</span> <span class="toc-text">3.1 修改表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E4%BF%AE%E6%94%B9%E5%88%86%E5%8C%BA"><span class="toc-number">3.2.</span> <span class="toc-text">3.2 修改分区</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-%E4%BF%AE%E6%94%B9%E8%A1%A8%E6%88%96%E8%80%85%E5%88%86%E5%8C%BA"><span class="toc-number">3.3.</span> <span class="toc-text">3.3 修改表或者分区</span></a></li></ol></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

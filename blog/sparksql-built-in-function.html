@@ -1,0 +1,643 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SparkSQL内置函数 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="
+版本说明：spark-2.3.0
+
+SparkSQL内置函数官网API：http://spark.apache.org/docs/latest/api/scala/index.html#org.a,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">SparkSQL内置函数</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/4.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/Spark"><b>「
+                    </b>SPARK<b> 」</b></a>
+                
+                September 11, 2018
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/sparksql-built-in-function.html" title="SparkSQL内置函数" class="">SparkSQL内置函数</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    8.1k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    7 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Spark/" rel="tag">Spark</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <blockquote>
+<p>版本说明：spark-2.3.0</p>
+</blockquote>
+<p>SparkSQL内置函数官网API：<a target="_blank" rel="noopener" href="http://spark.apache.org/docs/latest/api/scala/index.html#org.apache.spark.sql.functions%24">http://spark.apache.org/docs/latest/api/scala/index.html#org.apache.spark.sql.functions%24</a></p>
+<p>CSDN博主整理的内置函数：<a target="_blank" rel="noopener" href="https://blog.csdn.net/liam08/article/details/79663018">https://blog.csdn.net/liam08/article/details/79663018</a></p>
+<p>平常在使用mysql的时候，我们在写SQL的时候会使用到MySQL为我们提供的一些内置函数，如数函数：求绝对值abs()、平方根sqrt()等，还有其它的字符函数、日期函数、聚合函数等等。使我们利用这些内置函数能够快速实现我们的业务逻辑。在SparkSQL里其实也为我们提供了近两百多种内置函数，我们通过</p>
+<pre><code class="scla">import org.apache.spark.sql.functions._
+</code></pre>
+<p>导入内置函数包，来使用。也可以在SQL语句中直接使用。SparkSQL内置函数分类：聚合函数、集合函数、日期函数、数学函数、混杂函数、非聚合函数、排序函数、字符串函数、UDF函数和窗口函数这10类函数。</p>
+<h2 id="1-内置函数的使用"><a href="#1-内置函数的使用" class="headerlink" title="1 内置函数的使用"></a>1 内置函数的使用</h2><p>使用内置函数的方式有两种，一种是通过编程的方式的使用，另一种是通过SQL的方式使用。</p>
+<p>例如：我们有如下数据，想要使用SparkSQL内置函数lower()来将名字全部转为小写</p>
+<pre><code>+----+---+-----------+
+|name|age|      phone|
++----+---+-----------+
+|Ming| 20|15552211521|
+|hong| 19|13287994007|
+| zhi| 21|15552211523|
++----+---+-----------+
+</code></pre>
+<p>以编程的方式使用内置函数</p>
+<pre><code class="scala">import org.apache.spark.sql.functions._
+df.select(lower(col(&quot;name&quot;)).as(&quot;name&quot;), col(&quot;age&quot;), col(&quot;phone&quot;)).show()
+</code></pre>
+<p>以SQL的方式使用</p>
+<pre><code class="scala">df.createOrReplaceTempView(&quot;people&quot;)
+spark.sql(&quot;select lower(name) as name,age,phone from people&quot;).show()
+</code></pre>
+<h2 id="2-UDF函数的使用"><a href="#2-UDF函数的使用" class="headerlink" title="2 UDF函数的使用"></a>2 UDF函数的使用</h2><p>有的时候，SparkSQL提供的内置函数无法满足我们的业务的时候，我们可以使用过UDF函数来自定义我们的实现逻辑。例如：需要对上面的数据添加一列id，要求id的生成是name+随机生成的uuid+phone。这时候我们可以使用UDF自定义函数实现。如下所示：</p>
+<pre><code class="scala">//根据name和phone生成组合，并加上一段uud生成唯一表示id
+def idGenerator(name: String, phone: Long): String = &#123;
+  name + &quot;-&quot; + UUID.randomUUID().toString + &quot;-&quot; + phone.toString
+&#125;
+//生成udf函数
+val idGeneratorUDF = udf(idGenerator _)
+//加入隐式转换
+import spark.implicits._
+df.withColumn(&quot;id&quot;, idGeneratorUDF($&quot;name&quot;, $&quot;phone&quot;)).show()
+</code></pre>
+<p>也可以这样写：</p>
+<pre><code class="scala">//加入隐式转换
+import spark.implicits._
+//根据name和phone生成组合，并加上一段uud生成唯一表示id
+def idGenerator(name: String, phone: Long): String = &#123;
+  name + &quot;-&quot; + UUID.randomUUID().toString + &quot;-&quot; + phone.toString
+&#125;
+//注册udf函数
+spark.udf.register(&quot;idGenerator&quot;,idGenerator _)
+//使用idGenerator
+df.withColumn(&quot;id&quot;,callUDF(&quot;idGenerator&quot;,$&quot;name&quot;,$&quot;phone&quot;)).show()
+</code></pre>
+<p>结果都是一样的：</p>
+<pre><code>+----+---+-----------+--------------------+
+|name|age|      phone|                  id|
++----+---+-----------+--------------------+
+|Ming| 20|15552211521|Ming-9b87d4d5-91d...|
+|hong| 19|13287994007|hong-7a91f7d8-66a...|
+| zhi| 21|15552211523|zhi-f005859c-4516...|
++----+---+-----------+--------------------+
+</code></pre>
+<p>同样，我们可以将我们自定义的UDF函数注册到SparkSQL里，然后用SQL实现</p>
+<pre><code class="scala">//将自定义函数注册到SparkSQL里
+spark.udf.register(&quot;idGeneratorUDF&quot;,idGeneratorUDF)
+//创建临时表
+df.createOrReplaceTempView(&quot;people&quot;)
+//使用sql查询
+spark.sql(&quot;select idGeneratorUDF(name,phone) as id,name,age,phone from people&quot;).show()
+</code></pre>
+<p>结果：</p>
+<pre><code>+--------------------+----+---+-----------+
+|                  id|name|age|      phone|
++--------------------+----+---+-----------+
+|Ming-5e9b6efb-bac...|Ming| 20|15552211521|
+|hong-a3f6d67b-a20...|hong| 19|13287994007|
+|zhi-7038c0c6-6086...| zhi| 21|15552211523|
++--------------------+----+---+-----------+
+</code></pre>
+<p>注意：上面加入import spark.implicits._隐式转换是为了方便使用$”列名”来代替col(“列名”)</p>
+<p>完整代码：</p>
+<pre><code class="scala">package com.hollysys.spark.sql
+
+import java.util.UUID
+import org.apache.spark.sql.SparkSession
+
+/**
+  * Created by shirukai on 2018/9/11
+  * spark sql 内置函数
+  */
+object SparkSQLFunctionApp &#123;
+  def main(args: Array[String]): Unit = &#123;
+    val spark = SparkSession.builder().appName(this.getClass.getSimpleName).master(&quot;local&quot;).getOrCreate()
+    import org.apache.spark.sql.functions._
+    //加入隐式转换: 本例子里可以使用toDF方法和$&quot;列名&quot;代替col(&quot;列名&quot;)
+    import spark.implicits._
+    val df = Seq((&quot;Ming&quot;, 20, 15552211521L), (&quot;hong&quot;, 19, 13287994007L), (&quot;zhi&quot;, 21, 15552211523L)).toDF(&quot;name&quot;, &quot;age&quot;, &quot;phone&quot;)
+    df.show()
+
+    /**
+      * +----+---+-----------+
+      * |name|age|      phone|
+      * +----+---+-----------+
+      * |Ming| 20|15552211521|
+      * |hong| 19|13287994007|
+      * | zhi| 21|15552211523|
+      * +----+---+-----------+
+      */
+    //1 使用内置函数将所有名字都转为小写
+    //1.1 编程的方式：
+    df.select(lower($&quot;name&quot;).as(&quot;name&quot;), $&quot;age&quot;, $&quot;phone&quot;).show()
+
+    /**
+      * +----+---+-----------+
+      * |name|age|      phone|
+      * +----+---+-----------+
+      * |ming| 20|15552211521|
+      * |hong| 19|13287994007|
+      * | zhi| 21|15552211523|
+      * +----+---+-----------+
+      */
+    //1.2 SQL的方式
+    //注册表
+    df.createOrReplaceTempView(&quot;people&quot;)
+    spark.sql(&quot;select lower(name) as name,age,phone from people&quot;).show()
+
+    /**
+      * +----+---+-----------+
+      * |name|age|      phone|
+      * +----+---+-----------+
+      * |ming| 20|15552211521|
+      * |hong| 19|13287994007|
+      * | zhi| 21|15552211523|
+      * +----+---+-----------+
+      */
+
+    //2 UDF函数的使用
+    //2.1 直接使用
+    //根据name和phone生成组合，并加上一段uud生成唯一表示id
+    def idGenerator(name: String, phone: Long): String = &#123;
+      name + &quot;-&quot; + UUID.randomUUID().toString + &quot;-&quot; + phone.toString
+    &#125;
+
+    //生成udf函数
+    val idGeneratorUDF = udf(idGenerator _)
+    df.withColumn(&quot;id&quot;, idGeneratorUDF($&quot;name&quot;, $&quot;phone&quot;)).show()
+
+    /**
+      * +----+---+-----------+--------------------+
+      * |name|age|      phone|                  id|
+      * +----+---+-----------+--------------------+
+      * |Ming| 20|15552211521|Ming-74338e40-548...|
+      * |hong| 19|13287994007|hong-4f058f2b-9d3...|
+      * | zhi| 21|15552211523|zhi-f42bea86-a9cf...|
+      * +----+---+-----------+--------------------+
+      */
+    //将自定义函数注册到SparkSQL里
+    spark.udf.register(&quot;idGeneratorUDF&quot;, idGeneratorUDF)
+    //创建临时表
+    df.createOrReplaceTempView(&quot;people&quot;)
+    //使用sql查询
+    spark.sql(&quot;select idGeneratorUDF(name,phone) as id,name,age,phone from people&quot;).show()
+
+    /**
+      * +----+---+-----------+--------------------+
+      * |name|age|      phone|                  id|
+      * +----+---+-----------+--------------------+
+      * |Ming| 20|15552211521|Ming-74338e40-548...|
+      * |hong| 19|13287994007|hong-4f058f2b-9d3...|
+      * | zhi| 21|15552211523|zhi-f42bea86-a9cf...|
+      * +----+---+-----------+--------------------+
+      */
+    //2.2 通过callUDF使用
+    //注册udf函数
+    spark.udf.register(&quot;idGenerator&quot;, idGenerator _)
+    //使用idGenerator
+    df.withColumn(&quot;id&quot;, callUDF(&quot;idGenerator&quot;, $&quot;name&quot;, $&quot;phone&quot;)).show()
+
+    /**
+      * +----+---+-----------+--------------------+
+      * |name|age|      phone|                  id|
+      * +----+---+-----------+--------------------+
+      * |Ming| 20|15552211521|Ming-74338e40-548...|
+      * |hong| 19|13287994007|hong-4f058f2b-9d3...|
+      * | zhi| 21|15552211523|zhi-f42bea86-a9cf...|
+      * +----+---+-----------+--------------------+
+      */
+    //创建临时表
+    df.createOrReplaceTempView(&quot;people&quot;)
+    //使用sql查询
+    spark.sql(&quot;select idGenerator(name,phone) as id,name,age,phone from people&quot;).show()
+
+    /**
+      * +--------------------+----+---+-----------+
+      * |                  id|name|age|      phone|
+      * +--------------------+----+---+-----------+
+      * |Ming-d4236bac-e21...|Ming| 20|15552211521|
+      * |hong-bff84c0d-67d...|hong| 19|13287994007|
+      * |zhi-aa0174b0-c8b3...| zhi| 21|15552211523|
+      * +--------------------+----+---+-----------+
+      */
+  &#125;
+&#125;
+</code></pre>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%86%85%E7%BD%AE%E5%87%BD%E6%95%B0%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="toc-number">1.</span> <span class="toc-text">1 内置函数的使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-UDF%E5%87%BD%E6%95%B0%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="toc-number">2.</span> <span class="toc-text">2 UDF函数的使用</span></a></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

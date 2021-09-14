@@ -1,0 +1,1529 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Flink DataStream API之State - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="无论StructuredStreaming还是Flink在流处理的过程中都有一个“有状态计算“的概念，那么到底什么是有状态计算，有状态计算应用到什么场景，在Flink的DataStream API中,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">Flink DataStream API之State</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/2.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/Flink"><b>「
+                    </b>FLINK<b> 」</b></a>
+                
+                August 24, 2020
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/flink-datastream-api-state.html" title="Flink DataStream API之State" class="">Flink DataStream API之State</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    46k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    42 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Flink/" rel="tag">Flink</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <p>无论StructuredStreaming还是Flink在流处理的过程中都有一个“有状态计算“的概念，那么到底什么是有状态计算，有状态计算应用到什么场景，在Flink的DataStream API中如何使用状态，以及在Flink中状态是如何管理的，在这篇文章中，我们一点一点来学习。</p>
+<h1 id="1-什么是有状态计算"><a href="#1-什么是有状态计算" class="headerlink" title="1 什么是有状态计算"></a>1 什么是有状态计算</h1><p>在讲什么是有状态计算之前，先简单说一下什么是无状态计算，在我理解，无状态计算是指本次计算结果与之前输出无关的计算。比如说，设备开关量的问题，假设我消息队列中存放的消息是每个设备的开关量信息，包含：设备ID，以及设备的开关状态（开启状态为1，关闭状态为0），我们需求是只要设备状态为0我们就标记为设备异常了需要告警。</p>
+<p>输入：</p>
+<pre><code class="json">&#123;
+    &quot;id&quot;: &quot;divice-1&quot;,
+    &quot;status&quot;: &quot;1&quot;
+&#125;
+&#123;
+    &quot;id&quot;: &quot;divice-2&quot;,
+    &quot;status&quot;: &quot;0&quot;
+&#125;
+</code></pre>
+<p>输出：</p>
+<pre><code class="json">&#123;
+    &quot;id&quot;: &quot;divice-1&quot;,
+    &quot;alarm&quot;: &quot;false&quot;
+&#125;
+&#123;
+    &quot;id&quot;: &quot;divice-2&quot;,
+    &quot;alarm&quot;: &quot;true&quot;
+&#125;
+</code></pre>
+<p>可以发现，无论输入有多少条，它的输出只与当前输出数据有关，这样的计算就是无状态计算。</p>
+<p>那么什么是有状态计算呢，再举个例子，同样是设备开关量的问题，现在需求是，假设数据是时间有序的，如果设备之前的开启状态，现在的处于关闭状态，即由1变为0，我们认为该设备异常了，需要告警了。那么我们在计算当前输出的时候，怎么拿到之前的输出呢？这时候就需要状态了，我们可以把之前的输入作为状态保存下来，在每次计算的时候拿出之前的状态做比较，然后进行输出。</p>
+<p>输入:</p>
+<pre><code class="json">&#123;
+    &quot;id&quot;: &quot;divice-1&quot;,
+    &quot;status&quot;: &quot;1&quot;
+&#125;
+&#123;
+    &quot;id&quot;: &quot;divice-1&quot;,
+    &quot;status&quot;: &quot;0&quot;
+&#125;
+&#123;
+    &quot;id&quot;: &quot;divice-2&quot;,
+    &quot;status&quot;: &quot;0&quot;
+&#125;
+&#123;
+    &quot;id&quot;: &quot;divice-2&quot;,
+    &quot;status&quot;: &quot;0&quot;
+&#125;
+</code></pre>
+<p>输出：</p>
+<pre><code class="json">&#123;
+    &quot;id&quot;: &quot;divice-1&quot;,
+    &quot;alarm&quot;: &quot;true&quot;
+&#125;
+&#123;
+    &quot;id&quot;: &quot;divice-2&quot;,
+    &quot;alarm&quot;: &quot;false&quot;
+&#125;
+</code></pre>
+<h1 id="2-有状态计算的应用场景"><a href="#2-有状态计算的应用场景" class="headerlink" title="2 有状态计算的应用场景"></a>2 有状态计算的应用场景</h1><p>下面举几个常见的状态计算的应用场景</p>
+<ul>
+<li>流式去重：上游系统中存在重复数据，需要先进行重复过滤，最简单的，在状态中记录所有主键，然后根据状态中是否包含主键信息，来判断是否重复。</li>
+<li>窗口计算：以10分钟为一个窗口，进行词频统计，我们需要把这10分钟的数据统计结果先保存下来，等到窗口计算结束被触发之后，再将结果输出。</li>
+<li>机器学习/深度学习：如训练的模型以及当前模型的参数也是一种状态，机器学习可能每次都用有一个数据集，需要在数据集上进行学习，对模型进行一个反馈。</li>
+<li>访问历史数据：需要与之前的数据进行对比，上面举得设备开关量的问题，将历史数据放到状态里，与之对比。</li>
+</ul>
+<h1 id="3-Flink的DataStream中使用状态"><a href="#3-Flink的DataStream中使用状态" class="headerlink" title="3 Flink的DataStream中使用状态"></a>3 Flink的DataStream中使用状态</h1><h2 id="3-1-Flink中的状态类型"><a href="#3-1-Flink中的状态类型" class="headerlink" title="3.1 Flink中的状态类型"></a>3.1 Flink中的状态类型</h2><p>Flink中的状态有两种：Managed State、Raw State。Managed State 是有Flink Runtime自动管理的State，而Raw State是原生态State，两者区别如下表所示：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Managed State</th>
+<th>Raw State</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>状态管理方式</td>
+<td>Flin Runtime管理，自动存储，自动恢复，在内存管理上有优化</td>
+<td>需要用户自己管理，自己序列化</td>
+</tr>
+<tr>
+<td>状态数据结构</td>
+<td>Value、List、Map等</td>
+<td>byte[]</td>
+</tr>
+<tr>
+<td>推荐使用场景</td>
+<td>大多数情况都可以使用</td>
+<td>当 Managed State 不够用时，比如需要自定义 Operator 时，推荐使用 Raw State</td>
+</tr>
+</tbody></table>
+<h2 id="3-2-Keyed-State-amp-Operator-State"><a href="#3-2-Keyed-State-amp-Operator-State" class="headerlink" title="3.2 Keyed State &amp; Operator State"></a>3.2 Keyed State &amp; Operator State</h2><p>Flink提供两种基本状态：Keyed State、Operator State</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Keyed State</th>
+<th>Operator State</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>使用</td>
+<td>只能在KeyedStream上的算子中</td>
+<td>可在所有算子中使用，常用于source，例如FlinkKafkaConsumer</td>
+</tr>
+<tr>
+<td>state对应关系</td>
+<td>每个Key对应一个state，一个Operatory实例处理多个Key，访问相应的多个State</td>
+<td>一个Operator实例对应一个State</td>
+</tr>
+<tr>
+<td>并发改变，分配方式</td>
+<td>State随着Key在实例间迁移</td>
+<td>均匀分配、合并得全量</td>
+</tr>
+<tr>
+<td>访问方式</td>
+<td>通过 RuntimeContext 访问，这需要 Operator 是一个Rich Function</td>
+<td>自己实现 CheckpointedFunction 或 ListCheckpointed 接口</td>
+</tr>
+<tr>
+<td>支持的数据结构</td>
+<td>ValueState、ListState、ReducingState、AggregatingState 和 MapState</td>
+<td>ListState</td>
+</tr>
+</tbody></table>
+<h2 id="3-3-使用Managed-Keyed-State"><a href="#3-3-使用Managed-Keyed-State" class="headerlink" title="3.3 使用Managed Keyed State"></a>3.3 使用Managed Keyed State</h2><p>keyed state需要在KeyedStream算子中使用，支持ValueState、ListState、ReducingState、AggregatingState 和 MapState这几种数据类型，这几种状态数据类型的差异如下表所示：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>状态数据类型</th>
+<th>访问接口</th>
+<th>差异体现</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ValueState</td>
+<td>单个值</td>
+<td>update(T)<br>T value()</td>
+<td>储存单个值，值类型不限定</td>
+</tr>
+<tr>
+<td>MapState</td>
+<td>Map</td>
+<td>put(UK key,UV value)<br>putAll(Map&lt;UK,UV&gt; map)<br>remove(UK key)<br>boolean contains(UK key)<br>UV get(UK key)<br>Iterable&lt;Map.Entry&gt; entries()<br>Iterator&lt;Map.Entry&gt; iterator()<br>Iterable&lt;UK&gt; keys()<br>Iterable&lt;UV&gt; values()</td>
+<td>储存类型为Map，需要注意的是在 MapState 中的 key 和 Keyed state 中的 key 不是同一个</td>
+</tr>
+<tr>
+<td>ListState</td>
+<td>List</td>
+<td>add(T)<br>addAll(List&lt;T&gt;)<br>update&lt;UK&gt; keys()<br>Iterable&lt;UK&gt; values()</td>
+<td>储存类型为List</td>
+</tr>
+<tr>
+<td>ReducingState</td>
+<td>单个值</td>
+<td>add(T)<br/>addAll(List&lt;T&gt;)<br/>update&lt;UK&gt; keys()<br/>T get()</td>
+<td>继承ListState但状态数据类型上是单个值，原因在于其中的 add 方法不是把当前的元素追加到列表中，而是把当前元素直接更新进了 Reducing 的结果中。输入输出类型相同。</td>
+</tr>
+<tr>
+<td>AggregatingStatte</td>
+<td>单个值</td>
+<td>add(IN)<br>OUT get()</td>
+<td>类似ReducingState，但是输入输出类型可以不同</td>
+</tr>
+</tbody></table>
+<p>为方便演示这几种状态类型的实际运用，下面将分别举几个例子，有些应用场景有些牵强，只要领会其用意即可。</p>
+<h3 id="3-3-1-ValueState"><a href="#3-3-1-ValueState" class="headerlink" title="3.3.1 ValueState"></a>3.3.1 ValueState</h3><p>ValueState为单值类型，我们可以通过update(T)方法更新值，通过value()方法获取该值。</p>
+<h4 id="3-3-1-1-获取-ValueState"><a href="#3-3-1-1-获取-ValueState" class="headerlink" title="3.3.1.1 获取 ValueState"></a>3.3.1.1 获取 ValueState</h4><p>要使用ValueState，需要从RuntimeContext中获取，所以需要实现RichFunction，在open()方法中通过getRuntimeContext获取RuntimeContext，最后通过getState()获取ValueState。</p>
+<pre><code class="scala">    override def open(parameters: Configuration): Unit = &#123;
+      // get state from RuntimeContext
+      state = getRuntimeContext
+        .getState(new ValueStateDescriptor[AvgState](&quot;avgState&quot;, createTypeInformation[AvgState]))
+    &#125;
+</code></pre>
+<p>getState里需要传入ValueStateDescriptor实例，无论是ValueState、MapState、ListState、ReducingState、还是AggregatingState，它们的Descriptor都继承自StateDescriptor，构造器方法相同的。如上代码，我们是通过name和typeInfo构建的实例，ValueStateDescriptor有共有三种构造器方法：</p>
+<p>构造器一：传入name，以及typeClass</p>
+<pre><code class="scala">    public ValueStateDescriptor(String name, Class&lt;T&gt; typeClass) &#123;
+        super(name, typeClass, null);
+    &#125;
+</code></pre>
+<p>假如我们的状态数据类型为case class，如下所示定义</p>
+<pre><code class="scala">case class AvgState(count: Int, sum: Double)
+</code></pre>
+<p>我们可以通过classOf[AvgState]获取typeClass，使用此构造器创建实例如下：</p>
+<pre><code class="scala">new ValueStateDescriptor(&quot;avgState&quot;,classOf[AvgState])
+</code></pre>
+<p>构造器二：传入name，以及typeInfo</p>
+<pre><code class="scala">    public ValueStateDescriptor(String name, TypeInformation&lt;T&gt; typeInfo) &#123;
+        super(name, typeInfo, null);
+    &#125;
+</code></pre>
+<p>typeInfo我们可以通过import org.apache.flink.streaming.api.scala.createTypeInformation方法创建</p>
+<pre><code class="scala">new ValueStateDescriptor[AvgState](&quot;avgState&quot;, createTypeInformation[AvgState])
+</code></pre>
+<p>构造器三：传入name，以及typeSerializer</p>
+<pre><code class="scala">    public ValueStateDescriptor(String name, TypeSerializer&lt;T&gt; typeSerializer) &#123;
+        super(name, typeSerializer, null);
+    &#125;
+</code></pre>
+<p>serializer可以通过继承TypeSerializer自定义实现，可以通过内置的KryoSerializer以及其它TypeSerializer创建</p>
+<pre><code class="scala">new ValueStateDescriptor[AvgState](&quot;avgState&quot;, new KryoSerializer(classOf[AvgState], getRuntimeContext.getExecutionConfig))
+</code></pre>
+<h4 id="3-3-1-2-使用ValueState实现移动平均"><a href="#3-3-1-2-使用ValueState实现移动平均" class="headerlink" title="3.3.1.2 使用ValueState实现移动平均"></a>3.3.1.2 使用ValueState实现移动平均</h4><p><strong>需求：</strong></p>
+<p>不考虑数据时序乱序问题，实现简单移动平均，每来到一个数就计算其整体平均值。</p>
+<p><strong>思路：</strong></p>
+<p>使用ValueState保存中间状态AvgState，该状态包含两个值，sum：目前所有数据的总和，count：目前所有数据的个数，然后sum/count求出平均值，数据进入后状态count+1，状态sum+当前数据，然后求其均值。</p>
+<p><strong>实现：</strong></p>
+<p>定义输入输出格式都为case class</p>
+<p>输入数据格式</p>
+<pre><code class="scala">  /**
+   * 设备事件
+   *
+   * @param id    设备ID
+   * @param value 设备数据
+   */
+  case class DeviceEvent(id: String, value: Double)
+</code></pre>
+<p>输出数据格式</p>
+<pre><code class="scala">  /**
+   * 设备移动均值
+   *
+   * @param id  设备ID
+   * @param avg 设备均值
+   */
+  case class DeviceAverage(id: String, avg: Double)
+</code></pre>
+<p>状态存储格式</p>
+<pre><code class="scala">  /**
+   * 均值状态
+   *
+   * @param count 数据个数
+   * @param sum   数据总和
+   */
+  case class AvgState(count: Int, sum: Double)
+</code></pre>
+<p>继承RichMapFunction获取状态，并实现map方法</p>
+<pre><code class="scala">  /**
+   * 继承 RichMapFunction 实现map方法
+   */
+  class MoveAverage extends RichMapFunction[DeviceEvent, DeviceAverage] &#123;
+    private var state: ValueState[AvgState] = _
+
+    override def open(parameters: Configuration): Unit = &#123;
+      // get state from RuntimeContext
+      state = getRuntimeContext
+        .getState(new ValueStateDescriptor[AvgState](&quot;avgState&quot;, new KryoSerializer(classOf[AvgState], getRuntimeContext.getExecutionConfig)))
+    &#125;
+
+    override def map(value: DeviceEvent): DeviceAverage = &#123;
+      // get or init state value.
+      val stateValue = Option(state.value()).getOrElse(AvgState(0, 0.0))
+      // update newStateValue to runtime
+      val newStateValue = AvgState(stateValue.count + 1, stateValue.sum + value.value)
+      state.update(newStateValue)
+      DeviceAverage(value.id, newStateValue.sum / newStateValue.count)
+    &#125;
+  &#125;
+</code></pre>
+<p>从socket获取实时数据，将数据转换为DeviceEvent格式，然后根据id分组，最后执行自定义map方法</p>
+<pre><code class="scala">  def main(args: Array[String]): Unit = &#123;
+    val params: ParameterTool = ParameterTool.fromArgs(args)
+
+    // set up execution environment
+    val env: StreamExecutionEnvironment = StreamExecutionEnvironment.getExecutionEnvironment
+
+    // make parameters available in the web interface
+    env.getConfig.setGlobalJobParameters(params)
+
+    // get input data
+    val streamText: DataStream[String] = env.socketTextStream(
+      Option(params.get(&quot;hostname&quot;)).getOrElse(&quot;localhost&quot;),
+      Option(params.get(&quot;port&quot;)).getOrElse(&quot;9090&quot;).toInt)
+
+    val streamData: DataStream[DeviceEvent] = streamText.map(text =&gt; &#123;
+      val token = text.split(&quot; &quot;)
+      DeviceEvent(token(0), token(1).toDouble)
+    &#125;)
+
+    streamData.keyBy(_.id).map(new MoveAverage()).print(&quot;Moving avg&quot;)
+
+    env.execute(&quot;ManagedKeyedValueStateExample&quot;)
+  &#125;
+</code></pre>
+<p>上述使用的自定义RichMap方法也可以简单的使用mapWithState实现</p>
+<pre><code class="scala">    // simple
+    streamData.keyBy(_.id).mapWithState[DeviceAverage, AvgState] &#123;
+      &#123;
+        case (in: DeviceEvent, None) =&gt; (DeviceAverage(in.id, in.value), Some(AvgState(1, in.value)))
+        case (in: DeviceEvent, state: Some[AvgState]) =&gt;
+          val newStateValue = AvgState(state.get.count + 1, state.get.sum + in.value)
+          (DeviceAverage(in.id, newStateValue.sum / newStateValue.count), Some(newStateValue))
+      &#125;
+    &#125;.print(&quot;Simple moving avg&quot;)
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/b61919a9836af3d6fe6f0982d9315bdb.jpg"></p>
+<h3 id="3-3-2-MapState"><a href="#3-3-2-MapState" class="headerlink" title="3.3.2  MapState"></a>3.3.2  MapState</h3><p>MapState存储类型为Map，我们可以使用Map特有的方法，比如put、get、keys() 、putAll等。</p>
+<h4 id="3-3-2-1-获取MapState"><a href="#3-3-2-1-获取MapState" class="headerlink" title="3.3.2.1 获取MapState"></a>3.3.2.1 获取MapState</h4><p>MapState的获取方式与ValueState一样，在RuntimeContext里通过getMapState获取，其中需要创建MapStateDescriptor实例，该实例同样有三种方式构建：typeClass、typeInfo、typeSerializer。</p>
+<pre><code class="scala">    override def open(parameters: Configuration): Unit = &#123;
+      state = getRuntimeContext.getMapState(
+        new MapStateDescriptor[Long, DeviceEvent](
+          &quot;alarmMapState&quot;,
+          createTypeInformation[Long],
+          createTypeInformation[DeviceEvent]))
+    &#125;
+</code></pre>
+<h4 id="3-3-2-2-使用MapState实现开关量异常判别"><a href="#3-3-2-2-使用MapState实现开关量异常判别" class="headerlink" title="3.3.2.2 使用MapState实现开关量异常判别"></a>3.3.2.2 使用MapState实现开关量异常判别</h4><p><strong>需求：</strong></p>
+<p>假设设备信息包含id、timestamp、status，设备数据存在时序乱序的问题，需要实时判别设备状态是否异常，判别依据是，如果当前时间状态为0，上一条时间状态为1，即状态从1变为0了，我们则判断此设备变为异常。</p>
+<p><strong>思路：</strong></p>
+<p>由于考虑乱序问题，这里需要缓存过去一定量的数据，简单起见，我们保存10个数据，这10条数据以timstamp为key，status为value保存到MapState中。当时间戳为t的新数据到达之后，获取缓存数据的keys()转为TreeSet，如果当前数据的状态为0，则查找出keys中t的前一个值，如果存在前一个值，且前一个值状态为1，则转为异常事件发送给下游。如果当前数据的状态为1，则查找出keys中t的后一个值，如果存在后一个值，且后一个值状态为0，则转换下一个值为异常事件发送给下游。</p>
+<p><strong>实现：</strong></p>
+<p>定义输入事件格式：</p>
+<pre><code class="scala">  /**
+   * 设备事件数据结构
+   *
+   * @param id        设备ID
+   * @param timestamp 事件时间
+   * @param status    设备状态
+   */
+  case class DeviceEvent(id: String, timestamp: Long, status: Int)
+</code></pre>
+<p>定义输出事件格式</p>
+<pre><code class="scala">  /**
+   * 设备告警数据结构
+   *
+   * @param id            设备ID
+   * @param timestamp     事件时间
+   * @param lastTimestamp 上一条记录时间
+   */
+  case class DeviceAlarm(id: String, timestamp: Long, lastTimestamp: Long)
+</code></pre>
+<p>继承RichFlatMapFunction实现flatmap方法，实现开关量判别逻辑</p>
+<pre><code class="scala">class AlarmAnalyzer extends RichFlatMapFunction[DeviceEvent, DeviceAlarm] &#123;
+    private var state: MapState[Long, DeviceEvent] = _
+
+
+    override def open(parameters: Configuration): Unit = &#123;
+      state = getRuntimeContext.getMapState(
+        new MapStateDescriptor[Long, DeviceEvent](
+          &quot;alarmMapState&quot;,
+          createTypeInformation[Long],
+          createTypeInformation[DeviceEvent]))
+    &#125;
+
+    override def flatMap(value: DeviceEvent, out: Collector[DeviceAlarm]): Unit = &#123;
+      // get all keys and transform to tree set.
+      val keys: util.TreeSet[Long] = new util.TreeSet[Long](state.keys().asInstanceOf[util.Collection[Long]])
+      // clear
+      clear(keys)
+
+      val currentKey = value.timestamp
+      keys.add(currentKey)
+      state.put(currentKey, value)
+      // 如果当前事件状态为0，查找是否包含上一个事件，如果上一个事件状态为1，则转换为异常事件将其发送给下游
+      if (value.status == 0) &#123;
+        val lastKey = Some(keys.lower(currentKey))
+        if (lastKey.get!=null &amp;&amp; state.get(lastKey.get).status == 1) &#123;
+          out.collect(DeviceAlarm(value.id, currentKey, lastKey.get))
+        &#125;
+      &#125; else &#123;
+        // 查找下一个事件，如果下一个事件为0，则转换为异常事件发送给下游
+        val nextKey = Some(keys.higher(currentKey))
+        if (nextKey.get!=null &amp;&amp; state.get(nextKey.get).status == 0) &#123;
+          out.collect(DeviceAlarm(value.id, nextKey.get, currentKey))
+        &#125;
+      &#125;
+
+    &#125;
+
+    def clear(keys: util.TreeSet[Long], size: Int = 10): Unit = &#123;
+      if (keys.size() == size) &#123;
+        val firstKey = keys.first()
+        state.remove(firstKey)
+        keys.remove(keys.first())
+      &#125;
+    &#125;
+  &#125;
+</code></pre>
+<p>从Socket中实时获取数据，转换为DeviceEvent类型，然后根据id进行分组，执行flatmap函数</p>
+<pre><code class="scala">  def main(args: Array[String]): Unit = &#123;
+    val params: ParameterTool = ParameterTool.fromArgs(args)
+
+    // set up execution environment
+    val env: StreamExecutionEnvironment = StreamExecutionEnvironment.getExecutionEnvironment
+
+    // make parameters available in the web interface
+    env.getConfig.setGlobalJobParameters(params)
+
+    // get input data
+    val streamText: DataStream[String] = env.socketTextStream(Option(params.get(&quot;hostname&quot;)).getOrElse(&quot;localhost&quot;),
+      Option(params.get(&quot;port&quot;)).getOrElse(&quot;9090&quot;).toInt)
+
+    val streamData: DataStream[DeviceEvent] = streamText.map(text =&gt; &#123;
+      val token = text.split(&quot; &quot;)
+      DeviceEvent(token(0), token(1).toLong, token(2).toInt)
+    &#125;)
+
+    streamData.keyBy(_.id).flatMap(new AlarmAnalyzer()).print()
+
+    env.execute(&quot;ManagedKeyedMapStateExample&quot;)
+  &#125;
+</code></pre>
+<p>输入数据:</p>
+<pre><code class="scala">device-1 1 1
+device-1 2 0
+device-1 3 1
+device-1 5 1
+device-1 4 0
+</code></pre>
+<p>结果如下所示：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/cec4a10e3e9467397791d6861e289efc.jpg"></p>
+<h3 id="3-3-3-ListState"><a href="#3-3-3-ListState" class="headerlink" title="3.3.3 ListState"></a>3.3.3 ListState</h3><p>ListState顾名思义，存储结构为List，可以存储多个值。我们可以使用List的特有方法，如add，values()等</p>
+<h4 id="3-3-3-1-获取ListState"><a href="#3-3-3-1-获取ListState" class="headerlink" title="3.3.3.1 获取ListState"></a>3.3.3.1 获取ListState</h4><p>ListState方法异曲同工，在RuntimeContext里通过getListState方法获取，需要传入ListStateDescriptor实例，</p>
+<p>ListStateDescriptor也有三种。</p>
+<pre><code class="scala">    override def open(parameters: Configuration): Unit = &#123;
+      state = getRuntimeContext
+        .getListState(new ListStateDescriptor[Double](
+          &quot;varianceState&quot;,
+          createTypeInformation[Double]))
+    &#125;
+</code></pre>
+<h4 id="3-3-3-2-使用ListState实现累计方差计算"><a href="#3-3-3-2-使用ListState实现累计方差计算" class="headerlink" title="3.3.3.2 使用ListState实现累计方差计算"></a>3.3.3.2 使用ListState实现累计方差计算</h4><p><strong>需求：</strong></p>
+<p>实时累计5条数据后做一次方差，然后输出</p>
+<p><strong>思路：</strong></p>
+<p>使用ListState存储历史数据，当数据达到5条之后，将其全部取出，计算方法，然后输出到下游。</p>
+<p><strong>实现：</strong></p>
+<p>输入数据格式</p>
+<pre><code class="scala">  /**
+   * 设备事件
+   *
+   * @param id    设备ID
+   * @param value 设备值
+   */
+  case class DeviceEvent(id: String, value: Double)
+</code></pre>
+<p>输出数据格式</p>
+<pre><code class="scala">  /**
+   * 设备方差事件
+   *
+   * @param id       设备ID
+   * @param values   累计所有值
+   * @param variance 方差
+   */
+  case class DeviceVariance(id: String, values: List[Double], variance: Double)
+</code></pre>
+<p>继承RichFlatMapFunction实现flatmap方法，完成计算方差逻辑。</p>
+<pre><code class="scala">  class VarianceCalculator extends RichFlatMapFunction[DeviceEvent, DeviceVariance] &#123;
+    private var state: ListState[Double] = _
+    private val countSize: Int = 5
+
+    override def open(parameters: Configuration): Unit = &#123;
+      state = getRuntimeContext
+        .getListState(new ListStateDescriptor[Double](
+          &quot;varianceState&quot;,
+          createTypeInformation[Double]))
+    &#125;
+
+    override def flatMap(value: DeviceEvent, out: Collector[DeviceVariance]): Unit = &#123;
+      import scala.collection.JavaConverters._
+      state.add(value.value)
+      val currentStateList: Iterable[Double] = state.get().asScala
+      if (currentStateList.size == countSize) &#123;
+        out.collect(DeviceVariance(value.id, currentStateList.toList, variance(currentStateList)))
+        state.clear()
+      &#125;
+    &#125;
+
+    /**
+     * 计算方差
+     * @param values 数据列表
+     * @return 方差
+     */
+    def variance(values: Iterable[Double]): Double = &#123;
+      val avg = values.sum / values.size.toDouble
+      math.sqrt(values.map(x =&gt; math.pow(x - avg, 2)).sum / values.size)
+    &#125;
+
+  &#125;
+</code></pre>
+<p>从socket里获取数据，并转换为DeviceEvent，根据id分组之后，调用flatmap方法。</p>
+<pre><code class="scala">  def main(args: Array[String]): Unit = &#123;
+    val params: ParameterTool = ParameterTool.fromArgs(args)
+
+    // set up execution environment
+    val env: StreamExecutionEnvironment = StreamExecutionEnvironment.getExecutionEnvironment
+
+    // make parameters available in the web interface
+    env.getConfig.setGlobalJobParameters(params)
+
+    // get input data
+    val streamText: DataStream[String] = env.socketTextStream(Option(params.get(&quot;hostname&quot;)).getOrElse(&quot;localhost&quot;),
+      Option(params.get(&quot;port&quot;)).getOrElse(&quot;9090&quot;).toInt)
+
+    val streamData: DataStream[DeviceEvent] = streamText.map(text =&gt; &#123;
+      val token = text.split(&quot; &quot;)
+      DeviceEvent(token(0), token(1).toDouble)
+    &#125;)
+
+    streamData.keyBy(_.id).flatMap(new VarianceCalculator()).print()
+    env.execute(&quot;ManagedKeyedListStateExample&quot;)
+  &#125;
+</code></pre>
+<p>nc -lk 9090 输入数据：</p>
+<pre><code class="scala">device-1 1
+device-1 2
+device-1 3
+device-1 4
+device-1 5
+device-1 6
+device-1 7
+device-1 8
+device-1 9
+device-1 10
+</code></pre>
+<p>结果：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/33c8a3591f9417402227ed525c1a124f.jpg"></p>
+<h3 id="3-3-3-ReducingState"><a href="#3-3-3-ReducingState" class="headerlink" title="3.3.3 ReducingState"></a>3.3.3 ReducingState</h3><p>ReductingState的存储类型也为单个值，需要用户实现reduce方法，当调用add()添加数据时，会指定自定义的reduce方法。</p>
+<h4 id="3-3-3-1-获取ReducingState"><a href="#3-3-3-1-获取ReducingState" class="headerlink" title="3.3.3.1 获取ReducingState"></a>3.3.3.1 获取ReducingState</h4><p>在RuntimeContext中通过getReducingState()方法获取，需要构建ReducingStateDescriptor实例，构造器不同于之前，除了name、typeinfo之前还需要传入自定义的reduce实例。</p>
+<pre><code class="scala">    override def open(parameters: Configuration): Unit = &#123;
+      // get state from runtime context
+      state = getRuntimeContext
+        .getReducingState(new ReducingStateDescriptor[Double](
+          &quot;sumAccumulatorState&quot;,
+          new SumReducing(),
+          createTypeInformation[Double]))
+    &#125;
+</code></pre>
+<h4 id="3-3-3-2-使用ReducingState计算累加和"><a href="#3-3-3-2-使用ReducingState计算累加和" class="headerlink" title="3.3.3.2 使用ReducingState计算累加和"></a>3.3.3.2 使用ReducingState计算累加和</h4><p><strong>需求：</strong></p>
+<p>使用ReducingState实时计算数据总和</p>
+<p><strong>思路：</strong></p>
+<p>实现ReducFunction，将最近两个状态相加。</p>
+<p><strong>实现：</strong></p>
+<p>输入数据格式</p>
+<pre><code class="scala">  /**
+   * 设备事件
+   *
+   * @param id    设备ID
+   * @param value 设备值
+   */
+  case class DeviceEvent(id: String, value: Double)
+</code></pre>
+<p>输出数据格式</p>
+<pre><code class="scala">  /**
+   * 设备累加和
+   *
+   * @param id  设备ID
+   * @param sum 设备值
+   */
+  case class DeviceSum(id: String, sum: Double)
+</code></pre>
+<p>继承ReduceFunction实现reduce方法</p>
+<pre><code class="scala">  class SumReducing extends ReduceFunction[Double] &#123;
+    override def reduce(value1: Double, value2: Double): Double = value1 + value2
+  &#125;
+</code></pre>
+<p>继承RichMapFunction实现map方法，完成累加和的逻辑</p>
+<pre><code class="scala">  class SumAccumulator extends RichMapFunction[DeviceEvent, DeviceSum] &#123;
+    private var state: ReducingState[Double] = _
+
+    override def open(parameters: Configuration): Unit = &#123;
+      // get state from runtime context
+      state = getRuntimeContext
+        .getReducingState(new ReducingStateDescriptor[Double](
+          &quot;sumAccumulatorState&quot;,
+          new SumReducing(),
+          createTypeInformation[Double]))
+    &#125;
+
+    override def map(value: DeviceEvent): DeviceSum = &#123;
+      state.add(value.value)
+      DeviceSum(value.id, state.get())
+    &#125;
+  &#125;
+</code></pre>
+<p>从socket中获取数据，并转换为DeviceEvent，然后根据id分组，调用自定义map方法。</p>
+<pre><code class="scala">def main(args: Array[String]): Unit = &#123;
+  val params: ParameterTool = ParameterTool.fromArgs(args)
+
+  // set up execution environment
+  val env: StreamExecutionEnvironment = StreamExecutionEnvironment.getExecutionEnvironment
+
+  // make parameters available in the web interface
+  env.getConfig.setGlobalJobParameters(params)
+
+  // get input data
+  val streamText: DataStream[String] = env.socketTextStream(Option(params.get(&quot;hostname&quot;)).getOrElse(&quot;localhost&quot;),
+    Option(params.get(&quot;port&quot;)).getOrElse(&quot;9090&quot;).toInt)
+
+  val streamData: DataStream[DeviceEvent] = streamText.map(text =&gt; &#123;
+    val token = text.split(&quot; &quot;)
+    DeviceEvent(token(0), token(1).toDouble)
+  &#125;)
+
+  streamData.keyBy(_.id).map(new SumAccumulator()).print()
+  env.execute(&quot;ManagedKeyedReducingStateExample&quot;)
+&#125;
+</code></pre>
+<p>输入：</p>
+<pre><code>device-1 1
+device-1 2
+device-1 2.2
+</code></pre>
+<p>结果：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/e80e114d98c82d838602ced9e1679b19.jpg"></p>
+<h3 id="3-3-4-AggregatingState"><a href="#3-3-4-AggregatingState" class="headerlink" title="3.3.4 AggregatingState"></a>3.3.4 AggregatingState</h3><p>AggregatingState与ReducingState类似，也是一种单个值的聚合状态。具有以下特点：</p>
+<ul>
+<li>可以对输入值，中间聚合和结果类型使用不同类型，以支持各种聚合类型</li>
+<li>支持分布式聚合：可以将不同的中间聚合合并在一起，以允许预聚合/最终聚合优化。</li>
+</ul>
+<h4 id="3-3-4-1-获取AggregatingState"><a href="#3-3-4-1-获取AggregatingState" class="headerlink" title="3.3.4.1 获取AggregatingState"></a>3.3.4.1 获取AggregatingState</h4><p>AggregatingState也是通过RuntimeContext的getAggregatingStata方法获取，同样需要传入AggregatingStateDescriptor实例，构建AggregatingStateDescriptor实例时需要传入自定义的AggregatingFunction。</p>
+<pre><code class="scala">    override def open(parameters: Configuration): Unit = &#123;
+      state = getRuntimeContext.getAggregatingState(new AggregatingStateDescriptor[Long, AverageAccumulator, Double](
+        &quot;rateAccumulatorState&quot;,
+        new AvgAggregating(),
+        createTypeInformation[AverageAccumulator]
+      ))
+    &#125;
+</code></pre>
+<h4 id="3-3-4-2-使用AggregatingState实现移动平均"><a href="#3-3-4-2-使用AggregatingState实现移动平均" class="headerlink" title="3.3.4.2 使用AggregatingState实现移动平均"></a>3.3.4.2 使用AggregatingState实现移动平均</h4><p><strong>需求：</strong></p>
+<p>利用AggregatingState实时计算设备均值</p>
+<p><strong>思路：</strong></p>
+<p>思路与ValueState的均值计算相同</p>
+<p><strong>实现：</strong></p>
+<p>输入数据类型</p>
+<pre><code class="scala"> /**
+   * 设备事件
+   *
+   * @param id    设备ID
+   * @param value 设备值
+   */
+  case class DeviceEvent(id: String, value: Long)
+</code></pre>
+<p>输出数据类型</p>
+<pre><code class="scala">  /**
+   * 设备均值
+   *
+   * @param id  设备ID
+   * @param avg 平均值
+   */
+  case class DeviceAvg(id: String, avg: Double)
+</code></pre>
+<p>聚合累加器定义</p>
+<pre><code class="scala">case class AverageAccumulator(sum: Long, count: Int)
+</code></pre>
+<p>实现自定义的聚合方法</p>
+<pre><code class="scala">  class AvgAggregating extends AggregateFunction[Long, AverageAccumulator, Double] &#123;
+
+    override def createAccumulator(): AverageAccumulator = AverageAccumulator(0L, 0)
+
+    override def add(value: Long, accumulator: AverageAccumulator): AverageAccumulator =
+      AverageAccumulator(accumulator.sum + value, accumulator.count + 1)
+
+    override def getResult(accumulator: AverageAccumulator): Double = accumulator.sum.toDouble / accumulator.count.toDouble
+
+    override def merge(a: AverageAccumulator, b: AverageAccumulator): AverageAccumulator =
+      AverageAccumulator(a.sum + b.sum, a.count + b.count)
+  &#125;
+</code></pre>
+<p>实现自定义的RichMapFunction</p>
+<pre><code class="scala">  class MovingAvg extends RichMapFunction[DeviceEvent, DeviceAvg] &#123;
+    private var state: AggregatingState[Long, Double] = _
+
+    override def open(parameters: Configuration): Unit = &#123;
+      state = getRuntimeContext.getAggregatingState(new AggregatingStateDescriptor[Long, AverageAccumulator, Double](
+        &quot;rateAccumulatorState&quot;,
+        new AvgAggregating(),
+        createTypeInformation[AverageAccumulator]
+      ))
+    &#125;
+
+    override def map(value: DeviceEvent): DeviceAvg = &#123;
+      state.add(value.value)
+      DeviceAvg(value.id, state.get())
+    &#125;
+  &#125;
+</code></pre>
+<p>从Socket中获取数据，转换为DeviceEvent类型，然后根据id分组，调用自定义map方法。</p>
+<pre><code class="scala">  def main(args: Array[String]): Unit = &#123;
+    val params: ParameterTool = ParameterTool.fromArgs(args)
+
+    // set up execution environment
+    val env: StreamExecutionEnvironment = StreamExecutionEnvironment.getExecutionEnvironment
+
+    // make parameters available in the web interface
+    env.getConfig.setGlobalJobParameters(params)
+
+    // get input data
+    val streamText: DataStream[String] = env.socketTextStream(Option(params.get(&quot;hostname&quot;)).getOrElse(&quot;localhost&quot;),
+      Option(params.get(&quot;port&quot;)).getOrElse(&quot;9090&quot;).toInt)
+
+    val streamData: DataStream[DeviceEvent] = streamText.map(text =&gt; &#123;
+      val token = text.split(&quot; &quot;)
+      DeviceEvent(token(0), token(1).toLong)
+    &#125;)
+
+    streamData.keyBy(_.id).map(new MovingAvg()).print()
+
+    env.execute(&quot;ManagedKeyedAggregatingStateExample&quot;)
+  &#125;
+</code></pre>
+<p>输入：</p>
+<pre><code>device-1 1
+device-1 2
+device-1 3
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/6e0fe3a1748c45ec50d4188ce47630e7.jpg"></p>
+<h3 id="3-3-5-状态生命周期"><a href="#3-3-5-状态生命周期" class="headerlink" title="3.3.5 状态生命周期"></a>3.3.5 状态生命周期</h3><p>在流处理的过程中，如果状态不断累积，很容易造成OOM，所以我们需要一种机制，来及时清理掉不需要的状态。对于Keyed State来说，自Flink 1.6之后引入了Time-To-Live (TTL)机制，能够友好的帮助我们自动清理掉过期状态。关于状态生命周期更多的内容可以参考：<a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1452844">《如何应对飞速增长的状态？Flink State TTL 概述》</a>。</p>
+<h4 id="3-3-5-1-StateTtlConfig"><a href="#3-3-5-1-StateTtlConfig" class="headerlink" title="3.3.5.1 StateTtlConfig"></a>3.3.5.1 StateTtlConfig</h4><p>为了使用状态TTL，必须先构建<code>StateTtlConfig</code>配置对象。然后可以通过传递配置在任何状态描述符中启用TTL功能。</p>
+<pre><code class="scala">  val ttlConfig: StateTtlConfig = StateTtlConfig
+    // 设置过期时间，10s后过期
+    .newBuilder(Time.seconds(10))
+    // ttl 刷新机制，默认在创建和写状态时刷新ssl
+    .setUpdateType(StateTtlConfig.UpdateType.OnReadAndWrite)
+    // 表示对已过期但还未被清理掉的状态如何处理
+    .setStateVisibility(StateTtlConfig.StateVisibility.NeverReturnExpired)
+    //过期对象的清理策略
+    .cleanupIncrementally(1, true)
+    .build
+</code></pre>
+<p><strong>StateTtlConfig参数说明:</strong></p>
+<p>下面根据StateTtlConfig构造器参数，分别描述一下参数作用。</p>
+<pre><code class="scala">    private StateTtlConfig(
+        UpdateType updateType,
+        StateVisibility stateVisibility,
+        TimeCharacteristic timeCharacteristic,
+        Time ttl,
+        CleanupStrategies cleanupStrategies) &#123;
+        this.updateType = Preconditions.checkNotNull(updateType);
+        this.stateVisibility = Preconditions.checkNotNull(stateVisibility);
+        this.timeCharacteristic = Preconditions.checkNotNull(timeCharacteristic);
+        this.ttl = Preconditions.checkNotNull(ttl);
+        this.cleanupStrategies = cleanupStrategies;
+        Preconditions.checkArgument(ttl.toMilliseconds() &gt; 0,
+            &quot;TTL is expected to be positive&quot;);
+    &#125;
+</code></pre>
+<ul>
+<li>updateType: 表示状态时间戳的更新的时机，是一个 Enum 对象。如果设置为 Disabled，则表明不更新时间戳；如果设置为 OnCreateAndWrite，则表明当状态创建或每次写入时都会更新时间戳；如果设置为 OnReadAndWrite，则除了在状态创建和写入时更新时间戳外，读取也会更新状态的时间戳。</li>
+<li>stateVisibility: 表示对已过期但还未被清理掉的状态如何处理，也是 Enum 对象。如果设置为 ReturnExpiredIfNotCleanedUp，那么即使这个状态的时间戳表明它已经过期了，但是只要还未被真正清理掉，就会被返回给调用方；如果设置为 NeverReturnExpired，那么一旦这个状态过期了，那么永远不会被返回给调用方，只会返回空状态，避免了过期状态带来的干扰。</li>
+</ul>
+<ul>
+<li><del><strong>TimeCharacteristic</strong></del> <strong>以及 TtlTimeCharacteristic</strong>：表示 State TTL 功能所适用的时间模式，仍然是 Enum 对象。前者已经被标记为 Deprecated（废弃），推荐新代码采用新的 TtlTimeCharacteristic 参数。截止到 Flink 1.8，只支持 ProcessingTime 一种时间模式，对 EventTime 模式的 State TTL 支持<a target="_blank" rel="noopener" href="https://issues.apache.org/jira/browse/FLINK-12005">还在开发中</a>。</li>
+<li><strong>CleanupStrategies</strong>：表示过期对象的清理策略，目前来说有三种 Enum 值。当设置为 FULL_STATE_SCAN_SNAPSHOT 时，对应的是 EmptyCleanupStrategy 类，表示对过期状态不做主动清理，当执行完整快照（Snapshot / Checkpoint）时，会生成一个较小的状态文件，但本地状态并不会减小。唯有当作业重启并从上一个快照点恢复后，本地状态才会实际减小，因此可能仍然不能解决内存压力的问题。为了应对这个问题，Flink 还提供了增量清理的枚举值，分别是针对 Heap StateBackend 的 INCREMENTAL_CLEANUP（对应 IncrementalCleanupStrategy 类），以及对 RocksDB StateBackend 有效的 ROCKSDB_COMPACTION_FILTER（对应 RocksdbCompactFilterCleanupStrategy 类）.  对于增量清理功能，Flink 可以被配置为每读取若干条记录就执行一次清理操作，而且可以指定每次要清理多少条失效记录；对于 RocksDB 的状态清理，则是通过 JNI 来调用 C++ 语言编写的 FlinkCompactionFilter 来实现，底层是通过 RocksDB 提供的后台 Compaction 操作来实现对失效状态过滤的。</li>
+</ul>
+<h4 id="3-3-5-2-开启TTL"><a href="#3-3-5-2-开启TTL" class="headerlink" title="3.3.5.2 开启TTL"></a>3.3.5.2 开启TTL</h4><p>想要在状态中启用TTL，需要在构建的StateDescriptor实例中，调用enableTimeToLive方法</p>
+<pre><code class="scala">      val listStateDescriptor = new ListStateDescriptor(&quot;listState&quot;, createTypeInformation[Long])
+      listStateDescriptor.enableTimeToLive(ttlConfig)
+      state = getRuntimeContext.getListState(listStateDescriptor)
+</code></pre>
+<h4 id="3-3-5-3-使用TTL例子"><a href="#3-3-5-3-使用TTL例子" class="headerlink" title="3.3.5.3 使用TTL例子"></a>3.3.5.3 使用TTL例子</h4><pre><code class="scala">package com.hollysys.flink.streaming.state.managed.keyed
+
+import org.apache.flink.api.common.functions.RichMapFunction
+import org.apache.flink.api.common.state.&#123;ListState, ListStateDescriptor, StateTtlConfig&#125;
+import org.apache.flink.api.common.time.Time
+import org.apache.flink.api.java.utils.ParameterTool
+import org.apache.flink.configuration.Configuration
+import org.apache.flink.streaming.api.scala.&#123;DataStream, StreamExecutionEnvironment, createTypeInformation&#125;
+
+/**
+ * Created by shirukai on 2019/8/27 4:23 下午
+ * 带有生命周期的状态，我们可以给状态设置过期时间
+ * https://cloud.tencent.com/developer/article/1452844
+ */
+object TimeToLiveStateExample &#123;
+  val ttlConfig: StateTtlConfig = StateTtlConfig
+    // 设置过期时间，10s后过期
+    .newBuilder(Time.seconds(10))
+    // ttl 刷新机制，默认在创建和写状态时刷新ttl
+    // 枚举类型。有三种机制：Disabled、OnReadAndWrite、OnReadAndWrite
+    .setUpdateType(StateTtlConfig.UpdateType.OnReadAndWrite)
+    // 表示对已过期但还未被清理掉的状态如何处理
+    .setStateVisibility(StateTtlConfig.StateVisibility.NeverReturnExpired)
+    //过期对象的清理策略
+    .cleanupIncrementally(1, true)
+    .build
+
+
+  case class DeviceEvent(id: String, value: Long)
+
+  case class DeviceList(id: String, list: List[Long])
+
+
+  class ListCollector extends RichMapFunction[DeviceEvent, DeviceList] &#123;
+    private var state: ListState[Long] = _
+
+    override def open(parameters: Configuration): Unit = &#123;
+      val listStateDescriptor = new ListStateDescriptor(&quot;listState&quot;, createTypeInformation[Long])
+      listStateDescriptor.enableTimeToLive(ttlConfig)
+      state = getRuntimeContext.getListState(listStateDescriptor)
+    &#125;
+
+    override def map(value: DeviceEvent): DeviceList = &#123;
+      import scala.collection.JavaConverters._
+      state.add(value.value)
+      DeviceList(value.id, state.get().asScala.toList)
+    &#125;
+  &#125;
+
+  def main(args: Array[String]): Unit = &#123;
+    val params: ParameterTool = ParameterTool.fromArgs(args)
+
+    // set up execution environment
+    val env: StreamExecutionEnvironment = StreamExecutionEnvironment.getExecutionEnvironment
+
+    // make parameters available in the web interface
+    env.getConfig.setGlobalJobParameters(params)
+
+    // get input data
+    val streamText: DataStream[String] = env.socketTextStream(Option(params.get(&quot;hostname&quot;)).getOrElse(&quot;localhost&quot;),
+      Option(params.get(&quot;port&quot;)).getOrElse(&quot;9090&quot;).toInt)
+
+    val streamData: DataStream[DeviceEvent] = streamText.map(text =&gt; &#123;
+      val token = text.split(&quot; &quot;)
+      DeviceEvent(token(0), token(1).toLong)
+    &#125;)
+
+    streamData.keyBy(_.id).map(new ListCollector()).print()
+
+    env.execute(&quot;TimeToLiveStateExample&quot;)
+  &#125;
+&#125;
+</code></pre>
+<h2 id="3-4-使用Managed-Operator-State"><a href="#3-4-使用Managed-Operator-State" class="headerlink" title="3.4 使用Managed Operator State"></a>3.4 使用Managed Operator State</h2><p>上面我们介绍了如何使用Managed Keyed State,通过RuntimeContext的getXXXState方法可以获取到不同的KeyedState，这必须要在KeyedDataStream中使用，如果在DataStream中使用的话会报如下异常：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/3d0d0a048d6080bd92bb4632fdfb1e3e.jpg"></p>
+<p>那么在普通的Operator中我们如何使用状态呢？官方提供了两种Operator State使用方法，继承CheckpointedFunction和ListCheckpointed&lt;T extends Serializable&gt;接口。</p>
+<h3 id="3-4-1-继承CheckpointedFunction实现有状态Operator"><a href="#3-4-1-继承CheckpointedFunction实现有状态Operator" class="headerlink" title="3.4.1 继承CheckpointedFunction实现有状态Operator"></a>3.4.1 继承CheckpointedFunction实现有状态Operator</h3><pre><code class="scala">package com.hollysys.flink.streaming.state.managed.operator
+
+
+import org.apache.flink.api.common.state.&#123;ListState, ListStateDescriptor&#125;
+import org.apache.flink.api.java.utils.ParameterTool
+import org.apache.flink.runtime.state.&#123;FunctionInitializationContext, FunctionSnapshotContext&#125;
+import org.apache.flink.streaming.api.checkpoint.CheckpointedFunction
+import org.apache.flink.streaming.api.functions.sink.SinkFunction
+import org.apache.flink.streaming.api.scala.&#123;DataStream, StreamExecutionEnvironment&#125;
+import org.apache.flink.streaming.api.scala._
+
+import scala.collection.mutable.ListBuffer
+
+/**
+ * Created by shirukai on 2019/8/29 10:06 上午
+ * 继承CheckpointedFunction获取状态
+ * 实现有状态的Sink
+ */
+object StateByCheckpointedExample &#123;
+
+  case class DeviceEvent(id: String, value: Double)
+
+
+  class BufferSink(threshold: Int = 2) extends SinkFunction[DeviceEvent] with CheckpointedFunction &#123;
+
+    @transient
+    private var checkpointedState: ListState[DeviceEvent] = _
+    private val bufferedElements = ListBuffer[DeviceEvent]()
+
+    override def invoke(value: DeviceEvent, context: SinkFunction.Context[_]): Unit = &#123;
+      bufferedElements += value
+      println(bufferedElements)
+      if (bufferedElements.size == threshold) &#123;
+        for (element &lt;- bufferedElements) &#123;
+          // send it to the sink
+          println(s&quot;BufferSink: $element&quot;)
+        &#125;
+        bufferedElements.clear()
+      &#125;
+    &#125;
+
+    // 当检查点被请求快照时调用，用以保存当前状态
+    override def snapshotState(context: FunctionSnapshotContext): Unit = &#123;
+      checkpointedState.clear()
+      for (element &lt;- bufferedElements) &#123;
+        checkpointedState.add(element)
+      &#125;
+    &#125;
+
+    // 当并行实例被创建时调用，用以初始化状态
+    override def initializeState(context: FunctionInitializationContext): Unit = &#123;
+      val descriptor = new ListStateDescriptor[DeviceEvent](
+        &quot;buffered-elements&quot;,
+        createTypeInformation[DeviceEvent])
+
+      // 通过getOperatorStateStore方法获取operator状态
+      // getListState
+      // getUnionListState 获取全量状态，会合并所有并行实例状态
+      checkpointedState = context.getOperatorStateStore.getListState(descriptor)
+      import scala.collection.JavaConverters._
+      // 如果从先前的快照恢复状态，则返回true
+      if (context.isRestored) &#123;
+        // 将恢复后的状态刷到ListBuffer里
+        for (element &lt;- checkpointedState.get().asScala) &#123;
+          bufferedElements += element
+        &#125;
+      &#125;
+    &#125;
+  &#125;
+
+  def main(args: Array[String]): Unit = &#123;
+    val params: ParameterTool = ParameterTool.fromArgs(args)
+
+    // set up execution environment
+    val env: StreamExecutionEnvironment = StreamExecutionEnvironment.getExecutionEnvironment
+
+    env.enableCheckpointing(1000)
+
+    // make parameters available in the web interface
+    env.getConfig.setGlobalJobParameters(params)
+
+    // get input data
+    val streamText: DataStream[String] = env.socketTextStream(Option(params.get(&quot;hostname&quot;)).getOrElse(&quot;localhost&quot;),
+      Option(params.get(&quot;port&quot;)).getOrElse(&quot;9090&quot;).toInt)
+
+    val streamData: DataStream[DeviceEvent] = streamText.map(text =&gt; &#123;
+      val token = text.split(&quot; &quot;)
+      DeviceEvent(token(0), token(1).toDouble)
+    &#125;)
+
+    streamData.addSink(new BufferSink(2))
+
+
+    env.execute(&quot;StateByCheckpointedExample&quot;)
+  &#125;
+&#125;
+</code></pre>
+<h3 id="3-4-2-继承ListCheckpointed实现有状态Operator"><a href="#3-4-2-继承ListCheckpointed实现有状态Operator" class="headerlink" title="3.4.2 继承ListCheckpointed实现有状态Operator"></a>3.4.2 继承ListCheckpointed实现有状态Operator</h3><pre><code class="scala">package com.hollysys.flink.streaming.state.managed.operator
+
+import java.util
+import java.util.Collections
+import java.util.concurrent.TimeUnit
+
+import org.apache.flink.api.java.utils.ParameterTool
+import org.apache.flink.runtime.state.StateBackend
+import org.apache.flink.runtime.state.filesystem.FsStateBackend
+import org.apache.flink.streaming.api.CheckpointingMode
+import org.apache.flink.streaming.api.checkpoint.ListCheckpointed
+import org.apache.flink.streaming.api.environment.CheckpointConfig
+import org.apache.flink.streaming.api.functions.source.&#123;RichParallelSourceFunction, SourceFunction&#125;
+import org.apache.flink.streaming.api.scala.StreamExecutionEnvironment
+import org.apache.flink.streaming.api.scala._
+
+/**
+ * Created by shirukai on 2019/8/29 1:48 下午
+ * 继承ListCheckpointedExample获取状态
+ * 实现有状态的Source
+ */
+object StateByListCheckpointedExample &#123;
+
+  case class DeviceEvent(id: String, value: Long)
+
+  case class Offset(value: Long) extends Serializable
+
+
+  class CounterSource extends RichParallelSourceFunction[DeviceEvent] with ListCheckpointed[Offset] &#123;
+
+    @volatile
+    private var isRunning = true
+
+    private var offset = 0L
+
+    override def run(ctx: SourceFunction.SourceContext[DeviceEvent]): Unit = &#123;
+      val lock = ctx.getCheckpointLock
+      while (isRunning) &#123;
+        // output and state update are atomic
+        lock.synchronized(&#123;
+          ctx.collect(DeviceEvent(s&quot;Device-$offset&quot;, offset))
+          offset += 1
+          TimeUnit.SECONDS.sleep(1)
+        &#125;)
+      &#125;
+    &#125;
+
+    override def cancel(): Unit = isRunning = false
+
+
+    // 恢复到之前检查点的状态
+    override def restoreState(state: util.List[Offset]): Unit = &#123;
+      if (!state.isEmpty) offset = state.get(0).value
+    &#125;
+
+    // 返回当前状态用以保存到快照中
+    override def snapshotState(checkpointId: Long, timestamp: Long): util.List[Offset] =
+      Collections.singletonList(Offset(offset))
+
+  &#125;
+
+  def main(args: Array[String]): Unit = &#123;
+    val params: ParameterTool = ParameterTool.fromArgs(args)
+
+    // set up execution environment
+    val env: StreamExecutionEnvironment = StreamExecutionEnvironment.getExecutionEnvironment
+
+    env.enableCheckpointing(1000)
+        .setStateBackend(new FsStateBackend(&quot;file:///Users/shirukai/hollysys/repository/learn-demo-flink/data/checkpoint&quot;).asInstanceOf[StateBackend])
+    env.getCheckpointConfig.enableExternalizedCheckpoints(CheckpointConfig.ExternalizedCheckpointCleanup.RETAIN_ON_CANCELLATION)
+    // make parameters available in the web interface
+    env.getConfig.setGlobalJobParameters(params)
+
+    env.addSource(new CounterSource()).setParallelism(1).print()
+
+    env.execute(&quot;StateByListCheckpointedExample&quot;)
+  &#125;
+
+&#125;
+</code></pre>
+<h2 id="3-5-广播状态模式"><a href="#3-5-广播状态模式" class="headerlink" title="3.5 广播状态模式"></a>3.5 广播状态模式</h2><p>以下关于“什么是广播状态”内容引用于文章<a target="_blank" rel="noopener" href="https://ververica.cn/developers/apache-flink-%E4%B8%AD%E5%B9%BF%E6%92%AD%E7%8A%B6%E6%80%81%E7%9A%84%E5%AE%9E%E7%94%A8%E6%8C%87%E5%8D%97/">《Apache Flink 中广播状态的实用指南》</a></p>
+<p>广播状态可以用于通过一个特定的方式来组合并共同处理两个事件流。第一个流的事件被广播到另一个 operator 的所有并发实例，这些事件将被保存为状态。另一个流的事件不会被广播，而是发送给同一个 operator 的各个实例，并与广播流的事件一起处理。广播状态非常适合两个流中一个吞吐大，一个吞吐小，或者需要动态修改处理逻辑的情况。</p>
+<pre><code class="scala">package com.hollysys.flink.streaming.state.broadcast
+
+import org.apache.flink.api.common.state.MapStateDescriptor
+import org.apache.flink.api.java.utils.ParameterTool
+import org.apache.flink.streaming.api.functions.co.KeyedBroadcastProcessFunction
+import org.apache.flink.streaming.api.scala.&#123;DataStream, StreamExecutionEnvironment&#125;
+import org.apache.flink.streaming.api.scala._
+import org.apache.flink.util.Collector
+
+import scala.collection.mutable
+
+/**
+ * Created by shirukai on 2019/8/29 4:18 下午
+ * 广播状态示例
+ */
+object BroadcastStateExample &#123;
+
+  val ruleStateDescriptor = new MapStateDescriptor(&quot;rule-state&quot;,
+    createTypeInformation[String],
+    createTypeInformation[mutable.Map[String, RuleEvent]])
+
+  case class DeviceEvent(id: String, value: Double)
+
+  case class RuleEvent(id: String, ruleType: String, bind: String)
+
+  case class DeviceWithRule(device: DeviceEvent, rule: RuleEvent)
+
+  class DeviceWithRuleProcess extends KeyedBroadcastProcessFunction[String, DeviceEvent, RuleEvent, DeviceWithRule] &#123;
+
+
+
+    override def processElement(value: DeviceEvent, ctx: KeyedBroadcastProcessFunction[String, DeviceEvent, RuleEvent,
+      DeviceWithRule]#ReadOnlyContext, out: Collector[DeviceWithRule]): Unit = &#123;
+      val ruleState = ctx.getBroadcastState(ruleStateDescriptor)
+      // 如果数据包含规则
+      if (ruleState.contains(value.id)) &#123;
+        val rules = ruleState.get(value.id)
+        rules.foreach(rule =&gt; &#123;
+          out.collect(DeviceWithRule(value,rule._2))
+        &#125;)
+      &#125;
+    &#125;
+
+    override def processBroadcastElement(value: RuleEvent, ctx: KeyedBroadcastProcessFunction[String, DeviceEvent,
+      RuleEvent, DeviceWithRule]#Context, out: Collector[DeviceWithRule]): Unit = &#123;
+      val ruleState = ctx.getBroadcastState(ruleStateDescriptor)
+      val bindKey = value.bind
+      if (ruleState.contains(bindKey)) &#123;
+        val bindRules = ruleState.get(bindKey)
+        bindRules.put(value.id, value)
+      &#125; else &#123;
+        ruleState.put(bindKey, mutable.Map(value.id -&gt; value))
+      &#125;
+    &#125;
+  &#125;
+
+  def main(args: Array[String]): Unit = &#123;
+    val params: ParameterTool = ParameterTool.fromArgs(args)
+
+    // set up execution environment
+    val env: StreamExecutionEnvironment = StreamExecutionEnvironment.getExecutionEnvironment
+
+    // make parameters available in the web interface
+    env.getConfig.setGlobalJobParameters(params)
+
+    val deviceText: DataStream[String] = env.socketTextStream(
+      Option(params.get(&quot;device-hostname&quot;)).getOrElse(&quot;localhost&quot;),
+      Option(params.get(&quot;device-port&quot;)).getOrElse(&quot;9090&quot;).toInt)
+
+    val ruleText: DataStream[String] = env.socketTextStream(
+      Option(params.get(&quot;rule-hostname&quot;)).getOrElse(&quot;localhost&quot;),
+      Option(params.get(&quot;rule-port&quot;)).getOrElse(&quot;9091&quot;).toInt)
+
+    val deviceEvents = deviceText.map(x =&gt; &#123;
+      val token = x.split(&quot; &quot;)
+      DeviceEvent(token(0), token(1).toDouble)
+    &#125;)
+
+    val ruleEvents = ruleText.map(x =&gt; &#123;
+      val token = x.split(&quot; &quot;)
+      RuleEvent(token(0), token(1), token(2))
+    &#125;)
+
+
+    val ruleBroadcastStream = ruleEvents.broadcast(ruleStateDescriptor)
+
+    deviceEvents.keyBy(_.id).connect(ruleBroadcastStream).process(new DeviceWithRuleProcess()).print()
+
+    env.execute(&quot;BroadcastStateExample&quot;)
+  &#125;
+&#125;
+</code></pre>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E4%BB%80%E4%B9%88%E6%98%AF%E6%9C%89%E7%8A%B6%E6%80%81%E8%AE%A1%E7%AE%97"><span class="toc-number">1.</span> <span class="toc-text">1 什么是有状态计算</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E6%9C%89%E7%8A%B6%E6%80%81%E8%AE%A1%E7%AE%97%E7%9A%84%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">2.</span> <span class="toc-text">2 有状态计算的应用场景</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-Flink%E7%9A%84DataStream%E4%B8%AD%E4%BD%BF%E7%94%A8%E7%8A%B6%E6%80%81"><span class="toc-number">3.</span> <span class="toc-text">3 Flink的DataStream中使用状态</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-Flink%E4%B8%AD%E7%9A%84%E7%8A%B6%E6%80%81%E7%B1%BB%E5%9E%8B"><span class="toc-number">3.1.</span> <span class="toc-text">3.1 Flink中的状态类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-Keyed-State-amp-Operator-State"><span class="toc-number">3.2.</span> <span class="toc-text">3.2 Keyed State &amp; Operator State</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-%E4%BD%BF%E7%94%A8Managed-Keyed-State"><span class="toc-number">3.3.</span> <span class="toc-text">3.3 使用Managed Keyed State</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-1-ValueState"><span class="toc-number">3.3.1.</span> <span class="toc-text">3.3.1 ValueState</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-2-MapState"><span class="toc-number">3.3.2.</span> <span class="toc-text">3.3.2  MapState</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-3-ListState"><span class="toc-number">3.3.3.</span> <span class="toc-text">3.3.3 ListState</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-3-ReducingState"><span class="toc-number">3.3.4.</span> <span class="toc-text">3.3.3 ReducingState</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-4-AggregatingState"><span class="toc-number">3.3.5.</span> <span class="toc-text">3.3.4 AggregatingState</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-5-%E7%8A%B6%E6%80%81%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-number">3.3.6.</span> <span class="toc-text">3.3.5 状态生命周期</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-4-%E4%BD%BF%E7%94%A8Managed-Operator-State"><span class="toc-number">3.4.</span> <span class="toc-text">3.4 使用Managed Operator State</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-1-%E7%BB%A7%E6%89%BFCheckpointedFunction%E5%AE%9E%E7%8E%B0%E6%9C%89%E7%8A%B6%E6%80%81Operator"><span class="toc-number">3.4.1.</span> <span class="toc-text">3.4.1 继承CheckpointedFunction实现有状态Operator</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-2-%E7%BB%A7%E6%89%BFListCheckpointed%E5%AE%9E%E7%8E%B0%E6%9C%89%E7%8A%B6%E6%80%81Operator"><span class="toc-number">3.4.2.</span> <span class="toc-text">3.4.2 继承ListCheckpointed实现有状态Operator</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-5-%E5%B9%BF%E6%92%AD%E7%8A%B6%E6%80%81%E6%A8%A1%E5%BC%8F"><span class="toc-number">3.5.</span> <span class="toc-text">3.5 广播状态模式</span></a></li></ol></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

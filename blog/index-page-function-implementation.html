@@ -1,0 +1,814 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>index页面功能实现说明 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="一、页面描述
+这个页面有两个表格，分别展示manager列表，主机列表。
+
+manager列表里的功能有：
+展示manger信息包括：manager ip、agent数量、manger状态等
+部署日,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">index页面功能实现说明</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/6.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/项目开发记录"><b>「
+                    </b>项目开发记录<b> 」</b></a>
+                
+                August 19, 2018
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/index-page-function-implementation.html" title="index页面功能实现说明" class="">index页面功能实现说明</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    18k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    16 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/IDAP%E9%A1%B5%E9%9D%A2%E5%BC%80%E5%8F%91%E8%AE%B0%E5%BD%95/" rel="tag">IDAP页面开发记录</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E9%A1%B5%E9%9D%A2%E8%AE%B0%E5%BD%95/" rel="tag">页面记录</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91%E8%AE%B0%E5%BD%95/" rel="tag">项目开发记录</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <h2 id="一、页面描述"><a href="#一、页面描述" class="headerlink" title="一、页面描述"></a>一、页面描述</h2><blockquote>
+<p>这个页面有两个表格，分别展示manager列表，主机列表。</p>
+</blockquote>
+<h3 id="manager列表里的功能有："><a href="#manager列表里的功能有：" class="headerlink" title="manager列表里的功能有："></a>manager列表里的功能有：</h3><ol>
+<li>展示manger信息包括：manager ip、agent数量、manger状态等</li>
+<li>部署日志详情</li>
+<li>查看当前集群主机列表</li>
+</ol>
+<h3 id="所有主机列表的功能有："><a href="#所有主机列表的功能有：" class="headerlink" title="所有主机列表的功能有："></a>所有主机列表的功能有：</h3><ol>
+<li>展示主机信息包括：主机地址、所属manager、主机状态等</li>
+<li>主机部署日志</li>
+<li>重新部署 </li>
+<li>查看主机配置</li>
+</ol>
+<h2 id="二、功能实现记录"><a href="#二、功能实现记录" class="headerlink" title="二、功能实现记录"></a>二、功能实现记录</h2><h3 id="1-展示manager、主机列表信息"><a href="#1-展示manager、主机列表信息" class="headerlink" title="1. 展示manager、主机列表信息"></a>1. 展示manager、主机列表信息</h3><blockquote>
+<p>这里主要用到的是datatables插件来渲染表格</p>
+</blockquote>
+<h4 id="a-定制后台数据"><a href="#a-定制后台数据" class="headerlink" title="a 定制后台数据"></a>a 定制后台数据</h4><pre><code>&#123;
+&quot;aaData&quot;: [
+            &#123;
+            &quot;status&quot;: &quot;0&quot;,
+            &quot;exist_db_port&quot;: &quot;&quot;,
+            &quot;count&quot;: 2,
+            &quot;exist_db_user&quot;: &quot;&quot;,
+            &quot;os_version&quot;: &quot;7&quot;,
+            &quot;db_type&quot;: &quot;1&quot;,
+            &quot;host_name_pre&quot;: &quot;idap&quot;,
+            &quot;mysql_slave&quot;: &quot;10.110.18.59&quot;,
+            &quot;domain_name&quot;: &quot;idap.com&quot;,
+            &quot;nginx&quot;: &quot;10.110.18.80&quot;,
+            &quot;create_mysql_pwd&quot;: &quot;123456a?&quot;,
+            &quot;server_ip&quot;: &quot;10.110.18.59&quot;,
+            &quot;db_source&quot;: &quot;1&quot;,
+            &quot;id&quot;: 1,
+            &quot;operation_id&quot;: &quot;75a3e53a-8963-11e7-8b1c-000c29fc8a00&quot;,
+            &quot;exist_db_pwd&quot;: &quot;&quot;,
+            &quot;jdk_version&quot;: &quot;8&quot;,
+            &quot;vm_info_platform&quot;: &quot;vsphere&quot;,
+            &quot;os_type&quot;: &quot;CentOS&quot;,
+            &quot;exist_db_host&quot;: &quot;&quot;,
+            &quot;mysql_master&quot;: &quot;10.110.18.58&quot;
+            &#125;
+          ],
+&quot;iTotalRecords&quot;: 1,
+&quot;iTotalDisplayRecords&quot;: 1
+</code></pre>
+<p>注意：后台数据格式一定要是这样，而且主要数据对象的key必须是aaData</p>
+<h4 id="b-表格HTML代码"><a href="#b-表格HTML代码" class="headerlink" title="b.表格HTML代码"></a>b.表格HTML代码</h4><pre><code>        &lt;table id=&quot;hostsList&quot; class=&quot;table table-bordered table-hover table-striped&quot;&gt;
+            &lt;thead&gt;
+            &lt;tr&gt;
+                &lt;th width=&quot;5%&quot; style=&quot;text-align: center;&quot;&gt;编号&lt;/th&gt;
+                &lt;th width=&quot;20%&quot; style=&quot;text-align: center;&quot;&gt;主机地址&lt;/th&gt;
+                &lt;th width=&quot;20%&quot; style=&quot;text-align: center;&quot;&gt;所属IDAP Manager&lt;/th&gt;
+                &lt;th width=&quot;15%&quot; style=&quot;text-align: center;&quot;&gt;主机状态&lt;/th&gt;
+                &lt;th width=&quot;15%&quot; style=&quot;text-align: center;&quot;&gt;日志&lt;/th&gt;
+                &lt;th width=&quot;25%&quot; style=&quot;text-align: center;&quot;&gt;操作&lt;/th&gt;
+            &lt;/tr&gt;
+            &lt;/thead&gt;
+        &lt;/table&gt;
+</code></pre>
+<p>我们只需要写出表头以及给这个table一个id即可</p>
+<h4 id="c-JS初始化表格"><a href="#c-JS初始化表格" class="headerlink" title="c. JS初始化表格"></a>c. JS初始化表格</h4><pre><code>    //初始化manger列表
+    var ManagerTable;
+    function initManagerTable() &#123;
+        ManagerTable =$(&quot;#managerList&quot;).dtable(&#123;
+            //显示“正在加载”的图标
+            &quot;processing&quot;: true,
+            &quot;serverSide&quot;: false,//开启服务器服务，开启之后将不能进前端分页
+            &quot;paging&quot;: true,//是否分页
+            &quot;iDisplayLength&quot;: 5, //显示五行数据
+            &quot;bInfo&quot;:true,//是否显示底部信息，默认开启
+            &quot;ordering&quot;: false,
+            &quot;pagingType&quot;: &quot;simple_numbers&quot;,//翻页栏样式
+            &quot;ajax&quot;: &quot;getManagerList&quot;,
+
+            &quot;columns&quot;: [
+                &#123;
+                    &quot;data&quot;: &quot;null&quot;
+                &#125;,
+                &#123;
+                    &quot;data&quot;: &quot;server_ip&quot;
+                &#125;,
+                &#123;
+                    &quot;data&quot;: &quot;count&quot;
+                &#125;,
+                &#123;
+                    &quot;data&quot;: &quot;status&quot;
+                &#125;
+            ],
+            &quot;columnDefs&quot;: [
+                &#123;
+                    &quot;targets&quot;: 0,
+                    &quot;data&quot;: &quot;id&quot;,
+                    &quot;render&quot;: function (data, type, row, meta) &#123;
+                        return meta.row + meta.settings._iDisplayStart + 1;
+                    &#125;
+                &#125;,
+                &#123;
+                    &quot;targets&quot;: 3,
+                    &quot;data&quot;: &quot;status&quot;,
+                    &quot;render&quot;: function (data, type, full) &#123;
+                        if (data !== &quot;&quot; || data !== null) &#123;
+                            if (data === &quot;0&quot;) &#123;
+                                data = &quot;部署中&quot;;
+                            &#125;
+                            if (data === &quot;1&quot;) &#123;
+                                data = &quot;部署完成&quot;;
+                            &#125;
+                            if (data === &quot;2&quot;) &#123;
+                                data = &quot;部署失败&quot;;
+                            &#125;
+                            if (data === &quot;3&quot;) &#123;
+                                data = &quot;已接入&quot;;
+                            &#125;
+                        &#125;
+                        return data;
+                    &#125;
+                &#125;,
+                &#123;
+                    &quot;targets&quot;: 4,
+                    &quot;data&quot;: &quot;status&quot;,
+                    &quot;render&quot;: function (data, type, full) &#123;
+                        var logOptions = &#39;&lt;div&gt;&lt;span class=&quot;options&quot; onclick=&quot;managerLog(&#39; + &quot;&#39;&quot; + full.id + &quot;&#39;&quot; + &#39;)&quot; href=&quot;#&quot;&gt;详情&lt;/span&gt;&lt;/div&gt;&#39;;
+                        return logOptions
+                    &#125;
+                &#125;,
+                &#123;
+                    &quot;targets&quot;: 5,
+                    &quot;data&quot;: &quot;status&quot;,
+                    &quot;render&quot;: function (data, type, full) &#123;
+                        var optionHtml = &quot;&quot;;
+                        var optionList=&#39;&lt;span class=&quot;options&quot; onclick=&quot;managerList(&#39; + &quot;&#39;&quot; + full.id + &quot;&#39;&quot; + &quot;,&quot; +
+                            &quot;&#39;&quot; + full.server_ip + &quot;&#39;&quot; + &quot;,&quot; + &quot;&#39;&quot; + full.vm_info_platform + &quot;&#39;&quot; + &quot;,&quot; + &quot;&#39;&quot; + full.os_type + &quot;&#39;&quot; + &quot;,&quot; + &quot;&#39;&quot; + full.os_version + &quot;&#39;&quot;  + &#39;)&quot; href=&quot;#&quot;&gt;主机列表&lt;/span&gt;&#39;;
+                        var optionsRestart = &#39;&lt;span class=&quot;options&quot; onclick=&quot;managerOption(&#39; + &quot;&#39;&quot; + full.id + &quot;&#39;&quot;  + &#39;)&quot; href=&quot;#&quot;&gt;&#39; + &#39;重新部署&#39; + &#39;&lt;/span&gt;&#39;;
+                        if(data === &quot;2&quot;)&#123;
+                            var nbsp = &quot;    &quot;;
+                            optionHtml = optionsRestart + nbsp + optionList
+                        &#125;else &#123;
+                            optionHtml = optionList
+                        &#125;
+                        return optionHtml
+                    &#125;
+                &#125;
+            ]
+        &#125;);
+        return ManagerTable;
+    &#125;
+</code></pre>
+<p>注意，这里面用到了几个技巧：</p>
+<ol>
+<li>表格自动编号，根据数据，自动给每一行加一个编号：</li>
+</ol>
+<p>实现代码：</p>
+<pre><code>                &#123;
+                    &quot;targets&quot;: 0,
+                    &quot;data&quot;: &quot;id&quot;,
+                    &quot;render&quot;: function (data, type, row, meta) &#123;
+                        return meta.row + meta.settings._iDisplayStart + 1;
+                    &#125;
+                &#125;
+</code></pre>
+<ol start="2">
+<li>表格里按钮功能的操作：<br>加一个点击事件，然后把相应的参数传到点击方法里。如 onclick=”managerList(‘ + “‘“ + full.id + “‘“ + “,” +”‘“ + full.server_ip + “‘“ + “,” + “‘“ +full.vm_info_platform + “‘“ + “,” + “‘“ + full.os_type + “‘“ + “,” + “‘“ + full.os_version + “‘“  + ‘)”<br>这里面full是所有aaData对象里的值。</li>
+</ol>
+<h3 id="2-查看部署日志"><a href="#2-查看部署日志" class="headerlink" title="2. 查看部署日志"></a>2. 查看部署日志</h3><pre><code>    function managerLog(manager_id)&#123;
+        var task;
+        $.get(&quot;/m_status/&quot;, &#123;
+            &quot;manager_id&quot;: manager_id
+        &#125;, function (m_status) &#123;
+            if (m_status.m_status === &quot;0&quot;) &#123;
+                tmp = 0;
+                task = setInterval(function () &#123;
+                    $.get(&quot;/read/&quot;, &#123;
+                        &quot;manager_id&quot;: manager_id,
+                    &#125;, function (read_data) &#123;
+                        $(&quot;.ManagerDeploy_log&quot;).val(read_data.read_d);
+                        $(&quot;.ManagerDeploy_log&quot;).scrollTop($(&quot;.ManagerDeploy_log&quot;)[0].scrollHeight);
+                    &#125;);
+                &#125;, 2000);
+            &#125; else &#123;
+                $.get(&quot;read&quot;, &#123;
+                    &quot;manager_id&quot;: manager_id
+                &#125;, function (read_data) &#123;
+                    $(&quot;.ManagerDeploy_log&quot;).val(read_data.read_d);
+                &#125;);
+            &#125;
+        &#125;);
+        $.dialog(&#123;
+            type: &#39;iframe&#39;,
+            title: &#39;部署日志&#39;,
+            width: &#39;580&#39;,
+            height: &#39;320&#39;,
+            okValue: &#39;确定&#39;,
+            content: &#39;&lt;textarea class=&quot;ManagerDeploy_log&quot;&gt;&lt;/textarea&gt;&#39;,
+            onshow: function () &#123;
+                $(&quot;.ManagerDeploy_log&quot;).css(&#123;
+                    &quot;width&quot;: &quot;580px&quot;,
+                    &quot;height&quot;: &quot;290px&quot;,
+                    &quot;border&quot;: &quot;1px solid #ddd&quot;,
+                    &quot;background&quot;: &quot;#ddd&quot;,
+                    &quot;margin-bottom&quot;: &quot;10px&quot;
+                &#125;);
+                $(&quot;.deploy_title&quot;).css(&#123;
+                    &quot;font-family&quot;: &quot;Microsoft YaHei&quot;,
+                    &quot;font-size&quot;: &quot;20px&quot;,
+                    &quot;margin-bottom&quot;: &quot;8px&quot;
+                &#125;)
+            &#125;,
+            onclose: function () &#123;
+                clearInterval(task);
+            &#125;,
+            ok: function () &#123;
+                clearInterval(task);
+            &#125;
+        &#125;);
+    &#125;
+</code></pre>
+<h3 id="3-查看配置"><a href="#3-查看配置" class="headerlink" title="3. 查看配置"></a>3. 查看配置</h3><p>查看配置这个地方没有从后台获取数据，而是拿到的表格渲染的数据。首先在script标签里写一个html模板如下：</p>
+<pre><code>&lt;script type=&quot;text/html&quot; id=&quot;showConfig&quot;&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;&quot;&gt;
+            &lt;table class=&quot;table table-hover table-striped&quot;&gt;
+                &lt;tbody&gt;
+                &lt;tr&gt;
+                    &lt;td width=&quot;50%&quot;&gt;主机名称：&lt;/td&gt;
+                    &lt;td&gt;[vm_host_name]&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;!-- &lt;tr&gt;
+                    &lt;td width=&quot;50%&quot;&gt;root密码：&lt;/td&gt;
+                    &lt;td&gt;[]&lt;/td&gt;
+                &lt;/tr&gt;--&gt;
+                &lt;tr&gt;
+                    &lt;td width=&quot;50%&quot;&gt;数据中心：&lt;/td&gt;
+                    &lt;td&gt;[vm_host_datacenter]&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td width=&quot;50%&quot;&gt;集群：&lt;/td&gt;
+                    &lt;td&gt;[vm_host_cluster]&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td width=&quot;50%&quot;&gt;虚拟机位置：&lt;/td&gt;
+                    &lt;td&gt;[vm_host_host]&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td width=&quot;50%&quot;&gt;CPU：&lt;/td&gt;
+                    &lt;td&gt;[vm_host_cpu]核&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td width=&quot;50%&quot;&gt;内存：&lt;/td&gt;
+                    &lt;td&gt;[vm_host_memory]MB&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td width=&quot;50%&quot;&gt;储存器名称：&lt;/td&gt;
+                    &lt;td&gt;[vm_host_disk]&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td width=&quot;50%&quot;&gt;网络标签：&lt;/td&gt;
+                    &lt;td&gt;[vm_host_network]&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td width=&quot;50%&quot;&gt;IPv4：&lt;/td&gt;
+                    &lt;td&gt;[vm_host_ip]&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td width=&quot;50%&quot;&gt;网关：&lt;/td&gt;
+                    &lt;td&gt;[vm_host_gateway]&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td width=&quot;50%&quot;&gt;子网掩码：&lt;/td&gt;
+                    &lt;td&gt;[vm_host_netmask]&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;/tbody&gt;
+            &lt;/table&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/script&gt;
+</code></pre>
+<p>script标签里的html在页面显示的时候是不会主动渲染的，我们可以通过js获取页面内容，然后手动渲染到dom里，代码中[]里的内容是我们js渲染时重新赋的值。具体操作日下：</p>
+<pre><code>    function viewConfig(vm_host_name, vm_host_network, vm_host_status, vm_host_gateway, vm_host_datacenter,
+                        vm_host_host, vm_host_disk, vm_host_cpu, vm_info_host, vm_host_memory, idap_manager_id,
+                        vm_host_data_disk, vm_info_passwd, vm_info_user, vm_host_ip, vm_host_netmask, vm_host_cluster,
+                        operation_id, vm_info_platform, id) &#123;
+        //从id为showConfig的标签里读取html内容
+        var html = document.getElementById(&quot;showConfig&quot;).innerHTML;
+        var reg = new RegExp(&quot;\\[([^\\[\\]]*?)\\]&quot;, &#39;igm&#39;); //i g m是指分别用于指定区分大小写的匹配、全局匹配和多行匹配。
+        //重新渲染数据
+        var source = html.replace(reg, function (node, key) &#123;
+            return &#123;
+                &#39;vm_host_name&#39;: vm_host_name,
+                &#39;vm_host_datacenter&#39;: vm_host_datacenter,
+                &#39;vm_host_cluster&#39;: vm_host_cluster,
+                &#39;vm_host_host&#39;: vm_host_host,
+                &#39;vm_host_cpu&#39;: vm_host_cpu,
+                &#39;vm_host_memory&#39;: vm_host_memory,
+                &#39;vm_host_disk&#39;: vm_host_disk,
+                &#39;vm_host_network&#39;: vm_host_network,
+                &#39;vm_host_ip&#39;: vm_host_ip,
+                &#39;vm_host_gateway&#39;: vm_host_gateway,
+                &#39;vm_host_netmask&#39;: vm_host_netmask
+            &#125;[key]
+        &#125;);
+        //dialog加载数据
+        $.dialog(&#123;
+            title: &quot;配置信息&quot;,
+            type: &quot;confirm&quot;,
+            content: source
+        &#125;)
+    &#125;
+</code></pre>
+<h3 id="特殊功能-实时监测部署状态，进行刷新"><a href="#特殊功能-实时监测部署状态，进行刷新" class="headerlink" title="特殊功能:实时监测部署状态，进行刷新"></a>特殊功能:实时监测部署状态，进行刷新</h3><blockquote>
+<p>需求：以主机列表为例，主机部署时有四个状态分别是：states=0表示主机部署中、states=1表示部署成功、states=2表示部署失败、states=3表示主机已接入。现在的需求是当主机完成部署时，后台数据库states的状态会从0变为1部署成功、或者变为2部署失败，我们要监测状态的改变去刷新页面数据。</p>
+</blockquote>
+<blockquote>
+<p>不完美解决方案：利用setTimeoUt来间隔的刷新数据</p>
+</blockquote>
+<blockquote>
+<p>思路：利用setTimeout来间隔刷新，为了避免不必要的刷新，也就是说，只有当状态改变的时候进行刷新。我们先发送ajax请求，然后遍历所有主机状态，并且计算出状态为0的主机个数。然后设置时间间隔5s后再次发送ajax请求，同样去判断主机状态，记录状态为0的主机个数，当这次状态为0 的主机个数与上一次状态为0的主机个数不一样的时候，说明其中有一个主机状态发生了改变，这时候我们就要执行一次刷新（注意：这里的刷新不是刷新页面，而是重新渲染表格，这也是不完美的地方之一，虽然这样比刷新整个页面要好，但是仍然会影响用户体验，理想的解决方法是：只刷新改变的那一行数据，目前没有实现）</p>
+</blockquote>
+<p>实现代码如下：</p>
+<pre><code>    //manager、主机状态状态改变时刷新
+    var tmpManagerTotal=0;
+    var tmpHostsTotal = 0;
+    function adjRefresh() &#123;
+        var managerTotal = 0;
+        var hostsTotal=0;
+        $.ajax(&#123;
+            type:&#39;GET&#39;,
+            url:&quot;getManagerList&quot;,
+            success:function (data) &#123;
+                var aa = JSON.parse(data);
+                var states = &quot;&quot;;
+                //for循环得到部署中的状态个数
+                for(var ii in aa.aaData)&#123;
+                    我= aa.aaData[ii].status;
+                    if(states===&quot;0&quot;)&#123;
+                        managerTotal=managerTotal+1;
+                    &#125;
+                &#125;
+                if(managerTotal !==tmpManagerTotal)&#123;
+                    tmpManagerTotal=managerTotal;
+                    ManagerTable.destroy();
+                    initManagerTable();
+                &#125;
+            &#125;
+        &#125;);
+        $.ajax(&#123;
+            type:&#39;GET&#39;,
+            url:&quot;getVMInfo&quot;,
+            success:function (data) &#123;
+                var aa = JSON.parse(data);
+                var hostsStates = &quot;&quot;;
+                //for循环得到部署中的状态个数
+                for(var ii in aa.aaData)&#123;
+                    hostsStates= aa.aaData[ii].vm_host_status;
+                    if(hostsStates===&quot;0&quot;)&#123;
+                        hostsTotal=hostsTotal+1;
+                    &#125;
+                &#125;
+                if(hostsTotal !==tmpHostsTotal)&#123;
+                    tmpHostsTotal=hostsTotal;
+                    hostsTable.destroy();
+                    initHostsTable();
+                &#125;
+            &#125;
+        &#125;);
+        setTimeout(function() &#123;
+            adjRefresh();
+        &#125;,10000)
+    &#125;
+</code></pre>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E9%A1%B5%E9%9D%A2%E6%8F%8F%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">一、页面描述</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#manager%E5%88%97%E8%A1%A8%E9%87%8C%E7%9A%84%E5%8A%9F%E8%83%BD%E6%9C%89%EF%BC%9A"><span class="toc-number">1.1.</span> <span class="toc-text">manager列表里的功能有：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%80%E6%9C%89%E4%B8%BB%E6%9C%BA%E5%88%97%E8%A1%A8%E7%9A%84%E5%8A%9F%E8%83%BD%E6%9C%89%EF%BC%9A"><span class="toc-number">1.2.</span> <span class="toc-text">所有主机列表的功能有：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0%E8%AE%B0%E5%BD%95"><span class="toc-number">2.</span> <span class="toc-text">二、功能实现记录</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%B1%95%E7%A4%BAmanager%E3%80%81%E4%B8%BB%E6%9C%BA%E5%88%97%E8%A1%A8%E4%BF%A1%E6%81%AF"><span class="toc-number">2.1.</span> <span class="toc-text">1. 展示manager、主机列表信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E6%9F%A5%E7%9C%8B%E9%83%A8%E7%BD%B2%E6%97%A5%E5%BF%97"><span class="toc-number">2.2.</span> <span class="toc-text">2. 查看部署日志</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E6%9F%A5%E7%9C%8B%E9%85%8D%E7%BD%AE"><span class="toc-number">2.3.</span> <span class="toc-text">3. 查看配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%89%B9%E6%AE%8A%E5%8A%9F%E8%83%BD-%E5%AE%9E%E6%97%B6%E7%9B%91%E6%B5%8B%E9%83%A8%E7%BD%B2%E7%8A%B6%E6%80%81%EF%BC%8C%E8%BF%9B%E8%A1%8C%E5%88%B7%E6%96%B0"><span class="toc-number">2.4.</span> <span class="toc-text">特殊功能:实时监测部署状态，进行刷新</span></a></li></ol></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

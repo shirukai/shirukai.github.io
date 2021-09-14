@@ -1,0 +1,811 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>秒杀系统的实现之Service层 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="DAO接口后的思考 (Data Access Object) 数据访问对象DAO层工作演变为：接口设计+SQL编写
+代码和SQL的分析，方便Review
+DAO拼接等逻辑在Service层完成
+Se,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">秒杀系统的实现之Service层</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/4.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/项目开发记录"><b>「
+                    </b>项目开发记录<b> 」</b></a>
+                
+                August 19, 2018
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/service-layer-for-the-realization-of-the-spike-system.html" title="秒杀系统的实现之Service层" class="">秒杀系统的实现之Service层</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    12k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    11 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E7%A7%92%E6%9D%80%E9%AB%98%E5%B9%B6%E5%8F%91%E6%A1%88%E4%BE%8B/" rel="tag">秒杀高并发案例</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91%E8%AE%B0%E5%BD%95/" rel="tag">项目开发记录</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <h3 id="DAO接口后的思考-Data-Access-Object-数据访问对象"><a href="#DAO接口后的思考-Data-Access-Object-数据访问对象" class="headerlink" title="DAO接口后的思考 (Data Access Object) 数据访问对象"></a>DAO接口后的思考 (Data Access Object) 数据访问对象</h3><p>DAO层工作演变为：接口设计+SQL编写</p>
+<p>代码和SQL的分析，方便Review</p>
+<p>DAO拼接等逻辑在Service层完成</p>
+<h2 id="Service接口和实现类"><a href="#Service接口和实现类" class="headerlink" title="Service接口和实现类"></a>Service接口和实现类</h2><p>创建包：service、dto、exception</p>
+<h4 id="在resources-spring下创建spring-service-xml配置文件"><a href="#在resources-spring下创建spring-service-xml配置文件" class="headerlink" title="在resources/spring下创建spring-service.xml配置文件"></a>在resources/spring下创建spring-service.xml配置文件</h4><pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+       xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+       xmlns:context=&quot;http://www.springframework.org/schema/context&quot; xmlns:tx=&quot;http://www.springframework.org/schema/tx&quot;
+       xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+                    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd&quot;&gt;
+    &lt;!--扫描service包下所有使用注解的类型--&gt;
+    &lt;context:component-scan base-package=&quot;org.seckill.service&quot;/&gt;
+
+    &lt;!--配置事务管理器--&gt;
+    &lt;bean id=&quot;transactionManager&quot; class=&quot;org.springframework.jdbc.datasource.DataSourceTransactionManager&quot;&gt;
+        &lt;!--注入数据库连接池--&gt;
+        &lt;property name=&quot;dataSource&quot; ref=&quot;dataSource&quot;/&gt;
+    &lt;/bean&gt;
+    &lt;!--配置基于注解的声明式事务--&gt;
+    &lt;tx:annotation-driven transaction-manager=&quot;transactionManager&quot;/&gt;
+&lt;/beans&gt;
+</code></pre>
+<h3 id="在service包下创建SeckillService接口"><a href="#在service包下创建SeckillService接口" class="headerlink" title="在service包下创建SeckillService接口"></a>在service包下创建SeckillService接口</h3><pre><code>package org.seckill.service;
+
+import org.seckill.dto.Exposer;
+import org.seckill.dto.SeckillExecution;
+import org.seckill.entity.Seckill;
+import org.seckill.exception.RepeatKillException;
+import org.seckill.exception.SeckillCloseException;
+import org.seckill.exception.SeckillException;
+
+import java.util.List;
+
+/**
+ * Created by shirukai on 2017/10/10.
+ * 业务接口：站在“使用者”角度设计接口
+ * 三个方面：方法定义粒度，参数，返回类型（return 类型/异常）
+ */
+public interface SeckillService &#123;
+    /**
+     * 查询所有秒杀记录
+     *
+     * @return
+     */
+    List&lt;Seckill&gt; getSeckillList();
+
+    /**
+     * 查询单个秒杀记录
+     *
+     * @param seckillId
+     * @return
+     */
+    Seckill getById(long seckillId);
+
+    /**
+     * 秒杀开启时输出秒杀接口的地址，
+     * 否者输出系统时间和秒杀时间
+     *
+     * @param seckillId
+     */
+    Exposer exportSeckillUrl(long seckillId);
+
+    /**
+     * 执行秒杀操作
+     * @param seckillId
+     * @param userPhone
+     * @param md5
+     */
+    SeckillExecution executeSeckill(long seckillId, long userPhone, String md5) throws SeckillException,RepeatKillException,SeckillCloseException;
+&#125;
+</code></pre>
+<h3 id="在enums下创建枚举"><a href="#在enums下创建枚举" class="headerlink" title="在enums下创建枚举"></a>在enums下创建枚举</h3><p>SeckillStateEnum</p>
+<pre><code>package org.seckill.enums;
+
+/**
+ * 使用枚举表述常量数据字段
+ * Created by shirukai on 2017/10/10.
+ */
+public enum  SeckillStateEnum &#123;
+    SUCCESS(1,&quot;秒杀成功&quot;),
+    END(0,&quot;秒杀结束&quot;),
+    REPEAT_KILL(-1,&quot;重复秒杀&quot;),
+    INNER_ERROR(-2,&quot;系统异常&quot;),
+    DATA_REWRITE(-3,&quot;数据篡改&quot;);
+    private int state;
+    private String stateInfo;
+
+    SeckillStateEnum(int state, String stateInfo) &#123;
+        this.state = state;
+        this.stateInfo = stateInfo;
+    &#125;
+
+    public int getState() &#123;
+        return state;
+    &#125;
+
+    public String getStateInfo() &#123;
+        return stateInfo;
+    &#125;
+
+    public static SeckillStateEnum stateOf(int index)&#123;
+        for (SeckillStateEnum state :values())&#123;
+            if (state.getState() == index)&#123;
+                return state;
+            &#125;
+        &#125;
+        return null;
+    &#125;
+&#125;
+</code></pre>
+<h3 id="在dto包下创建实体类"><a href="#在dto包下创建实体类" class="headerlink" title="在dto包下创建实体类"></a>在dto包下创建实体类</h3><p>Exposer</p>
+<pre><code>package org.seckill.dto;
+
+/**
+ * 暴露秒杀地址DTO
+ * Created by shirukai on 2017/10/10.
+ */
+public class Exposer &#123;
+    //是否开启秒杀
+    private boolean exposed;
+    //一种加密措施
+    private String md5;
+    //秒杀id
+    private long seckillId;
+
+    //系统时间(毫秒)
+    private long now;
+    //开启时间
+    private long start;
+    //结束时间
+    private long end;
+
+    public Exposer(boolean exposed, String md5, long seckillId) &#123;
+        this.exposed = exposed;
+        this.md5 = md5;
+        this.seckillId = seckillId;
+    &#125;
+
+    public Exposer(boolean exposed,long seckillId, long now, long start, long end) &#123;
+        this.exposed = exposed;
+        this.seckillId = seckillId;
+        this.now = now;
+        this.start = start;
+        this.end = end;
+    &#125;
+
+    public Exposer(boolean exposed, long seckillId) &#123;
+        this.exposed = exposed;
+        this.seckillId = seckillId;
+    &#125;
+
+    public boolean isExposed() &#123;
+        return exposed;
+    &#125;
+
+    public void setExposed(boolean exposed) &#123;
+        this.exposed = exposed;
+    &#125;
+
+    public String getMd5() &#123;
+        return md5;
+    &#125;
+
+    public void setMd5(String md5) &#123;
+        this.md5 = md5;
+    &#125;
+
+    public long getSeckillId() &#123;
+        return seckillId;
+    &#125;
+
+    public void setSeckillId(long seckillId) &#123;
+        this.seckillId = seckillId;
+    &#125;
+
+    public long getNow() &#123;
+        return now;
+    &#125;
+
+    public void setNow(long now) &#123;
+        this.now = now;
+    &#125;
+
+    public long getStart() &#123;
+        return start;
+    &#125;
+
+    public void setStart(long start) &#123;
+        this.start = start;
+    &#125;
+
+    public long getEnd() &#123;
+        return end;
+    &#125;
+
+    public void setEnd(long end) &#123;
+        this.end = end;
+    &#125;
+
+    @Override
+    public String toString() &#123;
+        return &quot;Exposer&#123;&quot; +
+                &quot;exposed=&quot; + exposed +
+                &quot;, md5=&#39;&quot; + md5 + &#39;\&#39;&#39; +
+                &quot;, seckillId=&quot; + seckillId +
+                &quot;, now=&quot; + now +
+                &quot;, start=&quot; + start +
+                &quot;, end=&quot; + end +
+                &#39;&#125;&#39;;
+    &#125;
+&#125;
+</code></pre>
+<p>SeckillExecution</p>
+<pre><code>package org.seckill.dto;
+
+import org.seckill.entity.SuccessKilled;
+import org.seckill.enums.SeckillStateEnum;
+
+/**
+ * 分装秒杀执行后的结果
+ * Created by shirukai on 2017/10/10.
+ */
+public class SeckillExecution &#123;
+    private long seckillId;
+    //秒杀状态
+    private int state;
+    //状态表示
+    private String stateInfo;
+    //秒杀成功对象
+    private SuccessKilled successKilled;
+
+    public long getSeckillId() &#123;
+        return seckillId;
+    &#125;
+
+    public void setSeckillId(long seckillId) &#123;
+        this.seckillId = seckillId;
+    &#125;
+
+    public int getState() &#123;
+        return state;
+    &#125;
+
+    public void setState(int state) &#123;
+        this.state = state;
+    &#125;
+
+    public String getStateInfo() &#123;
+        return stateInfo;
+    &#125;
+
+    public void setStateInfo(String stateInfo) &#123;
+        this.stateInfo = stateInfo;
+    &#125;
+
+    public SuccessKilled getSuccessKilled() &#123;
+        return successKilled;
+    &#125;
+
+    public void setSuccessKilled(SuccessKilled successKilled) &#123;
+        this.successKilled = successKilled;
+    &#125;
+
+    public SeckillExecution(long seckillId, SeckillStateEnum stateEnum, SuccessKilled successKilled) &#123;
+        this.seckillId = seckillId;
+        this.state = stateEnum.getState();
+        this.stateInfo = stateEnum.getStateInfo();
+        this.successKilled = successKilled;
+    &#125;
+
+    public SeckillExecution(long seckillId, SeckillStateEnum stateEnum) &#123;
+        this.seckillId = seckillId;
+        this.state = stateEnum.getState();
+        this.stateInfo = stateEnum.getStateInfo();
+    &#125;
+
+    @Override
+    public String toString() &#123;
+        return &quot;SeckillExecution&#123;&quot; +
+                &quot;seckillId=&quot; + seckillId +
+                &quot;, state=&quot; + state +
+                &quot;, stateInfo=&#39;&quot; + stateInfo + &#39;\&#39;&#39; +
+                &quot;, successKilled=&quot; + successKilled +
+                &#39;&#125;&#39;;
+    &#125;
+&#125;
+</code></pre>
+<h3 id="日志配置："><a href="#日志配置：" class="headerlink" title="日志配置："></a>日志配置：</h3><p>在resources下创建logback.xml</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;configuration&gt;
+    &lt;jmxConfigurator /&gt;
+
+    &lt;appender name=&quot;console&quot; class=&quot;ch.qos.logback.core.ConsoleAppender&quot;&gt;
+        &lt;layout class=&quot;ch.qos.logback.classic.PatternLayout&quot;&gt;
+            &lt;Pattern&gt;%date [%thread] %-5level %logger&#123;25&#125; - %msg%n&lt;/Pattern&gt;
+        &lt;/layout&gt;
+    &lt;/appender&gt;
+
+    &lt;root level=&quot;debug&quot;&gt;
+        &lt;appender-ref ref=&quot;console&quot; /&gt;
+    &lt;/root&gt;
+&lt;/configuration&gt;
+</code></pre>
+<h3 id="编写测试类"><a href="#编写测试类" class="headerlink" title="编写测试类"></a>编写测试类</h3><pre><code>package org.seckill.service;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.seckill.dto.Exposer;
+import org.seckill.dto.SeckillExecution;
+import org.seckill.entity.Seckill;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import java.util.List;
+
+import static org.junit.Assert.*;
+
+/**
+ *
+ * Created by shirukai on 2017/10/10.
+ */
+@RunWith(SpringJUnit4ClassRunner.class)
+//告诉junit spring配置文件
+@ContextConfiguration(&#123;
+        &quot;classpath:spring/spring-dao.xml&quot;,
+        &quot;classpath:spring/spring-service.xml&quot;&#125;)
+public class SeckillServiceTest &#123;
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
+    @Autowired
+    private SeckillService seckillService;
+    @Test
+    public void getSeckillList() throws Exception &#123;
+        List&lt;Seckill&gt; list = seckillService.getSeckillList();
+        logger.info(&quot;list=&#123;&#125;&quot;,list);
+    &#125;
+
+    @Test
+    public void getById() throws Exception &#123;
+        long id = 1000;
+        Seckill seckill = seckillService.getById(id);
+        logger.info(&quot;seckill=&#123;&#125;&quot;,seckill);
+    &#125;
+
+    /**
+     * exposer=Exposer&#123;exposed=true, md5=&#39;90fd6692b6a36386755db05cfe52f57a&#39;, seckillId=1000, now=0, start=0, end=0&#125;
+     * @throws Exception
+     */
+    @Test
+    public void exportSeckillUrl() throws Exception &#123;
+        long id = 1000;
+        Exposer exposer = seckillService.exportSeckillUrl(id);
+        logger.info(&quot;exposer=&#123;&#125;&quot;,exposer);
+    &#125;
+
+    @Test
+    public void executeSeckill() throws Exception &#123;
+        long id = 1000;
+        long phone = 15552211520L;
+        String md5 = &quot;90fd6692b6a36386755db05cfe52f57a&quot;;
+        SeckillExecution execution = seckillService.executeSeckill(id,phone,md5);
+        logger.info(&quot;execution=&#123;&#125;&quot;,execution);
+    &#125;
+
+&#125;
+</code></pre>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#DAO%E6%8E%A5%E5%8F%A3%E5%90%8E%E7%9A%84%E6%80%9D%E8%80%83-Data-Access-Object-%E6%95%B0%E6%8D%AE%E8%AE%BF%E9%97%AE%E5%AF%B9%E8%B1%A1"><span class="toc-number">1.</span> <span class="toc-text">DAO接口后的思考 (Data Access Object) 数据访问对象</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Service%E6%8E%A5%E5%8F%A3%E5%92%8C%E5%AE%9E%E7%8E%B0%E7%B1%BB"><span class="toc-number"></span> <span class="toc-text">Service接口和实现类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8service%E5%8C%85%E4%B8%8B%E5%88%9B%E5%BB%BASeckillService%E6%8E%A5%E5%8F%A3"><span class="toc-number">1.</span> <span class="toc-text">在service包下创建SeckillService接口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8enums%E4%B8%8B%E5%88%9B%E5%BB%BA%E6%9E%9A%E4%B8%BE"><span class="toc-number">2.</span> <span class="toc-text">在enums下创建枚举</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8dto%E5%8C%85%E4%B8%8B%E5%88%9B%E5%BB%BA%E5%AE%9E%E4%BD%93%E7%B1%BB"><span class="toc-number">3.</span> <span class="toc-text">在dto包下创建实体类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%A5%E5%BF%97%E9%85%8D%E7%BD%AE%EF%BC%9A"><span class="toc-number">4.</span> <span class="toc-text">日志配置：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E5%86%99%E6%B5%8B%E8%AF%95%E7%B1%BB"><span class="toc-number">5.</span> <span class="toc-text">编写测试类</span></a></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

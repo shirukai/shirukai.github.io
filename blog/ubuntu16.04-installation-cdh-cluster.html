@@ -1,0 +1,696 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ubuntu16.04安装CDH集群 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="
+版本说明：
+ubuntu: 16.04
+jdk: 1.8.0_251
+mariadb: 10.0.38
+cloudera manager: 6.0.0
+cdh: 5.11.0-1.cdh5.11.,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">Ubuntu16.04安装CDH集群</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/2.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/环境搭建"><b>「
+                    </b>环境搭建<b> 」</b></a>
+                
+                August 07, 2020
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/ubuntu16.04-installation-cdh-cluster.html" title="Ubuntu16.04安装CDH集群" class="">Ubuntu16.04安装CDH集群</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    14k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    12 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" rel="tag">环境搭建</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <blockquote>
+<p>版本说明：</p>
+<p>ubuntu: 16.04</p>
+<p>jdk: 1.8.0_251</p>
+<p>mariadb: 10.0.38</p>
+<p>cloudera manager: 6.0.0</p>
+<p>cdh: 5.11.0-1.cdh5.11.0.p0.34</p>
+<p>相关连接：</p>
+<p>安装文档：<a target="_blank" rel="noopener" href="https://docs.cloudera.com/documentation/enterprise/6/6.0/topics/install_cm_cdh.html#cmig_topic_6_6">https://docs.cloudera.com/documentation/enterprise/6/6.0/topics/install_cm_cdh.html#cmig_topic_6_6</a></p>
+<p>JDK下载地址：<a target="_blank" rel="noopener" href="https://archive.cloudera.com/cm6/6.0.0/ubuntu1604/apt/pool/contrib/e/enterprise/">https://archive.cloudera.com/cm6/6.0.0/ubuntu1604/apt/pool/contrib/e/enterprise/</a></p>
+<p>ubuntu源文件下载地址：<a target="_blank" rel="noopener" href="https://docs.cloudera.com/documentation/enterprise/6/release-notes/topics/rg_cm_6_version_download.html">https://docs.cloudera.com/documentation/enterprise/6/release-notes/topics/rg_cm_6_version_download.html</a></p>
+<p>ubuntu源安装文件下载地址：<a target="_blank" rel="noopener" href="https://archive.cloudera.com/cm6/6.0.0/ubuntu1604/apt/pool/contrib/e/enterprise/">https://archive.cloudera.com/cm6/6.0.0/ubuntu1604/apt/pool/contrib/e/enterprise/</a></p>
+<p>Parcels下载地址：<a target="_blank" rel="noopener" href="http://archive.cloudera.com/cdh5/parcels/5.11.0.34/">http://archive.cloudera.com/cdh5/parcels/5.11.0.34/</a></p>
+</blockquote>
+<h1 id="1-环境准备"><a href="#1-环境准备" class="headerlink" title="1 环境准备"></a>1 环境准备</h1><h2 id="1-1-准备3台主机"><a href="#1-1-准备3台主机" class="headerlink" title="1.1 准备3台主机"></a>1.1 准备3台主机</h2><p>主机列表如下：</p>
+<table>
+<thead>
+<tr>
+<th>主机名称</th>
+<th>IP</th>
+<th>配置</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>cdh-manager-1</td>
+<td>192.168.66.113</td>
+<td>4核8G</td>
+</tr>
+<tr>
+<td>cdh-master-1</td>
+<td>192.168.66.114</td>
+<td>4核8G</td>
+</tr>
+<tr>
+<td>cdh-worker-1</td>
+<td>192.168.66.115</td>
+<td>4核8G</td>
+</tr>
+</tbody></table>
+<h2 id="1-2-修改主机名并添加hosts"><a href="#1-2-修改主机名并添加hosts" class="headerlink" title="1.2 修改主机名并添加hosts"></a>1.2 修改主机名并添加hosts</h2><p>按照主机列表，分别修改主机名：</p>
+<pre><code class="shell">vi /etc/hostname
+</code></pre>
+<p>将三台主机添加到hosts中</p>
+<pre><code class="shell">vi /etc/hosts
+</code></pre>
+<p>添加内容如下：</p>
+<pre><code>192.168.66.113 cdh-manager-1
+192.168.66.114 cdh-master-1
+192.168.66.115 cdh-worker-1
+</code></pre>
+<h2 id="1-3-关闭防火墙"><a href="#1-3-关闭防火墙" class="headerlink" title="1.3 关闭防火墙"></a>1.3 关闭防火墙</h2><pre><code>ufw disable
+</code></pre>
+<h1 id="2-安装Cloudera-Manager"><a href="#2-安装Cloudera-Manager" class="headerlink" title="2 安装Cloudera Manager"></a>2 安装Cloudera Manager</h1><h2 id="2-1-安装JDK"><a href="#2-1-安装JDK" class="headerlink" title="2.1 安装JDK"></a>2.1 安装JDK</h2><h3 id="1-2-1-官网下载jdk-1-8"><a href="#1-2-1-官网下载jdk-1-8" class="headerlink" title="1.2.1 官网下载jdk 1.8"></a>1.2.1 官网下载jdk 1.8</h3><p><a target="_blank" rel="noopener" href="https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html">https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html</a></p>
+<p>下载jdk-8u251-linux-x64.tar.gz并复制到 /opt目录下</p>
+<h3 id="1-2-2-解压"><a href="#1-2-2-解压" class="headerlink" title="1.2.2 解压"></a>1.2.2 解压</h3><pre><code>tar -zxvf jdk-8u251-linux-x64.tar.gz
+</code></pre>
+<h3 id="1-2-3-将安装目录软连接到-usr-java目录下"><a href="#1-2-3-将安装目录软连接到-usr-java目录下" class="headerlink" title="1.2.3 将安装目录软连接到/usr/java目录下"></a>1.2.3 将安装目录软连接到/usr/java目录下</h3><p>为了让cloudera找到JAVA HOME，这里可以显示的将java的安装目录软连接到/usr/java下。</p>
+<p>创建/usr/java目录</p>
+<pre><code>mkdir /usr/java
+</code></pre>
+<p>创建软连接</p>
+<pre><code>ln -s /opt/jdk1.8.0_251/ /usr/java/jdk1.8.0_251
+</code></pre>
+<h3 id="1-2-4-配置环境变量"><a href="#1-2-4-配置环境变量" class="headerlink" title="1.2.4 配置环境变量"></a>1.2.4 配置环境变量</h3><pre><code>vim /etc/profile
+</code></pre>
+<p>添加如下内容</p>
+<pre><code>#set java enviroenment
+export JAVA_HOME=/usr/java/jdk1.8.0_251
+export CLASSPATH=.:$JAVA_HOME/lib/rt.jar:$JAVA_HOME/lib/tools.jar
+export PATH=$JAVA_HOME/bin:$PATH
+</code></pre>
+<p>使环境变量生效</p>
+<pre><code>. /etc/profile
+</code></pre>
+<p>验证jdk</p>
+<pre><code>root@cdh-manager-1:~# java -version
+java version &quot;1.8.0_251&quot;
+Java(TM) SE Runtime Environment (build 1.8.0_251-b08)
+Java HotSpot(TM) 64-Bit Server VM (build 25.251-b08, mixed mode)
+</code></pre>
+<h4 id="1-2-4-将jdk目录发送到两台Agent主机"><a href="#1-2-4-将jdk目录发送到两台Agent主机" class="headerlink" title="1.2.4 将jdk目录发送到两台Agent主机"></a>1.2.4 将jdk目录发送到两台Agent主机</h4><pre><code>scp -r /opt/jdk1.8.0_251/ root@cdh-master-1:/opt/
+scp -r /opt/jdk1.8.0_251/ root@cdh-worker-1:/opt/
+</code></pre>
+<p>创建软连接和配置环境变量就不要统一发送了，每台机子单独配置，方法跟cdh-manager-1主机一样。</p>
+<h2 id="2-2-配置仓库"><a href="#2-2-配置仓库" class="headerlink" title="2.2 配置仓库"></a>2.2 配置仓库</h2><p>这里我们需要为cloudera manager配置ubuntu的软件仓库。</p>
+<ol>
+<li><p>下载源配置文件到/etc/apt/sources.list.d/</p>
+<pre><code>wget -P /etc/apt/sources.list.d/ https://archive.cloudera.com/cm6/6.0.0/ubuntu1604/apt/cloudera-manager.list
+</code></pre>
+</li>
+<li><p>导入仓库的秘钥</p>
+<pre><code>wget https://archive.cloudera.com/cm6/6.0.0/ubuntu1604/apt/archive.key
+sudo apt-key add archive.key
+</code></pre>
+</li>
+<li><p>更新仓库</p>
+<pre><code>sudo apt-get update
+</code></pre>
+</li>
+</ol>
+<p>以上操作在每一台机器上都需要执行一遍。</p>
+<h2 id="2-3-安装Cloudera-Manager-Server"><a href="#2-3-安装Cloudera-Manager-Server" class="headerlink" title="2.3 安装Cloudera Manager Server"></a>2.3 安装Cloudera Manager Server</h2><p>这里我们可以直接使用apt命令安装cloudera-manager-daemons、cloudera-manager-agent、cloudera-manager-server这三个软件，但是由于网络的原因cloudera-manager-daemons这个软件经常会下载失败，我们可以先在网络较好的机器上下载该包，然后复制到目标主机，使用dpkg安装。</p>
+<h3 id="2-3-1-使用dpkg安装cloudera-manager-daemons"><a href="#2-3-1-使用dpkg安装cloudera-manager-daemons" class="headerlink" title="2.3.1 使用dpkg安装cloudera-manager-daemons"></a>2.3.1 使用dpkg安装cloudera-manager-daemons</h3><ol>
+<li><p>离线cloudera-manager-daemons</p>
+<p>下载地址：<a target="_blank" rel="noopener" href="https://archive.cloudera.com/cm6/6.0.0/ubuntu1604/apt/pool/contrib/e/enterprise/">https://archive.cloudera.com/cm6/6.0.0/ubuntu1604/apt/pool/contrib/e/enterprise/</a></p>
+<p>下载完成之后，上传至目标主机/var/cache/apt/archives/目录下。</p>
+</li>
+<li><p>安装cloudera-manager-daemons</p>
+<pre><code>cd /var/cache/apt/archives/
+dpkg -i cloudera-manager-daemons_6.0.0_530873.ubuntu1604_all.deb
+</code></pre>
+</li>
+</ol>
+<p>以上操作再每一台机器上都必须执行一遍。</p>
+<p>复制安装包到其它两台主机上：</p>
+<pre><code>scp cloudera-manager-daemons_6.0.0_530873.ubuntu1604_all.deb root@192.168.66.114:/var/cache/apt/archives/
+scp cloudera-manager-daemons_6.0.0_530873.ubuntu1604_all.deb root@192.168.66.115:/var/cache/apt/archives/
+</code></pre>
+<h3 id="2-3-2-使用apt-get安装cloudera-manager-agent-cloudera-manager-server"><a href="#2-3-2-使用apt-get安装cloudera-manager-agent-cloudera-manager-server" class="headerlink" title="2.3.2 使用apt-get安装cloudera-manager-agent cloudera-manager-server"></a>2.3.2 使用apt-get安装cloudera-manager-agent cloudera-manager-server</h3><p>只需要在cdh-manager-1这台机器上执行如下命令：</p>
+<pre><code>sudo apt-get install cloudera-manager-agent cloudera-manager-server
+</code></pre>
+<h2 id="2-4-安装Cloudera-Manager-Agents"><a href="#2-4-安装Cloudera-Manager-Agents" class="headerlink" title="2.4 安装Cloudera Manager Agents"></a>2.4 安装Cloudera Manager Agents</h2><p>在所有机器上执行如下命令，那幢cloudera-manager-agent：</p>
+<pre><code class="shell">sudo apt-get install cloudera-manager-agent
+</code></pre>
+<p>修改agent的配置文件：</p>
+<pre><code>vi /etc/cloudera-scm-agent/config.ini 
+# 将server_host改为cdh-manager-1
+server_host=cdh-manager-1
+</code></pre>
+<h2 id="2-5-安装Mariadb"><a href="#2-5-安装Mariadb" class="headerlink" title="2.5 安装Mariadb"></a>2.5 安装Mariadb</h2><p>数据库只需要在cdh-manager-1这台机上安装。</p>
+<ol>
+<li><p>使用apt-get安装</p>
+<pre><code>sudo apt-get install mariadb-server
+</code></pre>
+</li>
+<li><p>启动MySQL</p>
+<pre><code>service mysql start
+</code></pre>
+</li>
+<li><p>执行初始化SQL，使用root用户登录，密码不需要输入，直接回车进入</p>
+<pre><code>mysql -uroot -p
+SET PASSWORD FOR root@&#39;localhost&#39;=password(&#39;root&#39;);
+# 授权
+GRANT ALL PRIVILEGES ON *.* TO &#39;root&#39;@&#39;localhost&#39; IDENTIFIED BY &#39;root&#39; WITH GRANT OPTION;
+# 授予外网访问权限
+GRANT ALL PRIVILEGES ON *.* TO &#39;root&#39;@&#39;%&#39; IDENTIFIED BY &#39;root&#39; WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+</code></pre>
+</li>
+<li><p>安装jdbc驱动</p>
+<pre><code>sudo apt-get install libmysql-java
+</code></pre>
+</li>
+</ol>
+<h2 id="2-6-配置Cloudera-Manager数据库"><a href="#2-6-配置Cloudera-Manager数据库" class="headerlink" title="2.6 配置Cloudera Manager数据库"></a>2.6 配置Cloudera Manager数据库</h2><h3 id="2-6-1-创建scm数据"><a href="#2-6-1-创建scm数据" class="headerlink" title="2.6.1 创建scm数据"></a>2.6.1 创建scm数据</h3><ol>
+<li><p>进入mysql</p>
+<pre><code>mysql -uroot -proot
+</code></pre>
+</li>
+<li><p>执行如下SQL</p>
+<pre><code># 创建scm数据库
+CREATE DATABASE scm DEFAULT CHARACTER SET utf8;
+# 授权
+GRANT ALL PRIVILEGES ON *.* TO &#39;scm&#39;@&#39;localhost&#39; IDENTIFIED BY &#39;scm&#39; WITH GRANT OPTION;
+# 授予外网访问权限
+GRANT ALL PRIVILEGES ON *.* TO &#39;scm&#39;@&#39;%&#39; IDENTIFIED BY &#39;scm&#39; WITH GRANT OPTION;
+update mysql.user set authentication_string=PASSWORD(&#39;scm&#39;), plugin=&#39;mysql_native_password&#39; where user=&#39;scm&#39;;
+FLUSH PRIVILEGES;
+</code></pre>
+</li>
+<li><p>执行初始化脚本</p>
+<pre><code>sudo /opt/cloudera/cm/schema/scm_prepare_database.sh mysql scm scm scm scm
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200713144217.png" alt="image-20200713115449859"></p>
+</li>
+</ol>
+<h2 id="2-7-启动Server和Agents"><a href="#2-7-启动Server和Agents" class="headerlink" title="2.7 启动Server和Agents"></a>2.7 启动Server和Agents</h2><p>在cdh-manager-1机器上启动cloudera-scm-server</p>
+<pre><code>sudo service cloudera-scm-server start
+</code></pre>
+<p>查看server状态</p>
+<pre><code>sudo service cloudera-scm-server status
+</code></pre>
+<p>在所有机器上启动sudo service cloudera-scm-agent</p>
+<pre><code>sudo service cloudera-scm-agent start
+</code></pre>
+<p>查看agent状态</p>
+<pre><code>sudo service cloudera-scm-agent status
+</code></pre>
+<p>等待server启动之后我们就可以访问192.168.66.113:7180。</p>
+<h1 id="3-安装CDH集群"><a href="#3-安装CDH集群" class="headerlink" title="3 安装CDH集群"></a>3 安装CDH集群</h1><h2 id="3-1-上传离线Parcels"><a href="#3-1-上传离线Parcels" class="headerlink" title="3.1 上传离线Parcels"></a>3.1 上传离线Parcels</h2><p>提前下载好Parcels。下载地址：<a target="_blank" rel="noopener" href="http://archive.cloudera.com/cdh5/parcels/5.11.0.34/%EF%BC%8C%E8%BF%99%E9%87%8C%E9%9C%80%E8%A6%81%E4%B8%8B%E8%BD%BDxenial%E5%AF%B9%E5%BA%94%E7%9A%84%E6%96%87%E4%BB%B6%EF%BC%8C%E5%8C%85%E5%90%AB%E5%A6%82%E4%B8%8B%E5%86%85%E5%AE%B9%EF%BC%9A">http://archive.cloudera.com/cdh5/parcels/5.11.0.34/，这里需要下载xenial对应的文件，包含如下内容：</a></p>
+<pre><code>http://archive.cloudera.com/cdh5/parcels/5.11.0.34/CDH-5.11.0-1.cdh5.11.0.p0.34-xenial.parcel
+http://archive.cloudera.com/cdh5/parcels/5.11.0.34/CDH-5.11.0-1.cdh5.11.0.p0.34-xenial.parcel.sha1
+http://archive.cloudera.com/cdh5/parcels/5.11.0.34/manifest.json
+</code></pre>
+<p>将下载好的三个文件上传至cdh-manager-1主机的/opt/cloudera/parcel-repo下。</p>
+<p><em>注意：这里需要将CDH-5.11.0-1.cdh5.11.0.p0.34-xenial.parcel.sha1重命名为CDH-5.11.0-1.cdh5.11.0.p0.34-xenial.parcel.sha，否则cloudera manager不会识别。</em> </p>
+<p>重启cloudar manager</p>
+<pre><code> sudo service cloudera-scm-server restart
+</code></pre>
+<h2 id="3-2-激活并选择版本"><a href="#3-2-激活并选择版本" class="headerlink" title="3.2 激活并选择版本"></a>3.2 激活并选择版本</h2><p>访问192.168.66.113:7180，用户名密码：admin/admin。</p>
+<ol>
+<li><p>如下图进入欢迎页面，点解右下角【继续】按钮。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200713144205.png" alt="image-20200713144205604"></p>
+</li>
+<li><p>同意最终用户许可条款和条件，然后点击右下角【继续】按钮。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200713152211.png" alt="image-20200713145443986"></p>
+</li>
+<li><p>选择【Cloudera Express】版本，然后点击【继续】按钮。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200713152219.png" alt="image-20200713145504894"></p>
+</li>
+</ol>
+<h2 id="3-3-集群安装"><a href="#3-3-集群安装" class="headerlink" title="3.3 集群安装"></a>3.3 集群安装</h2><ol>
+<li><p>如下为集群安装的欢迎页面，直接点击【继续】按钮。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200713145549.png" alt="image-20200713145549367"></p>
+</li>
+<li><p>指定需要安装集群的主机，这里直接点击【当前管理的主机】连接，然后选择所有主机即可，然后点击【继续】按钮。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200713152228.png" alt="image-20200713145627057"></p>
+</li>
+<li><p>这里我们需要我们选择我们之前手动上传的存储库，如图所示，CDH版本选择【CDH-5.11.0.1-cdh5.11.0.p0.34】，然后点击【继续】按钮。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200713151523.png" alt="image-20200713151523443"></p>
+</li>
+<li><p>等待服务安装完成选定的Parcel，然后点击【继续】按钮。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200713162731.png" alt="image-20200713152647201"></p>
+</li>
+<li><p>等待服务检查主机完成，然后点击【继续】按钮。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200713153129.png" alt="image-20200713153129102"></p>
+</li>
+<li><p>选择自定义服务</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200713153219.png" alt="image-20200713153219845"></p>
+<p>如下所示，只需要选择HBase、HDFS、YARN、ZooKeeper4个服务即可，然后点击【继续】按钮。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200713153253.png" alt="image-20200713153253325"></p>
+</li>
+<li><p>在自定义角色分配页面，我们可以决定角色安装到指定主机上，这里我们需要调整DataNode安装到所有机器，调整HBase Master角色安装到cdh-master-1主机上，NameNode安装到cdh-master-1上，等等，具体调整可以参考如下截图。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200713154308.png" alt="image-20200713153515979"></p>
+</li>
+<li><p>实际生产环境中，需要将对应的数据目录设置为/data/下，默认可以不修改，然后点击【继续】按钮。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200713153635.png" alt="image-20200713153635812"></p>
+</li>
+<li><p>等待部署命令执行完成，然后点击【继续】按钮。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200713154052.png" alt="image-20200713154052843"></p>
+</li>
+<li><p>点击【完成】按钮即可。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200713154122.png" alt="image-20200713154122227"></p>
+</li>
+<li><p>集群完成后，我们点击集群后面的三角按钮，在下拉菜单中选择【部署客户端配置】按钮。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200713154228.png" alt="image-20200713154228175"></p>
+</li>
+<li><p>集群部署完成。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200713154147.png" alt="image-20200713154147845"></p>
+</li>
+</ol>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87"><span class="toc-number">1.</span> <span class="toc-text">1 环境准备</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-%E5%87%86%E5%A4%873%E5%8F%B0%E4%B8%BB%E6%9C%BA"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 准备3台主机</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-%E4%BF%AE%E6%94%B9%E4%B8%BB%E6%9C%BA%E5%90%8D%E5%B9%B6%E6%B7%BB%E5%8A%A0hosts"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 修改主机名并添加hosts</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3-%E5%85%B3%E9%97%AD%E9%98%B2%E7%81%AB%E5%A2%99"><span class="toc-number">1.3.</span> <span class="toc-text">1.3 关闭防火墙</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E5%AE%89%E8%A3%85Cloudera-Manager"><span class="toc-number">2.</span> <span class="toc-text">2 安装Cloudera Manager</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-%E5%AE%89%E8%A3%85JDK"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 安装JDK</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-1-%E5%AE%98%E7%BD%91%E4%B8%8B%E8%BD%BDjdk-1-8"><span class="toc-number">2.1.1.</span> <span class="toc-text">1.2.1 官网下载jdk 1.8</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-2-%E8%A7%A3%E5%8E%8B"><span class="toc-number">2.1.2.</span> <span class="toc-text">1.2.2 解压</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-3-%E5%B0%86%E5%AE%89%E8%A3%85%E7%9B%AE%E5%BD%95%E8%BD%AF%E8%BF%9E%E6%8E%A5%E5%88%B0-usr-java%E7%9B%AE%E5%BD%95%E4%B8%8B"><span class="toc-number">2.1.3.</span> <span class="toc-text">1.2.3 将安装目录软连接到&#x2F;usr&#x2F;java目录下</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-4-%E9%85%8D%E7%BD%AE%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="toc-number">2.1.4.</span> <span class="toc-text">1.2.4 配置环境变量</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-%E9%85%8D%E7%BD%AE%E4%BB%93%E5%BA%93"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 配置仓库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-%E5%AE%89%E8%A3%85Cloudera-Manager-Server"><span class="toc-number">2.3.</span> <span class="toc-text">2.3 安装Cloudera Manager Server</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-1-%E4%BD%BF%E7%94%A8dpkg%E5%AE%89%E8%A3%85cloudera-manager-daemons"><span class="toc-number">2.3.1.</span> <span class="toc-text">2.3.1 使用dpkg安装cloudera-manager-daemons</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-2-%E4%BD%BF%E7%94%A8apt-get%E5%AE%89%E8%A3%85cloudera-manager-agent-cloudera-manager-server"><span class="toc-number">2.3.2.</span> <span class="toc-text">2.3.2 使用apt-get安装cloudera-manager-agent cloudera-manager-server</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4-%E5%AE%89%E8%A3%85Cloudera-Manager-Agents"><span class="toc-number">2.4.</span> <span class="toc-text">2.4 安装Cloudera Manager Agents</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-5-%E5%AE%89%E8%A3%85Mariadb"><span class="toc-number">2.5.</span> <span class="toc-text">2.5 安装Mariadb</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-6-%E9%85%8D%E7%BD%AECloudera-Manager%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">2.6.</span> <span class="toc-text">2.6 配置Cloudera Manager数据库</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-6-1-%E5%88%9B%E5%BB%BAscm%E6%95%B0%E6%8D%AE"><span class="toc-number">2.6.1.</span> <span class="toc-text">2.6.1 创建scm数据</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-7-%E5%90%AF%E5%8A%A8Server%E5%92%8CAgents"><span class="toc-number">2.7.</span> <span class="toc-text">2.7 启动Server和Agents</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E5%AE%89%E8%A3%85CDH%E9%9B%86%E7%BE%A4"><span class="toc-number">3.</span> <span class="toc-text">3 安装CDH集群</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-%E4%B8%8A%E4%BC%A0%E7%A6%BB%E7%BA%BFParcels"><span class="toc-number">3.1.</span> <span class="toc-text">3.1 上传离线Parcels</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-%E6%BF%80%E6%B4%BB%E5%B9%B6%E9%80%89%E6%8B%A9%E7%89%88%E6%9C%AC"><span class="toc-number">3.2.</span> <span class="toc-text">3.2 激活并选择版本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-%E9%9B%86%E7%BE%A4%E5%AE%89%E8%A3%85"><span class="toc-number">3.3.</span> <span class="toc-text">3.3 集群安装</span></a></li></ol></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

@@ -1,0 +1,1483 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>集群配置规划工具知识点整理 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="一、Vue1.关于图标的使用项目里使用的是在iconfont下载的第三方图标，放在indata_tool_web\src\assets\iconfont目录下。在main.js引入
+import &amp;,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">集群配置规划工具知识点整理</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/7.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/项目开发记录"><b>「
+                    </b>项目开发记录<b> 」</b></a>
+                
+                May 09, 2019
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/cluster-configuration-planning-tool-knowledge-point-finishing.html" title="集群配置规划工具知识点整理" class="">集群配置规划工具知识点整理</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    48k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    43 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE%E8%A7%84%E5%88%92%E5%B7%A5%E5%85%B7/" rel="tag">大数据集群配置规划工具</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91%E8%AE%B0%E5%BD%95/" rel="tag">项目开发记录</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <h2 id="一、Vue"><a href="#一、Vue" class="headerlink" title="一、Vue"></a>一、Vue</h2><h3 id="1-关于图标的使用"><a href="#1-关于图标的使用" class="headerlink" title="1.关于图标的使用"></a>1.关于图标的使用</h3><p>项目里使用的是在iconfont下载的第三方图标，放在indata_tool_web\src\assets\iconfont目录下。在main.js引入</p>
+<pre><code>import &#39;./assets/iconfont/iconfont.css&#39;
+</code></pre>
+<h3 id="2-关于登录权限"><a href="#2-关于登录权限" class="headerlink" title="2.关于登录权限"></a>2.关于登录权限</h3><h4 id="原理："><a href="#原理：" class="headerlink" title="原理："></a>原理：</h4><p>利用vue-router的beforeEach方法，在进入路由之前，读取token，如果token不存在则跳转到登录页面。如果token存在，就带着token去认证，如果认证通过，即可访问，如果认证不通过，则跳转到登录页。</p>
+<h4 id="代码部分："><a href="#代码部分：" class="headerlink" title="代码部分："></a>代码部分：</h4><p>indata_dev\indata_tool_web\src\utils\permission.js</p>
+<pre><code>//权限认证
+import Vue from &#39;vue&#39;
+import router from &quot;../router&quot;;
+import NProgress from &#39;nprogress&#39; // Progress 进度条
+import &#39;nprogress/nprogress.css&#39;// Progress 进度条样式
+
+let self = Vue.prototype
+router.beforeEach((to, from, next) =&gt; &#123;
+  NProgress.start(); // 开启Progress
+  if (to.path === &quot;/login&quot; || to.path === &#39;/register&#39;) &#123;
+    self.DR.isLogin = true
+    next()
+  &#125; else if (self.cookie.get(&#39;accessToken&#39;)) &#123;
+    Vue.http.get(self.api(&#39;validate_token&#39;)).then(
+      (response) =&gt; &#123;
+        const res = JSON.parse(response.bodyText);
+        if (res.state === 0) &#123;
+          self.cookie.set(&#39;user_name&#39;, res.user_name)
+          next()
+        &#125; else &#123;
+          next(&#39;/login&#39;)
+          self.DR.isLogin = true
+        &#125;
+      &#125;,
+      (response) =&gt; &#123;
+      &#125;
+    );
+
+  &#125; else &#123;
+    next(&#39;/login&#39;)
+  &#125;
+  NProgress.done()
+&#125;);
+
+router.afterEach(() =&gt; &#123;
+  NProgress.done() // 结束Progress
+&#125;);
+</code></pre>
+<h4 id="引入："><a href="#引入：" class="headerlink" title="引入："></a>引入：</h4><p>在main.js里引入utils里的permission.js</p>
+<pre><code>//权限认证
+import &#39;./utils/permission&#39;
+</code></pre>
+<h3 id="3-cookie封装"><a href="#3-cookie封装" class="headerlink" title="3.cookie封装"></a>3.cookie封装</h3><h4 id="代码："><a href="#代码：" class="headerlink" title="代码："></a>代码：</h4><p>indata_dev\indata_tool_web\src\utils\vue-cookie.js</p>
+<pre><code>export default &#123;
+  install(Vue, options) &#123;
+    Vue.prototype.cookie = &#123;
+      set: function (name, value, days) &#123;
+        let d = new Date;
+        d.setTime(d.getTime() + 24 * 60 * 60 * 1000 * days);
+        window.document.cookie = name + &quot;=&quot; + value + &quot;;path=/;expires=&quot; + d;
+      &#125;,
+      get: function (name) &#123;
+        let v = window.document.cookie.match(&#39;(^|;) ?&#39; + name + &#39;=([^;]*)(;|$)&#39;);
+        return v ? v[2] : null;
+      &#125;,
+      delete: function (name) &#123;
+        this.set(name, &#39;&#39;, -1);
+      &#125;
+    &#125;;
+  &#125;
+&#125;
+</code></pre>
+<h4 id="引用："><a href="#引用：" class="headerlink" title="引用："></a>引用：</h4><p>在main.js里引入</p>
+<pre><code>import VueCookie from &#39;./utils/vue-cookie&#39;
+Vue.use(VueCookie)
+</code></pre>
+<h4 id="使用："><a href="#使用：" class="headerlink" title="使用："></a>使用：</h4><pre><code>//存
+this.cookie.set(&#39;key&#39;, &#39;value&#39;);
+//读
+this.cookie.get(&#39;key&#39;);
+</code></pre>
+<h3 id="4-localStorage封装"><a href="#4-localStorage封装" class="headerlink" title="4.localStorage封装"></a>4.localStorage封装</h3><h4 id="代码部分：-1"><a href="#代码部分：-1" class="headerlink" title="代码部分："></a>代码部分：</h4><p>D:\Repository\Django\light_restructure\indata_dev\indata_tool_web\src\utils\vue-localStorage.js</p>
+<pre><code>export default &#123;
+  install(Vue, options) &#123;
+    /**
+     * 从localStorage中存/取数据
+     * @type &#123;&#123;set(*=, *=): void, get(*=): *&#125;&#125;
+     */
+    Vue.prototype.LS = &#123;
+      /**
+       * 存数据
+       * @param key 键： 字符串
+       * @param value 值：数组、对象、字符串
+       */
+      set(key, value) &#123;
+        value = typeof(value) === &quot;object&quot; ? JSON.stringify(value) : value;
+        window.localStorage.setItem(key, value);
+      &#125;,
+      /**
+       * 读数据
+       * @param key
+       * @returns &#123;*&#125;
+       */
+      get(key) &#123;
+        try &#123;
+          return JSON.parse(window.localStorage.getItem(key));
+        &#125; catch (e) &#123;
+          return window.localStorage.getItem(key)
+        &#125;
+      &#125;
+    &#125;
+  &#125;
+&#125;
+</code></pre>
+<h3 id="5-Vue-resource拦截器的使用"><a href="#5-Vue-resource拦截器的使用" class="headerlink" title="5.Vue-resource拦截器的使用"></a>5.Vue-resource拦截器的使用</h3><h4 id="解决ie浏览器缓存问题"><a href="#解决ie浏览器缓存问题" class="headerlink" title="解决ie浏览器缓存问题"></a>解决ie浏览器缓存问题</h4><p>在项目里，利用vue-resource拦截器，来解决禁止ie浏览器缓存的的问题。</p>
+<p>思路：拦截所有请求，并在请求后添加时间戳，从而使每次发送的请求都不一样，解决由于缓存带来的问题。</p>
+<p>在main.js里添加：</p>
+<pre><code>Vue.http.interceptors.push((request, next) =&gt; &#123;
+  request.url += (request.url.indexOf(&#39;?&#39;) &gt; 0 ? &#39;&amp;&#39; : &#39;?&#39;) + new Date().getTime()
+  next((response) =&gt; &#123;
+    return response;
+  &#125;);
+&#125;);
+</code></pre>
+<h4 id="利用interceptors设置请求方法"><a href="#利用interceptors设置请求方法" class="headerlink" title="利用interceptors设置请求方法"></a>利用interceptors设置请求方法</h4><pre><code>  // modify method
+  request.method = &#39;POST&#39;;
+</code></pre>
+<h4 id="利用interceptors设置请求头"><a href="#利用interceptors设置请求头" class="headerlink" title="利用interceptors设置请求头"></a>利用interceptors设置请求头</h4><pre><code>  // modify headers
+  request.headers.set(&#39;X-CSRF-TOKEN&#39;, &#39;TOKEN&#39;);
+  request.headers.set(&#39;Authorization&#39;, &#39;Bearer TOKEN&#39;);
+</code></pre>
+<h3 id="6-统一URL封装，解决前后端分离开发，域名改动问题"><a href="#6-统一URL封装，解决前后端分离开发，域名改动问题" class="headerlink" title="6.统一URL封装，解决前后端分离开发，域名改动问题"></a>6.统一URL封装，解决前后端分离开发，域名改动问题</h3><p>利用全局变量，对URL进行封装，将所有请求用到的url都放到一起，然后根据是否跨域来返回url。而且这样做还有一个好处就是，url统一管理，当需要变更请求的时候，不需要去修改项目里的代码，只需改这个位置的代码即可。</p>
+<h4 id="代码部分：-2"><a href="#代码部分：-2" class="headerlink" title="代码部分："></a>代码部分：</h4><p>indata_dev\indata_tool_web\src\data\DataRepository.js</p>
+<pre><code>export default &#123;
+  install(Vue, options) &#123;
+    Vue.prototype.api = function (name) &#123;
+      //是否跨域
+      let crossDomain = false;
+      let http = &#123;
+        host: &#39;http://localhost&#39;,
+        port: &#39;8000&#39;
+      &#125;;
+      let urls = &#123;
+        login: &#39;/api/login&#39;,
+        register: &#39;/api/register&#39;,
+        validate_config_name: &#39;/api/validate/config_name&#39;,
+        validate_token: &#39;api/validate/token&#39;,
+        edit_config_name: &#39;api/config/name/edit&#39;,
+        save_config: &#39;/api/config/save&#39;,
+        get_config: &#39;/api/config/get&#39;,
+        get_config_complete: &#39;/api/config/complete&#39;,
+        del_config: &#39;/api/config/del&#39;,
+        all_config: &#39;/api/config/all&#39;,
+        get_config_by: &#39;/api/config/by/get&#39;,
+        get_data_all: &#39;/api/data/all&#39;,
+        save_base: &#39;/api/base/save&#39;,
+        get_base: &#39;/api/base/get&#39;,
+        save_node: &#39;/api/node/save&#39;,
+        get_node: &#39;/api/node/get&#39;,
+        save_service: &#39;/api/service/save&#39;,
+        get_service: &#39;/api/service/get&#39;,
+        save_component: &#39;/api/component/save&#39;,
+        get_component: &#39;/api/component/get&#39;,
+        save_disk: &#39;/api/disk/save&#39;,
+        get_disk: &#39;/api/disk/get&#39;,
+        config_down: &#39;/api/config/down&#39;,
+        config_deploy: &#39;/api/config/deploy&#39;,
+        task_get_by: &#39;/api/task/by/get&#39;,
+        task_update: &#39;/api/task/update&#39;,
+        jenkins_stop_job: &#39;api/jenkins/stop/job&#39;,
+        jenkins_start_job: &#39;api/jenkins/start/job&#39;
+      &#125;;
+      return crossDomain ? http.host + &#39;:&#39; + http.port + urls[name] : urls[name]
+    &#125;;
+    Vue.prototype.jenkins = &#123;
+      jenkins_redirect: &#39;/api/jenkins/redirect&#39;,
+      pipelines_context: &#39;/blue/rest/organizations/jenkins/pipelines/&#39;,
+      redirect(url) &#123;
+        const jenkins_redirect = &#39;/api/jenkins/redirect&#39;;
+        return jenkins_redirect + &#39;?url=&#39; + encodeURIComponent(url)
+      &#125;
+    &#125;;
+  &#125;
+&#125;  
+</code></pre>
+<h4 id="引入：-1"><a href="#引入：-1" class="headerlink" title="引入："></a>引入：</h4><p>在main.js里引入</p>
+<pre><code>import DataRepository from &#39;./data/DataRepository.js&#39;
+Vue.use(DataRepository)
+</code></pre>
+<h4 id="使用：-1"><a href="#使用：-1" class="headerlink" title="使用："></a>使用：</h4><p>比如，我要获取登录的api</p>
+<pre><code>logonApi = this.DR.api(&#39;logon&#39;)
+</code></pre>
+<h3 id="7-vue组件间的通讯"><a href="#7-vue组件间的通讯" class="headerlink" title="7.vue组件间的通讯"></a>7.vue组件间的通讯</h3><h4 id="a-父组件向子组件传值"><a href="#a-父组件向子组件传值" class="headerlink" title="a 父组件向子组件传值"></a>a 父组件向子组件传值</h4><p>思路:父组件利用v-bind(简写:)来绑定属性，子组件通过props来接受父组件数据。并且子组件可以通过watch监听props属性，来赋值给本组件的data，在js里通过this来使用数据。</p>
+<p>注意，此时数据不是双向绑定的。</p>
+<h5 id="父组件："><a href="#父组件：" class="headerlink" title="父组件："></a>父组件：</h5><p>sendToChild为父组件要传给子组件的数据，acceptFromParent是子组件props里要接受的数据</p>
+<pre><code>&lt;template&gt;
+  &lt;div&gt;
+    &lt;my-child :acceptFromParent=&quot;sendToChild&quot;&gt;&lt;/my-child&gt;
+    &lt;input v-model=&quot;sendToChild&quot;/&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+  import MyChild from &quot;./Childrens/MyChild&quot;;
+  export default &#123;
+    components: &#123;MyChild&#125;,
+    name: &#39;HelloWorld&#39;,
+    data() &#123;
+      return &#123;
+        sendToChild:&#39;&#39;
+      &#125;
+    &#125;
+  &#125;
+&lt;/script&gt;
+</code></pre>
+<h5 id="子组件："><a href="#子组件：" class="headerlink" title="子组件："></a>子组件：</h5><p>通过acceptFromParent来接受父组件数据，并且利用watch来监听数据，并赋值给data里的inputData</p>
+<pre><code>&lt;template&gt;
+  &lt;div&gt;
+    &lt;h1&gt;Hello&lt;/h1&gt;
+    &lt;h3&gt;来自父组件:&#123;&#123;acceptFromParent&#125;&#125;&lt;/h3&gt;
+    &lt;p&gt;本组件Data:&#123;&#123;inputData&#125;&#125;&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+  export default &#123;
+    name: &quot;my-child&quot;,
+    props: [&#39;acceptFromParent&#39;],
+    data() &#123;
+      return &#123;
+        inputData: &#39;&#39;
+      &#125;
+    &#125;,
+    watch: &#123;
+      acceptFromParent(curVal, oldVal) &#123;
+        this.inputData = curVal
+      &#125;
+    &#125;
+  &#125;
+&lt;/script&gt;
+</code></pre>
+<p><img src="https://shirukai.gitee.io/images/201802061549_865.gif"></p>
+<h4 id="b-子组件向父组件传值"><a href="#b-子组件向父组件传值" class="headerlink" title="b 子组件向父组件传值"></a>b 子组件向父组件传值</h4><p>思路：子组件向父组件传值，子组件利用this.$emit(event,…args)来传值，父组件通过监听event然后指定方法接受传递的值。</p>
+<h5 id="子组件：-1"><a href="#子组件：-1" class="headerlink" title="子组件："></a>子组件：</h5><pre><code>&lt;template&gt;
+  &lt;div&gt;
+    &lt;input v-model=&quot;inputData&quot; @keyup=&quot;sendData&quot;&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+    methods: &#123;
+      sendData() &#123;
+        this.$emit(&#39;sendToParent&#39;, this.inputData)
+      &#125;
+    &#125;,
+&lt;/script&gt;
+</code></pre>
+<h5 id="父组件：-1"><a href="#父组件：-1" class="headerlink" title="父组件："></a>父组件：</h5><pre><code>&lt;template&gt;
+  &lt;div&gt;
+    &lt;my-child :acceptFromParent=&quot;sendToChild&quot; @sendToParent=&quot;acceptFromChild&quot;&gt;&lt;/my-child&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+&lt;script&gt;
+  methods:&#123;
+        acceptFromChild(data)&#123;
+          console.log(data)
+        &#125;
+  &#125;
+&lt;/script&gt;
+</code></pre>
+<h4 id="c-跨组件、同级组件传值"><a href="#c-跨组件、同级组件传值" class="headerlink" title="c 跨组件、同级组件传值"></a>c 跨组件、同级组件传值</h4><p>利用eventBus在同级组件间通讯。</p>
+<h5 id="eventBus-js"><a href="#eventBus-js" class="headerlink" title="eventBus.js"></a>eventBus.js</h5><pre><code>import Vue from &#39;vue&#39;
+export default new Vue()
+</code></pre>
+<h5 id="组件一-发送）："><a href="#组件一-发送）：" class="headerlink" title="组件一(发送）："></a>组件一(发送）：</h5><pre><code>import &#123;EventBus&#125; from &quot;../../utils/eventBus.js&quot;;
+eventBus.$emit(&#39;functionName&#39;,&#39;sendData&#39;)
+</code></pre>
+<h5 id="组件二（接受）："><a href="#组件二（接受）：" class="headerlink" title="组件二（接受）："></a>组件二（接受）：</h5><pre><code>import &#123;EventBus&#125; from &quot;../../utils/eventBus.js&quot;;
+mounted()&#123;
+  eventBus.$on(&#39;functionName&#39;,(val)=&gt;&#123;
+    console.log(val)
+  &#125;)
+&#125;
+</code></pre>
+<h4 id="d-父组件调用子组件方法"><a href="#d-父组件调用子组件方法" class="headerlink" title="d 父组件调用子组件方法"></a>d 父组件调用子组件方法</h4><p>通过给子组件的ref一个属性，然后通过调用this.$ref.属性.方法 就可以调用子组件的方法了。</p>
+<h5 id="父组件：-2"><a href="#父组件：-2" class="headerlink" title="父组件："></a>父组件：</h5><pre><code>&lt;my-child ref =&quot;myChild&quot; :acceptFromParent=&quot;sendToChild&quot; @sendToParent=&quot;acceptFromChild&quot;&gt;&lt;/my-child&gt;
+
+mounted()&#123;
+    this.$refs.myChild.alertData(&quot;please alert data&quot;)
+&#125;
+</code></pre>
+<h5 id="子组件：-2"><a href="#子组件：-2" class="headerlink" title="子组件："></a>子组件：</h5><pre><code>methods:&#123;
+  alertData(val)&#123;
+    alert(val)
+  &#125;
+&#125;
+</code></pre>
+<h4 id="e-子组件调用父组件方法"><a href="#e-子组件调用父组件方法" class="headerlink" title="e 子组件调用父组件方法"></a>e 子组件调用父组件方法</h4><p>思路与传值一样</p>
+<h2 id="二、JavaScript"><a href="#二、JavaScript" class="headerlink" title="二、JavaScript"></a>二、JavaScript</h2><h5 id="js判断数组是否为空"><a href="#js判断数组是否为空" class="headerlink" title="js判断数组是否为空"></a>js判断数组是否为空</h5><pre><code>let array = []
+
+if(array[0])&#123;
+  //数组不为空
+&#125;
+
+if(array.length&gt;0)&#123;
+  //数组不为空
+&#125;
+</code></pre>
+<h5 id="js数组添加元素"><a href="#js数组添加元素" class="headerlink" title="js数组添加元素"></a>js数组添加元素</h5><pre><code>let array = []
+array.push(&#39;……&#39;)
+</code></pre>
+<h5 id="js数组删除指定元素"><a href="#js数组删除指定元素" class="headerlink" title="js数组删除指定元素"></a>js数组删除指定元素</h5><pre><code>let array= []
+array.splice(i,1) //删除i位置的元素
+</code></pre>
+<h5 id="js数组在指定位置添加元素"><a href="#js数组在指定位置添加元素" class="headerlink" title="js数组在指定位置添加元素"></a>js数组在指定位置添加元素</h5><pre><code>let array = []
+array.splice(i,0,&#39;要添加的内容&#39;)
+</code></pre>
+<h5 id="js取数组指定范围元素"><a href="#js取数组指定范围元素" class="headerlink" title="js取数组指定范围元素"></a>js取数组指定范围元素</h5><pre><code>let array=[]
+array.slice(start,end)
+</code></pre>
+<h5 id="三目运算符的使用"><a href="#三目运算符的使用" class="headerlink" title="三目运算符的使用"></a>三目运算符的使用</h5><pre><code>addData.root_pwd = root_pwd ? root_pwd : &#39;&#39;;
+</code></pre>
+<h2 id="三、Django"><a href="#三、Django" class="headerlink" title="三、Django"></a>三、Django</h2><h3 id="1-使方法可以接受不带csrf的POST请求"><a href="#1-使方法可以接受不带csrf的POST请求" class="headerlink" title="1.使方法可以接受不带csrf的POST请求"></a>1.使方法可以接受不带csrf的POST请求</h3><p>在方法前添加@csrf_exempt修饰符，如：</p>
+<pre><code>@csrf_exempt
+def validate_config_name(request):
+    response = &#123;&#125;
+    user_name = request.COOKIES[&#39;user_name&#39;]
+    config_name = request.POST.get(&#39;config_name&#39;)
+    try:
+        ConfigInfo.objects.get(config_name=config_name, user_name=user_name)
+        response[&#39;msg&#39;] = &#39;already&#39;
+        response[&#39;state&#39;] = 1
+    except Exception as e:
+        response[&#39;msg&#39;] = str(e)
+        response[&#39;state&#39;] = 0
+        response[&#39;data&#39;] = generate_config_id()
+    return JsonResponse(response)
+</code></pre>
+<h3 id="2-在Django中使用日志"><a href="#2-在Django中使用日志" class="headerlink" title="2.在Django中使用日志"></a>2.在Django中使用日志</h3><h4 id="简单配置，配置日志在控制台输出："><a href="#简单配置，配置日志在控制台输出：" class="headerlink" title="简单配置，配置日志在控制台输出："></a>简单配置，配置日志在控制台输出：</h4><p>在settings.py里配置日志</p>
+<pre><code>import logging
+import django.utils.log
+import logging.handlers
+
+LOGGING = &#123;
+    &#39;version&#39;: 1,
+    &#39;disable_existing_loggers&#39;: False,
+    &#39;handlers&#39;: &#123;
+        &#39;console&#39;: &#123;
+            &#39;class&#39;: &#39;logging.StreamHandler&#39;,
+        &#125;,
+    &#125;,
+    &#39;loggers&#39;: &#123;
+        &#39;django&#39;: &#123;
+            &#39;handlers&#39;: [&#39;console&#39;],
+            &#39;level&#39;: os.getenv(&#39;DJANGO_LOG_LEVEL&#39;, &#39;INFO&#39;),
+        &#125;,
+    &#125;,
+&#125;
+</code></pre>
+<p>使用：</p>
+<pre><code>import logging
+logger = logging.getLogger(&quot;django&quot;)
+
+logger.info(msg)
+</code></pre>
+<h4 id="详细配置："><a href="#详细配置：" class="headerlink" title="详细配置："></a>详细配置：</h4><p><a target="_blank" rel="noopener" href="http://blog.51cto.com/davidbj/1433741">http://blog.51cto.com/davidbj/1433741</a></p>
+<h3 id="3-Django中的update-or-create方法"><a href="#3-Django中的update-or-create方法" class="headerlink" title="3.Django中的update_or_create方法"></a>3.Django中的update_or_create方法</h3><p>这个例子中，根据config_info_id 来判断，如果存在数据，就更新，更新的是set_data里的数据。如果没有，就创建。</p>
+<pre><code> set_data = &#123;
+   &#39;config_info_id&#39;:&#39;&#39;……&#39;
+ &#125;
+ ConfigInfo.objects.update_or_create(config_info_id=set_data[&#39;config_info_id&#39;], defaults=set_data)
+</code></pre>
+<h3 id="4-格式化数据库读取时间"><a href="#4-格式化数据库读取时间" class="headerlink" title="4.格式化数据库读取时间"></a>4.格式化数据库读取时间</h3><pre><code>tmp_obj[key] = info[key].strftime(&quot;%Y年%m月%d日 %H:%M:%S&quot;)
+</code></pre>
+<h3 id="5-django下载文件"><a href="#5-django下载文件" class="headerlink" title="5.django下载文件"></a>5.django下载文件</h3><pre><code>    # 下载
+    dow_path = &quot;tmp/test.zip&quot;
+    f = open(down_path, &#39;rb&#39;)
+    response = FileResponse(f)
+    response[&#39;Content-Type&#39;] = &#39;application/octet-stream&#39;
+    response[&#39;Content-Disposition&#39;] = &#39;attachment;filename=&#39; + server.config_name_no_time + &#39;.zip&#39;
+    return response
+</code></pre>
+<h3 id="6-将django查询的object转成json字典"><a href="#6-将django查询的object转成json字典" class="headerlink" title="6.将django查询的object转成json字典"></a>6.将django查询的object转成json字典</h3><p>如：使用objects.get()方法查询的数据，可以用一下方法转成json</p>
+<pre><code>def object_to_json(obj):
+    return dict([(kk, obj.__dict__[kk]) for kk in obj.__dict__.keys() if kk != &quot;_state&quot;])
+</code></pre>
+<h2 id="四、Python"><a href="#四、Python" class="headerlink" title="四、Python"></a>四、Python</h2><h3 id="1-遍历字典-或者json-的key，value"><a href="#1-遍历字典-或者json-的key，value" class="headerlink" title="1.遍历字典(或者json)的key，value"></a>1.遍历字典(或者json)的key，value</h3><pre><code>data = &#123;
+    &#39;key1&#39;: &#39;value1&#39;,
+    &#39;key2&#39;: &#39;value2&#39;,
+    &#39;key3&#39;: &#39;value3&#39;
+&#125;
+for key, value in data.items():
+    print key, value
+</code></pre>
+<p><img src="https://shirukai.gitee.io/images/201802041659_11.png"></p>
+<h3 id="2-利用enumerate遍历列表的下索引和值"><a href="#2-利用enumerate遍历列表的下索引和值" class="headerlink" title="2.利用enumerate遍历列表的下索引和值"></a>2.利用enumerate遍历列表的下索引和值</h3><pre><code>data_array = [
+    &#39;value1&#39;, &#39;value2&#39;, &#39;value3&#39;
+]
+for key, value in enumerate(data_array):
+    print key, value
+</code></pre>
+<p><img src="https://shirukai.gitee.io/images/201802041658_664.png"></p>
+<h3 id="3-索引从指定范围循环"><a href="#3-索引从指定范围循环" class="headerlink" title="3.索引从指定范围循环"></a>3.索引从指定范围循环</h3><p>如索引从6到9循环</p>
+<pre><code>for index in range(6, 9):
+    print index
+</code></pre>
+<p><img src="https://shirukai.gitee.io/images/201802041704_58.png"></p>
+<h3 id="4-list-将元组转化成列表"><a href="#4-list-将元组转化成列表" class="headerlink" title="4.list()将元组转化成列表"></a>4.list()将元组转化成列表</h3><p>什么是元组？如下用“（）”括起来的并且以“，”分隔的就是算组。元组的遍历与列表相似。如果元组里只有一个元素时，后面要加“,”如tup1=(1,)</p>
+<pre><code># 元组
+tup1 = (1, u&quot;二&quot;, &#39;three&#39;)
+</code></pre>
+<p>list的可以将元组转化成列表</p>
+<pre><code>    list1 = list(tup1)
+    print list1
+</code></pre>
+<p>结果：</p>
+<pre><code>[1, u&#39;\u4e8c&#39;, &#39;three&#39;]
+</code></pre>
+<h3 id="5-利用urllib，urllib2发送http请求"><a href="#5-利用urllib，urllib2发送http请求" class="headerlink" title="5.利用urllib，urllib2发送http请求"></a>5.利用urllib，urllib2发送http请求</h3><p>封装方法</p>
+<pre><code>def request_url(url, data=None, header=None):
+    req = urllib2.Request(url, data=urllib.urlencode(data))
+    if header is not None:
+        for header_name, header_value in header.items():
+            req.add_header(header_name, header_value)
+    response = &#123;&#125;
+    try:
+        res = urllib2.urlopen(req)
+        response[&#39;state&#39;] = 0
+        response[&#39;data&#39;] = res.read()
+    except urllib2.HTTPError, e:
+        response[&#39;state&#39;] = 1
+        response[&#39;msg&#39;] = &#123;
+            &#39;code&#39;: e.code,
+            &#39;reason&#39;: e.reason,
+            &#39;url&#39;: e.geturl(),
+            &#39;info&#39;: e.read()
+        &#125;
+    return response
+</code></pre>
+<p>测试：</p>
+<pre><code>    url = &#39;http://127.0.0.1:8000/api/config/all?page=1&amp;pagesize=5&amp;1517736445175&#39;
+    res = request_url(url)
+    print(res)
+</code></pre>
+<p>结果：</p>
+<p><img src="https://shirukai.gitee.io/images/201802041739_62.png"></p>
+<p>是失败的，经过我们查看错误信息，是因为我们在请求头里面，没有添加cookie。</p>
+<p>添加cookie：</p>
+<pre><code>    url = &#39;http://127.0.0.1:8000/api/config/all?page=1&amp;pagesize=5&amp;1517736445175&#39;
+    cookie = &#39;test_cookie=&quot;set cookie&quot;; accessToken=e64781ffc59bf974656dadd760857fbe1fb8d0acMTUxNzczMjkyODo2MDQ4MDA; user_name=shirukai&#39;
+    header = &#123;
+        &#39;Cookie&#39;: cookie
+    &#125;
+    res = request_url(url, header=header)
+    print(res)
+</code></pre>
+<p><img src="https://shirukai.gitee.io/images/201802041740_512.png"></p>
+<h3 id="6-python-对目录文件的操作"><a href="#6-python-对目录文件的操作" class="headerlink" title="6.python 对目录文件的操作"></a>6.python 对目录文件的操作</h3><h4 id="判断文件夹是否存在-存在删除、不存在创建"><a href="#判断文件夹是否存在-存在删除、不存在创建" class="headerlink" title="判断文件夹是否存在,存在删除、不存在创建"></a>判断文件夹是否存在,存在删除、不存在创建</h4><pre><code>        config_path = &quot;tmp/test&quot;
+        is_exist = os.path.exists(config_path)
+        if is_exist:
+            shutil.rmtree(config_path)
+        os.makedirs(config_path)
+</code></pre>
+<p>os.makedirs(path,mode=0o777) 是递归创建目录</p>
+<p>os.mkdir()创建目录</p>
+<h4 id="创建json文件，并写入数据"><a href="#创建json文件，并写入数据" class="headerlink" title="创建json文件，并写入数据"></a>创建json文件，并写入数据</h4><pre><code>        file_path = &#39;tmp/test.json&#39;
+        data=&#123;
+          &#39;key1&#39;,&#39;value1&#39;
+        &#125;
+        with open(file_path, &#39;w&#39;) as f:
+            f.write(json.dumps(data, indent=4))
+</code></pre>
+<h4 id="利用shutil-copyfile复制文件"><a href="#利用shutil-copyfile复制文件" class="headerlink" title="利用shutil.copyfile复制文件"></a>利用shutil.copyfile复制文件</h4><pre><code>import shutil
+old_path = &#39;tmp/test1.json&#39;
+new_path = &#39;tmp/test2.json&#39;
+shutil.copyfile(old_path, new_path)
+</code></pre>
+<h4 id="zip打包文件"><a href="#zip打包文件" class="headerlink" title="zip打包文件"></a>zip打包文件</h4><pre><code>    def pack_zip(config_path):
+        f = zipfile.ZipFile(config_path + &#39;.zip&#39;, &#39;w&#39;, zipfile.ZIP_DEFLATED)
+        for dir_path, dir_names, file_names in os.walk(config_path):
+            for filename in file_names:
+                f.write(os.path.join(dir_path, filename), os.path.join(dir_path, filename).replace(config_path, &#39;&#39;))
+        f.close()
+        return config_path + &#39;.zip&#39;
+</code></pre>
+<h3 id="7-python字符串操作"><a href="#7-python字符串操作" class="headerlink" title="7.python字符串操作"></a>7.python字符串操作</h3><table>
+<thead>
+<tr>
+<th><strong>方法</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a target="_blank" rel="noopener" href="http://www.runoob.com/python/att-string-capitalize.html">string.capitalize()</a></td>
+<td>把字符串的第一个字符大写</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="http://www.runoob.com/python/att-string-center.html">string.center(width)</a></td>
+<td>返回一个原字符串居中,并使用空格填充至长度 width 的新字符串</td>
+</tr>
+<tr>
+<td><strong>string.count(str, beg=0, end=len(string))</strong></td>
+<td>返回 str 在 string 里面出现的次数，如果 beg 或者 end 指定则返回指定范围内 str 出现的次数</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="http://www.runoob.com/python/att-string-decode.html">string.decode(encoding=’UTF-8’, errors=’strict’)</a></td>
+<td>以 encoding 指定的编码格式解码 string，如果出错默认报一个 ValueError 的 异 常 ， 除非 errors 指 定 的 是 ‘ignore’ 或 者’replace’</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="http://www.runoob.com/python/att-string-encode.html">string.encode(encoding=’UTF-8’, errors=’strict’)</a></td>
+<td>以 encoding 指定的编码格式编码 string，如果出错默认报一个ValueError 的异常，除非 errors 指定的是’ignore’或者’replace’</td>
+</tr>
+<tr>
+<td><strong>string.endswith(obj, beg=0, end=len(string))</strong></td>
+<td>检查字符串是否以 obj 结束，如果beg 或者 end 指定则检查指定的范围内是否以 obj 结束，如果是，返回 True,否则返回 False.</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="http://www.runoob.com/python/att-string-expandtabs.html">string.expandtabs(tabsize=8)</a></td>
+<td>把字符串 string 中的 tab 符号转为空格，tab 符号默认的空格数是 8。</td>
+</tr>
+<tr>
+<td><strong>string.find(str, beg=0, end=len(string))</strong></td>
+<td>检测 str 是否包含在 string 中，如果 beg 和 end 指定范围，则检查是否包含在指定范围内，如果是返回开始的索引值，否则返回-1</td>
+</tr>
+<tr>
+<td><strong>string.format()</strong></td>
+<td>格式化字符串</td>
+</tr>
+<tr>
+<td><strong>string.index(str, beg=0, end=len(string))</strong></td>
+<td>跟find()方法一样，只不过如果str不在 string中会报一个异常.</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="http://www.runoob.com/python/att-string-isalnum.html">string.isalnum()</a></td>
+<td>如果 string 至少有一个字符并且所有字符都是字母或数字则返回 True,否则返回 False</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="http://www.runoob.com/python/att-string-isalpha.html">string.isalpha()</a></td>
+<td>如果 string 至少有一个字符并且所有字符都是字母则返回 True,否则返回 False</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="http://www.runoob.com/python/att-string-isdecimal.html">string.isdecimal()</a></td>
+<td>如果 string 只包含十进制数字则返回 True 否则返回 False.</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="http://www.runoob.com/python/att-string-isdigit.html">string.isdigit()</a></td>
+<td>如果 string 只包含数字则返回 True 否则返回 False.</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="http://www.runoob.com/python/att-string-islower.html">string.islower()</a></td>
+<td>如果 string 中包含至少一个区分大小写的字符，并且所有这些(区分大小写的)字符都是小写，则返回 True，否则返回 False</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="http://www.runoob.com/python/att-string-isnumeric.html">string.isnumeric()</a></td>
+<td>如果 string 中只包含数字字符，则返回 True，否则返回 False</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="http://www.runoob.com/python/att-string-isspace.html">string.isspace()</a></td>
+<td>如果 string 中只包含空格，则返回 True，否则返回 False.</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="http://www.runoob.com/python/att-string-istitle.html">string.istitle()</a></td>
+<td>如果 string 是标题化的(见 title())则返回 True，否则返回 False</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="http://www.runoob.com/python/att-string-isupper.html">string.isupper()</a></td>
+<td>如果 string 中包含至少一个区分大小写的字符，并且所有这些(区分大小写的)字符都是大写，则返回 True，否则返回 False</td>
+</tr>
+<tr>
+<td><strong>string.join(seq)</strong></td>
+<td>以 string 作为分隔符，将 seq 中所有的元素(的字符串表示)合并为一个新的字符串</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="http://www.runoob.com/python/att-string-ljust.html">string.ljust(width)</a></td>
+<td>返回一个原字符串左对齐,并使用空格填充至长度 width 的新字符串</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="http://www.runoob.com/python/att-string-lower.html">string.lower()</a></td>
+<td>转换 string 中所有大写字符为小写.</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="http://www.runoob.com/python/att-string-lstrip.html">string.lstrip()</a></td>
+<td>截掉 string 左边的空格</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="http://www.runoob.com/python/att-string-maketrans.html">string.maketrans(intab, outtab])</a></td>
+<td>maketrans() 方法用于创建字符映射的转换表，对于接受两个参数的最简单的调用方式，第一个参数是字符串，表示需要转换的字符，第二个参数也是字符串表示转换的目标。</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="http://www.runoob.com/python/att-string-max.html">max(str)</a></td>
+<td>返回字符串 <em>str</em> 中最大的字母。</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="http://www.runoob.com/python/att-string-min.html">min(str)</a></td>
+<td>返回字符串 <em>str</em> 中最小的字母。</td>
+</tr>
+<tr>
+<td><strong>string.partition(str)</strong></td>
+<td>有点像 find()和 split()的结合体,从 str 出现的第一个位置起,把 字 符 串 string 分 成 一 个 3 元 素 的 元 组 (string_pre_str,str,string_post_str),如果 string 中不包含str 则 string_pre_str == string.</td>
+</tr>
+<tr>
+<td><strong>string.replace(str1, str2,  num=string.count(str1))</strong></td>
+<td>把 string 中的 str1 替换成 str2,如果 num 指定，则替换不超过 num 次.</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="http://www.runoob.com/python/att-string-rfind.html">string.rfind(str, beg=0,end=len(string) )</a></td>
+<td>类似于 find()函数，不过是从右边开始查找.</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="http://www.runoob.com/python/att-string-rindex.html">string.rindex( str, beg=0,end=len(string))</a></td>
+<td>类似于 index()，不过是从右边开始.</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="http://www.runoob.com/python/att-string-rjust.html">string.rjust(width)</a></td>
+<td>返回一个原字符串右对齐,并使用空格填充至长度 width 的新字符串</td>
+</tr>
+<tr>
+<td>string.rpartition(str)</td>
+<td>类似于 partition()函数,不过是从右边开始查找.</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="http://www.runoob.com/python/att-string-rstrip.html">string.rstrip()</a></td>
+<td>删除 string 字符串末尾的空格.</td>
+</tr>
+<tr>
+<td><strong>string.split(str=””, num=string.count(str))</strong></td>
+<td>以 str 为分隔符切片 string，如果 num有指定值，则仅分隔 num 个子字符串</td>
+</tr>
+<tr>
+<td>[string.splitlines(<a target="_blank" rel="noopener" href="http://www.runoob.com/python/att-string-splitlines.html">keepends])</a></td>
+<td>按照行(‘\r’, ‘\r\n’, \n’)分隔，返回一个包含各行作为元素的列表，如果参数 keepends 为 False，不包含换行符，如果为 True，则保留换行符。</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="http://www.runoob.com/python/att-string-startswith.html">string.startswith(obj, beg=0,end=len(string))</a></td>
+<td>检查字符串是否是以 obj 开头，是则返回 True，否则返回 False。如果beg 和 end 指定值，则在指定范围内检查.</td>
+</tr>
+<tr>
+<td><strong>string.strip([obj])</strong></td>
+<td>在 string 上执行 lstrip()和 rstrip()</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="http://www.runoob.com/python/att-string-swapcase.html">string.swapcase()</a></td>
+<td>翻转 string 中的大小写</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="http://www.runoob.com/python/att-string-title.html">string.title()</a></td>
+<td>返回”标题化”的 string,就是说所有单词都是以大写开始，其余字母均为小写(见 istitle())</td>
+</tr>
+<tr>
+<td><strong>string.translate(str, del=””)</strong></td>
+<td>根据 str 给出的表(包含 256 个字符)转换 string 的字符,要过滤掉的字符放到 del 参数中</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="http://www.runoob.com/python/att-string-upper.html">string.upper()</a></td>
+<td>转换 string 中的小写字母为大写</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="http://www.runoob.com/python/att-string-zfill.html">string.zfill(width)</a></td>
+<td>返回长度为 width 的字符串，原字符串 string 右对齐，前面填充0</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="http://www.runoob.com/python/att-string-isdecimal.html">string.isdecimal()</a></td>
+<td>isdecimal()方法检查字符串是否只包含十进制字符。这种方法只存在于unicode对象。</td>
+</tr>
+</tbody></table>
+<h4 id="一次替换多个变量"><a href="#一次替换多个变量" class="headerlink" title="一次替换多个变量"></a>一次替换多个变量</h4><p>第一个参数text：需要替换的文本</p>
+<p>第二个参数replace_dict：需要替换的字典集</p>
+<pre><code>def multiple_replace(text, replace_dict):
+    for key, value in replace_dict.items():
+        text = text.replace(key, value)
+    return text
+</code></pre>
+<h3 id="8-python调用shell脚本"><a href="#8-python调用shell脚本" class="headerlink" title="8.python调用shell脚本"></a>8.python调用shell脚本</h3><p>项目里使用：</p>
+<pre><code>  import commands
+  (state, output) = commands.getstatusoutput(&#39;sh &#39; + config_path + &#39;/copy_config.sh&#39;)
+</code></pre>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/yangykaifa/p/7127776.html">https://www.cnblogs.com/yangykaifa/p/7127776.html</a></p>
+<h3 id="9-合并字典"><a href="#9-合并字典" class="headerlink" title="9.合并字典"></a>9.合并字典</h3><p>用dict(a.items()+b.items())方法合并字典</p>
+<pre><code>if __name__ == &#39;__main__&#39;:
+    a = &#123;&#39;key1&#39;: &#39;value1&#39;, &#39;key2&#39;: &#39;value2&#39;&#125;
+    b = &#123;&#39;key3&#39;: &#39;value3&#39;, &#39;key4&#39;: &#39;value4&#39;&#125;
+    c = dict(a.items() + b.items())
+    print(c)
+</code></pre>
+<pre><code>/usr/bin/python2.7 /Repository/python/testapi/TestDict.py
+&#123;&#39;key3&#39;: &#39;value3&#39;, &#39;key2&#39;: &#39;value2&#39;, &#39;key1&#39;: &#39;value1&#39;, &#39;key4&#39;: &#39;value4&#39;&#125;
+
+Process finished with exit code 0
+</code></pre>
+<p>用dict(a,**b)合并字典</p>
+<pre><code>if __name__ == &#39;__main__&#39;:
+    a = &#123;&#39;key1&#39;: &#39;value1&#39;, &#39;key2&#39;: &#39;value2&#39;&#125;
+    b = &#123;&#39;key3&#39;: &#39;value3&#39;, &#39;key4&#39;: &#39;value4&#39;&#125;
+    d = dict(a, **b)
+    print(d)
+</code></pre>
+<pre><code>/usr/bin/python2.7 /Repository/python/testapi/TestDict.py
+&#123;&#39;key3&#39;: &#39;value3&#39;, &#39;key2&#39;: &#39;value2&#39;, &#39;key1&#39;: &#39;value1&#39;, &#39;key4&#39;: &#39;value4&#39;&#125;
+
+Process finished with exit code 0
+</code></pre>
+<p>用c.update(a) c.update(b)合并</p>
+<pre><code>if __name__ == &#39;__main__&#39;:
+    a = &#123;&#39;key1&#39;: &#39;value1&#39;, &#39;key2&#39;: &#39;value2&#39;&#125;
+    b = &#123;&#39;key3&#39;: &#39;value3&#39;, &#39;key4&#39;: &#39;value4&#39;&#125;
+    d = &#123;&#125;
+    d.update(a)
+    d.update(b)
+    print(d)
+</code></pre>
+<pre><code>/usr/bin/python2.7 /Repository/python/testapi/TestDict.py
+&#123;&#39;key3&#39;: &#39;value3&#39;, &#39;key2&#39;: &#39;value2&#39;, &#39;key1&#39;: &#39;value1&#39;, &#39;key4&#39;: &#39;value4&#39;&#125;
+
+Process finished with exit code 0
+</code></pre>
+<h4 id="10-合并数组"><a href="#10-合并数组" class="headerlink" title="10.合并数组"></a>10.合并数组</h4><p>a+b</p>
+<pre><code>&gt;&gt;&gt; a =[1,2,3,4,5,6]
+&gt;&gt;&gt; b =[&#39;a&#39;,&#39;b&#39;,&#39;c&#39;]
+&gt;&gt;&gt; a+b
+[1, 2, 3, 4, 5, 6, &#39;a&#39;, &#39;b&#39;, &#39;c&#39;]
+&gt;&gt;&gt; 
+</code></pre>
+<p>a+=b</p>
+<pre><code>&gt;&gt;&gt; a+=b
+&gt;&gt;&gt; print a
+[1, 2, 3, 4, 5, 6, &#39;a&#39;, &#39;b&#39;, &#39;c&#39;]
+</code></pre>
+<p>a.extend(b)</p>
+<pre><code>&gt;&gt;&gt; a.extend(b)
+&gt;&gt;&gt; print a
+[1, 2, 3, 4, 5, 6, &#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;a&#39;, &#39;b&#39;, &#39;c&#39;]
+</code></pre>
+<p>a.append(b)</p>
+<pre><code>&gt;&gt;&gt; print a
+[1, 2, 3, 4, 5, 6, &#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;a&#39;, &#39;b&#39;, &#39;c&#39;, [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;]]
+</code></pre>
+<p>a[0:0] =b</p>
+<pre><code>&gt;&gt;&gt; a[0:0] = b
+&gt;&gt;&gt; print a
+[&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, 1, 2, 3, 4, 5, 6, &#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;a&#39;, &#39;b&#39;, &#39;c&#39;, [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;]]
+&gt;&gt;&gt; 
+</code></pre>
+<h2 id="五、Jenkins"><a href="#五、Jenkins" class="headerlink" title="五、Jenkins"></a>五、Jenkins</h2><blockquote>
+<p>在项目中调用Jenkins的api，并对jenkins进行自定义的api封装</p>
+</blockquote>
+<p>jenkisn api 官网:<a target="_blank" rel="noopener" href="https://python-jenkins.readthedocs.io/en/latest/api.html">https://python-jenkins.readthedocs.io/en/latest/api.html</a></p>
+<h3 id="1-安装python-jenkins"><a href="#1-安装python-jenkins" class="headerlink" title="1.安装python-jenkins"></a>1.安装python-jenkins</h3><pre><code>pip install python-jenkins
+</code></pre>
+<h3 id="2-关于jenkins请求权限认证的问题"><a href="#2-关于jenkins请求权限认证的问题" class="headerlink" title="2.关于jenkins请求权限认证的问题"></a>2.关于jenkins请求权限认证的问题</h3><blockquote>
+<p>python-jenkins提供的api有时候，满足不了我们的个性化需求，所以可以从jenkins的页面上抓取连接，在python里请求数据，并进一步处理。但是这个时候，往往是需要jenkins权限认证的。</p>
+<p>解决jenkins的权限认证，主要在请求头里添加认证信息即可。</p>
+</blockquote>
+<h4 id="jenkins的认证信息："><a href="#jenkins的认证信息：" class="headerlink" title="jenkins的认证信息："></a>jenkins的认证信息：</h4><p>jenkins的认证信息其实就是Base64编码后的用户名和密码。可以用一下的方法，得到编码后的认证信息</p>
+<pre><code>import six
+import base64
+
+def auth_headers(username, password):
+    auth = &#39;%s:%s&#39; % (username, password)
+    if isinstance(auth, six.text_type):
+        auth = auth.encode(&#39;utf-8&#39;)
+    return b&#39;Basic &#39; + base64.b64encode(auth)
+</code></pre>
+<h5 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h5><p>包：six 是兼容包，base64是编解码包</p>
+<p>方法参数：username是登录jenkins的用户名，password是密码</p>
+<p>返回值：就是一个编码后的字符串。</p>
+<h4 id="将认证信息添加到请求头里"><a href="#将认证信息添加到请求头里" class="headerlink" title="将认证信息添加到请求头里 :"></a>将认证信息添加到请求头里 :</h4><pre><code>add_header(&#39;Authorization&#39;,&#39;生成的Auth&#39;)
+</code></pre>
+<h3 id="3-利用请求转发解决跨域问题"><a href="#3-利用请求转发解决跨域问题" class="headerlink" title="3.利用请求转发解决跨域问题"></a>3.利用请求转发解决跨域问题</h3><p>这里使用的django后台请求转发来解决的跨域问题。</p>
+<p>思路：django统一提供一个api，前台将要转发的url进行urlencode编码后作为参数，发送到这个统一的api，</p>
+<p>后台得到参数后，解码，根据jenkins的host、port组合信息的url。然后利用urllib发送http请求，得到数据之后，返回给django，django再返回给前端。</p>
+<h4 id="后台提供请求转发api："><a href="#后台提供请求转发api：" class="headerlink" title="后台提供请求转发api："></a>后台提供请求转发api：</h4><h5 id="urls-py"><a href="#urls-py" class="headerlink" title="urls.py"></a>urls.py</h5><p>在urls.py里添加url</p>
+<pre><code>    url(r&#39;jenkins/redirect&#39;, views.jenkins_url_redirect),
+</code></pre>
+<h5 id="views-py"><a href="#views-py" class="headerlink" title="views.py"></a>views.py</h5><p>在views.py里添加方法：</p>
+<pre><code>@csrf_exempt
+def jenkins_url_redirect(request):
+    service = jenkins_api.JenkinsApi()
+    if request.method == &#39;POST&#39;:
+        url = request.GET.get(&#39;url&#39;)
+        res_data = json.loads(request.POST.get(&#39;data&#39;))
+        req = service.jenkins_url_redirect(url, res_data)
+    else:
+        url = request.GET.get(&#39;url&#39;)
+        req = service.jenkins_url_redirect(url)
+    return JsonResponse(req, safe=False)
+</code></pre>
+<h4 id="请求转发jenkins-url-redirect（封装的jenkins-api里的一个方法）："><a href="#请求转发jenkins-url-redirect（封装的jenkins-api里的一个方法）：" class="headerlink" title="请求转发jenkins_url_redirect（封装的jenkins_api里的一个方法）："></a>请求转发jenkins_url_redirect（封装的jenkins_api里的一个方法）：</h4><pre><code>&#39;&#39;&#39;
+jenkins api 重定向 
+解决jenkins跨域、权限问题
+encode url
+&#39;&#39;&#39;
+
+def jenkins_url_redirect(self, url, res_data=None):
+    url = urllib.quote(url)
+    if res_data is not None:
+        req = self.request_url(url, res_data)
+    else:
+        req = self.request_url(url)
+    if req[&#39;state&#39;] == 0:
+        if req[&#39;content_type&#39;].find(&#39;json&#39;) == -1:
+            return req
+        else:
+            return json.loads(req[&#39;data&#39;])
+    else:
+        return req[&#39;msg&#39;]
+</code></pre>
+<h4 id="例子："><a href="#例子：" class="headerlink" title="例子："></a>例子：</h4><p>前台请求</p>
+<pre><code>http://127.0.0.1:8000/api/jenkins/redirect?url=%2Fblue%2Frest%2Forganizations%2Fjenkins%2Fpipelines%2Findata_config1516955057.63%2Fruns%2F&amp;1517797001138
+</code></pre>
+<p><img src="https://shirukai.gitee.io/images/201802051125_286.png"></p>
+<h3 id="4-抓取jenkins-pipline里的api做日志显示"><a href="#4-抓取jenkins-pipline里的api做日志显示" class="headerlink" title="4.抓取jenkins pipline里的api做日志显示"></a>4.抓取jenkins pipline里的api做日志显示</h3><blockquote>
+<p>工具里的日志显示，主要是去抓取pipline里的api来得到数据的。</p>
+<p>大体流程：得到job_name–&gt;获取所有buid–&gt;获取所有nodes信息–&gt;获取node详细信息–&gt;查看当前node日志</p>
+</blockquote>
+<p>以 job_name=indata_config1516955057.63为例子（job_name 为jenkins的job名）：</p>
+<h4 id="第一步：获取所有buids"><a href="#第一步：获取所有buids" class="headerlink" title="第一步：获取所有buids"></a>第一步：获取所有buids</h4><h5 id="api"><a href="#api" class="headerlink" title="api:"></a>api:</h5><p>/blue/rest/organizations/jenkins/pipelines/<strong>job_name</strong>/runs</p>
+<p>例如</p>
+<pre><code>/blue/rest/organizations/jenkins/pipelines/indata_config1516955057.63/runs
+</code></pre>
+<h5 id="返回值："><a href="#返回值：" class="headerlink" title="返回值："></a>返回值：</h5><p>返回值为所有buids的数组，里面包含buids的信息。</p>
+<p><img src="https://shirukai.gitee.io/images/201802051053_816.gif"></p>
+<p>假设返回的数组为：buidsArray</p>
+<h4 id="第二步：获取当前buid里的所有nodes信息"><a href="#第二步：获取当前buid里的所有nodes信息" class="headerlink" title="第二步：获取当前buid里的所有nodes信息"></a>第二步：获取当前buid里的所有nodes信息</h4><h5 id="api-1"><a href="#api-1" class="headerlink" title="api:"></a>api:</h5><p>可以从上一步获得buidsArray里获取nodes的api，获取方式如下</p>
+<pre><code>nodesUrl = buidsArray[0][&#39;_links&#39;][&#39;nodes&#39;][&#39;href&#39;]
+</code></pre>
+<p>如：/blue/rest/organizations/jenkins/pipelines/indata_config1516955057.63/runs/1/nodes/</p>
+<p><img src="https://shirukai.gitee.io/images/201802051046_328.png"></p>
+<h5 id="返回值：-1"><a href="#返回值：-1" class="headerlink" title="返回值："></a>返回值：</h5><p>返回值为所有nodes信息，并且包含nodes的信息</p>
+<p><img src="https://shirukai.gitee.io/images/201802051056_411.gif"></p>
+<p>假设返回的数组信息为：nodesArray</p>
+<h4 id="第三步：获取node详细信息"><a href="#第三步：获取node详细信息" class="headerlink" title="第三步：获取node详细信息"></a>第三步：获取node详细信息</h4><h5 id="api-2"><a href="#api-2" class="headerlink" title="api:"></a>api:</h5><p>可以从上一步得到的nodesArray里获取</p>
+<pre><code>node_url = nodesArray[0][&#39;_links&#39;][&#39;steps&#39;][&#39;href&#39;]
+</code></pre>
+<p>如：/blue/rest/organizations/jenkins/pipelines/indata_config1516955057.63/runs/1/nodes/6/steps/</p>
+<h5 id="返回值：-2"><a href="#返回值：-2" class="headerlink" title="返回值："></a>返回值：</h5><p>返回值为当前节点的详细信息</p>
+<p><img src="https://shirukai.gitee.io/images/201802051103_390.png"></p>
+<p>假设返回信息为：nodeInfo</p>
+<h4 id="第四步：获取日志"><a href="#第四步：获取日志" class="headerlink" title="第四步：获取日志"></a>第四步：获取日志</h4><h5 id="api-3"><a href="#api-3" class="headerlink" title="api:"></a>api:</h5><p>可以从上一步的返回信息里得到api</p>
+<pre><code>log_url = nodeInfo[0][&#39;actions&#39;][&#39;_links&#39;][&#39;self&#39;][&#39;href&#39;]
+</code></pre>
+<p>如：/blue/rest/organizations/jenkins/pipelines/indata_config1516955057.63/runs/1/nodes/31/steps/32/log/</p>
+<h5 id="返回值：-3"><a href="#返回值：-3" class="headerlink" title="返回值："></a>返回值：</h5><p><img src="https://shirukai.gitee.io/images/201802051108_849.png"></p>
+<h3 id="5-封装jenkins-api"><a href="#5-封装jenkins-api" class="headerlink" title="5.封装jenkins_api"></a>5.封装jenkins_api</h3><pre><code># -*- coding: utf-8 -*-
+import urllib
+import urllib2
+import json
+import logging
+import six
+import base64
+import jenkins
+from params import JENKINS, COPY_PATH
+import commands
+import os
+from utils import multiple_replace
+
+# jenkins api
+# 创建 credentials
+CREATE_CREDENTIAL = &#39;/credentials/store/system/domain/_/createCredentials&#39;
+# 获取 credentials
+GET_CREDENTIAL = &#39;/credentials/store/system/domain/_/api/json?depth=1&#39;
+# 删除 credentials $id：c13d4b89-e7b0-4e68-bb76-bac36afe7f92
+DELETE_CREDENTIAL = &#39;/credentials/store/system/domain/_/credential/$id/doDelete&#39;
+# 获取当前登录用户的credentials
+CRUMB_URL = &#39;/crumbIssuer/api/json&#39;
+
+
+def auth_headers(username, password):
+    auth = &#39;%s:%s&#39; % (username, password)
+    if isinstance(auth, six.text_type):
+        auth = auth.encode(&#39;utf-8&#39;)
+    return b&#39;Basic &#39; + base64.b64encode(auth)
+
+
+class JenkinsApi(object):
+    def __init__(self):
+        self.add_crumb = False
+        self.url = &#39;http://&#39; + JENKINS[&#39;host&#39;] + &#39;:&#39; + JENKINS[&#39;port&#39;]
+        self.auth = auth_headers(JENKINS[&#39;username&#39;], JENKINS[&#39;password&#39;])
+        self.crumb = self.__add_crumb()
+        self.service = jenkins.Jenkins(&#39;http://&#39; + JENKINS[&#39;host&#39;] + &#39;:&#39; + JENKINS[&#39;port&#39;],
+                                       username=JENKINS[&#39;username&#39;],
+                                       password=JENKINS[&#39;password&#39;])
+
+    &#39;&#39;&#39;
+    添加crumb
+    &#39;&#39;&#39;
+
+    def __add_crumb(self):
+        res = self.request_url(CRUMB_URL, None)
+        if res[&#39;state&#39;] == 0:
+            self.add_crumb = True
+            return json.loads(res[&#39;data&#39;])
+        else:
+            return None
+
+    &#39;&#39;&#39;
+    创建 credential
+    :param
+        description：描述
+        username：用户名
+        password：密码
+    :return 
+        credential id
+    &#39;&#39;&#39;
+
+    def create_credential(self, description, username, password):
+        req_data = &#123;
+            &quot;json&quot;: &#123;
+                &quot;&quot;: &quot;0&quot;,
+                &quot;credentials&quot;: &#123;
+                    &quot;scope&quot;: &quot;GLOBAL&quot;,
+                    &quot;id&quot;: &quot;&quot;,
+                    &quot;username&quot;: str(username),
+                    &quot;password&quot;: str(password),
+                    &quot;description&quot;: str(description),
+                    &quot;stapler-class&quot;: &quot;com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl&quot;
+                &#125;
+            &#125;
+        &#125;
+        # 创建
+        create_res = self.request_url(CREATE_CREDENTIAL, req_data)
+        # # 获取
+        if create_res[&#39;state&#39;] == 0:
+            get_res = self.request_url(GET_CREDENTIAL)
+            if create_res[&#39;state&#39;] == 0:
+                json_res = json.loads(get_res[&#39;data&#39;])[&#39;credentials&#39;]
+                for i in json_res:
+                    if i[&#39;description&#39;] == description:
+                        return i
+
+    &#39;&#39;&#39;
+    删除 credential
+    :param
+        credential_id
+    :return
+        response    
+    &#39;&#39;&#39;
+
+    def delete_credential(self, credential_id):
+        api = DELETE_CREDENTIAL.replace(&#39;$id&#39;, credential_id)
+        req = self.request_url(api)
+        return req
+
+    &#39;&#39;&#39;
+    jenkins api 重定向 
+    解决jenkins跨域、权限问题
+    encode url
+    &#39;&#39;&#39;
+
+    def jenkins_url_redirect(self, url, res_data=None):
+        url = urllib.quote(url)
+        if res_data is not None:
+            req = self.request_url(url, res_data)
+        else:
+            req = self.request_url(url)
+        if req[&#39;state&#39;] == 0:
+            if req[&#39;content_type&#39;].find(&#39;json&#39;) == -1:
+                # if url[-4:-1] == &#39;log&#39; or url[-9:-1] == &#39;doDelete&#39;:
+                return req
+            else:
+                return json.loads(req[&#39;data&#39;])
+        else:
+            return req[&#39;msg&#39;]
+
+    def get_log(self, url):
+        return self.request_url(url)
+
+    def stop_job(self, job_name):
+        # 获取job信息
+        job_info = self.service.get_job_info(job_name)
+        job_number = job_info[&#39;lastBuild&#39;][&#39;number&#39;]
+        self.service.stop_build(job_name, job_number)
+        return json.dumps(job_number)
+
+    def start_job(self, job_name):
+        self.service.build_job(job_name)
+
+    @staticmethod
+    def copy_file(config_path):
+        (state, output) = commands.getstatusoutput(&#39;sh &#39; + config_path + &#39;/copy_config.sh&#39;)
+        print(output.decode(&quot;GBK&quot;))
+        return state, output.decode(&quot;GBK&quot;)
+
+    def create_node(self, node_name, config_name, username, password, ip):
+        credential_ids = self.create_credential(config_name, username, password)
+        credential_id = credential_ids[&#39;id&#39;]
+        params = &#123;
+            &#39;port&#39;: &#39;22&#39;,
+            &#39;username&#39;: username,
+            &#39;credentialsId&#39;: credential_id,
+            &#39;host&#39;: ip
+        &#125;
+        # 检查node是否存在
+        try:
+            self.service.get_node_info(node_name)
+        except Exception as e:
+            print(str(e))
+            self.service.create_node(
+                node_name,
+                nodeDescription=node_name,
+                remoteFS=&#39;/opt/jenkins&#39;,
+                labels=node_name,
+                exclusive=True,
+                launcher=jenkins.LAUNCHER_SSH,
+                launcher_params=params
+            )
+            # self.server.enable_node(self.node_name)
+        return credential_id
+
+    def create_job(self, node_name, config_name, ip, xml_path=os.path.join(COPY_PATH, &#39;config.xml&#39;)):
+        file_path = xml_path
+        f = open(file_path)
+        config_context = f.read()
+        f.close()
+        replace_dict = dict()
+        replace_dict[&#39;$node_name&#39;] = node_name
+        replace_dict[&#39;$ambari-server-ip&#39;] = ip
+        config = multiple_replace(str(config_context), replace_dict)
+        self.service.create_job(config_name, config)
+        self.service.build_job(config_name)
+
+    def request_url(self, api, data=None):
+        if data is not None:
+            req = urllib2.Request(url=self.url + api, data=urllib.urlencode(data))
+        else:
+            req = urllib2.Request(url=self.url + api)
+        if self.auth is not None:
+            req.add_header(&#39;Authorization&#39;, self.auth)
+        if self.add_crumb:
+            req.add_header(self.crumb[&#39;crumbRequestField&#39;], self.crumb[&#39;crumb&#39;])
+        req.add_header(&#39;Accept&#39;,
+                       &#39;application/json, text/plain, */*&#39;)
+        response = &#123;&#125;
+        try:
+            res = urllib2.urlopen(req)
+            response[&#39;state&#39;] = 0
+            response[&#39;data&#39;] = res.read()
+            response[&#39;content_type&#39;] = res.info()[&#39;Content-Type&#39;]
+        except urllib2.HTTPError, e:
+            response[&#39;state&#39;] = 1
+            response[&#39;msg&#39;] = &#123;
+                &#39;code&#39;: e.code,
+                &#39;reason&#39;: e.reason,
+                &#39;url&#39;: e.geturl(),
+                &#39;info&#39;: e.read()
+            &#125;
+        return response
+</code></pre>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81Vue"><span class="toc-number">1.</span> <span class="toc-text">一、Vue</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%85%B3%E4%BA%8E%E5%9B%BE%E6%A0%87%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="toc-number">1.1.</span> <span class="toc-text">1.关于图标的使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%85%B3%E4%BA%8E%E7%99%BB%E5%BD%95%E6%9D%83%E9%99%90"><span class="toc-number">1.2.</span> <span class="toc-text">2.关于登录权限</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-cookie%E5%B0%81%E8%A3%85"><span class="toc-number">1.3.</span> <span class="toc-text">3.cookie封装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-localStorage%E5%B0%81%E8%A3%85"><span class="toc-number">1.4.</span> <span class="toc-text">4.localStorage封装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-Vue-resource%E6%8B%A6%E6%88%AA%E5%99%A8%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="toc-number">1.5.</span> <span class="toc-text">5.Vue-resource拦截器的使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E7%BB%9F%E4%B8%80URL%E5%B0%81%E8%A3%85%EF%BC%8C%E8%A7%A3%E5%86%B3%E5%89%8D%E5%90%8E%E7%AB%AF%E5%88%86%E7%A6%BB%E5%BC%80%E5%8F%91%EF%BC%8C%E5%9F%9F%E5%90%8D%E6%94%B9%E5%8A%A8%E9%97%AE%E9%A2%98"><span class="toc-number">1.6.</span> <span class="toc-text">6.统一URL封装，解决前后端分离开发，域名改动问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-vue%E7%BB%84%E4%BB%B6%E9%97%B4%E7%9A%84%E9%80%9A%E8%AE%AF"><span class="toc-number">1.7.</span> <span class="toc-text">7.vue组件间的通讯</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81JavaScript"><span class="toc-number">2.</span> <span class="toc-text">二、JavaScript</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81Django"><span class="toc-number">3.</span> <span class="toc-text">三、Django</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E4%BD%BF%E6%96%B9%E6%B3%95%E5%8F%AF%E4%BB%A5%E6%8E%A5%E5%8F%97%E4%B8%8D%E5%B8%A6csrf%E7%9A%84POST%E8%AF%B7%E6%B1%82"><span class="toc-number">3.1.</span> <span class="toc-text">1.使方法可以接受不带csrf的POST请求</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%9C%A8Django%E4%B8%AD%E4%BD%BF%E7%94%A8%E6%97%A5%E5%BF%97"><span class="toc-number">3.2.</span> <span class="toc-text">2.在Django中使用日志</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-Django%E4%B8%AD%E7%9A%84update-or-create%E6%96%B9%E6%B3%95"><span class="toc-number">3.3.</span> <span class="toc-text">3.Django中的update_or_create方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E6%A0%BC%E5%BC%8F%E5%8C%96%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AF%BB%E5%8F%96%E6%97%B6%E9%97%B4"><span class="toc-number">3.4.</span> <span class="toc-text">4.格式化数据库读取时间</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-django%E4%B8%8B%E8%BD%BD%E6%96%87%E4%BB%B6"><span class="toc-number">3.5.</span> <span class="toc-text">5.django下载文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E5%B0%86django%E6%9F%A5%E8%AF%A2%E7%9A%84object%E8%BD%AC%E6%88%90json%E5%AD%97%E5%85%B8"><span class="toc-number">3.6.</span> <span class="toc-text">6.将django查询的object转成json字典</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81Python"><span class="toc-number">4.</span> <span class="toc-text">四、Python</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E9%81%8D%E5%8E%86%E5%AD%97%E5%85%B8-%E6%88%96%E8%80%85json-%E7%9A%84key%EF%BC%8Cvalue"><span class="toc-number">4.1.</span> <span class="toc-text">1.遍历字典(或者json)的key，value</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%88%A9%E7%94%A8enumerate%E9%81%8D%E5%8E%86%E5%88%97%E8%A1%A8%E7%9A%84%E4%B8%8B%E7%B4%A2%E5%BC%95%E5%92%8C%E5%80%BC"><span class="toc-number">4.2.</span> <span class="toc-text">2.利用enumerate遍历列表的下索引和值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E7%B4%A2%E5%BC%95%E4%BB%8E%E6%8C%87%E5%AE%9A%E8%8C%83%E5%9B%B4%E5%BE%AA%E7%8E%AF"><span class="toc-number">4.3.</span> <span class="toc-text">3.索引从指定范围循环</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-list-%E5%B0%86%E5%85%83%E7%BB%84%E8%BD%AC%E5%8C%96%E6%88%90%E5%88%97%E8%A1%A8"><span class="toc-number">4.4.</span> <span class="toc-text">4.list()将元组转化成列表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E5%88%A9%E7%94%A8urllib%EF%BC%8Curllib2%E5%8F%91%E9%80%81http%E8%AF%B7%E6%B1%82"><span class="toc-number">4.5.</span> <span class="toc-text">5.利用urllib，urllib2发送http请求</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-python-%E5%AF%B9%E7%9B%AE%E5%BD%95%E6%96%87%E4%BB%B6%E7%9A%84%E6%93%8D%E4%BD%9C"><span class="toc-number">4.6.</span> <span class="toc-text">6.python 对目录文件的操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-python%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%93%8D%E4%BD%9C"><span class="toc-number">4.7.</span> <span class="toc-text">7.python字符串操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-python%E8%B0%83%E7%94%A8shell%E8%84%9A%E6%9C%AC"><span class="toc-number">4.8.</span> <span class="toc-text">8.python调用shell脚本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-%E5%90%88%E5%B9%B6%E5%AD%97%E5%85%B8"><span class="toc-number">4.9.</span> <span class="toc-text">9.合并字典</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81Jenkins"><span class="toc-number">5.</span> <span class="toc-text">五、Jenkins</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%AE%89%E8%A3%85python-jenkins"><span class="toc-number">5.1.</span> <span class="toc-text">1.安装python-jenkins</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%85%B3%E4%BA%8Ejenkins%E8%AF%B7%E6%B1%82%E6%9D%83%E9%99%90%E8%AE%A4%E8%AF%81%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">5.2.</span> <span class="toc-text">2.关于jenkins请求权限认证的问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%88%A9%E7%94%A8%E8%AF%B7%E6%B1%82%E8%BD%AC%E5%8F%91%E8%A7%A3%E5%86%B3%E8%B7%A8%E5%9F%9F%E9%97%AE%E9%A2%98"><span class="toc-number">5.3.</span> <span class="toc-text">3.利用请求转发解决跨域问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E6%8A%93%E5%8F%96jenkins-pipline%E9%87%8C%E7%9A%84api%E5%81%9A%E6%97%A5%E5%BF%97%E6%98%BE%E7%A4%BA"><span class="toc-number">5.4.</span> <span class="toc-text">4.抓取jenkins pipline里的api做日志显示</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E5%B0%81%E8%A3%85jenkins-api"><span class="toc-number">5.5.</span> <span class="toc-text">5.封装jenkins_api</span></a></li></ol></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

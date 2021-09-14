@@ -1,0 +1,717 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>5-1 多元线性回归 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="
+
+具体的编程实现import numpy as np
+from sklearn.metrics import r2_score
+
+
+class LinearRegression:
+    def ,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">5-1 多元线性回归</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/1.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/机器学习"><b>「
+                    </b>机器学习<b> 」</b></a>
+                
+                August 20, 2018
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/5-1-multi-line-regression.html" title="5-1 多元线性回归" class="">5-1 多元线性回归</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    11k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    10 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/python3%E5%85%A5%E9%97%A8%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">python3入门机器学习</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <p><img src="https://shirukai.gitee.io/images/ae908b5f8e6c6bb308995c9251e3096c.jpg"><br><img src="https://shirukai.gitee.io/images/ae9a54178b82a1acfa4105d19eaf5f33.jpg"><br><img src="https://shirukai.gitee.io/images/d09d73d011e66093e7ee062a307db3e1.jpg"></p>
+<p><img src="https://shirukai.gitee.io/images/116a292c7e21d7602770d45960dc4a05.jpg"></p>
+<h2 id="具体的编程实现"><a href="#具体的编程实现" class="headerlink" title="具体的编程实现"></a>具体的编程实现</h2><pre><code>import numpy as np
+from sklearn.metrics import r2_score
+
+
+class LinearRegression:
+    def __init__(self):
+        &quot;&quot;&quot;初始化Linear Regression模型&quot;&quot;&quot;
+        self.coef_ = None  # 系数
+        self.intercept_ = None  # 截距
+        self._theta = None
+
+    def fit_normal(self, X_train, y_train):
+        &quot;&quot;&quot;根据训练数据集X_train，y_train训练Linear Regression模型&quot;&quot;&quot;
+        assert X_train.shape[0] == y_train.shape[0], \
+            &quot;the size of X_train must be equal to the size of y_train&quot;
+        &quot;&quot;&quot;
+        X_b就是所给X_train向量前面再加一列，这一列所有值都为1
+        利用np.ones()生成值全=1的向量，行数为len(X_train)列数为1
+        然后将生成的向量与X_train利用hstack进行水平合并
+        &quot;&quot;&quot;
+        X_b = np.hstack([np.ones((len(X_train))), X_train])
+
+        &quot;&quot;&quot;
+        利用公式求出_theta
+        求矩阵的逆矩阵的方法：利用np.linalg.inv()
+        &quot;&quot;&quot;
+        self._theta = np.linalg.inv(X_b.T.dot(X_b)).dot(X_b.T).dot(y_train)
+
+        &quot;&quot;&quot;
+        获取截距：_theta的第一个元素
+        &quot;&quot;&quot;
+        self.intercept_ = self._theta(0)
+        &quot;&quot;&quot;
+        获取系数：_theta从第一个到最后的所有元素
+        &quot;&quot;&quot;
+        self.coef_ = self._theta[1:]
+
+        return self
+
+    def predict(self, X_predict):
+        &quot;&quot;&quot;给定预测数据集X_predict,返回表示X_predict的结果向量&quot;&quot;&quot;
+        assert self.intercept_ is not None and self.coef_ is not None, \
+            &quot;&quot;&quot;&quot;must fit before predict&quot;&quot;&quot;
+        assert X_predict.shape[1] == len(self.coef_), \
+            &quot;the feature number of X_predict of X_predcit must be equal to X_train&quot;
+        X_b = np.hstack([np.ones((len(X_predict))), X_predict])
+        return X_b.dot(self._theta)
+
+    def socre(self, X_test, y_test):
+        y_predict = self.predict(X_test)
+        return r2_score(y_test, y_predict)
+
+    def __repr__(self):
+        return &quot;LinearRegression()&quot;
+</code></pre>
+<h3 id="实现多元线性回归模型"><a href="#实现多元线性回归模型" class="headerlink" title="实现多元线性回归模型"></a>实现多元线性回归模型</h3><pre><code class="python">import numpy as np
+import matplotlib.pyplot as plt
+from sklearn import datasets
+</code></pre>
+<pre><code class="python"># 读取波士顿房产数据
+boston = datasets.load_boston()
+
+X = boston.data
+y = boston.target
+
+X = X[y &lt; 50.0]
+y = y[y &lt; 50.0]
+</code></pre>
+<pre><code class="python">X.shape
+</code></pre>
+<pre><code>(490, 13)
+</code></pre>
+<pre><code class="python">y.shape
+</code></pre>
+<pre><code>(490,)
+</code></pre>
+<pre><code class="python">#对数据进行拆分
+from sklearn.model_selection import train_test_split
+X_train,x_test,y_train,y_test = train_test_split(X,y)
+</code></pre>
+<pre><code class="python"># 使用自己的linearRegression
+from script.LinearRegression import LinearRegression
+reg = LinearRegression()
+reg.fit_normal(X_train,y_train)
+</code></pre>
+<pre><code>LinearRegression()
+</code></pre>
+<pre><code class="python">reg.coef_
+</code></pre>
+<pre><code>array([-1.15467813e-01,  3.92880958e-02, -3.41748487e-02,  7.47995516e-01,
+       -1.10513264e+01,  3.32719731e+00, -1.84801883e-02, -1.15846165e+00,
+        2.23328413e-01, -1.19884387e-02, -7.98506487e-01,  8.97887470e-03,
+       -3.90390966e-01])
+</code></pre>
+<pre><code class="python">reg.intercept_
+</code></pre>
+<pre><code>32.40591102447736
+</code></pre>
+<pre><code class="python">reg.score(x_test,y_test)
+</code></pre>
+<pre><code>0.7727301788951539
+</code></pre>
+<h2 id="scikit-learn中的回归问题"><a href="#scikit-learn中的回归问题" class="headerlink" title="scikit-learn中的回归问题"></a>scikit-learn中的回归问题</h2><pre><code class="python">from sklearn.model_selection import train_test_split
+X_train,x_test,y_train,y_test = train_test_split(X,y)
+</code></pre>
+<pre><code class="python">from sklearn.linear_model import LinearRegression
+lin_reg = LinearRegression()
+</code></pre>
+<pre><code class="python">lin_reg.fit(X_train,y_train)
+</code></pre>
+<pre><code>LinearRegression(copy_X=True, fit_intercept=True, n_jobs=1, normalize=False)
+</code></pre>
+<pre><code class="python">lin_reg.coef_
+</code></pre>
+<pre><code>array([ -0.10279992,   0.03681912,  -0.04638299,   0.5490078 ,
+       -10.33884868,   3.72440973,  -0.02280334,  -1.13176363,
+         0.30092941,  -0.01554197,  -0.7849784 ,   0.01055632,
+        -0.37071212])
+</code></pre>
+<pre><code class="python">lin_reg.intercept_
+</code></pre>
+<pre><code>29.400432014797325
+</code></pre>
+<pre><code class="python">lin_reg.score(x_test,y_test)
+</code></pre>
+<pre><code>0.7716499667746084
+</code></pre>
+<h3 id="kNN-Regressor"><a href="#kNN-Regressor" class="headerlink" title="kNN Regressor"></a>kNN Regressor</h3><pre><code class="python">from sklearn.neighbors import KNeighborsRegressor
+</code></pre>
+<pre><code class="python">knn_reg = KNeighborsRegressor()
+knn_reg.fit(X_train,y_train)
+</code></pre>
+<pre><code>KNeighborsRegressor(algorithm=&#39;auto&#39;, leaf_size=30, metric=&#39;minkowski&#39;,
+          metric_params=None, n_jobs=1, n_neighbors=5, p=2,
+          weights=&#39;uniform&#39;)
+</code></pre>
+<pre><code class="python">knn_reg.score(x_test,y_test)
+</code></pre>
+<pre><code>0.5960534303527143
+</code></pre>
+<pre><code class="python"># 超参数的选择
+
+from sklearn.model_selection import GridSearchCV
+
+param_grid = [
+    &#123;
+        &quot;weights&quot;:[&quot;uniform&quot;],
+        &quot;n_neighbors&quot;:[i for i in range(1,11)]
+    &#125;,
+    &#123;
+        &quot;weights&quot;:[&#39;distance&#39;],
+        &quot;n_neighbors&quot;:[i for i in range(1,11)],
+        &quot;p&quot;:[i for i in range(1,6)]
+    &#125;
+]
+knn_reg = KNeighborsRegressor()
+grid_search = GridSearchCV(knn_reg,param_grid,n_jobs=-1,verbose=1)
+grid_search.fit(X_train,y_train)
+</code></pre>
+<pre><code>Fitting 3 folds for each of 60 candidates, totalling 180 fits
+
+
+[Parallel(n_jobs=-1)]: Done 180 out of 180 | elapsed:    0.6s finished
+
+
+
+
+
+GridSearchCV(cv=None, error_score=&#39;raise&#39;,
+       estimator=KNeighborsRegressor(algorithm=&#39;auto&#39;, leaf_size=30, metric=&#39;minkowski&#39;,
+          metric_params=None, n_jobs=1, n_neighbors=5, p=2,
+          weights=&#39;uniform&#39;),
+       fit_params=None, iid=True, n_jobs=-1,
+       param_grid=[&#123;&#39;weights&#39;: [&#39;uniform&#39;], &#39;n_neighbors&#39;: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]&#125;, &#123;&#39;weights&#39;: [&#39;distance&#39;], &#39;n_neighbors&#39;: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], &#39;p&#39;: [1, 2, 3, 4, 5]&#125;],
+       pre_dispatch=&#39;2*n_jobs&#39;, refit=True, return_train_score=&#39;warn&#39;,
+       scoring=None, verbose=1)
+</code></pre>
+<pre><code class="python">grid_search.best_params_
+</code></pre>
+<pre><code>&#123;&#39;n_neighbors&#39;: 6, &#39;p&#39;: 1, &#39;weights&#39;: &#39;distance&#39;&#125;
+</code></pre>
+<pre><code class="python">grid_search.best_score_
+</code></pre>
+<pre><code>0.6046509483167782
+</code></pre>
+<pre><code class="python">grid_search.best_estimator_.score(x_test,y_test)
+</code></pre>
+<pre><code>0.6664759945985371
+</code></pre>
+<h3 id="更多关于线性回归模型的讨论"><a href="#更多关于线性回归模型的讨论" class="headerlink" title="更多关于线性回归模型的讨论"></a>更多关于线性回归模型的讨论</h3><pre><code class="python">from sklearn.linear_model import LinearRegression
+lin_reg = LinearRegression()
+lin_reg.fit(X,y)
+</code></pre>
+<pre><code>LinearRegression(copy_X=True, fit_intercept=True, n_jobs=1, normalize=False)
+</code></pre>
+<pre><code class="python">lin_reg.coef_
+</code></pre>
+<pre><code>array([-1.05574295e-01,  3.52748549e-02, -4.35179251e-02,  4.55405227e-01,
+       -1.24268073e+01,  3.75411229e+00, -2.36116881e-02, -1.21088069e+00,
+        2.50740082e-01, -1.37702943e-02, -8.38888137e-01,  7.93577159e-03,
+       -3.50952134e-01])
+</code></pre>
+<pre><code class="python"># 排序从小到大，得到索引
+np.argsort(lin_reg.coef_)
+</code></pre>
+<pre><code>array([ 4,  7, 10, 12,  0,  2,  6,  9, 11,  1,  8,  3,  5])
+</code></pre>
+<pre><code class="python">boston.feature_names[np.argsort(lin_reg.coef_)]
+</code></pre>
+<pre><code>array([&#39;NOX&#39;, &#39;DIS&#39;, &#39;PTRATIO&#39;, &#39;LSTAT&#39;, &#39;CRIM&#39;, &#39;INDUS&#39;, &#39;AGE&#39;, &#39;TAX&#39;,
+       &#39;B&#39;, &#39;ZN&#39;, &#39;RAD&#39;, &#39;CHAS&#39;, &#39;RM&#39;], dtype=&#39;&lt;U7&#39;)
+</code></pre>
+<pre><code class="python">print(boston.DESCR)
+</code></pre>
+<pre><code>Boston House Prices dataset
+===========================
+
+Notes
+------
+Data Set Characteristics:  
+
+    :Number of Instances: 506 
+
+    :Number of Attributes: 13 numeric/categorical predictive
+    
+    :Median Value (attribute 14) is usually the target
+
+    :Attribute Information (in order):
+        - CRIM     per capita crime rate by town
+        - ZN       proportion of residential land zoned for lots over 25,000 sq.ft.
+        - INDUS    proportion of non-retail business acres per town
+        - CHAS     Charles River dummy variable (= 1 if tract bounds river; 0 otherwise)
+        - NOX      nitric oxides concentration (parts per 10 million)
+        - RM       average number of rooms per dwelling
+        - AGE      proportion of owner-occupied units built prior to 1940
+        - DIS      weighted distances to five Boston employment centres
+        - RAD      index of accessibility to radial highways
+        - TAX      full-value property-tax rate per $10,000
+        - PTRATIO  pupil-teacher ratio by town
+        - B        1000(Bk - 0.63)^2 where Bk is the proportion of blacks by town
+        - LSTAT    % lower status of the population
+        - MEDV     Median value of owner-occupied homes in $1000&#39;s
+
+    :Missing Attribute Values: None
+
+    :Creator: Harrison, D. and Rubinfeld, D.L.
+
+This is a copy of UCI ML housing dataset.
+http://archive.ics.uci.edu/ml/datasets/Housing
+
+
+This dataset was taken from the StatLib library which is maintained at Carnegie Mellon University.
+
+The Boston house-price data of Harrison, D. and Rubinfeld, D.L. &#39;Hedonic
+prices and the demand for clean air&#39;, J. Environ. Economics &amp; Management,
+vol.5, 81-102, 1978.   Used in Belsley, Kuh &amp; Welsch, &#39;Regression diagnostics
+...&#39;, Wiley, 1980.   N.B. Various transformations are used in the table on
+pages 244-261 of the latter.
+
+The Boston house-price data has been used in many machine learning papers that address regression
+problems.   
+     
+**References**
+
+   - Belsley, Kuh &amp; Welsch, &#39;Regression diagnostics: Identifying Influential Data and Sources of Collinearity&#39;, Wiley, 1980. 244-261.
+   - Quinlan,R. (1993). Combining Instance-Based and Model-Based Learning. In Proceedings on the Tenth International Conference of Machine Learning, 236-243, University of Massachusetts, Amherst. Morgan Kaufmann.
+   - many more! (see http://archive.ics.uci.edu/ml/datasets/Housing)
+</code></pre>
+<p><img src="https://shirukai.gitee.io/images/b5d81cea4a76d6c0f3d2103d9ea24f80.jpg"></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B7%E4%BD%93%E7%9A%84%E7%BC%96%E7%A8%8B%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.</span> <span class="toc-text">具体的编程实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E5%A4%9A%E5%85%83%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.1.</span> <span class="toc-text">实现多元线性回归模型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#scikit-learn%E4%B8%AD%E7%9A%84%E5%9B%9E%E5%BD%92%E9%97%AE%E9%A2%98"><span class="toc-number">2.</span> <span class="toc-text">scikit-learn中的回归问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#kNN-Regressor"><span class="toc-number">2.1.</span> <span class="toc-text">kNN Regressor</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9B%B4%E5%A4%9A%E5%85%B3%E4%BA%8E%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E6%A8%A1%E5%9E%8B%E7%9A%84%E8%AE%A8%E8%AE%BA"><span class="toc-number">2.2.</span> <span class="toc-text">更多关于线性回归模型的讨论</span></a></li></ol></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

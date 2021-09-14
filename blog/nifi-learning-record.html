@@ -1,0 +1,588 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>nifi学习记录 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="
+一个易于使用，功能强大且可靠的系统来处理和分发数据。
+
+一、特征Apache NiFi支持强大且可扩展的数据路由，转换和系统中介逻辑的有向图。Apache NiFi的一些高级功能和目标包括：
+
+基,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">nifi学习记录</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/3.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/NiFi"><b>「
+                    </b>NIFI<b> 」</b></a>
+                
+                August 20, 2018
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/nifi-learning-record.html" title="nifi学习记录" class="">nifi学习记录</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    7.6k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    7 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/NiFi/" rel="tag">NiFi</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <blockquote>
+<p>一个易于使用，功能强大且可靠的系统来处理和分发数据。</p>
+</blockquote>
+<h2 id="一、特征"><a href="#一、特征" class="headerlink" title="一、特征"></a>一、特征</h2><p>Apache NiFi支持强大且可扩展的数据路由，转换和系统中介逻辑的有向图。Apache NiFi的一些高级功能和目标包括：</p>
+<ul>
+<li>基于Web的用户界面<ul>
+<li>设计，控制，反馈和监控之间的无缝体验</li>
+</ul>
+</li>
+<li>高度可配置<ul>
+<li>容忍损失与保证交付</li>
+<li>低延迟vs高吞吐量</li>
+<li>动态优先化</li>
+<li>流量可以在运行时修改</li>
+<li>背压</li>
+</ul>
+</li>
+<li>数据来源<ul>
+<li>跟踪数据流从头到尾</li>
+</ul>
+</li>
+<li>为扩展而设计<ul>
+<li>建立你自己的处理器等等</li>
+<li>实现快速开发和有效测试</li>
+</ul>
+</li>
+<li>安全<ul>
+<li>SSL，SSH，HTTPS，加密内容等…</li>
+<li>多租户授权和内部授权/策略管理</li>
+</ul>
+</li>
+</ul>
+<h2 id="二、安装"><a href="#二、安装" class="headerlink" title="二、安装"></a>二、安装</h2><p>官网下载: <a target="_blank" rel="noopener" href="http://nifi.apache.org/download.html">http://nifi.apache.org/download.html</a></p>
+<p>版本：1.6.0</p>
+<pre><code>wget http://mirrors.hust.edu.cn/apache/nifi/1.6.0/nifi-1.6.0-bin.tar.gz
+</code></pre>
+<p>解压：</p>
+<pre><code>tar -zxvf nifi-1.6.0-bin.tar.gz
+</code></pre>
+<p>简单配置：</p>
+<pre><code>vi nifi-1.6.0/conf/nifi.properties
+</code></pre>
+<pre><code>    133 nifi.web.war.directory=./lib
+    134 nifi.web.http.host=192.168.66.193 #本机ip
+    135 nifi.web.http.port=9191 #端口号
+    136 nifi.web.http.network.interface.default=
+    137 nifi.web.https.host=
+    138 nifi.web.https.port=
+    139 nifi.web.https.network.interface.default=
+    140 nifi.web.jetty.working.directory=./work/jetty
+    141 nifi.web.jetty.threads=200
+    142 nifi.web.max.header.size=16 KB
+    143 nifi.web.proxy.context.path=
+    144 nifi.web.proxy.host=
+</code></pre>
+<p>nifi启动：</p>
+<p>前台运行：bin/nifi.sh run</p>
+<p>后台运行：bin/nifi.sh start</p>
+<p>重新启动：bin/nifi,sh restart</p>
+<p><img src="https://shirukai.gitee.io/images/201804090947_695.png"></p>
+<h3 id="三、NiFi实例"><a href="#三、NiFi实例" class="headerlink" title="三、NiFi实例"></a>三、NiFi实例</h3><h4 id="1-读取某个文件夹下的所有文件，并移动到到另一个文件夹下。"><a href="#1-读取某个文件夹下的所有文件，并移动到到另一个文件夹下。" class="headerlink" title="1.读取某个文件夹下的所有文件，并移动到到另一个文件夹下。"></a>1.读取某个文件夹下的所有文件，并移动到到另一个文件夹下。</h4><p>如：</p>
+<p>将/root/shirukai/nifi_test/1目录下所有的文件，读取，然后存到/root/shirukai/nifi_test/2下</p>
+<h5 id="a-添加一个GetFile处理器，用于读取文件"><a href="#a-添加一个GetFile处理器，用于读取文件" class="headerlink" title="a.添加一个GetFile处理器，用于读取文件"></a>a.添加一个GetFile处理器，用于读取文件</h5><p><img src="https://shirukai.gitee.io/images/201804090954_965.png"></p>
+<p>拖动处理器到画布，这时候会出现弹窗，需要我们选择合适的处理器，这时候我们在搜索框搜索 【GetFile】</p>
+<p><img src="https://shirukai.gitee.io/images/201804090956_168.png"></p>
+<p>然后点击【ADD】将处理器添加到画布，如下图：</p>
+<p><img src="https://shirukai.gitee.io/images/201804090957_103.png"></p>
+<p>配置GetFile处理器：选中处理器之后，右击鼠标，会弹出选项框，我们选择【Configure】进行处理器配置</p>
+<p><img src="https://shirukai.gitee.io/images/201804090958_350.png"></p>
+<p>在弹出的配置框中我们选择【PROPERTIES】tab页来进行相关配置,在这里我们仅仅设置【Input Directory】输入的文件目录为：/root/shirukai/nifi_test/1即可，其他的过滤文件的正则等配置暂时用默认的。</p>
+<p><img src="https://shirukai.gitee.io/images/201804090959_128.png"></p>
+<p>然后点击【APPLY】应用即可。</p>
+<h4 id="b-创建PutFile处理器"><a href="#b-创建PutFile处理器" class="headerlink" title="b 创建PutFile处理器"></a>b 创建PutFile处理器</h4><p>创建PutFile的过程跟上面一样，先将处理器拖到画布中，然后搜索【PutFile】处理添加到画布。</p>
+<p><img src="https://shirukai.gitee.io/images/201804091011_762.gif"></p>
+<p>配置PutFile处理器，在【PROPERTIES】的【Directory】的value值填为我们要将文件保存到的路径，然后点击【APPLY】</p>
+<p><img src="https://shirukai.gitee.io/images/201804091013_454.png"></p>
+<h4 id="c-建立连接，将GetFile与PutFile两个处理器连接"><a href="#c-建立连接，将GetFile与PutFile两个处理器连接" class="headerlink" title="c 建立连接，将GetFile与PutFile两个处理器连接"></a>c 建立连接，将GetFile与PutFile两个处理器连接</h4><p><img src="https://shirukai.gitee.io/images/201804091018_255.gif"></p>
+<p>建立连接完成后，我们会发现GetFile处理器前面出现一个停止的状态</p>
+<p><img src="https://shirukai.gitee.io/images/201804091019_330.png"></p>
+<p>而PutFile处理前面为警告状态，将鼠标放到警告图标上，会出现警告信息，提示失败和成功关系无效，因为没有连接任何组件并且不会自动终止</p>
+<p><img src="https://shirukai.gitee.io/images/201804091020_530.png"></p>
+<p>这时候我们在PutFile的配置里选择【SETTINGS】将自动终止关系的【failure】和【success】设置为勾选状态。</p>
+<p><img src="https://shirukai.gitee.io/images/201804091026_252.png"></p>
+<h4 id="d启动实例"><a href="#d启动实例" class="headerlink" title="d启动实例"></a>d启动实例</h4><p>在画布空白处右击会出现选项框，选择【start】运行实例</p>
+<p><img src="https://shirukai.gitee.io/images/201804091029_780.png"></p>
+<p>运行状态如下图所示：</p>
+<p><img src="https://shirukai.gitee.io/images/201804091036_365.png"></p>
+<p>这一个过程是一个实时的，只要/root/shirukai/nifi_test/1下有文件nifi就会移动到/root/shirukai/nifi_test/2目录下。</p>
+<p><img src="https://shirukai.gitee.io/images/201804091042_478.gif"></p>
+<h3 id="2-执行python脚本编写的wordCount实例"><a href="#2-执行python脚本编写的wordCount实例" class="headerlink" title="2.执行python脚本编写的wordCount实例"></a>2.执行python脚本编写的wordCount实例</h3><h4 id="a-创建GenerateFlowFile处理器"><a href="#a-创建GenerateFlowFile处理器" class="headerlink" title="a 创建GenerateFlowFile处理器"></a>a 创建GenerateFlowFile处理器</h4><p>将处理器图标拖到画布，并选择【GenerateFlowFile】处理器，用于生成流数据。</p>
+<p><img src="https://shirukai.gitee.io/images/201804091442_493.png"></p>
+<p>修改GenerateFlowFile处理器，添加自定义文本，用来做单词计数的源文件。</p>
+<p>在处理器配置里【PROPERTIES】里的【Custom Text】的value栏，将以下文本填入其中：</p>
+<pre><code>Apache NiFi supports powerful and scalable directed graphs of data routing, transformation, and system mediation logic. Some of the high-level capabilities and objectives of Apache NiFi include:
+</code></pre>
+<p><img src="https://shirukai.gitee.io/images/201804091444_421.png"></p>
+<h4 id="b创建ExecuteScript处理器，用于执行脚本"><a href="#b创建ExecuteScript处理器，用于执行脚本" class="headerlink" title="b创建ExecuteScript处理器，用于执行脚本"></a>b创建ExecuteScript处理器，用于执行脚本</h4><p>如何编写脚本？可参考博客：<a target="_blank" rel="noopener" href="https://blog.csdn.net/quguang65265/article/details/77916855">https://blog.csdn.net/quguang65265/article/details/77916855</a></p>
+<p><img src="https://shirukai.gitee.io/images/201804091447_604.png"></p>
+<p>配置ExecuteScript处理器，在【PROPERTIES】里的【Script Engine】选择执行的脚本语言，并将事先写好的脚本加到【Script Body】中。python脚本代码如下：</p>
+<pre><code>import re
+import json
+import java.io
+from org.apache.commons.io import IOUtils
+from java.nio.charset import StandardCharsets
+from org.apache.nifi.processor.io import StreamCallback
+ 
+class WordCount(StreamCallback):
+  def __init__(self):
+        pass
+  def process(self, inputStream, outputStream):
+    words = IOUtils.toString(inputStream, StandardCharsets.UTF_8)
+    words_array = re.split(r&#39;(?:,|;|\s)\s*&#39;, words)
+    word_count = &#123;&#125;
+    for word in words_array:
+        if word in word_count:
+            tmp_count = word_count[word]
+            word_count[word] = tmp_count + 1
+        else:
+            word_count[word] = 1
+    word_str = &#39;&#39;
+    for key, val in word_count.items():
+        word_str += key + &quot;:&quot; + str(val) + &quot;\n&quot;
+    outputStream.write(bytearray(word_str.encode(&#39;utf-8&#39;)))
+ 
+flowFile = session.get()
+if (flowFile != None):
+  flowFile = session.write(flowFile, WordCount())
+  flowFile = session.putAttribute(flowFile, &quot;filename&quot;, &quot;wordCount&quot;)
+session.transfer(flowFile, REL_SUCCESS)
+session.commit()
+</code></pre>
+<p><img src="https://shirukai.gitee.io/images/201804091448_88.png"></p>
+<h4 id="c-添加PutFile处理器，用来将处理后的结果一文件的形式保存到指定目录下的文件里"><a href="#c-添加PutFile处理器，用来将处理后的结果一文件的形式保存到指定目录下的文件里" class="headerlink" title="c 添加PutFile处理器，用来将处理后的结果一文件的形式保存到指定目录下的文件里"></a>c 添加PutFile处理器，用来将处理后的结果一文件的形式保存到指定目录下的文件里</h4><p><img src="https://shirukai.gitee.io/images/201804091453_714.png"></p>
+<p>配置Putfile处理器，添加要输出的文件目录</p>
+<p><img src="https://shirukai.gitee.io/images/201804091456_924.png"></p>
+<p>d建立关联</p>
+<p><img src="https://shirukai.gitee.io/images/201804091501_466.gif"></p>
+<p>执行：</p>
+<p><img src="https://shirukai.gitee.io/images/201804091503_49.gif"></p>
+<p>结果：</p>
+<p><img src="https://shirukai.gitee.io/images/201804091506_679.png"></p>
+<p>当然也可以从文件中读取数据，然后进行单词统计。只需添加一个FetchFile处理器，选择要获取数据的文件即可。</p>
+<pre><code>
+</code></pre>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E7%89%B9%E5%BE%81"><span class="toc-number">1.</span> <span class="toc-text">一、特征</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%AE%89%E8%A3%85"><span class="toc-number">2.</span> <span class="toc-text">二、安装</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E3%80%81NiFi%E5%AE%9E%E4%BE%8B"><span class="toc-number">2.1.</span> <span class="toc-text">三、NiFi实例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E6%89%A7%E8%A1%8Cpython%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99%E7%9A%84wordCount%E5%AE%9E%E4%BE%8B"><span class="toc-number">2.2.</span> <span class="toc-text">2.执行python脚本编写的wordCount实例</span></a></li></ol></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

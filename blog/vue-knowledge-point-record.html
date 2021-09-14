@@ -1,0 +1,610 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Vue知识点记录 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="1.安装vue-resourcecnpm安装依赖cnpm install vue-resource
+
+安装完成后在项目中全局引入修改main.js文件
+import VueResource from,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">Vue知识点记录</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/6.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/Vue"><b>「
+                    </b>VUE<b> 」</b></a>
+                
+                August 19, 2018
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/vue-knowledge-point-record.html" title="Vue知识点记录" class="">Vue知识点记录</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    7.9k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    7 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Vue/" rel="tag">Vue</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <h3 id="1-安装vue-resource"><a href="#1-安装vue-resource" class="headerlink" title="1.安装vue-resource"></a>1.安装vue-resource</h3><h4 id="cnpm安装依赖"><a href="#cnpm安装依赖" class="headerlink" title="cnpm安装依赖"></a>cnpm安装依赖</h4><pre><code>cnpm install vue-resource
+</code></pre>
+<h4 id="安装完成后在项目中全局引入"><a href="#安装完成后在项目中全局引入" class="headerlink" title="安装完成后在项目中全局引入"></a>安装完成后在项目中全局引入</h4><p>修改main.js文件</p>
+<pre><code>import VueResource from &#39;vue-resource&#39;
+Vue.use(VueResource);
+</code></pre>
+<h4 id="vue-resource使用"><a href="#vue-resource使用" class="headerlink" title="vue-resource使用"></a>vue-resource使用</h4><pre><code>// 传统写法
+this.$http.get(&#39;/someUrl&#39;, [options]).then(function(response)&#123;    
+    // 响应成功回调
+&#125;, function(response)&#123;    
+    // 响应错误回调
+&#125;);
+
+// Lambda写法
+this.$http.get(&#39;/someUrl&#39;, [options]).then((response) =&gt; &#123;    
+    // 响应成功回调
+&#125;, (response) =&gt; &#123;    
+    // 响应错误回调
+&#125;);
+</code></pre>
+<h4 id="例子："><a href="#例子：" class="headerlink" title="例子："></a>例子：</h4><pre><code>var data = &#123;
+  key1:value1,
+  key2:value2,
+&#125;
+this.$http.post(&#39;/api/product/insert&#39;,data,&#123;emulateJSON:true&#125;).then(
+(response)=&gt;&#123;
+  const res = JSON.pares(response.bodyText);
+  console.log(res)
+&#125;,
+(respones)=&gt;&#123;
+    //相应错误回调
+&#125;
+)
+</code></pre>
+<h3 id="2-安装muse-ui"><a href="#2-安装muse-ui" class="headerlink" title="2.安装muse-ui"></a>2.安装muse-ui</h3><h4 id="cnpm安装依赖-1"><a href="#cnpm安装依赖-1" class="headerlink" title="cnpm安装依赖"></a>cnpm安装依赖</h4><pre><code>cnpm install muse-ui --save
+</code></pre>
+<h4 id="全局引入"><a href="#全局引入" class="headerlink" title="全局引入"></a>全局引入</h4><pre><code>import MuseUI from &#39;muse-ui&#39;
+import &#39;muse-ui/dist/muse-ui.css&#39;
+import &#39;muse-ui/dist/theme-default.css&#39; // 使用 default 主题
+Vue.use(MuseUI);
+</code></pre>
+<p>各组件的应用：<a target="_blank" rel="noopener" href="http://www.muse-ui.org/#/install">http://www.muse-ui.org/#/install</a></p>
+<h2 id="二、定义全局变量、方法"><a href="#二、定义全局变量、方法" class="headerlink" title="二、定义全局变量、方法"></a>二、定义全局变量、方法</h2><h3 id="在assets下创建-global-js"><a href="#在assets下创建-global-js" class="headerlink" title="在assets下创建 global.js"></a>在assets下创建 global.js</h3><pre><code>export default &#123;
+  install(Vue, options) &#123;
+    //定义全局变量
+    Vue.prototype.global_value = &#123;
+      value1: &quot;this is value11&quot;,
+      value2: &quot;this is value2&quot;
+    &#125;;
+    //定义全局方法
+    /**
+     * 保存信息到localStorage
+     * @param key 键： 字符串
+     * @param value 值：数组、对象、字符串
+     */
+    Vue.prototype.setItemsToLocalStorage =
+      function (key, value) &#123;
+      //判断参数是否为对象\数组
+        if (typeof(value) === &quot;object&quot;)&#123;
+          value = JSON.stringify(value)
+        &#125;
+        window.localStorage.setItem(key, value);
+      &#125;;
+
+    /**
+     * 从localStorage中查询信息
+     * @param key
+     */
+    Vue.prototype.getItemsFromLocalStorage =
+      function (key) &#123;
+      const value = JSON.parse( window.localStorage.getItem(key))
+        return value
+      &#125;
+  &#125;
+&#125;
+</code></pre>
+<h3 id="在main-js中引入全局变量"><a href="#在main-js中引入全局变量" class="headerlink" title="在main.js中引入全局变量"></a>在main.js中引入全局变量</h3><pre><code>import Global from &#39;./assets/global.js&#39;
+Vue.use(Global)
+</code></pre>
+<h3 id="使用全局变量"><a href="#使用全局变量" class="headerlink" title="使用全局变量"></a>使用全局变量</h3><pre><code>      this.global_value.value1 = &quot;gloab_value is changed&quot;
+      console.log(this.global_value)
+</code></pre>
+<h3 id="使用全局方法"><a href="#使用全局方法" class="headerlink" title="使用全局方法"></a>使用全局方法</h3><pre><code>//向localStorage中存入信息
+this.setItemsToLocalStorage(&quot;gloab&quot;,this.global_value)
+//从localStorage中读取信息
+console.log(this.getItemsFromLocalStorage(&quot;gloab&quot;))
+</code></pre>
+<h2 id="三、vue指令"><a href="#三、vue指令" class="headerlink" title="三、vue指令"></a>三、vue指令</h2><h3 id="常用的指令"><a href="#常用的指令" class="headerlink" title="常用的指令"></a>常用的指令</h3><h4 id="v-text-“msg”"><a href="#v-text-“msg”" class="headerlink" title="v-text =“msg”          "></a>v-text =“msg”          </h4><h4 id="v-if-跟-v-show的区别："><a href="#v-if-跟-v-show的区别：" class="headerlink" title="v-if 跟 v-show的区别："></a>v-if 跟 v-show的区别：</h4><p>v-if 当不满足条件的时候，不会显示到dom里</p>
+<p>v-show 当不满足条件的时候，虽然不显示，但是仍然在dom中渲染</p>
+<h4 id="v-for"><a href="#v-for" class="headerlink" title="v-for"></a>v-for</h4><pre><code>&lt;div v-for=&quot;item in items&quot;&gt;
+  &#123;&#123; item.text &#125;&#125;
+&lt;/div&gt;
+</code></pre>
+<h4 id="v-on-简写-监听事件"><a href="#v-on-简写-监听事件" class="headerlink" title="v-on  简写@ 监听事件"></a>v-on  简写@ 监听事件</h4><h5 id="修饰符"><a href="#修饰符" class="headerlink" title="修饰符"></a>修饰符</h5><ul>
+<li><code>.stop</code> - 调用 <code>event.stopPropagation()</code>。</li>
+<li><code>.prevent</code> - 调用 <code>event.preventDefault()</code>。</li>
+<li><code>.capture</code> - 添加事件侦听器时使用 capture 模式。</li>
+<li><code>.self</code> - 只当事件是从侦听器绑定的元素本身触发时才触发回调。</li>
+<li><code>.&#123;keyCode | keyAlias&#125;</code> - 只当事件是从特定键触发时才触发回调。</li>
+<li><code>.native</code> - 监听组件根元素的原生事件。</li>
+<li><code>.once</code> - 只触发一次回调。</li>
+<li><code>.left</code> - (2.2.0) 只当点击鼠标左键时触发。</li>
+<li><code>.right</code> - (2.2.0) 只当点击鼠标右键时触发。</li>
+<li><code>.middle</code> - (2.2.0) 只当点击鼠标中键时触发。</li>
+<li><code>.passive</code> - (2.3.0) 以 <code>&#123; passive: true &#125;</code> 模式添加侦听器</li>
+</ul>
+<p>如：鼠标点击事件</p>
+<p>@click</p>
+<pre><code>&lt;!-- 方法处理器 --&gt;
+&lt;button v-on:click=&quot;doThis&quot;&gt;&lt;/button&gt;
+&lt;!-- 对象语法 (2.4.0+) --&gt;
+&lt;button v-on=&quot;&#123; mousedown: doThis, mouseup: doThat &#125;&quot;&gt;&lt;/button&gt;
+&lt;!-- 内联语句 --&gt;
+&lt;button v-on:click=&quot;doThat(&#39;hello&#39;, $event)&quot;&gt;&lt;/button&gt;
+&lt;!-- 缩写 --&gt;
+&lt;button @click=&quot;doThis&quot;&gt;&lt;/button&gt;
+&lt;!-- 停止冒泡 --&gt;
+&lt;button @click.stop=&quot;doThis&quot;&gt;&lt;/button&gt;
+&lt;!-- 阻止默认行为 --&gt;
+&lt;button @click.prevent=&quot;doThis&quot;&gt;&lt;/button&gt;
+&lt;!-- 阻止默认行为，没有表达式 --&gt;
+&lt;form @submit.prevent&gt;&lt;/form&gt;
+&lt;!--  串联修饰符 --&gt;
+&lt;button @click.stop.prevent=&quot;doThis&quot;&gt;&lt;/button&gt;
+&lt;!-- 键修饰符，键别名 --&gt;
+&lt;input @keyup.enter=&quot;onEnter&quot;&gt;
+&lt;!-- 键修饰符，键代码 --&gt;
+&lt;input @keyup.13=&quot;onEnter&quot;&gt;
+&lt;!-- 点击回调只会触发一次 --&gt;
+&lt;button v-on:click.once=&quot;doThis&quot;&gt;&lt;/button&gt;
+</code></pre>
+<p>获得焦点事件: @focus </p>
+<p>失去焦点事件: @blur</p>
+<h2 id="四、路由传递参数"><a href="#四、路由传递参数" class="headerlink" title="四、路由传递参数"></a>四、路由传递参数</h2><p>官网：<a target="_blank" rel="noopener" href="https://router.vuejs.org/zh-cn/installation.html">https://router.vuejs.org/zh-cn/installation.html</a></p>
+<h3 id="安装路由"><a href="#安装路由" class="headerlink" title="安装路由"></a>安装路由</h3><pre><code>cnpm install vue-router
+</code></pre>
+<h3 id="引入全局路由"><a href="#引入全局路由" class="headerlink" title="引入全局路由"></a>引入全局路由</h3><pre><code>import VueRouter from &#39;vue-router&#39;
+Vue.use(VueRouter)
+</code></pre>
+<h3 id="动态路由"><a href="#动态路由" class="headerlink" title="动态路由"></a>动态路由</h3><pre><code>//动态路由
+&#123;
+  path:&#39;/index/:username/:id&#39;,
+  name:&#39;Index&#39;,
+  component:Index
+&#125;
+</code></pre>
+<p>访问链接</p>
+<pre><code>index/shirukai/308899573
+</code></pre>
+<p>接受参数</p>
+<pre><code>  &lt;div&gt;
+    &lt;h1&gt;&#123;&#123;$route.params.username&#125;&#125;&lt;/h1&gt;
+    &lt;h1&gt;&#123;&#123;$route.params.id&#125;&#125;&lt;/h1&gt;
+  &lt;/div&gt;
+</code></pre>
+<p>js跳转</p>
+<pre><code>this.$router.push(&#123;path:&#39;/index&#39;&#125;)
+</code></pre>
+<p>带参数跳转</p>
+<pre><code>//如果要传一个对象
+var shopString = JSON.stringify(shopInfos)
+this.$router.push(&#123;path: &#39;/addproduct&#39;, query: &#123;shopInfos: shopString&#125;&#125;)
+</code></pre>
+<p>接受参数</p>
+<pre><code>const shopinfos = JSON.parse( this.$route.query.shopInfos)
+console.log(shopinfos)
+</code></pre>
+<h3 id="滚动条"><a href="#滚动条" class="headerlink" title="滚动条"></a>滚动条</h3><p><a target="_blank" rel="noopener" href="https://github.com/BosNaufal/vue2-scrollbar">https://github.com/BosNaufal/vue2-scrollbar</a></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%AE%89%E8%A3%85vue-resource"><span class="toc-number">1.</span> <span class="toc-text">1.安装vue-resource</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%AE%89%E8%A3%85muse-ui"><span class="toc-number">2.</span> <span class="toc-text">2.安装muse-ui</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%AE%9A%E4%B9%89%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F%E3%80%81%E6%96%B9%E6%B3%95"><span class="toc-number"></span> <span class="toc-text">二、定义全局变量、方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8assets%E4%B8%8B%E5%88%9B%E5%BB%BA-global-js"><span class="toc-number">1.</span> <span class="toc-text">在assets下创建 global.js</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8main-js%E4%B8%AD%E5%BC%95%E5%85%A5%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F"><span class="toc-number">2.</span> <span class="toc-text">在main.js中引入全局变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F"><span class="toc-number">3.</span> <span class="toc-text">使用全局变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%85%A8%E5%B1%80%E6%96%B9%E6%B3%95"><span class="toc-number">4.</span> <span class="toc-text">使用全局方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81vue%E6%8C%87%E4%BB%A4"><span class="toc-number"></span> <span class="toc-text">三、vue指令</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E7%9A%84%E6%8C%87%E4%BB%A4"><span class="toc-number">1.</span> <span class="toc-text">常用的指令</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E8%B7%AF%E7%94%B1%E4%BC%A0%E9%80%92%E5%8F%82%E6%95%B0"><span class="toc-number"></span> <span class="toc-text">四、路由传递参数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E8%B7%AF%E7%94%B1"><span class="toc-number">1.</span> <span class="toc-text">安装路由</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%95%E5%85%A5%E5%85%A8%E5%B1%80%E8%B7%AF%E7%94%B1"><span class="toc-number">2.</span> <span class="toc-text">引入全局路由</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E8%B7%AF%E7%94%B1"><span class="toc-number">3.</span> <span class="toc-text">动态路由</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BB%9A%E5%8A%A8%E6%9D%A1"><span class="toc-number">4.</span> <span class="toc-text">滚动条</span></a></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

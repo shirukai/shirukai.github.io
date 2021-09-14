@@ -1,0 +1,601 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ubuntu离线源制作及签名 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="
+操作系统版本：16.04
+
+1 缓存离线安装包为保证要缓存的安装包，以及依赖包的完整性，建议在一个比较干净的，最好是安装完操作系统之后，没有安装其它软件的环境下进行。
+1.1 清空缓存目录执行命令,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">Ubuntu离线源制作及签名</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/8.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/环境搭建"><b>「
+                    </b>环境搭建<b> 」</b></a>
+                
+                April 02, 2020
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/ubuntu-offline-source-production-and-signature.html" title="Ubuntu离线源制作及签名" class="">Ubuntu离线源制作及签名</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    8.3k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    8 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" rel="tag">环境搭建</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <blockquote>
+<p>操作系统版本：16.04</p>
+</blockquote>
+<h1 id="1-缓存离线安装包"><a href="#1-缓存离线安装包" class="headerlink" title="1 缓存离线安装包"></a>1 缓存离线安装包</h1><p>为保证要缓存的安装包，以及依赖包的完整性，建议在一个比较干净的，最好是安装完操作系统之后，没有安装其它软件的环境下进行。</p>
+<h2 id="1-1-清空缓存目录"><a href="#1-1-清空缓存目录" class="headerlink" title="1.1 清空缓存目录"></a>1.1 清空缓存目录</h2><p>执行命令如下命令，清空apt的缓存</p>
+<pre><code class="shell">rm -rf /var/cache/apt/archives/
+</code></pre>
+<h2 id="1-2-缓存安装包"><a href="#1-2-缓存安装包" class="headerlink" title="1.2 缓存安装包"></a>1.2 缓存安装包</h2><p>使用apt-get -d <package_name>的方式，可以将安装包以及它的依赖包缓存到/var/cache/apt/archives/目录下。这里以缓存python-mininal为例，执行如下命令：</p>
+<pre><code class="shell">apt-get -d install python-minimal
+</code></pre>
+<p>查看/var/cache/apt/archives/目录</p>
+<pre><code class="shell">root@ubuntu:/opt/Ubuntu# ll /var/cache/apt/archives/
+total 3812
+drwxr-xr-x 3 root root    4096 Mar 31 23:32 ./
+drwxr-xr-x 3 root root    4096 Mar 31 20:12 ../
+-rw-r--r-- 1 root root  337788 Oct  9 05:13 libpython2.7-minimal_2.7.12-1ubuntu0~16.04.9_amd64.deb
+-rw-r--r-- 1 root root 1884162 Oct  9 05:13 libpython2.7-stdlib_2.7.12-1ubuntu0~16.04.9_amd64.deb
+-rw-r--r-- 1 root root    7768 Nov 23  2017 libpython-stdlib_2.7.12-1~16.04_amd64.deb
+-rw-r----- 1 root root       0 Mar 31 23:13 lock
+drwx------ 2 _apt root    4096 Mar 31 23:32 partial/
+-rw-r--r-- 1 root root  136856 Nov 23  2017 python_2.7.12-1~16.04_amd64.deb
+-rw-r--r-- 1 root root  223598 Oct  9 05:13 python2.7_2.7.12-1ubuntu0~16.04.9_amd64.deb
+-rw-r--r-- 1 root root 1261510 Oct  9 05:13 python2.7-minimal_2.7.12-1ubuntu0~16.04.9_amd64.deb
+-rw-r--r-- 1 root root   28122 Nov 23  2017 python-minimal_2.7.12-1~16.04_amd64.deb
+</code></pre>
+<h1 id="2-制作离线源"><a href="#2-制作离线源" class="headerlink" title="2 制作离线源"></a>2 制作离线源</h1><h2 id="2-1-创建源目录"><a href="#2-1-创建源目录" class="headerlink" title="2.1 创建源目录"></a>2.1 创建源目录</h2><p>在/opt目录下创建一个名为Ubuntu的目录</p>
+<pre><code class="shell">mkdir /opt/Ubuntu
+</code></pre>
+<h2 id="2-2-复制所有缓存的-deb文件到源目录"><a href="#2-2-复制所有缓存的-deb文件到源目录" class="headerlink" title="2.2 复制所有缓存的.deb文件到源目录"></a>2.2 复制所有缓存的.deb文件到源目录</h2><p>将1中缓存在/var/cache/archives下的所有deb文件复制到源目录。</p>
+<pre><code class="shell">cp /var/cache/apt/archives/*deb /opt/Ubuntu/
+</code></pre>
+<h2 id="2-3-生成Packages-gz"><a href="#2-3-生成Packages-gz" class="headerlink" title="2.3 生成Packages.gz"></a>2.3 生成Packages.gz</h2><p>生成Packages.gz有两种方式，一种是使用自带的软件命令apt-ftparchive，另一种是通过dpkg-dev软件包里的dpkg-scanpackages命令。前者好处是系统自带命令，不需要额外安装，但是不能检查并提示相同名称软件的不同版本。以下两种方式，选择一种即可。</p>
+<h3 id="方式一：使用apt-ftparchive生成Packages-gz"><a href="#方式一：使用apt-ftparchive生成Packages-gz" class="headerlink" title="方式一：使用apt-ftparchive生成Packages.gz"></a>方式一：使用apt-ftparchive生成Packages.gz</h3><p>首先删除已有的Packages.gz以及Packages</p>
+<pre><code class="shell">cd /opt/
+rm -rf Ubuntu/Packages.gz Ubuntu/Packages
+</code></pre>
+<p>生成Packages</p>
+<pre><code class="shell">apt-ftparchive packages Ubuntu &gt; Ubuntu/Packages
+</code></pre>
+<p>将Packages打包为Packages.gz</p>
+<pre><code class="shell">cd Ubuntu
+gzip -c Packages &gt; Packages.gz
+</code></pre>
+<h3 id="方式二：使用dpkg-scanpackages生成Packages-gz"><a href="#方式二：使用dpkg-scanpackages生成Packages-gz" class="headerlink" title="方式二：使用dpkg-scanpackages生成Packages.gz"></a>方式二：使用dpkg-scanpackages生成Packages.gz</h3><p>安装dpkg-dev</p>
+<pre><code class="shell">apt-get install -y dpkg-dev
+</code></pre>
+<p>在/opt目录下执行如下命令生成packages.gz</p>
+<pre><code class="shell">cd /opt/
+dpkg-scanpackages Ubuntu/ /dev/null | gzip -9c &gt; Ubuntu/Packages.gz
+</code></pre>
+<h2 id="2-4-生成Release文件"><a href="#2-4-生成Release文件" class="headerlink" title="2.4 生成Release文件"></a>2.4 生成Release文件</h2><p>在/opt/Ubuntu目录下执行如下命令，生成Release文件</p>
+<pre><code class="shell">cd /opt/Ubuntu/
+apt-ftparchive release ./ &gt; Release
+</code></pre>
+<h1 id="3-签名"><a href="#3-签名" class="headerlink" title="3 签名"></a>3 签名</h1><h2 id="3-1-安装gpg及其相关软件"><a href="#3-1-安装gpg及其相关软件" class="headerlink" title="3.1 安装gpg及其相关软件"></a>3.1 安装gpg及其相关软件</h2><pre><code>apt-get install -y gnupg
+apt-get install -y rng-tools
+</code></pre>
+<h2 id="3-2-生成随机数"><a href="#3-2-生成随机数" class="headerlink" title="3.2 生成随机数"></a>3.2 生成随机数</h2><p>密钥创建过程中，需要使用到足够的随机数(random)，可先行安装rng-tools, 该工具可以常驻后台的方式, 生成随机数，避免gpg密钥创建过程中的长时间等待问题 </p>
+<pre><code>rngd -r /dev/urandom
+</code></pre>
+<h2 id="3-3-生成公钥和私钥"><a href="#3-3-生成公钥和私钥" class="headerlink" title="3.3 生成公钥和私钥"></a>3.3 生成公钥和私钥</h2><p>vi ~/.gnupg/gpg.conf</p>
+<p>添加如下内容：</p>
+<pre><code>personal-digest-preferences SHA256
+</code></pre>
+<pre><code class="shell">gpg --gen-key
+</code></pre>
+<p>根据提示输入信息</p>
+<pre><code>gpg (GnuPG) 1.4.20; Copyright (C) 2015 Free Software Foundation, Inc.
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+Please select what kind of key you want:
+   (1) RSA and RSA (default)
+   (2) DSA and Elgamal
+   (3) DSA (sign only)
+   (4) RSA (sign only)
+Your selection? 4
+RSA keys may be between 1024 and 4096 bits long.
+What keysize do you want? (2048) 
+Requested keysize is 2048 bits
+Please specify how long the key should be valid.
+         0 = key does not expire
+      &lt;n&gt;  = key expires in n days
+      &lt;n&gt;w = key expires in n weeks
+      &lt;n&gt;m = key expires in n months
+      &lt;n&gt;y = key expires in n years
+Key is valid for? (0) 0
+Key does not expire at all
+Is this correct? (y/N) y
+
+You need a user ID to identify your key; the software constructs the user ID
+from the Real Name, Comment and Email Address in this form:
+    &quot;Heinrich Heine (Der Dichter) &lt;heinrichh@duesseldorf.de&gt;&quot;
+
+Real name: hollicube
+Email address: hollicube@hollysys.com
+Comment: For Local Reop
+You selected this USER-ID:
+    &quot;hollicube (For Local Reop) &lt;hollicube@hollysys.com&gt;&quot;
+
+Change (N)ame, (C)omment, (E)mail or (O)kay/(Q)uit? o
+You need a Passphrase to protect your secret key.
+
+gpg: gpg-agent is not available in this session
+We need to generate a lot of random bytes. It is a good idea to perform
+some other action (type on the keyboard, move the mouse, utilize the
+disks) during the prime generation; this gives the random number
+generator a better chance to gain enough entropy.
++++++
+..........+++++
+gpg: key 0A37E4E3 marked as ultimately trusted
+public and secret key created and signed.
+
+gpg: checking the trustdb
+gpg: 3 marginal(s) needed, 1 complete(s) needed, PGP trust model
+gpg: depth: 0  valid:   2  signed:   0  trust: 0-, 0q, 0n, 0m, 0f, 2u
+pub   2048R/0A37E4E3 2020-04-01
+      Key fingerprint = DDBB 3858 0BAB 45C2 16F7  E5EC 41AD 58A2 0A37 E4E3
+uid                  hollicube (For Local Reop) &lt;hollicube@hollysys.com&gt;
+
+Note that this key cannot be used for encryption.  You may want to use
+the command &quot;--edit-key&quot; to generate a subkey for this purpose.
+</code></pre>
+<h2 id="3-4-查看生成的Key"><a href="#3-4-查看生成的Key" class="headerlink" title="3.4 查看生成的Key"></a>3.4 查看生成的Key</h2><pre><code>gpg --list-key
+</code></pre>
+<pre><code>root@ubuntu:/opt# gpg --list-key
+/root/.gnupg/pubring.gpg
+------------------------
+pub   2048R/2F32BB3E 2020-04-01
+uid                  hollicube (hollysys-offline-ubuntu-package) &lt;hollicube@hollysys.com&gt;
+</code></pre>
+<h2 id="3-5-导出公钥和私钥"><a href="#3-5-导出公钥和私钥" class="headerlink" title="3.5 导出公钥和私钥"></a>3.5 导出公钥和私钥</h2><p>导出公钥</p>
+<pre><code>gpg -a --export-secret-keys 2F32BB3E &gt; HolliCube_Repo_Key_2020.sec
+</code></pre>
+<p>导出私钥</p>
+<pre><code>gpg -a --export 2F32BB3E &gt; HolliCube_Repo_Key_2020.pub
+</code></pre>
+<h2 id="3-6-签名Release文件"><a href="#3-6-签名Release文件" class="headerlink" title="3.6 签名Release文件"></a>3.6 签名Release文件</h2><pre><code class="shell">cd /opt/Ubuntu/
+gpg --clearsign --default-key 2F32BB3E -o InRelease Release
+gpg -abs --default-key 2F32BB3E -o Release.gpg Release
+</code></pre>
+<h1 id="4-配置离线源"><a href="#4-配置离线源" class="headerlink" title="4 配置离线源"></a>4 配置离线源</h1><p>首先将/opt/Ubuntu目录复制到 /var/www/html/下</p>
+<pre><code>cp -r /opt/Ubuntu /var/www/html/
+</code></pre>
+<p>在其它ubuntu的机器上添加公钥</p>
+<pre><code>wget http://xxxxx/Ubuntu/HolliCube_Repo_Key_2020.pub
+apt-key add HolliCube_Repo_Key_2020.pub
+</code></pre>
+<p>修改源地址</p>
+<pre><code>vi /etc/apt/sources.list
+deb [arch=amd64] http://xxxx/HolliCube-Repo-1.2.0 Ubuntu/
+</code></pre>
+<p>更新</p>
+<pre><code>apt-get update
+</code></pre>
+<p>测试安装</p>
+<pre><code>apt-get install -y python
+</code></pre>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E7%BC%93%E5%AD%98%E7%A6%BB%E7%BA%BF%E5%AE%89%E8%A3%85%E5%8C%85"><span class="toc-number">1.</span> <span class="toc-text">1 缓存离线安装包</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-%E6%B8%85%E7%A9%BA%E7%BC%93%E5%AD%98%E7%9B%AE%E5%BD%95"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 清空缓存目录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-%E7%BC%93%E5%AD%98%E5%AE%89%E8%A3%85%E5%8C%85"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 缓存安装包</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E5%88%B6%E4%BD%9C%E7%A6%BB%E7%BA%BF%E6%BA%90"><span class="toc-number">2.</span> <span class="toc-text">2 制作离线源</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-%E5%88%9B%E5%BB%BA%E6%BA%90%E7%9B%AE%E5%BD%95"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 创建源目录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-%E5%A4%8D%E5%88%B6%E6%89%80%E6%9C%89%E7%BC%93%E5%AD%98%E7%9A%84-deb%E6%96%87%E4%BB%B6%E5%88%B0%E6%BA%90%E7%9B%AE%E5%BD%95"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 复制所有缓存的.deb文件到源目录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-%E7%94%9F%E6%88%90Packages-gz"><span class="toc-number">2.3.</span> <span class="toc-text">2.3 生成Packages.gz</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B9%E5%BC%8F%E4%B8%80%EF%BC%9A%E4%BD%BF%E7%94%A8apt-ftparchive%E7%94%9F%E6%88%90Packages-gz"><span class="toc-number">2.3.1.</span> <span class="toc-text">方式一：使用apt-ftparchive生成Packages.gz</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B9%E5%BC%8F%E4%BA%8C%EF%BC%9A%E4%BD%BF%E7%94%A8dpkg-scanpackages%E7%94%9F%E6%88%90Packages-gz"><span class="toc-number">2.3.2.</span> <span class="toc-text">方式二：使用dpkg-scanpackages生成Packages.gz</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4-%E7%94%9F%E6%88%90Release%E6%96%87%E4%BB%B6"><span class="toc-number">2.4.</span> <span class="toc-text">2.4 生成Release文件</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E7%AD%BE%E5%90%8D"><span class="toc-number">3.</span> <span class="toc-text">3 签名</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-%E5%AE%89%E8%A3%85gpg%E5%8F%8A%E5%85%B6%E7%9B%B8%E5%85%B3%E8%BD%AF%E4%BB%B6"><span class="toc-number">3.1.</span> <span class="toc-text">3.1 安装gpg及其相关软件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-%E7%94%9F%E6%88%90%E9%9A%8F%E6%9C%BA%E6%95%B0"><span class="toc-number">3.2.</span> <span class="toc-text">3.2 生成随机数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-%E7%94%9F%E6%88%90%E5%85%AC%E9%92%A5%E5%92%8C%E7%A7%81%E9%92%A5"><span class="toc-number">3.3.</span> <span class="toc-text">3.3 生成公钥和私钥</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-4-%E6%9F%A5%E7%9C%8B%E7%94%9F%E6%88%90%E7%9A%84Key"><span class="toc-number">3.4.</span> <span class="toc-text">3.4 查看生成的Key</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-5-%E5%AF%BC%E5%87%BA%E5%85%AC%E9%92%A5%E5%92%8C%E7%A7%81%E9%92%A5"><span class="toc-number">3.5.</span> <span class="toc-text">3.5 导出公钥和私钥</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-6-%E7%AD%BE%E5%90%8DRelease%E6%96%87%E4%BB%B6"><span class="toc-number">3.6.</span> <span class="toc-text">3.6 签名Release文件</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%E9%85%8D%E7%BD%AE%E7%A6%BB%E7%BA%BF%E6%BA%90"><span class="toc-number">4.</span> <span class="toc-text">4 配置离线源</span></a></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

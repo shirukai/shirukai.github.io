@@ -1,0 +1,656 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>前后端存取Cookie - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="一、前端存取cookie1.前端jsp存入cookie&amp;lt;%@ page import=&amp;quot;java.util.Map&amp;quot; %&amp;gt;
+&amp;lt;%@ page contentTy,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">前后端存取Cookie</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/4.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/Spring"><b>「
+                    </b>SPRING<b> 」</b></a>
+                
+                August 19, 2018
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/access-cookie-before-and-after.html" title="前后端存取Cookie" class="">前后端存取Cookie</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    9.8k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    9 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Spring/" rel="tag">Spring</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <h2 id="一、前端存取cookie"><a href="#一、前端存取cookie" class="headerlink" title="一、前端存取cookie"></a>一、前端存取cookie</h2><h3 id="1-前端jsp存入cookie"><a href="#1-前端jsp存入cookie" class="headerlink" title="1.前端jsp存入cookie"></a>1.前端jsp存入cookie</h3><pre><code>&lt;%@ page import=&quot;java.util.Map&quot; %&gt;
+&lt;%@ page contentType=&quot;text/html;charset=UTF-8&quot; language=&quot;java&quot;  %&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;jsp获取cookie&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;%
+    //创建一个cookie包括（key，value）
+    Cookie cookie = new Cookie(&quot;jspSetCookie&quot;,&quot;这是我通过jsp存入的cookie&quot;);
+    //设置cookie的生命周期，如果为负值的话，关闭浏览器就失效
+    cookie.setMaxAge(60*60*24*365);
+    // 设置Cookie路径,不设置的话为当前路径(对于Servlet来说为request.getContextPath() + web.xml里配置的该Servlet的url-pattern路径部分)
+    //cookie.setPath(&quot;/&quot;);
+
+    response.addCookie(cookie);
+%&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<h3 id="2-前端jsp获取cookie"><a href="#2-前端jsp获取cookie" class="headerlink" title="2.前端jsp获取cookie"></a>2.前端jsp获取cookie</h3><pre><code>&lt;%@ taglib prefix=&quot;c&quot; uri=&quot;http://java.sun.com/jsp/jstl/core&quot; %&gt;
+&lt;%@ page import=&quot;java.util.Map&quot; %&gt;
+&lt;%@ page import=&quot;java.util.HashMap&quot; %&gt;
+&lt;%@ page contentType=&quot;text/html;charset=UTF-8&quot; language=&quot;java&quot; %&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;前端jsp获取cookie&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;%
+    //将cookie封装到map里
+    Map&lt;String, Cookie&gt; cookieMap = new HashMap&lt;String, Cookie&gt;();
+    Cookie[] cookies = request.getCookies();
+    if (null != cookies) &#123;
+        for (Cookie cookie : cookies) &#123;
+            cookieMap.put(cookie.getName(), cookie);
+        &#125;
+    &#125;
+%&gt;
+&lt;%--显示所有cookie--%&gt;
+&lt;table border=&quot;1&quot;&gt;
+    &lt;thead&gt;
+    &lt;tr&gt;
+        &lt;th&gt;key&lt;/th&gt;
+        &lt;th&gt;value&lt;/th&gt;
+    &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+    &lt;%
+        for (String key : cookieMap.keySet()
+                ) &#123; %&gt;
+    &lt;tr&gt;
+        &lt;td&gt;&lt;%=key%&gt;
+        &lt;/td&gt;
+        &lt;td&gt;&lt;%=cookieMap.get(key).getValue()%&gt;
+        &lt;/td&gt;
+    &lt;/tr&gt;
+
+    &lt;%
+        &#125;
+    %&gt;
+    &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;%--根据key获取cookie--%&gt;
+&lt;h2&gt;获取key为jspSetCookie的值：&lt;/h2&gt;
+&lt;%= cookieMap.get(&quot;jspSetCookie&quot;).getValue()%&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<h3 id="3-前端js存入cookie"><a href="#3-前端js存入cookie" class="headerlink" title="3.前端js存入cookie"></a>3.前端js存入cookie</h3><p>引入jquery-cookie.js和jquery.js文件</p>
+<p><a target="_blank" rel="noopener" href="https://cdn.bootcss.com/jquery/3.2.1/core.js">https://cdn.bootcss.com/jquery/3.2.1/core.js</a></p>
+<p><a target="_blank" rel="noopener" href="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.js">https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.js</a></p>
+<pre><code>//js存入cookie expires:有效期 path:按个路径有效
+//是否自动进行编码和解码，true为关闭
+$.cookie.raw = true;
+//将数据转为json
+$.cookie.json= true;
+$.cookie(&quot;jsSetCookie&quot;,&quot;这是我通过js存入的cookie&quot;,&#123;expires:7,path:&#39;/&#39;&#125;);
+    var jsonData = &#123;
+        &#39;name&#39;:&#123;
+            &#39;data1&#39;:11,
+            &#39;data2&#39;:22
+        &#125;
+    &#125;;
+    $.cookie(&quot;jsonData&quot;,jsonData);
+</code></pre>
+<h3 id="4-前端读取cookie"><a href="#4-前端读取cookie" class="headerlink" title="4.前端读取cookie"></a>4.前端读取cookie</h3><pre><code>$.cookie(&#39;jsSetCookie&#39;)
+</code></pre>
+<h3 id="jquery-cookie-js使用说明："><a href="#jquery-cookie-js使用说明：" class="headerlink" title="jquery-cookie.js使用说明："></a>jquery-cookie.js使用说明：</h3><ul>
+<li>创建一个整站cookie</li>
+</ul>
+<pre><code>$.cookie(&#39;name&#39;, &#39;value&#39;);1
+</code></pre>
+<ul>
+<li>创建一个整站cookie ，cookie 的有效期为 7 天</li>
+</ul>
+<pre><code>$.cookie(&#39;name&#39;, &#39;value&#39;, &#123; expires: 7 &#125;);1
+</code></pre>
+<ul>
+<li>创建一个仅对 <code>path</code> 路径页面有效的 cookie ，cookie 的有效期为 7 天</li>
+</ul>
+<pre><code>$.cookie(&#39;name&#39;, &#39;value&#39;, &#123; expires: 7, path: &#39;/&#39; &#125;);1
+</code></pre>
+<ul>
+<li>读取 cookie</li>
+</ul>
+<pre><code>$.cookie(&#39;name&#39;); // 如果cookie存在 则获取到cookie值 =&gt; &#39;value&#39;
+$.cookie(&#39;nothing&#39;); // 如果cookie不存在 则返回 =&gt; undefined12
+</code></pre>
+<ul>
+<li>获取所有可见的 cookie</li>
+</ul>
+<pre><code>$.cookie(); // 数据格式 =&gt; &#123; name: &#39;value&#39; &#125;1
+</code></pre>
+<ul>
+<li>删除 cookie</li>
+</ul>
+<pre><code>$.removeCookie(&#39;name&#39;); // =&gt; true
+$.removeCookie(&#39;nothing&#39;); // =&gt; false12
+</code></pre>
+<ul>
+<li>删除带属性的cookie</li>
+</ul>
+<pre><code>$.cookie(&#39;name&#39;, &#39;value&#39;, &#123; path: &#39;/&#39; &#125;);
+// 错误
+$.removeCookie(&#39;name&#39;); // =&gt; false
+// 正确
+$.removeCookie(&#39;name&#39;, &#123; path: &#39;/&#39; &#125;); // =&gt; true
+</code></pre>
+<h4 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h4><h5 id="domain"><a href="#domain" class="headerlink" title="domain"></a>domain</h5><p>创建cookie所在网页所拥有的域名</p>
+<pre><code>$.cookie(&#39;name&#39;, &#39;value&#39;, &#123; domain: &#39;weber.pub&#39; &#125;);1
+</code></pre>
+<h5 id="secure"><a href="#secure" class="headerlink" title="secure"></a>secure</h5><p>默认是false，如果为true，cookie的传输协议需为https；</p>
+<pre><code>$.cookie(&#39;name&#39;, &#39;value&#39;, &#123; secure: true &#125;);
+$.cookie(&#39;name&#39;); // =&gt; &#39;value&#39;
+$.removeCookie(&#39;name&#39;, &#123; secure: true &#125;); 123
+</code></pre>
+<h5 id="raw"><a href="#raw" class="headerlink" title="raw"></a>raw</h5><p>默认为false，读取和写入时候自动进行编码和解码（使用encodeURIComponent编码，使用decodeURIComponent解码），关闭这个功能，请设置为true。</p>
+<pre><code>$.cookie.raw = true;1
+</code></pre>
+<h5 id="json"><a href="#json" class="headerlink" title="json"></a>json</h5><pre><code>$.cookie.json = true;
+</code></pre>
+<h3 id="注意：-row属性"><a href="#注意：-row属性" class="headerlink" title="注意： row属性"></a>注意： row属性</h3><p>默认jquery-cookie是开启自动编码和解码的。如果要开启的话，后台获取的是经过encodeURIComponent编码的value。</p>
+<h4 id="java来解码encodeURIComponent编码的value："><a href="#java来解码encodeURIComponent编码的value：" class="headerlink" title="java来解码encodeURIComponent编码的value："></a>java来解码encodeURIComponent编码的value：</h4><pre><code>try&#123;
+    String value =  URLDecoder.decode(cookieMap.get(&quot;jsonData&quot;).getValue(),&quot;UTF-8&quot;);
+    System.out.println(&quot;____________value___________=&quot;+value);
+    map.put(&quot;testCookie&quot;, testCooke);
+&#125;catch (UnsupportedEncodingException e)&#123;
+    e.printStackTrace();
+&#125;
+</code></pre>
+<h4 id="java来encodeURI编码"><a href="#java来encodeURI编码" class="headerlink" title="java来encodeURI编码"></a>java来encodeURI编码</h4><pre><code>try&#123;
+    String encodeValue = URLEncoder.encode(&quot;这是我利用controller存入的，经过encode编码后的cookie&quot;,&quot;UTF-8&quot;);
+    response.addCookie(new Cookie(&quot;encodeCookie&quot;,encodeValue));
+&#125;catch (UnsupportedEncodingException e)&#123;
+    e.printStackTrace();
+&#125;
+</code></pre>
+<p>如果$.cookie.raw = true;前端不进行自动编码与解码。数据会原样输出，默认是false,自动进行编解码。</p>
+<p>如果$.cookie.json属性设置为true，编解码的cookie将查询不到，注意这个问题，具体原因不知道。</p>
+<h2 id="二、后端存取cookie-controller"><a href="#二、后端存取cookie-controller" class="headerlink" title="二、后端存取cookie(controller)"></a>二、后端存取cookie(controller)</h2><h3 id="1-后端存入cookie-及编码"><a href="#1-后端存入cookie-及编码" class="headerlink" title="1.后端存入cookie 及编码"></a>1.后端存入cookie 及编码</h3><pre><code>//controller 存入cookie
+@RequestMapping(value = &quot;/setCookie&quot;)
+@ResponseBody
+public Map&lt;String, String&gt; setCookie(
+        HttpServletResponse response
+) &#123;
+    // 存入
+    Cookie cookie = new Cookie(&quot;controllerSetCookie&quot;,&quot;这是我通过后台添加的cookie&quot;);
+    //设置cookie的生命周期，如果为负值的话，关闭浏览器就失效
+    cookie.setMaxAge(60*60*24*365);
+    // 设置Cookie路径,不设置的话为当前路径(对于Servlet来说为request.getContextPath() + web.xml里配置的该Servlet的url-pattern路径部分)
+    //cookie.setPath(&quot;/&quot;);
+    response.addCookie(cookie);
+    try&#123;
+        String encodeValue = URLEncoder.encode(&quot;这是我利用controller存入的，经过encode编码后的cookie&quot;,&quot;UTF-8&quot;);
+        response.addCookie(new Cookie(&quot;encodeCookie&quot;,encodeValue));
+    &#125;catch (UnsupportedEncodingException e)&#123;
+        e.printStackTrace();
+    &#125;
+
+    Map&lt;String, String&gt; map = new HashMap&lt;String, String&gt;();
+    map.put(&quot;info&quot;, &quot;存入成功&quot;);
+    return map;
+&#125;
+</code></pre>
+<h3 id="2-后端读取cookie-及解码"><a href="#2-后端读取cookie-及解码" class="headerlink" title="2.后端读取cookie 及解码"></a>2.后端读取cookie 及解码</h3><p>（1）通过注解的方式直接获取value</p>
+<p>  @CookieValue(value = “testCookie”, required = false) String testCooke（适用于少量cookie的情况下）</p>
+<p>（2）通过request.getCookies()获取所有cookie，然后遍历分装到map里，然后读取（适用于多个cookie的情况）</p>
+<pre><code>// controller 读取cookie
+@RequestMapping(value = &quot;/getCookie&quot;)
+@ResponseBody
+public Map&lt;String, Cookie&gt; getCookie(
+        @CookieValue(value = &quot;testCookie&quot;, required = false) String testCooke,
+        HttpServletRequest request
+) &#123;
+    //将cookie封装到map里
+    Map&lt;String,Cookie&gt; cookieMap = new HashMap&lt;String, Cookie&gt;();
+    Cookie[] cookies =request.getCookies();
+    if (null != cookies)&#123;
+        for(Cookie cookie:cookies)&#123;
+            cookieMap.put(cookie.getName(),cookie);
+        &#125;
+    &#125;
+    Map&lt;String, String&gt; map = new HashMap&lt;String, String&gt;();
+    try&#123;
+        String value =  URLDecoder.decode(cookieMap.get(&quot;jsonData&quot;).getValue(),&quot;UTF-8&quot;);
+        System.out.println(&quot;____________value___________=&quot;+value);
+        map.put(&quot;testCookie&quot;, testCooke);
+    &#125;catch (UnsupportedEncodingException e)&#123;
+        e.printStackTrace();
+    &#125;
+
+    return cookieMap;
+&#125;
+</code></pre>
+<p>其他操作<a target="_blank" rel="noopener" href="http://blog.csdn.net/u011848397/article/details/52201339">http://blog.csdn.net/u011848397/article/details/52201339</a></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%89%8D%E7%AB%AF%E5%AD%98%E5%8F%96cookie"><span class="toc-number">1.</span> <span class="toc-text">一、前端存取cookie</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%89%8D%E7%AB%AFjsp%E5%AD%98%E5%85%A5cookie"><span class="toc-number">1.1.</span> <span class="toc-text">1.前端jsp存入cookie</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%89%8D%E7%AB%AFjsp%E8%8E%B7%E5%8F%96cookie"><span class="toc-number">1.2.</span> <span class="toc-text">2.前端jsp获取cookie</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%89%8D%E7%AB%AFjs%E5%AD%98%E5%85%A5cookie"><span class="toc-number">1.3.</span> <span class="toc-text">3.前端js存入cookie</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E5%89%8D%E7%AB%AF%E8%AF%BB%E5%8F%96cookie"><span class="toc-number">1.4.</span> <span class="toc-text">4.前端读取cookie</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#jquery-cookie-js%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E%EF%BC%9A"><span class="toc-number">1.5.</span> <span class="toc-text">jquery-cookie.js使用说明：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%EF%BC%9A-row%E5%B1%9E%E6%80%A7"><span class="toc-number">1.6.</span> <span class="toc-text">注意： row属性</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%90%8E%E7%AB%AF%E5%AD%98%E5%8F%96cookie-controller"><span class="toc-number">2.</span> <span class="toc-text">二、后端存取cookie(controller)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%90%8E%E7%AB%AF%E5%AD%98%E5%85%A5cookie-%E5%8F%8A%E7%BC%96%E7%A0%81"><span class="toc-number">2.1.</span> <span class="toc-text">1.后端存入cookie 及编码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%90%8E%E7%AB%AF%E8%AF%BB%E5%8F%96cookie-%E5%8F%8A%E8%A7%A3%E7%A0%81"><span class="toc-number">2.2.</span> <span class="toc-text">2.后端读取cookie 及解码</span></a></li></ol></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

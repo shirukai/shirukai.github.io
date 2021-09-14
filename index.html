@@ -1,0 +1,912 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Rukey - Alway believe that something wonderful is about to happen</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div class="nav">
+    <ul id="menu-menu" class="menu">
+        
+        <li class="animated fadeInDown menu-item menu-item-type-post_type menu-item-object-page">
+            <a href="/about/" title="ABOUT" external="false">ABOUT</a>
+        </li>
+        
+        <li class="animated fadeInDown menu-item menu-item-type-post_type menu-item-object-page">
+            <a href="/categories/" title="CATEGORIES" external="false">CATEGORIES</a>
+        </li>
+        
+        <li class="animated fadeInDown menu-item menu-item-type-post_type menu-item-object-page">
+            <a href="/tags/" title="TAGS" external="false">TAGS</a>
+        </li>
+        
+        <li class="animated fadeInDown menu-item menu-item-type-post_type menu-item-object-page">
+            <a href="/archives/" title="ARCHIVES" external="false">ARCHIVES</a>
+        </li>
+        
+    </ul>
+    <p class="copyright" id="copyright">
+        &copy; 2021 shirukai.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+    </p>
+</div>
+
+<div id="container">
+    
+<div class="search-box">
+    <form class="site-search-form">
+        <span class="iconfont icon-search"></span>
+        <input type="text" id="local-search-input" class="st-search-input" />
+        <div class="iconfont icon-cross search-box-close"></div>
+    </form>
+    <div class="search-scrollable">
+        <div id="local-search-result" class="local-search-result-cls" data-initialise="Initialising search index..."
+            data-start="Please input search keywords." data-empty="No result found, please try other keywords.">
+            <span>Please input search keywords.</span>
+        </div>
+    </div>
+</div>
+<div id="header">
+    <div>
+        <div class="logo animated fadeInDown">
+            <img src="/img/favicon.png" alt="">
+            <a class="image-logo" href="/"></a>
+        </div>
+        <ul id="menu-menu" class="menu text-menu">
+            
+            <li class="animated fadeInDown menu-item menu-item-type-post_type menu-item-object-page">
+                <a href="/about/" title="ABOUT" external="false" class="menu-link">ABOUT</a>
+            </li>
+            
+            <li class="animated fadeInDown menu-item menu-item-type-post_type menu-item-object-page">
+                <a href="/categories/" title="CATEGORIES" external="false" class="menu-link">CATEGORIES</a>
+            </li>
+            
+            <li class="animated fadeInDown menu-item menu-item-type-post_type menu-item-object-page">
+                <a href="/tags/" title="TAGS" external="false" class="menu-link">TAGS</a>
+            </li>
+            
+            <li class="animated fadeInDown menu-item menu-item-type-post_type menu-item-object-page">
+                <a href="/archives/" title="ARCHIVES" external="false" class="menu-link">ARCHIVES</a>
+            </li>
+            
+            
+            <li class="animated fadeInDown search-bar iconfont icon-search"></li>
+            
+        </ul>
+        <div class="iconfont icon-menu switchmenu gradient-text animated fadeInDown"></div>
+    </div>
+</div>
+<div id="screen">
+    <div id="mark">
+        <div class="cover animated fadeIn" style="
+            animation-delay: 900ms;
+            animation-duration: 2.8s;
+            background-image:
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.56), #100e17),
+                url(/img/covers/5.jpg);">
+        </div>
+    </div>
+    
+    <div id="post0" class="else">
+        <p class="animated fadeInDown">
+            
+            <a href="/categories/Python"><b>「
+                </b>PYTHON<b> 」</b></a>
+            
+            July 31, 2021
+        </p>
+        <h3 class="post-title animated fadeInDown">
+            <a href="/blog/sqlalchemy-automatically-updates-the-table-structure-in-flask.html" title="Flask中SQLAlchemy自动更新表结构" class="posttitle">Flask中SQLAlchemy自动更新表结构</a></h3>
+        
+        <p class="post-count animated fadeInDown">
+            
+            <span>
+                <b class="iconfont icon-text2"></b> <i>Words count</i>
+                7.9k
+            </span>
+            
+            
+            <span>
+                <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                7 mins.
+            </span>
+            
+            
+        </p>
+        
+        
+        <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/flask/" rel="tag">flask</a></li></ul>
+        
+        <div class="md-content animated fadeIn">
+            
+            <blockquote>
+<p>Python: 2.7</p>
+<p>Flask: 1.0.3<br>Flask-SQLAlchemy: 2.3.2</p>
+<p>SQLAlchemy: 1.3.12 </p>
+<p>Flask-SQLAlchemy是Flask中比较好用的ORM...</p></blockquote>
+            
+            <span class="read-more"><a href="/blog/sqlalchemy-automatically-updates-the-table-structure-in-flask.html" title="Read article" class="posttitle">Read article</a>
+                <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+    
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="typed-text"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div id="primary">
+        
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/covers/6.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="/categories/Flink">
+                  <b>「 </b>FLINK<b> 」</b>
+                </a>
+            
+            June 08, 2021
+        </p>
+        <h3 class="post-title animated fadeInDown"><a href="/blog/flink-custom-window-trigger.html" title="Flink自定义窗口触发器" class="posttitle">Flink自定义窗口触发器</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>Words count</i>
+                        16k
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                        14 mins.
+                    </span>
+                
+                
+            </p>
+            
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Flink/" rel="tag">Flink</a></li></ul>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                <blockquote>
+<p>flink: 1.10.1</p>
+<p>Github: <a target="_blank" rel="noopener" href="https://github.com/shirukai/flink-examples-trigger.git">https://github.com/shirukai/flink-examples-trigger.git</a></p>
+</blockquote>
+<p>前段时间同事开发遇到一个需求，要求按照事件时间10分钟窗口计数，同时需要有新数据时每分钟输出一次结果。窗口计数非常简单，设置一个窗口，然后运用一个聚合函数就可以解决了。但是有新数据时每分钟输出一次结果，好像实现起来并不容易，因为按照平时的窗口，设置10分钟之后，要等到watermark超过了当前的窗口之后，才会被触发计算。这里还涉及到一个问...</p>
+            
+            <span class="read-more"><a href="/blog/flink-custom-window-trigger.html" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/covers/3.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="/categories/环境搭建">
+                  <b>「 </b>环境搭建<b> 」</b>
+                </a>
+            
+            May 31, 2021
+        </p>
+        <h3 class="post-title animated fadeInDown"><a href="/blog/centos-installed-oracle.html" title="centos安装oracle" class="posttitle">centos安装oracle</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>Words count</i>
+                        15k
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                        14 mins.
+                    </span>
+                
+                
+            </p>
+            
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" rel="tag">环境搭建</a></li></ul>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                <h3 id="1-VMware-搭建centos7-的虚机"><a href="#1-VMware-搭建centos7-的虚机" class="headerlink" title="1. VMware 搭建centos7 的虚机"></a>1. VMware 搭建centos7 的虚机</h3><p>配置好网络IP为192.168.162.155</p>
+<h3 id="2-下载Oracle11g安装文件"><a href="#2-下载Oracle11g安装文件" class="headerlink" title="2. 下载Oracle11g安装文件"></a>2. 下载Oracle11g安装文件</h3><pre><code>linux.x64_11gR2_database_1of2.zip
+linux.x64_11gR2_database_2of2.zip
+</code></pre>
+<p>百度云：</p>
+<p>链接：<a target="_blank" rel="noopener" href="http://pan.baidu.com/s/1gf1oJJH">http://pan.baidu.com/s/1gf1oJJH</a> 密码：1ivl</p>
+<h3 id="3-通过shell工具连接虚机然后上传至-home-目录"><a href="#3-通过shell工具连接虚机然后上传至-home-目录" class="headerlink" title="3. 通过shell工具连接虚机然后上传至/home 目录"></a>3. 通过shell工具连接虚机然后上传至/home 目录</h3><pre><code>-rw-r--r--. 1 root   root     1239269270 Sep ...</code></pre>
+            
+            <span class="read-more"><a href="/blog/centos-installed-oracle.html" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/covers/5.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="/categories/Hadoop">
+                  <b>「 </b>HADOOP<b> 」</b>
+                </a>
+            
+            May 25, 2021
+        </p>
+        <h3 class="post-title animated fadeInDown"><a href="/blog/configure-a-hadoop-pseudo-distributed-environment-under-centos7.html" title="centos7下配置Hadoop伪分布式环境" class="posttitle">centos7下配置Hadoop伪分布式环境</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>Words count</i>
+                        7.3k
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                        7 mins.
+                    </span>
+                
+                
+            </p>
+            
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Hadoop/" rel="tag">Hadoop</a></li></ul>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                <p>Centos 版本：7</p>
+<p>Hadoop版本：2.7.4</p>
+<p>Java版本：1.8</p>
+<p>官网下载jdk 1.8</p>
+<p><a target="_blank" rel="noopener" href="http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html">http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html</a></p>
+<p>下载jdk-8u151-linux-x64.tar.gz并复制到 /usr/lib目录下</p>
+<p>然后解压</p>
+<pre><code>tar -zxvf jdk-8u151-linux-x64.tar.gz
+</code></pre>
+<p>配置环境变量</p>
+<pre><code>#set java enviroenment...</code></pre>
+            
+            <span class="read-more"><a href="/blog/configure-a-hadoop-pseudo-distributed-environment-under-centos7.html" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/covers/7.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="/categories/Java">
+                  <b>「 </b>JAVA<b> 」</b>
+                </a>
+            
+            April 01, 2021
+        </p>
+        <h3 class="post-title animated fadeInDown"><a href="/blog/java-unit-test-dynamically-modified-environment-variables.html" title="Java单元测试动态修改环境变量" class="posttitle">Java单元测试动态修改环境变量</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>Words count</i>
+                        8.3k
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                        8 mins.
+                    </span>
+                
+                
+            </p>
+            
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Java/" rel="tag">Java</a></li></ul>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                <p>今天再写单元测试的时候，遇到一个比较有趣的事情，程序需要读取一个环境变量，而这个变量又是动态生成的，所以在执行单元测试之前要进行环境变量的配置。目前总结了两种方案可以实现动态修改环境变量，修改后的环境变量仅对当前进程生效，即仅在当前Java进程中调用System.getenv(name)生效，分别是通过反射修改Runtime中保存环境变量的Map、和通过JNI的方式调用系统的setenv方法。下面将分别对两种方案进行实现。</p>
+<p>参考：<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/580085/is-it-possible-to-set-an-environment-variable-at-runtime-from-java">https://stackoverflow.com/questions...</a></p>
+            
+            <span class="read-more"><a href="/blog/java-unit-test-dynamically-modified-environment-variables.html" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/covers/1.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="/categories/Hadoop">
+                  <b>「 </b>HADOOP<b> 」</b>
+                </a>
+            
+            January 19, 2021
+        </p>
+        <h3 class="post-title animated fadeInDown"><a href="/blog/hive-big-data-warehouse-entry.html" title="Hive大数据仓库入门" class="posttitle">Hive大数据仓库入门</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>Words count</i>
+                        20k
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                        18 mins.
+                    </span>
+                
+                
+            </p>
+            
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Hadoop/" rel="tag">Hadoop</a></li></ul>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                <blockquote>
+<p>什么是Hiv？</p>
+</blockquote>
+<p>Hive是构建在hadoop HDFS上的一个数据仓库</p>
+<h3 id="1-1基本概念"><a href="#1-1基本概念" class="headerlink" title="1.1基本概念"></a>1.1基本概念</h3><p>数据仓库是一个面向主题的、集成的、不可更新的、随时间不变化的数据集合，它用于支持企业活组织的决策分析处理。</p>
+<h3 id="1-2数据仓库的结构和构建过程"><a href="#1-2数据仓库的结构和构建过程" class="headerlink" title="1.2数据仓库的结构和构建过程"></a>1.2数据仓库的结构和构建过程</h3><p></p>
+<h3 id="1-3OLTP应用与OLAP应用"><a href="#1-3OLTP应用与OLAP应用" class="headerlink" title="1.3OLTP应用与OLAP应用"></a>1.3OLTP应用与OLAP应用</h3><p>OLTP（On line Transaction Processing）:连接事务处理（银行转账）面向事务</p>
+<p>OLAP（On line Analytical Processing）:连接分析处理（商品推荐系统）</p>
+<h3 id="1-4数据仓库中数据模型"><a href="#1-4数据仓库中数据模型" class="headerlink" title="1.4数据仓库中数据模型"></a>1.4数据仓库中数据模型</h3><h4 id="1-4-1星型模型"><a href="#1-4-1星型模型" class="headerlink" title="1.4.1星型模型"></a>1....</h4>
+            
+            <span class="read-more"><a href="/blog/hive-big-data-warehouse-entry.html" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/covers/8.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="/categories/Java">
+                  <b>「 </b>JAVA<b> 」</b>
+                </a>
+            
+            January 08, 2021
+        </p>
+        <h3 class="post-title animated fadeInDown"><a href="/blog/java-uses-future-to-make-timeout-tasks.html" title="java 利用Future做超时任务处理" class="posttitle">java 利用Future做超时任务处理</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>Words count</i>
+                        512
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                        1 mins.
+                    </span>
+                
+                
+            </p>
+            
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Java/" rel="tag">Java</a></li></ul>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                <pre><code>Callable&lt;String&gt; task = new Callable&lt;String&gt;() &#123;
+    @Override
+    public String call() throws Exception &#123;
+        return HttpRequestUtil.host().doGet(requestUrl);
+    &#125;
+&#125;;
+ExecutorService executorService = Executors.newSingleThreadExecutor...</code></pre>
+            
+            <span class="read-more"><a href="/blog/java-uses-future-to-make-timeout-tasks.html" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/covers/5.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="/categories/开发工具使用">
+                  <b>「 </b>开发工具使用<b> 」</b>
+                </a>
+            
+            November 05, 2020
+        </p>
+        <h3 class="post-title animated fadeInDown"><a href="/blog/git-common-commands-and-skills.html" title="Git常用命令及技巧" class="posttitle">Git常用命令及技巧</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>Words count</i>
+                        3.9k
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                        4 mins.
+                    </span>
+                
+                
+            </p>
+            
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/" rel="tag">开发工具使用</a></li></ul>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                <p>应用场景：当修改当前分支文件（非新建），且要切换到其它分支时，系统会提示如下信息，这时需要缓存当前分支更改的内容，然后才可以切换分支。</p>
+<p></p>
+<h3 id="1-1-git-stash-save"><a href="#1-1-git-stash-save" class="headerlink" title="1.1 git stash save"></a>1.1 git stash save</h3><p>缓存当前更改的内容</p>
+<pre><code class="shell">git stash save -a &quot;change1&quot;
+</code></pre>
+<pre><code>Saved working directory and index state On master: change1
+</code></pre>
+<h3 id="1-2-git-stash-list"><a href="#1-2-git-stash-list" class="headerlink" title="1.2 git stash list"></a>1.2 git stash list</h3><p>查看所有的缓存</p>
+<pre><code class="shell">git stash list
+</code></pre>
+<pre><code>shirukaideMacBook...</code></pre>
+            
+            <span class="read-more"><a href="/blog/git-common-commands-and-skills.html" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/covers/7.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="/categories/Flink">
+                  <b>「 </b>FLINK<b> 」</b>
+                </a>
+            
+            November 02, 2020
+        </p>
+        <h3 class="post-title animated fadeInDown"><a href="/blog/flink-is-available-in-k8s-production-environment.html" title="Flink在k8s生产环境高可用部署" class="posttitle">Flink在k8s生产环境高可用部署</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>Words count</i>
+                        25k
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                        23 mins.
+                    </span>
+                
+                
+            </p>
+            
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Flink/" rel="tag">Flink</a></li></ul>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                <blockquote>
+<p>flink: 1.10.1</p>
+<p>kubernetes: 1.18.8</p>
+</blockquote>
+<p>目前参与的项目基本开发完成，打算开发的微服务和Flink任务统一部署到k8s上。之前几个项目都是跑在YARN上，Flink on YARN的部署模式是在生产中比较常见，YARN的稳定性和资源调度能力也是有目共睹的，依托Hadoop生态Flink高可用也很容易实现。关于On YARN</p>
+<p>还是On K8S之前文章都有介绍，《Flink Cluster On YARN部署》和《Flink Cluster On Kubernetes部署...</p>
+            
+            <span class="read-more"><a href="/blog/flink-is-available-in-k8s-production-environment.html" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/covers/5.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="/categories/开发工具使用">
+                  <b>「 </b>开发工具使用<b> 」</b>
+                </a>
+            
+            October 31, 2020
+        </p>
+        <h3 class="post-title animated fadeInDown"><a href="/blog/k8s-uses-mac-nfs.html" title="k8s使用mac上自带的NFS" class="posttitle">k8s使用mac上自带的NFS</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>Words count</i>
+                        5.3k
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                        5 mins.
+                    </span>
+                
+                
+            </p>
+            
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/" rel="tag">开发工具使用</a></li></ul>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                <blockquote>
+<p>之前文章里有记录如何在mac电脑上使用docker，并搭建k8s集群。最近在开发测试的时候，遇到k8s挂载持久卷的问题。本来想在开发的电脑上搭建一个NFS服务，经过在网上一番搜索发现mac电脑本身就带有一个NFS服务。这篇文章主要记录一下如何在mac上开启并配置NFS服务，以及如何在k8s上使用NFS。</p>
+</blockquote>
+<p>Mac上的NFS服务是作为系统服务提供的，可以使用<code>nfsd status</code>命令查看nfsd当前的状态。</p>
+<p>Mac自带的NFS服务的配置文件路径为/etc/exports，默认该文件是不存在的，需...</p>
+            
+            <span class="read-more"><a href="/blog/k8s-uses-mac-nfs.html" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
+    </div>
+    
+    <div id="pager"><a href="/page/2/" class="more" data-loading="加载中..." data-load-more="Load more">Load more</a></div>
+    
+</div>
+<div id="preview"></div>
+
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

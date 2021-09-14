@@ -1,0 +1,2647 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sprinboot整合Quartz实现定时任务调度管理 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="
+版本说明：
+springboot版本：2.0.0.RELEASE
+quartz版本：2.3.0
+github地址：https://github.com/shirukai/quartz-demo.g,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">Sprinboot整合Quartz实现定时任务调度管理</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/3.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/Spring"><b>「
+                    </b>SPRING<b> 」</b></a>
+                
+                September 10, 2018
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/sprinboot-integration-quartz-implement-timers-task-scheduling-management.html" title="Sprinboot整合Quartz实现定时任务调度管理" class="">Sprinboot整合Quartz实现定时任务调度管理</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    95k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    1:27
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Spring/" rel="tag">Spring</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <blockquote>
+<p>版本说明：</p>
+<p>springboot版本：2.0.0.RELEASE</p>
+<p>quartz版本：2.3.0</p>
+<p>github地址：<a target="_blank" rel="noopener" href="https://github.com/shirukai/quartz-demo.git">https://github.com/shirukai/quartz-demo.git</a></p>
+</blockquote>
+<p>Quartz官网：<a target="_blank" rel="noopener" href="http://www.quartz-scheduler.org/">http://www.quartz-scheduler.org/</a></p>
+<p>Quartz是一款开源的定时任务调度框架，本文主要记录一下在工作中使用springboot整合quartz实现定时任务调度管理的用例。内容主要有：springboot整合quartz相关配置、实现基于simpleTrigger的定时任务、实现基于cronTrigger的定时任务。</p>
+<h2 id="1-springboot整合Quartz相关配置"><a href="#1-springboot整合Quartz相关配置" class="headerlink" title="1 springboot整合Quartz相关配置"></a>1 springboot整合Quartz相关配置</h2><p>在之前，先创建一个springboot项目。</p>
+<h3 id="1-1-引入依赖"><a href="#1-1-引入依赖" class="headerlink" title="1.1 引入依赖"></a>1.1 引入依赖</h3><p>springboot整合quartz需要依赖两个包，quartz-jobs和spring-boot-starter-quartz下面我们在pom.xml文件里加入我们所需要的依赖包</p>
+<pre><code class="xml">        &lt;!--quartz--&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.quartz-scheduler&lt;/groupId&gt;
+            &lt;artifactId&gt;quartz-jobs&lt;/artifactId&gt;
+            &lt;version&gt;2.3.0&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-quartz&lt;/artifactId&gt;
+            &lt;version&gt;2.0.0.RELEASE&lt;/version&gt;
+        &lt;/dependency&gt;
+</code></pre>
+<h3 id="1-2未整合前使用Quartz"><a href="#1-2未整合前使用Quartz" class="headerlink" title="1.2未整合前使用Quartz"></a>1.2未整合前使用Quartz</h3><p>参考官网：<a target="_blank" rel="noopener" href="http://www.quartz-scheduler.org/documentation/quartz-2.2.x/quick-start.html">http://www.quartz-scheduler.org/documentation/quartz-2.2.x/quick-start.html</a></p>
+<p>在整合spring和quartz之前，我们来看一下，如何以普通的方式使用Quartz。</p>
+<h4 id="1-2-1-创建可调度Job"><a href="#1-2-1-创建可调度Job" class="headerlink" title="1.2.1 创建可调度Job"></a>1.2.1 创建可调度Job</h4><p>在项目中，创建一个job包用来存放我们使用Quartz调度的job。然后我们创建一个HelloJob.java类，来写我们的Job里的逻辑。HelloJob类需要继承org.quartz.Job接口并实现接口里的execute方法，这里我们只是简单的输出了一句话。代码如下：</p>
+<pre><code class="java">package com.example.quartz.job;
+
+import org.quartz.Job;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
+
+/**
+ * Created by shirukai on 2018/9/6
+ */
+public class HelloJob implements Job &#123;
+    @Override
+    public void execute(JobExecutionContext context) throws JobExecutionException &#123;
+        System.out.println(&quot;这里可以执行我们的业务逻辑&quot;);
+    &#125;
+&#125;
+</code></pre>
+<h4 id="1-2-2-使用Quartz调度HelloJob"><a href="#1-2-2-使用Quartz调度HelloJob" class="headerlink" title="1.2.2 使用Quartz调度HelloJob"></a>1.2.2 使用Quartz调度HelloJob</h4><p>如上我们已经创建了一个HelloJob类，现在我们要写一个main方法，使用Quartz对HelloJob进行定时调度。</p>
+<p>实现步骤如下：</p>
+<p>第一步：使用StdSchedulerFactory工厂创建一个Scheduler实例</p>
+<p>第二步：创建一个JobDetail并绑定HelloJob，设置jobName和group</p>
+<p>第三步：创建一个Trigger，用以设置定时任务的时间、周期等属性</p>
+<p>第四步：将JobDetail和Trigger传出Scheduler进行调度</p>
+<p>代码如下：</p>
+<pre><code class="java">package com.example.quartz;
+
+import com.example.quartz.job.HelloJob;
+import org.quartz.JobDetail;
+import org.quartz.Scheduler;
+import org.quartz.Trigger;
+import org.quartz.impl.StdSchedulerFactory;
+
+import static org.quartz.JobBuilder.newJob;
+import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
+import static org.quartz.TriggerBuilder.newTrigger;
+
+/**
+ * Created by shirukai on 2018/9/6
+ */
+public class QuartzTest &#123;
+    public static void main(String[] args) throws Exception &#123;
+        //从工厂创建scheduler实例
+        Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
+        //开启scheduler
+        scheduler.start();
+        //定义一个job，并绑定我们的HelloJob
+        JobDetail jobDetail = newJob(HelloJob.class)
+                .withIdentity(&quot;job1&quot;, &quot;group1&quot;)
+                .build();
+        //定义一个simple trigger,设置重复次数为10次，周期为2秒
+        Trigger trigger = newTrigger()
+                .withIdentity(&quot;job1&quot;, &quot;group1&quot;)
+                .startNow()
+                .withSchedule(simpleSchedule().withIntervalInSeconds(1).withRepeatCount(10)).build();
+        //使用scheduler进行job调度
+        scheduler.scheduleJob(jobDetail, trigger);
+    &#125;
+&#125;
+</code></pre>
+<p>执行上述main方法，效果如下；</p>
+<p><img src="http://shirukai.gitee.io/images/403c4b99b44ce0f0e3d909c52fbed95a.gif"></p>
+<h4 id="1-2-3-在HelloJob中使用Spring-IOC容器"><a href="#1-2-3-在HelloJob中使用Spring-IOC容器" class="headerlink" title="1.2.3 在HelloJob中使用Spring IOC容器"></a>1.2.3 在HelloJob中使用Spring IOC容器</h4><p>下面我们改写HelloJob，看看我们的定时任务能不能调用我们注册到Spring中的业务。</p>
+<p>首先创建一个service包，用于存放我们spring中业务逻辑，并创建一个QuartzService类。</p>
+<pre><code class="java">package com.example.quartz.service;
+
+import org.quartz.JobDetail;
+import org.quartz.JobExecutionContext;
+import org.springframework.stereotype.Service;
+
+/**
+ * Created by shirukai on 2018/9/6
+ */
+@Service
+public class QuartzService &#123;
+    public void printJobInfo(JobExecutionContext context) &#123;
+        //从上下文中获取JobDetail
+        JobDetail jobDetail = context.getJobDetail();
+        String jobName = jobDetail.getKey().getName();
+        String group = jobDetail.getKey().getGroup();
+        System.out.println(&quot;Schedule job name is:&quot; + jobName);
+        System.out.println(&quot;Schedule job group is:&quot; + group);
+    &#125;
+&#125;
+</code></pre>
+<p>修改HelloJob类</p>
+<pre><code class="java">package com.example.quartz.job;
+
+import com.example.quartz.service.QuartzService;
+import org.quartz.Job;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
+import org.springframework.beans.factory.annotation.Autowired;
+
+/**
+ * Created by shirukai on 2018/9/6
+ */
+public class HelloJob implements Job &#123;
+    @Autowired
+    QuartzService quartzService;
+
+    @Override
+    public void execute(JobExecutionContext context) throws JobExecutionException &#123;
+        System.out.println(&quot;这里可以执行我们的业务逻辑&quot;);
+        quartzService.printJobInfo(context);
+    &#125;
+&#125;
+</code></pre>
+<p>然后执行main方法，发现报错，这是因为我们使用了spring的IOC容器，所以我们要启动spring才能进行测试。否则我们获取不到我们注入到spring里的bean，会得到空指针异常。</p>
+<p><img src="http://shirukai.gitee.io/images/c42f65be402d33416a54c9d208052dc3.jpg"></p>
+<p>创建上面main方法的junit单元测试类，并启用spring如下所示：</p>
+<pre><code class="java">package com.example.quartz;
+
+import com.example.quartz.job.HelloJob;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.quartz.JobDetail;
+import org.quartz.Scheduler;
+import org.quartz.Trigger;
+import org.quartz.impl.StdSchedulerFactory;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
+import static org.quartz.JobBuilder.newJob;
+import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
+import static org.quartz.TriggerBuilder.newTrigger;
+
+/**
+ * Created by shirukai on 2018/9/6
+ */
+@RunWith(SpringRunner.class)
+@SpringBootTest
+public class QuartzTestTest &#123;
+
+    @Test
+    public void main() throws Exception &#123;
+        //从工厂创建scheduler实例
+        Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
+        //开启scheduler
+        scheduler.start();
+        //定义一个job，并绑定我们的HelloJob
+        JobDetail jobDetail = newJob(HelloJob.class)
+                .withIdentity(&quot;job1&quot;, &quot;group1&quot;)
+                .build();
+        //定义一个simple trigger,设置重复次数为10次，周期为2秒
+        Trigger trigger = newTrigger()
+                .withIdentity(&quot;job1&quot;, &quot;group1&quot;)
+                .startNow()
+                .withSchedule(simpleSchedule().withIntervalInSeconds(1).withRepeatCount(10)).build();
+        //使用scheduler进行job调度
+        scheduler.scheduleJob(jobDetail, trigger);
+    &#125;
+&#125;
+</code></pre>
+<p>执行单元测试之后，发现仍然报空指针异常，这是为什么呢，因为我们没有与spring整合，我们的job里是没法注入spring ioc管理的bean的，也就是说，没法在job里调用spring里的业务逻辑。所以接下来我们来看一下spring如何整合Quartz。</p>
+<p><img src="http://shirukai.gitee.io/images/b1b60314b4a4cec8d2e899223dacf174.jpg"></p>
+<h3 id="1-3-Springboot整合Quartz"><a href="#1-3-Springboot整合Quartz" class="headerlink" title="1.3 Springboot整合Quartz"></a>1.3 Springboot整合Quartz</h3><p>在项目目录下创建一个conf包用来存放我们Quartz的相关配置。</p>
+<p>然后创建一个JobFactory类，用于将JobFactory注入到spring里。如下所示：</p>
+<pre><code class="java">package com.example.quartz.conf;
+
+import org.quartz.spi.TriggerFiredBundle;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
+import org.springframework.scheduling.quartz.AdaptableJobFactory;
+import org.springframework.stereotype.Component;
+
+/**
+ * Created by shirukai on 2018/9/4
+ */
+@Component
+public class JobFactory extends AdaptableJobFactory &#123;
+    @Autowired
+    private AutowireCapableBeanFactory capableBeanFactory;
+
+    @Override
+    protected Object createJobInstance(TriggerFiredBundle bundle) throws Exception &#123;
+        //调用父类的方法
+        Object jobInstance = super.createJobInstance(bundle);
+        //进行注入
+        capableBeanFactory.autowireBean(jobInstance);
+        return jobInstance;
+    &#125;
+&#125;
+</code></pre>
+<p>在创建一个QuartzConfig类，用于注入Scheduler相关的Bean</p>
+<pre><code class="java">package com.example.quartz.conf;
+
+import org.quartz.Scheduler;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.PropertiesFactoryBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.scheduling.quartz.SchedulerFactoryBean;
+
+import javax.sql.DataSource;
+import java.io.IOException;
+import java.util.Properties;
+
+/**
+ * Created by shirukai on 2018/9/4
+ */
+@Configuration
+public class QuartzConfig &#123;
+    @Autowired
+    private JobFactory jobFactory;
+    
+    @Bean
+    public SchedulerFactoryBean schedulerFactoryBean() throws IOException &#123;
+        SchedulerFactoryBean schedulerFactoryBean = new SchedulerFactoryBean();
+        schedulerFactoryBean.setOverwriteExistingJobs(true);
+        schedulerFactoryBean.setJobFactory(jobFactory);
+        return schedulerFactoryBean;
+    &#125;
+
+
+    // 创建schedule
+    @Bean(name = &quot;scheduler&quot;)
+    public Scheduler scheduler() throws IOException &#123;
+        return schedulerFactoryBean().getScheduler();
+    &#125;
+&#125;
+</code></pre>
+<p>这时我们已经将Quartz与Springboot简单的整合到一起，下面我们再次修改一下单元测试类里的方法，不再使用工厂类去创建Scheduler实例，而是通过注解从spring的ioc容器里拿到对应的实例，代码如下：</p>
+<pre><code class="java">package com.example.quartz;
+
+import com.example.quartz.job.HelloJob;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.quartz.JobDetail;
+import org.quartz.Scheduler;
+import org.quartz.Trigger;
+import org.quartz.impl.StdSchedulerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
+import static org.quartz.JobBuilder.newJob;
+import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
+import static org.quartz.TriggerBuilder.newTrigger;
+
+/**
+ * Created by shirukai on 2018/9/6
+ */
+@RunWith(SpringRunner.class)
+@SpringBootTest
+public class QuartzTestTest &#123;
+    @Autowired
+    Scheduler scheduler;
+    @Test
+    public void main() throws Exception &#123;
+        //开启scheduler
+        scheduler.start();
+        //定义一个job，并绑定我们的HelloJob
+        JobDetail jobDetail = newJob(HelloJob.class)
+                .withIdentity(&quot;job1&quot;, &quot;group1&quot;)
+                .build();
+        //定义一个simple trigger,设置重复次数为10次，周期为2秒
+        Trigger trigger = newTrigger()
+                .withIdentity(&quot;job1&quot;, &quot;group1&quot;)
+                .startNow()
+                .withSchedule(simpleSchedule().withIntervalInSeconds(1).withRepeatCount(10)).build();
+        //使用scheduler进行job调度
+        scheduler.scheduleJob(jobDetail, trigger);
+    &#125;
+&#125;
+</code></pre>
+<p>运行测试类，成功执行。效果如下：</p>
+<p><img src="http://shirukai.gitee.io/images/0bd7447948ce33bbf00c4c9e3a2595f2.jpg"></p>
+<h3 id="1-4-自定义配置文件与持久化"><a href="#1-4-自定义配置文件与持久化" class="headerlink" title="1.4 自定义配置文件与持久化"></a>1.4 自定义配置文件与持久化</h3><p>这一小节主要记录一下Springboot与Quartz的深度整合，一个是自定义Quartz的配置文件、另一个是Quartz定时任务的持久化。</p>
+<h4 id="1-4-1-自定义Quartz的配置文件"><a href="#1-4-1-自定义Quartz的配置文件" class="headerlink" title="1.4.1 自定义Quartz的配置文件"></a>1.4.1 自定义Quartz的配置文件</h4><p>在项目resources目录下创建一个quartz.properties配置文件，内容如下:</p>
+<pre><code class="properties">#使用自己的配置文件
+org.quartz.jobStore.useProperties:true
+
+#默认或是自己改名字都行
+org.quartz.scheduler.instanceName: DefaultQuartzScheduler
+#如果使用集群，instanceId必须唯一，设置成AUTO
+org.quartz.scheduler.instanceId = AUTO
+
+
+org.quartz.threadPool.class: org.quartz.simpl.SimpleThreadPool
+org.quartz.threadPool.threadCount: 10
+org.quartz.threadPool.threadPriority: 5
+org.quartz.threadPool.threadsInheritContextClassLoaderOfInitializingThread: true
+</code></pre>
+<p>在上面我们创建的QuartzConfig类中注入我们的配置文件</p>
+<pre><code class="java">    @Bean
+    public Properties quartzProperties() throws IOException &#123;
+        PropertiesFactoryBean propertiesFactoryBean = new PropertiesFactoryBean();
+        propertiesFactoryBean.setLocation(new ClassPathResource(&quot;quartz.properties&quot;));
+        propertiesFactoryBean.afterPropertiesSet();
+        return propertiesFactoryBean.getObject();
+    &#125;
+    @Bean
+    public SchedulerFactoryBean schedulerFactoryBean() throws IOException &#123;
+        SchedulerFactoryBean schedulerFactoryBean = new SchedulerFactoryBean();
+        schedulerFactoryBean.setOverwriteExistingJobs(true);
+        schedulerFactoryBean.setQuartzProperties(quartzProperties());
+        schedulerFactoryBean.setJobFactory(jobFactory);
+        return schedulerFactoryBean;
+    &#125;
+</code></pre>
+<p>这样我们就可以使用自定义的配置文件了。</p>
+<h4 id="1-4-2-Quartz定时任务的持久化"><a href="#1-4-2-Quartz定时任务的持久化" class="headerlink" title="1.4.2 Quartz定时任务的持久化"></a>1.4.2 Quartz定时任务的持久化</h4><p>默认情况下，Quartz是将我们的定时任务的记录保存到内存里，等我们再次启动项目的时候，我们之前设置的定时任务都会被清空，无法持久化。当然Quartz可以将记录持久化到数据库中，下面将从自定义DataSource持久化数据和使用Springboot的DataSource两方面来持久化Quartz的数据。</p>
+<h5 id="1-4-2-1-自定义DataSource"><a href="#1-4-2-1-自定义DataSource" class="headerlink" title="1.4.2.1 自定义DataSource"></a>1.4.2.1 自定义DataSource</h5><p>首先在配置文件中添加如下内容，用以配置数据库相关信息：</p>
+<pre><code class="properties">#存储方式使用JobStoreTX，也就是数据库
+org.quartz.jobStore.class:org.quartz.impl.jdbcjobstore.JobStoreTX
+org.quartz.jobStore.driverDelegateClass:org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+#是否使用集群（如果项目只部署到 一台服务器，就不用了）
+org.quartz.jobStore.isClustered = false
+org.quartz.jobStore.clusterCheckinInterval=20000
+org.quartz.jobStore.tablePrefix = QRTZ_
+org.quartz.jobStore.dataSource = myDS
+
+#配置数据源
+#数据库中quartz表的表名前缀
+
+org.quartz.dataSource.myDS.driver = com.mysql.jdbc.Driver
+org.quartz.dataSource.myDS.URL = jdbc:mysql://localhost:3306/springboot?characterEncoding=utf-8
+org.quartz.dataSource.myDS.user = root
+org.quartz.dataSource.myDS.password = hollysys
+org.quartz.dataSource.myDS.maxConnections = 5
+</code></pre>
+<p>这样配置之后我们就可以将Quartz数据持久化到我们指定的数据库了，但是仅仅是这样操作是不行的，回报如下错误：</p>
+<p><img src="http://shirukai.gitee.io/images/d08f935c5653c1c54862882ae676a1e2.jpg"></p>
+<p>从错误信息可以看出，与Quartz相关的表不存在。我们需要创建相应的表，建表脚本在官网都可以download。</p>
+<p>官网地址：<a target="_blank" rel="noopener" href="http://www.quartz-scheduler.org/downloads/">http://www.quartz-scheduler.org/downloads/</a></p>
+<p>到官网下载源码，然后在源码quartz-2.3.0/docs/dbTables目录下可以找到所有数据库的建表语句，</p>
+<p>这里提供一下2.3.0版mysql innoDB的建表脚本：</p>
+<pre><code class="mysql">DROP TABLE IF EXISTS QRTZ_FIRED_TRIGGERS;
+DROP TABLE IF EXISTS QRTZ_PAUSED_TRIGGER_GRPS;
+DROP TABLE IF EXISTS QRTZ_SCHEDULER_STATE;
+DROP TABLE IF EXISTS QRTZ_LOCKS;
+DROP TABLE IF EXISTS QRTZ_SIMPLE_TRIGGERS;
+DROP TABLE IF EXISTS QRTZ_SIMPROP_TRIGGERS;
+DROP TABLE IF EXISTS QRTZ_CRON_TRIGGERS;
+DROP TABLE IF EXISTS QRTZ_BLOB_TRIGGERS;
+DROP TABLE IF EXISTS QRTZ_TRIGGERS;
+DROP TABLE IF EXISTS QRTZ_JOB_DETAILS;
+DROP TABLE IF EXISTS QRTZ_CALENDARS;
+
+CREATE TABLE QRTZ_JOB_DETAILS(
+SCHED_NAME VARCHAR(120) NOT NULL,
+JOB_NAME VARCHAR(200) NOT NULL,
+JOB_GROUP VARCHAR(200) NOT NULL,
+DESCRIPTION VARCHAR(250) NULL,
+JOB_CLASS_NAME VARCHAR(250) NOT NULL,
+IS_DURABLE VARCHAR(1) NOT NULL,
+IS_NONCONCURRENT VARCHAR(1) NOT NULL,
+IS_UPDATE_DATA VARCHAR(1) NOT NULL,
+REQUESTS_RECOVERY VARCHAR(1) NOT NULL,
+JOB_DATA BLOB NULL,
+PRIMARY KEY (SCHED_NAME,JOB_NAME,JOB_GROUP))
+ENGINE=InnoDB;
+
+CREATE TABLE QRTZ_TRIGGERS (
+SCHED_NAME VARCHAR(120) NOT NULL,
+TRIGGER_NAME VARCHAR(200) NOT NULL,
+TRIGGER_GROUP VARCHAR(200) NOT NULL,
+JOB_NAME VARCHAR(200) NOT NULL,
+JOB_GROUP VARCHAR(200) NOT NULL,
+DESCRIPTION VARCHAR(250) NULL,
+NEXT_FIRE_TIME BIGINT(13) NULL,
+PREV_FIRE_TIME BIGINT(13) NULL,
+PRIORITY INTEGER NULL,
+TRIGGER_STATE VARCHAR(16) NOT NULL,
+TRIGGER_TYPE VARCHAR(8) NOT NULL,
+START_TIME BIGINT(13) NOT NULL,
+END_TIME BIGINT(13) NULL,
+CALENDAR_NAME VARCHAR(200) NULL,
+MISFIRE_INSTR SMALLINT(2) NULL,
+JOB_DATA BLOB NULL,
+PRIMARY KEY (SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP),
+FOREIGN KEY (SCHED_NAME,JOB_NAME,JOB_GROUP)
+REFERENCES QRTZ_JOB_DETAILS(SCHED_NAME,JOB_NAME,JOB_GROUP))
+ENGINE=InnoDB;
+
+CREATE TABLE QRTZ_SIMPLE_TRIGGERS (
+SCHED_NAME VARCHAR(120) NOT NULL,
+TRIGGER_NAME VARCHAR(200) NOT NULL,
+TRIGGER_GROUP VARCHAR(200) NOT NULL,
+REPEAT_COUNT BIGINT(7) NOT NULL,
+REPEAT_INTERVAL BIGINT(12) NOT NULL,
+TIMES_TRIGGERED BIGINT(10) NOT NULL,
+PRIMARY KEY (SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP),
+FOREIGN KEY (SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP)
+REFERENCES QRTZ_TRIGGERS(SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP))
+ENGINE=InnoDB;
+
+CREATE TABLE QRTZ_CRON_TRIGGERS (
+SCHED_NAME VARCHAR(120) NOT NULL,
+TRIGGER_NAME VARCHAR(200) NOT NULL,
+TRIGGER_GROUP VARCHAR(200) NOT NULL,
+CRON_EXPRESSION VARCHAR(120) NOT NULL,
+TIME_ZONE_ID VARCHAR(80),
+PRIMARY KEY (SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP),
+FOREIGN KEY (SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP)
+REFERENCES QRTZ_TRIGGERS(SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP))
+ENGINE=InnoDB;
+
+CREATE TABLE QRTZ_SIMPROP_TRIGGERS
+  (          
+    SCHED_NAME VARCHAR(120) NOT NULL,
+    TRIGGER_NAME VARCHAR(200) NOT NULL,
+    TRIGGER_GROUP VARCHAR(200) NOT NULL,
+    STR_PROP_1 VARCHAR(512) NULL,
+    STR_PROP_2 VARCHAR(512) NULL,
+    STR_PROP_3 VARCHAR(512) NULL,
+    INT_PROP_1 INT NULL,
+    INT_PROP_2 INT NULL,
+    LONG_PROP_1 BIGINT NULL,
+    LONG_PROP_2 BIGINT NULL,
+    DEC_PROP_1 NUMERIC(13,4) NULL,
+    DEC_PROP_2 NUMERIC(13,4) NULL,
+    BOOL_PROP_1 VARCHAR(1) NULL,
+    BOOL_PROP_2 VARCHAR(1) NULL,
+    PRIMARY KEY (SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP),
+    FOREIGN KEY (SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP) 
+    REFERENCES QRTZ_TRIGGERS(SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP))
+ENGINE=InnoDB;
+
+CREATE TABLE QRTZ_BLOB_TRIGGERS (
+SCHED_NAME VARCHAR(120) NOT NULL,
+TRIGGER_NAME VARCHAR(200) NOT NULL,
+TRIGGER_GROUP VARCHAR(200) NOT NULL,
+BLOB_DATA BLOB NULL,
+PRIMARY KEY (SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP),
+INDEX (SCHED_NAME,TRIGGER_NAME, TRIGGER_GROUP),
+FOREIGN KEY (SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP)
+REFERENCES QRTZ_TRIGGERS(SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP))
+ENGINE=InnoDB;
+
+CREATE TABLE QRTZ_CALENDARS (
+SCHED_NAME VARCHAR(120) NOT NULL,
+CALENDAR_NAME VARCHAR(200) NOT NULL,
+CALENDAR BLOB NOT NULL,
+PRIMARY KEY (SCHED_NAME,CALENDAR_NAME))
+ENGINE=InnoDB;
+
+CREATE TABLE QRTZ_PAUSED_TRIGGER_GRPS (
+SCHED_NAME VARCHAR(120) NOT NULL,
+TRIGGER_GROUP VARCHAR(200) NOT NULL,
+PRIMARY KEY (SCHED_NAME,TRIGGER_GROUP))
+ENGINE=InnoDB;
+
+CREATE TABLE QRTZ_FIRED_TRIGGERS (
+SCHED_NAME VARCHAR(120) NOT NULL,
+ENTRY_ID VARCHAR(95) NOT NULL,
+TRIGGER_NAME VARCHAR(200) NOT NULL,
+TRIGGER_GROUP VARCHAR(200) NOT NULL,
+INSTANCE_NAME VARCHAR(200) NOT NULL,
+FIRED_TIME BIGINT(13) NOT NULL,
+SCHED_TIME BIGINT(13) NOT NULL,
+PRIORITY INTEGER NOT NULL,
+STATE VARCHAR(16) NOT NULL,
+JOB_NAME VARCHAR(200) NULL,
+JOB_GROUP VARCHAR(200) NULL,
+IS_NONCONCURRENT VARCHAR(1) NULL,
+REQUESTS_RECOVERY VARCHAR(1) NULL,
+PRIMARY KEY (SCHED_NAME,ENTRY_ID))
+ENGINE=InnoDB;
+
+CREATE TABLE QRTZ_SCHEDULER_STATE (
+SCHED_NAME VARCHAR(120) NOT NULL,
+INSTANCE_NAME VARCHAR(200) NOT NULL,
+LAST_CHECKIN_TIME BIGINT(13) NOT NULL,
+CHECKIN_INTERVAL BIGINT(13) NOT NULL,
+PRIMARY KEY (SCHED_NAME,INSTANCE_NAME))
+ENGINE=InnoDB;
+
+CREATE TABLE QRTZ_LOCKS (
+SCHED_NAME VARCHAR(120) NOT NULL,
+LOCK_NAME VARCHAR(40) NOT NULL,
+PRIMARY KEY (SCHED_NAME,LOCK_NAME))
+ENGINE=InnoDB;
+
+CREATE INDEX IDX_QRTZ_J_REQ_RECOVERY ON QRTZ_JOB_DETAILS(SCHED_NAME,REQUESTS_RECOVERY);
+CREATE INDEX IDX_QRTZ_J_GRP ON QRTZ_JOB_DETAILS(SCHED_NAME,JOB_GROUP);
+
+CREATE INDEX IDX_QRTZ_T_J ON QRTZ_TRIGGERS(SCHED_NAME,JOB_NAME,JOB_GROUP);
+CREATE INDEX IDX_QRTZ_T_JG ON QRTZ_TRIGGERS(SCHED_NAME,JOB_GROUP);
+CREATE INDEX IDX_QRTZ_T_C ON QRTZ_TRIGGERS(SCHED_NAME,CALENDAR_NAME);
+CREATE INDEX IDX_QRTZ_T_G ON QRTZ_TRIGGERS(SCHED_NAME,TRIGGER_GROUP);
+CREATE INDEX IDX_QRTZ_T_STATE ON QRTZ_TRIGGERS(SCHED_NAME,TRIGGER_STATE);
+CREATE INDEX IDX_QRTZ_T_N_STATE ON QRTZ_TRIGGERS(SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP,TRIGGER_STATE);
+CREATE INDEX IDX_QRTZ_T_N_G_STATE ON QRTZ_TRIGGERS(SCHED_NAME,TRIGGER_GROUP,TRIGGER_STATE);
+CREATE INDEX IDX_QRTZ_T_NEXT_FIRE_TIME ON QRTZ_TRIGGERS(SCHED_NAME,NEXT_FIRE_TIME);
+CREATE INDEX IDX_QRTZ_T_NFT_ST ON QRTZ_TRIGGERS(SCHED_NAME,TRIGGER_STATE,NEXT_FIRE_TIME);
+CREATE INDEX IDX_QRTZ_T_NFT_MISFIRE ON QRTZ_TRIGGERS(SCHED_NAME,MISFIRE_INSTR,NEXT_FIRE_TIME);
+CREATE INDEX IDX_QRTZ_T_NFT_ST_MISFIRE ON QRTZ_TRIGGERS(SCHED_NAME,MISFIRE_INSTR,NEXT_FIRE_TIME,TRIGGER_STATE);
+CREATE INDEX IDX_QRTZ_T_NFT_ST_MISFIRE_GRP ON QRTZ_TRIGGERS(SCHED_NAME,MISFIRE_INSTR,NEXT_FIRE_TIME,TRIGGER_GROUP,TRIGGER_STATE);
+
+CREATE INDEX IDX_QRTZ_FT_TRIG_INST_NAME ON QRTZ_FIRED_TRIGGERS(SCHED_NAME,INSTANCE_NAME);
+CREATE INDEX IDX_QRTZ_FT_INST_JOB_REQ_RCVRY ON QRTZ_FIRED_TRIGGERS(SCHED_NAME,INSTANCE_NAME,REQUESTS_RECOVERY);
+CREATE INDEX IDX_QRTZ_FT_J_G ON QRTZ_FIRED_TRIGGERS(SCHED_NAME,JOB_NAME,JOB_GROUP);
+CREATE INDEX IDX_QRTZ_FT_JG ON QRTZ_FIRED_TRIGGERS(SCHED_NAME,JOB_GROUP);
+CREATE INDEX IDX_QRTZ_FT_T_G ON QRTZ_FIRED_TRIGGERS(SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP);
+CREATE INDEX IDX_QRTZ_FT_TG ON QRTZ_FIRED_TRIGGERS(SCHED_NAME,TRIGGER_GROUP);
+
+commit; 
+</code></pre>
+<p>手动执行sql建表脚本，将所需要的表创建到数据库里，关于如何自动初始化建表脚本，后面将会补充到。</p>
+<h5 id="1-4-2-2-使用Springboot的DataSource"><a href="#1-4-2-2-使用Springboot的DataSource" class="headerlink" title="1.4.2.2 使用Springboot的DataSource"></a>1.4.2.2 使用Springboot的DataSource</h5><p>除了使用我们在配置文件中指定的数据源外，我们话可以使用springboot项目中配置的数据源。</p>
+<p>首先需要注释掉配置文件中与数据源相关的配置，如下所示：</p>
+<pre><code class="properties">#存储方式使用JobStoreTX，也就是数据库
+#org.quartz.jobStore.class:org.quartz.impl.jdbcjobstore.JobStoreTX
+#org.quartz.jobStore.driverDelegateClass:org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+##是否使用集群（如果项目只部署到 一台服务器，就不用了）
+#org.quartz.jobStore.isClustered = false
+#org.quartz.jobStore.clusterCheckinInterval=20000
+#org.quartz.jobStore.tablePrefix = QRTZ_
+#org.quartz.jobStore.dataSource = myDS
+#
+##配置数据源
+##数据库中quartz表的表名前缀
+#
+#org.quartz.dataSource.myDS.driver = com.mysql.jdbc.Driver
+#org.quartz.dataSource.myDS.URL = jdbc:mysql://localhost:3306/springboot?characterEncoding=utf-8
+#org.quartz.dataSource.myDS.user = root
+#org.quartz.dataSource.myDS.password = hollysys
+#org.quartz.dataSource.myDS.maxConnections = 5
+</code></pre>
+<p>然后再QuartzConfig类中设置我们的数据源，分为两步;</p>
+<p>第一步 从spring的ioc容器中获取datasource</p>
+<pre><code class="java">    @Autowired
+    DataSource dataSource;
+</code></pre>
+<p>第二步 将获取到的datasource设置到SchedulerFactoryBean里</p>
+<pre><code class="java">        schedulerFactoryBean.setDataSource(dataSource);
+</code></pre>
+<p>这样我们就可以使用项目中的datasource了。</p>
+<h2 id="2-实现基于simpleTrigger的定时任务"><a href="#2-实现基于simpleTrigger的定时任务" class="headerlink" title="2 实现基于simpleTrigger的定时任务"></a>2 实现基于simpleTrigger的定时任务</h2><p>先讲一下我们将Quartz与Springboot整合实现定时任务管理的实现思路：</p>
+<ol>
+<li>使用自己的表来保存定时任务相关信息</li>
+<li>封装Quartz相关操作提供基于simpleTrigger和cronTrigger的定时任务设置接口</li>
+<li>对外提供相关操作的API</li>
+</ol>
+<h3 id="2-1-创建Schedule表"><a href="#2-1-创建Schedule表" class="headerlink" title="2.1 创建Schedule表"></a>2.1 创建Schedule表</h3><p>利用springboot创建Schedule表，用以来保存我们定时任务相关的信息。</p>
+<h4 id="2-1-1-创建ScheduleStatusEnum-java枚举类"><a href="#2-1-1-创建ScheduleStatusEnum-java枚举类" class="headerlink" title="2.1.1 创建ScheduleStatusEnum.java枚举类"></a>2.1.1 创建ScheduleStatusEnum.java枚举类</h4><p>在项目entity包下创建定时任务状态枚举类，用来映射定时任务的状态</p>
+<pre><code class="java">package com.example.quartz.entity;
+
+/**
+ * Created by shirukai on 2018/9/4
+ */
+public enum ScheduleStatusEnum &#123;
+    ACTIVATED(1, &quot;已激活&quot;),
+    INACTIVATED(0, &quot;未激活&quot;);
+    private int state;
+    private String stateInfo;
+
+    ScheduleStatusEnum(int state, String stateInfo) &#123;
+        this.state = state;
+        this.stateInfo = stateInfo;
+    &#125;
+
+    public int getState() &#123;
+        return state;
+    &#125;
+
+    public String getStateInfo() &#123;
+        return stateInfo;
+    &#125;
+&#125;
+</code></pre>
+<h4 id="2-1-2-创建Schedule-java的实体类"><a href="#2-1-2-创建Schedule-java的实体类" class="headerlink" title="2.1.2 创建Schedule.java的实体类"></a>2.1.2 创建Schedule.java的实体类</h4><p>在项目entity包下创建Sechedule.java实体类</p>
+<pre><code class="java">package com.example.quartz.entity;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Date;
+
+/**
+ * Created by shirukai on 2018/9/3
+ */
+@Entity
+public class Schedule implements Serializable &#123;
+    @Id
+    private String id;
+    private String triggerInfo;
+    @Enumerated(EnumType.STRING)
+    private ScheduleStatusEnum status;
+    private String groupName; 
+    private String jobName;
+
+    private int record;//运行记录
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(updatable = false)
+    @CreationTimestamp
+    private Date createdTimestamp;
+    @JsonIgnore
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(insertable = false)
+    @UpdateTimestamp
+    private Date updatedTimestamp;
+
+    public String getId() &#123;
+        return id;
+    &#125;
+
+    public void setId(String id) &#123;
+        this.id = id;
+    &#125;
+
+    public String getTriggerInfo() &#123;
+        return triggerInfo;
+    &#125;
+
+    public void setTriggerInfo(String triggerInfo) &#123;
+        this.triggerInfo = triggerInfo;
+    &#125;
+
+    public ScheduleStatusEnum getStatus() &#123;
+        return status;
+    &#125;
+
+    public void setStatus(ScheduleStatusEnum status) &#123;
+        this.status = status;
+    &#125;
+
+    public String getGroupName() &#123;
+        return groupName;
+    &#125;
+
+    public void setGroupName(String groupName) &#123;
+        this.groupName = groupName;
+    &#125;
+
+    public String getJobName() &#123;
+        return jobName;
+    &#125;
+
+    public void setJobName(String jobName) &#123;
+        this.jobName = jobName;
+    &#125;
+
+    public int getRecord() &#123;
+        return record;
+    &#125;
+
+    public void setRecord(int record) &#123;
+        this.record = record;
+    &#125;
+
+    public Date getCreatedTimestamp() &#123;
+        return createdTimestamp;
+    &#125;
+
+    public void setCreatedTimestamp(Date createdTimestamp) &#123;
+        this.createdTimestamp = createdTimestamp;
+    &#125;
+
+    public Date getUpdatedTimestamp() &#123;
+        return updatedTimestamp;
+    &#125;
+
+    public void setUpdatedTimestamp(Date updatedTimestamp) &#123;
+        this.updatedTimestamp = updatedTimestamp;
+    &#125;
+&#125;
+</code></pre>
+<h4 id="2-1-3-创建-ScheduleRepository-java"><a href="#2-1-3-创建-ScheduleRepository-java" class="headerlink" title="2.1.3 创建 ScheduleRepository.java"></a>2.1.3 创建 ScheduleRepository.java</h4><p>在项目repository包下创建ScheduleRepository.java，用以使用jpa对数据库表进行相关的操作。</p>
+<pre><code class="java">package com.example.quartz.repository;
+
+import com.example.quartz.entity.Schedule;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+/**
+ * Created by shirukai on 2018/9/4
+ */
+public interface ScheduleRepository extends JpaRepository&lt;Schedule, String&gt; &#123;
+    Schedule findScheduleByJobNameAndGroupName(String jobName, String groupName);
+
+    Schedule findScheduleById(String scheduleId);
+&#125;
+</code></pre>
+<p> 至此我们Schedule表相关的操作就已经完成了，启动项目后，我们的表会被自动创建。</p>
+<h3 id="2-2-基于SimpleTrigger封装Quartz相关操作"><a href="#2-2-基于SimpleTrigger封装Quartz相关操作" class="headerlink" title="2.2 基于SimpleTrigger封装Quartz相关操作"></a>2.2 基于SimpleTrigger封装Quartz相关操作</h3><h4 id="2-2-1-创建SimpleScheduleDTO-java实体类"><a href="#2-2-1-创建SimpleScheduleDTO-java实体类" class="headerlink" title="2.2.1 创建SimpleScheduleDTO.java实体类"></a>2.2.1 创建SimpleScheduleDTO.java实体类</h4><p>创建DTO类是为了方便我们对象之间的数据传输，格式如下所示；</p>
+<pre><code class="json">&#123;
+    &quot;startTime&quot;:0,
+    &quot;repeatCount&quot;: 100,
+    &quot;period&quot;: &#123;
+        &quot;time&quot;: &quot;5&quot;,
+        &quot;unit&quot;: &quot;minutes&quot;
+    &#125;,
+    &quot;endTime&quot;:0
+&#125;
+</code></pre>
+<p>在项目dto包想创建ScheduleDTO.java实体类</p>
+<pre><code class="java">package com.example.quartz.dto;
+
+/**
+ * Created by shirukai on 2018/9/7
+ */
+public class ScheduleDTO &#123;
+    private String jobName;
+    private String group;
+    private long startTime;
+    private long endTime;
+
+    public String getJobName() &#123;
+        return jobName;
+    &#125;
+
+    public void setJobName(String jobName) &#123;
+        this.jobName = jobName;
+    &#125;
+
+    public String getGroup() &#123;
+        return group;
+    &#125;
+
+    public void setGroup(String group) &#123;
+        this.group = group;
+    &#125;
+
+    public long getStartTime() &#123;
+        return startTime;
+    &#125;
+
+    public void setStartTime(long startTime) &#123;
+        this.startTime = startTime;
+    &#125;
+
+    public long getEndTime() &#123;
+        return endTime;
+    &#125;
+
+    public void setEndTime(long endTime) &#123;
+        this.endTime = endTime;
+    &#125;
+&#125;
+</code></pre>
+<p>同目录下创建Period类映射JSON中的period字段</p>
+<pre><code class="java">package com.example.quartz.dto;
+
+/**
+ * Created by shirukai on 2018/9/7
+ */
+public class Period &#123;
+
+    private long time;
+    private String unit;
+
+    public long getTime() &#123;
+        return time;
+    &#125;
+
+    public void setTime(long time) &#123;
+        this.time = time;
+    &#125;
+
+    public String getUnit() &#123;
+        return unit;
+    &#125;
+
+    public void setUnit(String unit) &#123;
+        this.unit = unit;
+    &#125;
+&#125;
+</code></pre>
+<p>同目录下创建SimpleScheduleDTO类继承上面的ScheduleDTO类</p>
+<pre><code class="java">package com.example.quartz.dto;
+
+/**
+ * Created by shirukai on 2018/9/7
+ */
+public class SimpleScheduleDTO extends ScheduleDTO &#123;
+    private int repeatCount;
+    private Period period;
+
+    public int getRepeatCount() &#123;
+        return repeatCount;
+    &#125;
+
+    public void setRepeatCount(int repeatCount) &#123;
+        this.repeatCount = repeatCount;
+    &#125;
+
+
+    public Period getPeriod() &#123;
+        return period;
+    &#125;
+
+    public void setPeriod(Period period) &#123;
+        this.period = period;
+    &#125;
+&#125;
+</code></pre>
+<h4 id="2-2-2-创建ScheduleManager"><a href="#2-2-2-创建ScheduleManager" class="headerlink" title="2.2.2 创建ScheduleManager"></a>2.2.2 创建ScheduleManager</h4><p>创建定时任务管理器ScheduleManager用以封装Quartz相关的操作。</p>
+<h5 id="2-2-2-1-在项目manager包下创建ScheduleManager-java类"><a href="#2-2-2-1-在项目manager包下创建ScheduleManager-java类" class="headerlink" title="2.2.2.1 在项目manager包下创建ScheduleManager.java类"></a>2.2.2.1 在项目manager包下创建ScheduleManager.java类</h5><p>创建ScheduleManager类，从spring ioc中注入Quartz的Scheduler，并将ScheduleManager类使用@Component注解注册到Spring里。</p>
+<pre><code class="java">package com.example.quartz.manager;
+
+import org.quartz.Scheduler;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+/**
+ * Created by shirukai on 2018/9/7
+ * 定时任务管理器
+ */
+@Component
+public class ScheduleManager &#123;
+    @Autowired
+    Scheduler scheduler;
+    //todo
+&#125;
+</code></pre>
+<h5 id="2-2-2-2-构建SimpleScheduleBuilder"><a href="#2-2-2-2-构建SimpleScheduleBuilder" class="headerlink" title="2.2.2.2 构建SimpleScheduleBuilder"></a>2.2.2.2 构建SimpleScheduleBuilder</h5><p>根据周期参数</p>
+<pre><code class="json">&quot;period&quot;: &#123;
+        &quot;time&quot;: &quot;5&quot;,
+        &quot;unit&quot;: &quot;minutes&quot;
+    &#125;,
+</code></pre>
+<p>构建SimpleScheduleBuilder。如参数表示每5分钟为一个周期，所以我们编写getSimpleScheduleBuilder方法，传入如上的参数，构建相应的SimpleSchedulerBuilder，代码如下</p>
+<pre><code class="java">    /**
+     * 构建 SimpleScheduleBuilder
+     *
+     * @param period 周期参数
+     * @return SimpleScheduleBuilder
+     */
+    private SimpleScheduleBuilder getSimpeScheduleBuilder(Period period, int repeatCount) &#123;
+        SimpleScheduleBuilder ssb = SimpleScheduleBuilder.simpleSchedule();
+        String unit = period.getUnit();
+        long time = period.getTime();
+        switch (unit) &#123;
+            case &quot;milliseconds&quot;:
+                ssb.withIntervalInMilliseconds(time);
+                break;
+            case &quot;seconds&quot;:
+                ssb.withIntervalInSeconds((int) time);
+                break;
+            case &quot;minutes&quot;:
+                ssb.withIntervalInMinutes((int) time);
+                break;
+            case &quot;hours&quot;:
+                ssb.withIntervalInHours((int) time);
+                break;
+            case &quot;days&quot;:
+                ssb.withIntervalInHours((int) time * 24);
+                break;
+            default:
+                break;
+        &#125;
+        ssb.withRepeatCount(repeatCount);
+        return ssb;
+    &#125;
+</code></pre>
+<h5 id="2-2-2-3-构建SimpleTrigger"><a href="#2-2-2-3-构建SimpleTrigger" class="headerlink" title="2.2.2.3 构建SimpleTrigger"></a>2.2.2.3 构建SimpleTrigger</h5><p>利用上述生成的SimpleScheduleBuilder和传入的参数，这里用SimpleScheduleDTO封装，构建相应的SimpleTrigger。代码如下：</p>
+<pre><code class="java">    /**
+     * 构建 SimpleTrigger
+     *
+     * @param ssd 参数
+     * @return Trigger
+     */
+    private Trigger getSimpleTrigger(SimpleScheduleDTO ssd) &#123;
+        String jobName = ssd.getJobName();
+        String group = ssd.getGroup();
+        int repeatCount = ssd.getRepeatCount();
+        TriggerBuilder triggerBuilder = TriggerBuilder.newTrigger()
+                //设置jobName和group
+                .withIdentity(jobName, group)
+                //设置Schedule方式
+                .withSchedule(getSimpeScheduleBuilder(ssd.getPeriod(), repeatCount));
+        if (ssd.getStartTime() != 0) &#123;
+            //设置起始时间
+            triggerBuilder.startAt(new Date(ssd.getStartTime()));
+        &#125; else &#123;
+            triggerBuilder.startNow();
+        &#125;
+        if (ssd.getEndTime() != 0) &#123;
+            //设置终止时间
+            triggerBuilder.endAt(new Date(ssd.getEndTime()));
+        &#125;
+        return triggerBuilder.build();
+    &#125;
+</code></pre>
+<h5 id="2-2-2-4-创建ScheduleJob"><a href="#2-2-2-4-创建ScheduleJob" class="headerlink" title="2.2.2.4 创建ScheduleJob"></a>2.2.2.4 创建ScheduleJob</h5><p>Quartz创建定时任务，通过JobDetail 和Trigger就可以创建，我们编写createJob方法，通过传入相应参数来实现创建定时任务的功能，代码如下:</p>
+<pre><code class="java">/**
+     * 创建Job
+     * @param jobClass 要调度的类名
+     * @param sd 调度参数
+     * @param jobDataMap 数据
+     * @param trigger trigger
+     * @return Schedule
+     */
+    private Schedule createJob(
+            Class&lt;? extends Job&gt; jobClass,
+            ScheduleDTO sd,
+            JobDataMap jobDataMap,
+            Trigger trigger
+    )&#123;
+        String jobName = sd.getJobName();
+        String group = sd.getGroup();
+        //判断记录在数据库是否存在
+        Schedule schedule = scheduleRepository.findScheduleByJobNameAndGroupName(jobName, group);
+        if (schedule == null) &#123;
+            schedule = new Schedule();
+        &#125; else &#123;
+            throw new RuntimeException(&quot;Schedule job already exists.&quot;);
+        &#125;
+        String scheduleId = UUID.randomUUID().toString();
+        try &#123;
+            if (jobDataMap == null) &#123;
+                jobDataMap = new JobDataMap();
+            &#125;
+            jobDataMap.put(&quot;id&quot;, scheduleId);
+            //创建JobDetail
+            JobDetail jobDetail = JobBuilder.newJob(jobClass).withIdentity(jobName, group).usingJobData(jobDataMap).build();
+            schedule.setId(scheduleId);
+            schedule.setStatus(ScheduleStatusEnum.ACTIVATED);
+            schedule.setJobName(jobName);
+            schedule.setGroupName(group);
+            schedule.setTriggerInfo(JSON.toJSONString(sd));
+            schedule.setRecord(0);
+            //保存记录信息
+            schedule = scheduleRepository.save(schedule);
+            //调度执行定时任务
+            scheduler.scheduleJob(jobDetail, trigger);
+        &#125; catch (Exception e) &#123;
+            log.error(&quot;Create schedule job error:&#123;&#125;&quot;, e.getMessage());
+            throw new RuntimeException(e);
+        &#125;
+        return schedule;
+    &#125;
+</code></pre>
+<p>编写一个createSimpleJob方法，用于创建SimpleTrigger类型的Job</p>
+<pre><code class="java">/**
+     * 创建 simple schedule job
+     *
+     * @param jobClass   job class
+     * @param ssd        参数
+     * @param jobDataMap 数据
+     * @return Schedule
+     */
+    public Schedule createSimpleJob(Class&lt;? extends Job&gt; jobClass,
+                                    SimpleScheduleDTO ssd,
+                                    JobDataMap jobDataMap) &#123;
+        Trigger trigger = getSimpleTrigger(ssd);
+        return createJob(jobClass, ssd, jobDataMap, trigger);
+    &#125;
+</code></pre>
+<h5 id="2-2-2-5-更新Simple-Schedule-Job"><a href="#2-2-2-5-更新Simple-Schedule-Job" class="headerlink" title="2.2.2.5 更新Simple Schedule Job"></a>2.2.2.5 更新Simple Schedule Job</h5><pre><code class="java">/**
+ * 更新simple job
+ *
+ * @param scheduleId scheduleId
+ * @param ssd        ssv
+ * @return Schedule
+ */
+public Schedule updateSimpleJob(String scheduleId, SimpleScheduleDTO ssd) &#123;
+    Schedule schedule = getSchedule(scheduleId);
+    return updateSimpleJob(schedule, ssd);
+&#125;
+
+public Schedule updateSimpleJob(Schedule schedule, SimpleScheduleDTO ssd) &#123;
+    try &#123;
+        String jobName = schedule.getJobName();
+        String groupName = schedule.getGroupName();
+        JobKey jobKey = new JobKey(jobName, groupName);
+        JobDetail jobDetail = scheduler.getJobDetail(jobKey);
+        //先删除
+        scheduler.deleteJob(jobKey);
+        //重新创建
+        Trigger trigger = getSimpleTrigger(ssd);
+        scheduler.scheduleJob(jobDetail, trigger);
+        //更新元数据
+        schedule.setRecord(0);
+        schedule.setTriggerInfo(JSON.toJSONString(ssd));
+        scheduleRepository.save(schedule);
+    &#125; catch (SchedulerException e) &#123;
+        log.error(&quot;Update simple schedule job error:&#123;&#125;&quot;, e.getMessage());
+    &#125;
+    return schedule;
+&#125;
+
+public Schedule getSchedule(String scheduleId) &#123;
+    Schedule schedule = scheduleRepository.findScheduleById(scheduleId);
+    if (schedule == null) &#123;
+        throw new RuntimeException(&quot;Schedule job does not exist&quot;);
+    &#125;
+    return schedule;
+&#125;
+</code></pre>
+<h5 id="2-2-2-6-暂停job"><a href="#2-2-2-6-暂停job" class="headerlink" title="2.2.2.6 暂停job"></a>2.2.2.6 暂停job</h5><pre><code class="java">s/**
+ * 暂停某个job
+ *
+ * @param scheduleId id
+ */
+public Schedule pauseJob(String scheduleId) &#123;
+    Schedule schedule = getSchedule(scheduleId);
+    return pauseJob(schedule);
+&#125;
+
+public Schedule pauseJob(Schedule schedule) &#123;
+    JobKey jobKey = new JobKey(schedule.getJobName(), schedule.getGroupName());
+    try &#123;
+        scheduler.pauseJob(jobKey);
+        schedule.setStatus(ScheduleStatusEnum.INACTIVATED);
+        scheduleRepository.save(schedule);
+    &#125; catch (SchedulerException e) &#123;
+        log.error(&quot;Pause schedule job error:&#123;&#125;&quot;, e.getMessage());
+    &#125;
+    return schedule;
+&#125;
+</code></pre>
+<h5 id="2-2-2-7-恢复job"><a href="#2-2-2-7-恢复job" class="headerlink" title="2.2.2.7 恢复job"></a>2.2.2.7 恢复job</h5><pre><code class="java">/**
+ * 恢复某个job
+ *
+ * @param scheduleId id
+ */
+public Schedule resumeJob(String scheduleId) &#123;
+    Schedule schedule = getSchedule(scheduleId);
+    return resumeJob(schedule);
+&#125;
+
+public Schedule resumeJob(Schedule schedule) &#123;
+    JobKey jobKey = new JobKey(schedule.getJobName(), schedule.getGroupName());
+    try &#123;
+        scheduler.resumeJob(jobKey);
+        schedule.setStatus(ScheduleStatusEnum.ACTIVATED);
+        scheduleRepository.save(schedule);
+    &#125; catch (SchedulerException e) &#123;
+        log.error(&quot;Resume schedule job error:&#123;&#125;&quot;, e.getMessage());
+    &#125;
+    return schedule;
+&#125;
+</code></pre>
+<h5 id="2-2-2-8-删除job"><a href="#2-2-2-8-删除job" class="headerlink" title="2.2.2.8 删除job"></a>2.2.2.8 删除job</h5><pre><code class="java">/**
+ * 删除 job
+ *
+ * @param scheduleId id
+ */
+public void deleteJob(String scheduleId) &#123;
+    Schedule schedule = getSchedule(scheduleId);
+    deleteJob(schedule);
+&#125;
+
+public void deleteJob(Schedule schedule) &#123;
+    JobKey jobKey = new JobKey(schedule.getJobName(), schedule.getGroupName());
+    try &#123;
+        scheduler.deleteJob(jobKey);
+        scheduleRepository.delete(schedule);
+    &#125; catch (SchedulerException e) &#123;
+        log.error(&quot;Delete schedule job error:&#123;&#125;&quot;, e.getMessage());
+    &#125;
+&#125;
+</code></pre>
+<h3 id="2-3-对外提供相关API"><a href="#2-3-对外提供相关API" class="headerlink" title="2.3 对外提供相关API"></a>2.3 对外提供相关API</h3><h4 id="2-3-1-创建ScheduleService"><a href="#2-3-1-创建ScheduleService" class="headerlink" title="2.3.1 创建ScheduleService"></a>2.3.1 创建ScheduleService</h4><p>创建ScheduleService，调用ScheduleManager分装的接口。</p>
+<pre><code class="java">package com.example.quartz.service;
+
+import com.example.quartz.dto.SimpleScheduleDTO;
+import com.example.quartz.entity.Schedule;
+import com.example.quartz.job.HelloJob;
+import com.example.quartz.manager.ScheduleManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+/**
+ * Created by shirukai on 2018/9/7
+ */
+@Service
+public class ScheduleService &#123;
+    private final static String GROUP = &quot;TEST_GROUP&quot;;
+    @Autowired
+    ScheduleManager scheduleManager;
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
+
+    /**
+     * 设置编排定时任务
+     *
+     * @param ssd 定时参数
+     * @return schedule
+     */
+    public Schedule setSchedule(String joName, SimpleScheduleDTO ssd) &#123;
+        ssd.setJobName(joName);
+        ssd.setGroup(GROUP);
+        return scheduleManager.createSimpleJob(HelloJob.class, ssd, null);
+    &#125;
+
+
+    /**
+     * 更新编排定时任务
+     *
+     * @param ssd 参数
+     * @return schedule
+     */
+    public Schedule modifySchedule(String jobName, SimpleScheduleDTO ssd) &#123;
+        Schedule schedule = scheduleManager.getJobByNameAndGroup(jobName, GROUP);
+        ssd.setJobName(jobName);
+        ssd.setGroup(GROUP);
+        return scheduleManager.updateSimpleJob(schedule, ssd);
+    &#125;
+
+    /**
+     * 获取编排定时信息
+     *
+     * @param joName id
+     * @return schedule
+     */
+    public Schedule getSchedule(String joName) &#123;
+        return scheduleManager.getJobByNameAndGroup(joName, GROUP);
+    &#125;
+
+    /**
+     * 暂停编排定时任务
+     *
+     * @param joName joName
+     * @return schedule
+     */
+    public Schedule pauseSchedule(String joName) &#123;
+        Schedule schedule = scheduleManager.getJobByNameAndGroup(joName, GROUP);
+        return scheduleManager.pauseJob(schedule);
+    &#125;
+
+    /**
+     * 恢复编排定时任务
+     *
+     * @param joName joName
+     * @return schedule
+     */
+    public Schedule resumeSchedule(String joName) &#123;
+        Schedule schedule = scheduleManager.getJobByNameAndGroup(joName, GROUP);
+        return scheduleManager.resumeJob(schedule);
+    &#125;
+
+    /**
+     * 删除编排定时任务
+     *
+     * @param joName joName
+     * @return str
+     */
+    public String removerSchedule(String joName) &#123;
+        Schedule schedule = scheduleManager.getJobByNameAndGroup(joName, GROUP);
+        scheduleManager.deleteJob(schedule);
+        return &quot;Delete schedule job succeed.&quot;;
+    &#125;
+&#125;
+</code></pre>
+<h4 id="2-3-2-创建SceduleController"><a href="#2-3-2-创建SceduleController" class="headerlink" title="2.3.2 创建SceduleController"></a>2.3.2 创建SceduleController</h4><p>创建SceduleCOntroller对外提供可访问API</p>
+<pre><code class="java">package com.example.quartz.controller;
+
+
+import com.example.quartz.common.rest.RestMessage;
+import com.example.quartz.common.util.RestMessageUtil;
+import com.example.quartz.dto.SimpleScheduleDTO;
+import com.example.quartz.service.ScheduleService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+/**
+ * Created by shirukai on 2018/9/7
+ */
+@RestController
+@RequestMapping(value = &quot;/api/v1/schedule/&quot;)
+public class ScheduleController &#123;
+    @Autowired
+    ScheduleService scheduleService;
+    @PostMapping(value = &quot;/&#123;jobName&#125;/simple&quot;)
+    public RestMessage schedule(
+            @PathVariable(&quot;jobName&quot;) String jobName,
+            @RequestBody SimpleScheduleDTO simpleScheduleDTO
+    ) &#123;
+        return RestMessageUtil.objectToRestMessage(scheduleService.setSchedule(jobName, simpleScheduleDTO));
+    &#125;
+
+    @PutMapping(value = &quot;/&#123;jobName&#125;/simple&quot;)
+    public RestMessage modifySchedule(
+            @PathVariable(&quot;jobName&quot;) String jobName,
+            @RequestBody SimpleScheduleDTO simpleScheduleDTO
+    ) &#123;
+        return RestMessageUtil.objectToRestMessage(scheduleService.modifySchedule(jobName, simpleScheduleDTO));
+    &#125;
+
+    @DeleteMapping(value = &quot;/&#123;jobName&#125;&quot;)
+    public RestMessage removeSchedule(
+            @PathVariable(&quot;jobName&quot;) String jobName
+    ) &#123;
+        return RestMessageUtil.objectToRestMessage(scheduleService.removerSchedule(jobName));
+    &#125;
+
+    @PostMapping(value = &quot;/&#123;jobName&#125;/pause&quot;)
+    public RestMessage pauseSchedule(
+            @PathVariable(&quot;jobName&quot;) String jobName
+    ) &#123;
+        return RestMessageUtil.objectToRestMessage(scheduleService.pauseSchedule(jobName));
+    &#125;
+
+    @PostMapping(value = &quot;/&#123;jobName&#125;/resume&quot;)
+    public RestMessage resumeSchedule(
+            @PathVariable(&quot;jobName&quot;) String jobName
+    ) &#123;
+        return RestMessageUtil.objectToRestMessage(scheduleService.resumeSchedule(jobName));
+    &#125;
+
+    @GetMapping(value = &quot;/&#123;jobName&#125;&quot;)
+    public RestMessage scheduleInfo(
+            @PathVariable(&quot;jobName&quot;) String jobName
+    ) &#123;
+        return RestMessageUtil.objectToRestMessage(scheduleService.getSchedule(jobName));
+    &#125;
+&#125;
+</code></pre>
+<h4 id="2-3-3-测试提供的API"><a href="#2-3-3-测试提供的API" class="headerlink" title="2.3.3 测试提供的API"></a>2.3.3 测试提供的API</h4><p>在这之前先修改我们的HelloJob类，用以记录我们执行的条数</p>
+<pre><code class="java">package com.example.quartz.job;
+
+import com.example.quartz.entity.Schedule;
+import com.example.quartz.repository.ScheduleRepository;
+import org.quartz.Job;
+import org.quartz.JobDataMap;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+
+/**
+ * Created by shirukai on 2018/9/7
+ */
+public class HelloJob implements Job &#123;
+    @Autowired
+    ScheduleRepository scheduleRepository;
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
+
+    @Override
+    public void execute(JobExecutionContext context) throws JobExecutionException &#123;
+        //获取上下文数据
+        JobDataMap dataMap = context.getMergedJobDataMap();
+        String scheduleId = dataMap.getString(&quot;id&quot;);
+
+        Schedule schedule = scheduleRepository.findScheduleById(scheduleId);
+        log.info(&quot;定时任务执行了：&#123;&#125;&quot;, scheduleId);
+        //更新执行条数
+        schedule.setRecord(schedule.getRecord() + 1);
+        scheduleRepository.save(schedule);
+    &#125;
+&#125;
+</code></pre>
+<h5 id="2-3-3-1-设置定时任务"><a href="#2-3-3-1-设置定时任务" class="headerlink" title="2.3.3.1 设置定时任务"></a>2.3.3.1 设置定时任务</h5><p>请求API：/api/v1/schedule/8aaabdfc659f74620165b2ad36b50030/simple</p>
+<p>请求类型：POST</p>
+<p>请求参数：</p>
+<pre><code class="json">&#123;
+    &quot;repeatCount&quot;: 100,
+    &quot;period&quot;: &#123;
+        &quot;time&quot;: &quot;5&quot;,
+        &quot;unit&quot;: &quot;seconds&quot;
+    &#125;
+&#125;
+</code></pre>
+<p>响应：</p>
+<pre><code class="json">&#123;
+    &quot;success&quot;: true,
+    &quot;code&quot;: 0,
+    &quot;msg&quot;: &quot;操作成功&quot;,
+    &quot;data&quot;: &#123;
+        &quot;id&quot;: &quot;218a3db4-e2e6-480e-b520-bac138b6c403&quot;,
+        &quot;triggerInfo&quot;: &quot;&#123;\&quot;endTime\&quot;:0,\&quot;group\&quot;:\&quot;TEST_GROUP\&quot;,\&quot;jobName\&quot;:\&quot;8aaabdfc659f74620165b2ad36b50030\&quot;,\&quot;period\&quot;:&#123;\&quot;time\&quot;:5,\&quot;unit\&quot;:\&quot;seconds\&quot;&#125;,\&quot;repeatCount\&quot;:100,\&quot;startTime\&quot;:0&#125;&quot;,
+        &quot;status&quot;: &quot;ACTIVATED&quot;,
+        &quot;groupName&quot;: &quot;TEST_GROUP&quot;,
+        &quot;jobName&quot;: &quot;8aaabdfc659f74620165b2ad36b50030&quot;,
+        &quot;record&quot;: 0,
+        &quot;createdTimestamp&quot;: &quot;2018-09-07T06:50:15.521+0000&quot;
+    &#125;
+&#125;
+</code></pre>
+<h5 id="2-3-3-2-查看定时任务"><a href="#2-3-3-2-查看定时任务" class="headerlink" title="2.3.3.2 查看定时任务"></a>2.3.3.2 查看定时任务</h5><p>请求API：/api/v1/schedule/8aaabdfc659f74620165b2ad36b50030/</p>
+<p>请求类型：GET</p>
+<p>请求参数：无</p>
+<p>响应：</p>
+<pre><code class="json">&#123;
+    &quot;success&quot;: true,
+    &quot;code&quot;: 0,
+    &quot;msg&quot;: &quot;操作成功&quot;,
+    &quot;data&quot;: &#123;
+        &quot;id&quot;: &quot;218a3db4-e2e6-480e-b520-bac138b6c403&quot;,
+        &quot;triggerInfo&quot;: &quot;&#123;\&quot;endTime\&quot;:0,\&quot;group\&quot;:\&quot;TEST_GROUP\&quot;,\&quot;jobName\&quot;:\&quot;8aaabdfc659f74620165b2ad36b50030\&quot;,\&quot;period\&quot;:&#123;\&quot;time\&quot;:5,\&quot;unit\&quot;:\&quot;seconds\&quot;&#125;,\&quot;repeatCount\&quot;:100,\&quot;startTime\&quot;:0&#125;&quot;,
+        &quot;status&quot;: &quot;ACTIVATED&quot;,
+        &quot;groupName&quot;: &quot;TEST_GROUP&quot;,
+        &quot;jobName&quot;: &quot;8aaabdfc659f74620165b2ad36b50030&quot;,
+        &quot;record&quot;: 9,
+        &quot;createdTimestamp&quot;: &quot;2018-09-07T06:50:16.000+0000&quot;
+    &#125;
+&#125;
+</code></pre>
+<h5 id="2-3-3-3-暂停定时任务"><a href="#2-3-3-3-暂停定时任务" class="headerlink" title="2.3.3.3 暂停定时任务"></a>2.3.3.3 暂停定时任务</h5><p>请求API：/api/v1/schedule/8aaabdfc659f74620165b2ad36b50030/pause</p>
+<p>请求类型：POST</p>
+<p>请求参数：无</p>
+<p>响应：</p>
+<pre><code class="json">&#123;
+    &quot;success&quot;: true,
+    &quot;code&quot;: 0,
+    &quot;msg&quot;: &quot;操作成功&quot;,
+    &quot;data&quot;: &#123;
+        &quot;id&quot;: &quot;218a3db4-e2e6-480e-b520-bac138b6c403&quot;,
+        &quot;triggerInfo&quot;: &quot;&#123;\&quot;endTime\&quot;:0,\&quot;group\&quot;:\&quot;TEST_GROUP\&quot;,\&quot;jobName\&quot;:\&quot;8aaabdfc659f74620165b2ad36b50030\&quot;,\&quot;period\&quot;:&#123;\&quot;time\&quot;:5,\&quot;unit\&quot;:\&quot;seconds\&quot;&#125;,\&quot;repeatCount\&quot;:100,\&quot;startTime\&quot;:0&#125;&quot;,
+        &quot;status&quot;: &quot;INACTIVATED&quot;,
+        &quot;groupName&quot;: &quot;TEST_GROUP&quot;,
+        &quot;jobName&quot;: &quot;8aaabdfc659f74620165b2ad36b50030&quot;,
+        &quot;record&quot;: 23,
+        &quot;createdTimestamp&quot;: &quot;2018-09-07T06:50:16.000+0000&quot;
+    &#125;
+&#125;
+</code></pre>
+<h5 id="2-3-3-4-恢复定时任务"><a href="#2-3-3-4-恢复定时任务" class="headerlink" title="2.3.3.4 恢复定时任务"></a>2.3.3.4 恢复定时任务</h5><p>请求API：/api/v1/schedule/8aaabdfc659f74620165b2ad36b50030/resume</p>
+<p>请求类型：POST</p>
+<p>请求参数：无</p>
+<p>响应：</p>
+<pre><code class="json">&#123;
+    &quot;success&quot;: true,
+    &quot;code&quot;: 0,
+    &quot;msg&quot;: &quot;操作成功&quot;,
+    &quot;data&quot;: &#123;
+        &quot;id&quot;: &quot;218a3db4-e2e6-480e-b520-bac138b6c403&quot;,
+        &quot;triggerInfo&quot;: &quot;&#123;\&quot;endTime\&quot;:0,\&quot;group\&quot;:\&quot;TEST_GROUP\&quot;,\&quot;jobName\&quot;:\&quot;8aaabdfc659f74620165b2ad36b50030\&quot;,\&quot;period\&quot;:&#123;\&quot;time\&quot;:5,\&quot;unit\&quot;:\&quot;seconds\&quot;&#125;,\&quot;repeatCount\&quot;:100,\&quot;startTime\&quot;:0&#125;&quot;,
+        &quot;status&quot;: &quot;ACTIVATED&quot;,
+        &quot;groupName&quot;: &quot;TEST_GROUP&quot;,
+        &quot;jobName&quot;: &quot;8aaabdfc659f74620165b2ad36b50030&quot;,
+        &quot;record&quot;: 23,
+        &quot;createdTimestamp&quot;: &quot;2018-09-07T06:50:16.000+0000&quot;
+    &#125;
+&#125;
+</code></pre>
+<h5 id="2-3-3-5-删除定时任务"><a href="#2-3-3-5-删除定时任务" class="headerlink" title="2.3.3. 5 删除定时任务"></a>2.3.3. 5 删除定时任务</h5><p>请求API：/api/v1/schedule/8aaabdfc659f74620165b2ad36b50030/</p>
+<p>请求类型：DELETE</p>
+<p>请求参数：无</p>
+<p>响应：</p>
+<pre><code class="json">&#123;
+    &quot;success&quot;: true,
+    &quot;code&quot;: 0,
+    &quot;msg&quot;: &quot;操作成功&quot;,
+    &quot;data&quot;: &quot;Delete schedule job succeed.&quot;
+&#125;
+</code></pre>
+<h2 id="3-实现基于CronTrigger的定时任务"><a href="#3-实现基于CronTrigger的定时任务" class="headerlink" title="3 实现基于CronTrigger的定时任务"></a>3 实现基于CronTrigger的定时任务</h2><p>上面我们已经实现了基于SimpleTrigger的定时任务管理，从Quartz封装，到对外提供RESTful接口。实现了的定时任务的添加、暂停、恢复、查看、删除等功能。接下来我们在此基础上，继续对Quartz进行分装，实现基于CronTrigger的定时任务。</p>
+<h3 id="3-1-基于CronTrigger分装Quartz相关操作"><a href="#3-1-基于CronTrigger分装Quartz相关操作" class="headerlink" title="3.1 基于CronTrigger分装Quartz相关操作"></a>3.1 基于CronTrigger分装Quartz相关操作</h3><h4 id="3-1-1-创建CronScheduleDTO-java实体类"><a href="#3-1-1-创建CronScheduleDTO-java实体类" class="headerlink" title="3.1.1 创建CronScheduleDTO.java实体类"></a>3.1.1 创建CronScheduleDTO.java实体类</h4><p>与SimpleScheduleDTO一样需要继承ScheduleDTO类，代码如下：</p>
+<pre><code class="java">package com.example.quartz.dto;
+
+/**
+ * Created by shirukai on 2018/9/7
+ */
+public class CronScheduleDTO extends ScheduleDTO &#123;
+    private String cronExpression;
+
+    public String getCronExpression() &#123;
+        return cronExpression;
+    &#125;
+
+    public void setCronExpression(String cronExpression) &#123;
+        this.cronExpression = cronExpression;
+    &#125;
+&#125;
+</code></pre>
+<h4 id="3-1-2-构建CronTrigger"><a href="#3-1-2-构建CronTrigger" class="headerlink" title="3.1.2 构建CronTrigger"></a>3.1.2 构建CronTrigger</h4><p>在ScheduleManager类里添加getCronTrigger方法，用于构建CronTrigger</p>
+<pre><code class="java">    private Trigger getCronTrigger(CronScheduleDTO csd) &#123;
+        CronScheduleBuilder scb = CronScheduleBuilder.cronSchedule(csd.getCronExpression());
+        TriggerBuilder triggerBuilder = TriggerBuilder.newTrigger()
+                .withIdentity(csd.getJobName(), csd.getGroup())
+                .withSchedule(scb);
+        if (csd.getStartTime() != 0) &#123;
+            triggerBuilder.startAt(new Date(csd.getStartTime()));
+        &#125; else &#123;
+            triggerBuilder.startNow();
+        &#125;
+        if (csd.getEndTime() != 0) &#123;
+            triggerBuilder.endAt(new Date(csd.getEndTime()));
+        &#125;
+        return triggerBuilder.build();
+    &#125;
+</code></pre>
+<h4 id="3-1-3-构建Cron-Schedule-Job"><a href="#3-1-3-构建Cron-Schedule-Job" class="headerlink" title="3.1.3 构建Cron Schedule Job"></a>3.1.3 构建Cron Schedule Job</h4><p>在ScheduleManager类里添加createCronJob方法</p>
+<pre><code class="java">/**
+ * 创建 cron schedule job
+ *
+ * @param jobClass   可执行job class
+ * @param csd        定时参数
+ * @param jobDataMap 数据
+ * @return Schedule
+ */
+public Schedule createCronJob(Class&lt;? extends Job&gt; jobClass, CronScheduleDTO csd, JobDataMap jobDataMap) &#123;
+    Trigger trigger = getCronTrigger(csd);
+    return createJob(jobClass, csd, jobDataMap, trigger);
+&#125;
+</code></pre>
+<h4 id="3-1-4-更新Job"><a href="#3-1-4-更新Job" class="headerlink" title="3.1.4 更新Job"></a>3.1.4 更新Job</h4><p>在ScheduleManager类里添加updateCronJob方法</p>
+<pre><code class="java">public Schedule updateCronJob(String scheduleId, CronScheduleDTO csd) &#123;
+    Schedule schedule = getSchedule(scheduleId);
+    return updateCronJob(schedule, csd);
+&#125;
+
+public Schedule updateCronJob(Schedule schedule, CronScheduleDTO csd) &#123;
+    try &#123;
+        String jobName = schedule.getJobName();
+        String groupName = schedule.getGroupName();
+        JobKey jobKey = new JobKey(jobName, groupName);
+        JobDetail jobDetail = scheduler.getJobDetail(jobKey);
+        //先删除
+        scheduler.deleteJob(jobKey);
+        //重新创建
+        Trigger trigger = getCronTrigger(csd);
+        scheduler.scheduleJob(jobDetail, trigger);
+        //更新元数据
+        schedule.setRecord(0);
+        schedule.setTriggerInfo(JSON.toJSONString(csd));
+        scheduleRepository.save(schedule);
+    &#125; catch (SchedulerException e) &#123;
+        log.error(&quot;Update cron schedule job error:&#123;&#125;&quot;, e.getMessage());
+    &#125;
+    return schedule;
+&#125;
+</code></pre>
+<h3 id="3-2-对外提供相关API"><a href="#3-2-对外提供相关API" class="headerlink" title="3.2 对外提供相关API"></a>3.2 对外提供相关API</h3><h4 id="3-3-1-修改ScheduleService"><a href="#3-3-1-修改ScheduleService" class="headerlink" title="3.3.1 修改ScheduleService"></a>3.3.1 修改ScheduleService</h4><p>在ScheduleService类里添加cron相关的操作，主要是添加Cron定时任务和更新Cron定时任务，代码如下：</p>
+<pre><code class="java">    public Schedule setSchedule(String jobName, CronScheduleDTO csd) &#123;
+        csd.setJobName(jobName);
+        csd.setGroup(GROUP);
+        return scheduleManager.createCronJob(HelloJob.class, csd, null);
+    &#125;
+    public Schedule modifySchedule(String jobName, CronScheduleDTO csd) &#123;
+        Schedule schedule = scheduleManager.getJobByNameAndGroup(jobName, GROUP);
+        csd.setJobName(jobName);
+        csd.setGroup(GROUP);
+        return scheduleManager.updateCronJob(schedule, csd);
+    &#125;
+</code></pre>
+<h4 id="3-3-2-修改ScheduleController"><a href="#3-3-2-修改ScheduleController" class="headerlink" title="3.3.2 修改ScheduleController"></a>3.3.2 修改ScheduleController</h4><p>同样在ScheduleController下添加cron相应的接口</p>
+<pre><code class="java">    @PostMapping(value = &quot;/&#123;jobName&#125;/cron&quot;)
+    public RestMessage schedule(
+            @PathVariable(&quot;jobName&quot;) String jobName,
+            @RequestBody CronScheduleDTO cronScheduleDTO
+    ) &#123;
+        return RestMessageUtil.objectToRestMessage(scheduleService.setSchedule(jobName, cronScheduleDTO));
+    &#125;
+
+    @PutMapping(value = &quot;/&#123;jobName&#125;/cron&quot;)
+    public RestMessage modifySchedule(
+            @PathVariable(&quot;jobName&quot;) String jobName,
+            @RequestBody CronScheduleDTO cronScheduleDTO
+    ) &#123;
+        return RestMessageUtil.objectToRestMessage(scheduleService.modifySchedule(jobName, cronScheduleDTO));
+    &#125;
+</code></pre>
+<h4 id="3-3-3-测试提供的API"><a href="#3-3-3-测试提供的API" class="headerlink" title="3.3.3 测试提供的API"></a>3.3.3 测试提供的API</h4><h5 id="3-3-3-1-设置cron格式的定时任务"><a href="#3-3-3-1-设置cron格式的定时任务" class="headerlink" title="3.3.3.1 设置cron格式的定时任务"></a>3.3.3.1 设置cron格式的定时任务</h5><p>请求API：/api/v1/schedule/8aaabdfc659f74620165b2ad36b50030/cron</p>
+<p>请求类型：POST</p>
+<p>请求参数：</p>
+<pre><code class="json">&#123;
+    &quot;cronExpression&quot;:&quot;0 0/5 * * * ? *&quot;
+&#125;
+</code></pre>
+<p>响应：</p>
+<pre><code class="json">&#123;
+    &quot;success&quot;: true,
+    &quot;code&quot;: 0,
+    &quot;msg&quot;: &quot;操作成功&quot;,
+    &quot;data&quot;: &#123;
+        &quot;id&quot;: &quot;2d876e3e-f1e1-4ad7-bc64-5a107387cd3f&quot;,
+        &quot;triggerInfo&quot;: &quot;&#123;\&quot;cronExpression\&quot;:\&quot;0 0/5 * * * ? *\&quot;,\&quot;endTime\&quot;:0,\&quot;group\&quot;:\&quot;TEST_GROUP\&quot;,\&quot;jobName\&quot;:\&quot;8aaabdfc659f74620165b2ad36b50030\&quot;,\&quot;startTime\&quot;:0&#125;&quot;,
+        &quot;status&quot;: &quot;ACTIVATED&quot;,
+        &quot;groupName&quot;: &quot;TEST_GROUP&quot;,
+        &quot;jobName&quot;: &quot;8aaabdfc659f74620165b2ad36b50030&quot;,
+        &quot;record&quot;: 0,
+        &quot;createdTimestamp&quot;: &quot;2018-09-07T07:32:40.238+0000&quot;
+    &#125;
+&#125;
+</code></pre>
+<h5 id="3-3-3-2-更新cron格式的定时任务"><a href="#3-3-3-2-更新cron格式的定时任务" class="headerlink" title="3.3.3.2 更新cron格式的定时任务"></a>3.3.3.2 更新cron格式的定时任务</h5><p>请求API：/api/v1/schedule/8aaabdfc659f74620165b2ad36b50030/cron</p>
+<p>请求类型：PUT</p>
+<p>请求参数：</p>
+<pre><code class="json">&#123;
+    &quot;cronExpression&quot;:&quot;0/1 * * * * ? &quot;
+&#125;
+</code></pre>
+<p>响应：</p>
+<pre><code class="json">&#123;
+    &quot;success&quot;: true,
+    &quot;code&quot;: 0,
+    &quot;msg&quot;: &quot;操作成功&quot;,
+    &quot;data&quot;: &#123;
+        &quot;id&quot;: &quot;2d876e3e-f1e1-4ad7-bc64-5a107387cd3f&quot;,
+        &quot;triggerInfo&quot;: &quot;&#123;\&quot;cronExpression\&quot;:\&quot;0/1 * * * * ? \&quot;,\&quot;endTime\&quot;:0,\&quot;group\&quot;:\&quot;TEST_GROUP\&quot;,\&quot;jobName\&quot;:\&quot;8aaabdfc659f74620165b2ad36b50030\&quot;,\&quot;startTime\&quot;:0&#125;&quot;,
+        &quot;status&quot;: &quot;ACTIVATED&quot;,
+        &quot;groupName&quot;: &quot;TEST_GROUP&quot;,
+        &quot;jobName&quot;: &quot;8aaabdfc659f74620165b2ad36b50030&quot;,
+        &quot;record&quot;: 0,
+        &quot;createdTimestamp&quot;: &quot;2018-09-07T07:32:40.000+0000&quot;
+    &#125;
+&#125;
+</code></pre>
+<p><img src="http://shirukai.gitee.io/images/82d21c899ea25350cf85cf73d3fd25e8.gif"></p>
+<h2 id="4-Springboot整合Quartz进阶"><a href="#4-Springboot整合Quartz进阶" class="headerlink" title="4 Springboot整合Quartz进阶"></a>4 Springboot整合Quartz进阶</h2><h3 id="4-1-自动初始化Quartz建表SQL"><a href="#4-1-自动初始化Quartz建表SQL" class="headerlink" title="4.1 自动初始化Quartz建表SQL"></a>4.1 自动初始化Quartz建表SQL</h3><h4 id="4-1-1-使用Springboot的DataSource时，初始化Quartz建表SQL"><a href="#4-1-1-使用Springboot的DataSource时，初始化Quartz建表SQL" class="headerlink" title="4.1.1 使用Springboot的DataSource时，初始化Quartz建表SQL"></a>4.1.1 使用Springboot的DataSource时，初始化Quartz建表SQL</h4><p>使用springboot的DataSource初始化SQL我这里提供了两种方式，一种是基于配置的SQL初始化、另一种是基于编程的SQL初始化。下面将分别记录一下这两种初始化SQL的方式。</p>
+<h5 id="4-1-1-1-基于配置的SQL初始化"><a href="#4-1-1-1-基于配置的SQL初始化" class="headerlink" title="4.1.1.1 基于配置的SQL初始化"></a>4.1.1.1 基于配置的SQL初始化</h5><p>基于配置的SQL初始化很简单，只需要在springboot中添加几个配置项即可。</p>
+<p>首先列一下我们的初始化脚本：</p>
+<pre><code class="sql">CREATE TABLE IF NOT EXISTS QRTZ_JOB_DETAILS(
+SCHED_NAME VARCHAR(120) NOT NULL,
+JOB_NAME VARCHAR(200) NOT NULL,
+JOB_GROUP VARCHAR(200) NOT NULL,
+DESCRIPTION VARCHAR(250) NULL,
+JOB_CLASS_NAME VARCHAR(250) NOT NULL,
+IS_DURABLE VARCHAR(1) NOT NULL,
+IS_NONCONCURRENT VARCHAR(1) NOT NULL,
+IS_UPDATE_DATA VARCHAR(1) NOT NULL,
+REQUESTS_RECOVERY VARCHAR(1) NOT NULL,
+JOB_DATA BLOB NULL,
+PRIMARY KEY (SCHED_NAME,JOB_NAME,JOB_GROUP))
+ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS QRTZ_TRIGGERS (
+SCHED_NAME VARCHAR(120) NOT NULL,
+TRIGGER_NAME VARCHAR(200) NOT NULL,
+TRIGGER_GROUP VARCHAR(200) NOT NULL,
+JOB_NAME VARCHAR(200) NOT NULL,
+JOB_GROUP VARCHAR(200) NOT NULL,
+DESCRIPTION VARCHAR(250) NULL,
+NEXT_FIRE_TIME BIGINT(13) NULL,
+PREV_FIRE_TIME BIGINT(13) NULL,
+PRIORITY INTEGER NULL,
+TRIGGER_STATE VARCHAR(16) NOT NULL,
+TRIGGER_TYPE VARCHAR(8) NOT NULL,
+START_TIME BIGINT(13) NOT NULL,
+END_TIME BIGINT(13) NULL,
+CALENDAR_NAME VARCHAR(200) NULL,
+MISFIRE_INSTR SMALLINT(2) NULL,
+JOB_DATA BLOB NULL,
+PRIMARY KEY (SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP),
+FOREIGN KEY (SCHED_NAME,JOB_NAME,JOB_GROUP)
+REFERENCES QRTZ_JOB_DETAILS(SCHED_NAME,JOB_NAME,JOB_GROUP))
+ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS  QRTZ_SIMPLE_TRIGGERS (
+SCHED_NAME VARCHAR(120) NOT NULL,
+TRIGGER_NAME VARCHAR(200) NOT NULL,
+TRIGGER_GROUP VARCHAR(200) NOT NULL,
+REPEAT_COUNT BIGINT(7) NOT NULL,
+REPEAT_INTERVAL BIGINT(12) NOT NULL,
+TIMES_TRIGGERED BIGINT(10) NOT NULL,
+PRIMARY KEY (SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP),
+FOREIGN KEY (SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP)
+REFERENCES QRTZ_TRIGGERS(SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP))
+ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS  QRTZ_CRON_TRIGGERS (
+SCHED_NAME VARCHAR(120) NOT NULL,
+TRIGGER_NAME VARCHAR(200) NOT NULL,
+TRIGGER_GROUP VARCHAR(200) NOT NULL,
+CRON_EXPRESSION VARCHAR(120) NOT NULL,
+TIME_ZONE_ID VARCHAR(80),
+PRIMARY KEY (SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP),
+FOREIGN KEY (SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP)
+REFERENCES QRTZ_TRIGGERS(SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP))
+ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS  QRTZ_SIMPROP_TRIGGERS
+  (          
+    SCHED_NAME VARCHAR(120) NOT NULL,
+    TRIGGER_NAME VARCHAR(200) NOT NULL,
+    TRIGGER_GROUP VARCHAR(200) NOT NULL,
+    STR_PROP_1 VARCHAR(512) NULL,
+    STR_PROP_2 VARCHAR(512) NULL,
+    STR_PROP_3 VARCHAR(512) NULL,
+    INT_PROP_1 INT NULL,
+    INT_PROP_2 INT NULL,
+    LONG_PROP_1 BIGINT NULL,
+    LONG_PROP_2 BIGINT NULL,
+    DEC_PROP_1 NUMERIC(13,4) NULL,
+    DEC_PROP_2 NUMERIC(13,4) NULL,
+    BOOL_PROP_1 VARCHAR(1) NULL,
+    BOOL_PROP_2 VARCHAR(1) NULL,
+    PRIMARY KEY (SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP),
+    FOREIGN KEY (SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP) 
+    REFERENCES QRTZ_TRIGGERS(SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP))
+ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS  QRTZ_BLOB_TRIGGERS (
+SCHED_NAME VARCHAR(120) NOT NULL,
+TRIGGER_NAME VARCHAR(200) NOT NULL,
+TRIGGER_GROUP VARCHAR(200) NOT NULL,
+BLOB_DATA BLOB NULL,
+PRIMARY KEY (SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP),
+INDEX (SCHED_NAME,TRIGGER_NAME, TRIGGER_GROUP),
+FOREIGN KEY (SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP)
+REFERENCES QRTZ_TRIGGERS(SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP))
+ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS  QRTZ_CALENDARS (
+SCHED_NAME VARCHAR(120) NOT NULL,
+CALENDAR_NAME VARCHAR(200) NOT NULL,
+CALENDAR BLOB NOT NULL,
+PRIMARY KEY (SCHED_NAME,CALENDAR_NAME))
+ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS  QRTZ_PAUSED_TRIGGER_GRPS (
+SCHED_NAME VARCHAR(120) NOT NULL,
+TRIGGER_GROUP VARCHAR(200) NOT NULL,
+PRIMARY KEY (SCHED_NAME,TRIGGER_GROUP))
+ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS  QRTZ_FIRED_TRIGGERS (
+SCHED_NAME VARCHAR(120) NOT NULL,
+ENTRY_ID VARCHAR(95) NOT NULL,
+TRIGGER_NAME VARCHAR(200) NOT NULL,
+TRIGGER_GROUP VARCHAR(200) NOT NULL,
+INSTANCE_NAME VARCHAR(200) NOT NULL,
+FIRED_TIME BIGINT(13) NOT NULL,
+SCHED_TIME BIGINT(13) NOT NULL,
+PRIORITY INTEGER NOT NULL,
+STATE VARCHAR(16) NOT NULL,
+JOB_NAME VARCHAR(200) NULL,
+JOB_GROUP VARCHAR(200) NULL,
+IS_NONCONCURRENT VARCHAR(1) NULL,
+REQUESTS_RECOVERY VARCHAR(1) NULL,
+PRIMARY KEY (SCHED_NAME,ENTRY_ID))
+ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS  QRTZ_SCHEDULER_STATE (
+SCHED_NAME VARCHAR(120) NOT NULL,
+INSTANCE_NAME VARCHAR(200) NOT NULL,
+LAST_CHECKIN_TIME BIGINT(13) NOT NULL,
+CHECKIN_INTERVAL BIGINT(13) NOT NULL,
+PRIMARY KEY (SCHED_NAME,INSTANCE_NAME))
+ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS  QRTZ_LOCKS (
+SCHED_NAME VARCHAR(120) NOT NULL,
+LOCK_NAME VARCHAR(40) NOT NULL,
+PRIMARY KEY (SCHED_NAME,LOCK_NAME))
+ENGINE=InnoDB;
+</code></pre>
+<p>可以看出，我们的初始化脚本，是基于官网提供的建表脚本进行了改造。改造有两点：第一点是去掉原有的如果表存在则删除的脚本，改为如果表不存在则创建。第二点是去掉索引脚本，因为索引重复创建会报错。这个可以利用存储过程的方式去解决，后面会提到。下面将我们的初始化SQL的脚本配置到springboot的配置文件中。在application.yml配置文件中，添加如下内容：</p>
+<pre><code class="yaml">spring:
+ #配置数据库
+ datasource:
+   driver-class-name: com.mysql.jdbc.Driver
+   url: jdbc:mysql://localhost:3306/springboot?useSSL=false&amp;characterEncoding=utf-8
+   username: root
+   password: hollysys
+   schema-username: root
+   schema-password: hollysys
+   schema: classpath:quartz_tables.sql
+   initialization-mode: always
+</code></pre>
+<p>这样的话，系统就会默认初始化我们的sql了。</p>
+<p>注意：在springboot2.0之前不需要指定schema-username、schema-password、initialization-mode这三个属性就可以初始化sql，但是在2.0之后必须要设置这三个属性，否则spring.datasource.schema属性无法正常执行。</p>
+<h5 id="补充配置带存储过程的SQL脚本："><a href="#补充配置带存储过程的SQL脚本：" class="headerlink" title="补充配置带存储过程的SQL脚本："></a>补充配置带存储过程的SQL脚本：</h5><p>带添加索引的SQL脚本：</p>
+<pre><code class="sql">
+CREATE TABLE IF NOT EXISTS  QRTZ_JOB_DETAILS (
+SCHED_NAME VARCHAR(120) NOT NULL,
+JOB_NAME VARCHAR(200) NOT NULL,
+JOB_GROUP VARCHAR(200) NOT NULL,
+DESCRIPTION VARCHAR(250) NULL,
+JOB_CLASS_NAME VARCHAR(250) NOT NULL,
+IS_DURABLE VARCHAR(1) NOT NULL,
+IS_NONCONCURRENT VARCHAR(1) NOT NULL,
+IS_UPDATE_DATA VARCHAR(1) NOT NULL,
+REQUESTS_RECOVERY VARCHAR(1) NOT NULL,
+JOB_DATA BLOB NULL,
+PRIMARY KEY (SCHED_NAME,JOB_NAME,JOB_GROUP))
+ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS QRTZ_TRIGGERS (
+SCHED_NAME VARCHAR(120) NOT NULL,
+TRIGGER_NAME VARCHAR(200) NOT NULL,
+TRIGGER_GROUP VARCHAR(200) NOT NULL,
+JOB_NAME VARCHAR(200) NOT NULL,
+JOB_GROUP VARCHAR(200) NOT NULL,
+DESCRIPTION VARCHAR(250) NULL,
+NEXT_FIRE_TIME BIGINT(13) NULL,
+PREV_FIRE_TIME BIGINT(13) NULL,
+PRIORITY INTEGER NULL,
+TRIGGER_STATE VARCHAR(16) NOT NULL,
+TRIGGER_TYPE VARCHAR(8) NOT NULL,
+START_TIME BIGINT(13) NOT NULL,
+END_TIME BIGINT(13) NULL,
+CALENDAR_NAME VARCHAR(200) NULL,
+MISFIRE_INSTR SMALLINT(2) NULL,
+JOB_DATA BLOB NULL,
+PRIMARY KEY (SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP),
+FOREIGN KEY (SCHED_NAME,JOB_NAME,JOB_GROUP)
+REFERENCES QRTZ_JOB_DETAILS(SCHED_NAME,JOB_NAME,JOB_GROUP))
+ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS QRTZ_SIMPLE_TRIGGERS (
+SCHED_NAME VARCHAR(120) NOT NULL,
+TRIGGER_NAME VARCHAR(200) NOT NULL,
+TRIGGER_GROUP VARCHAR(200) NOT NULL,
+REPEAT_COUNT BIGINT(7) NOT NULL,
+REPEAT_INTERVAL BIGINT(12) NOT NULL,
+TIMES_TRIGGERED BIGINT(10) NOT NULL,
+PRIMARY KEY (SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP),
+FOREIGN KEY (SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP)
+REFERENCES QRTZ_TRIGGERS(SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP))
+ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS QRTZ_CRON_TRIGGERS (
+SCHED_NAME VARCHAR(120) NOT NULL,
+TRIGGER_NAME VARCHAR(200) NOT NULL,
+TRIGGER_GROUP VARCHAR(200) NOT NULL,
+CRON_EXPRESSION VARCHAR(120) NOT NULL,
+TIME_ZONE_ID VARCHAR(80),
+PRIMARY KEY (SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP),
+FOREIGN KEY (SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP)
+REFERENCES QRTZ_TRIGGERS(SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP))
+ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS QRTZ_SIMPROP_TRIGGERS
+  (
+    SCHED_NAME VARCHAR(120) NOT NULL,
+    TRIGGER_NAME VARCHAR(200) NOT NULL,
+    TRIGGER_GROUP VARCHAR(200) NOT NULL,
+    STR_PROP_1 VARCHAR(512) NULL,
+    STR_PROP_2 VARCHAR(512) NULL,
+    STR_PROP_3 VARCHAR(512) NULL,
+    INT_PROP_1 INT NULL,
+    INT_PROP_2 INT NULL,
+    LONG_PROP_1 BIGINT NULL,
+    LONG_PROP_2 BIGINT NULL,
+    DEC_PROP_1 NUMERIC(13,4) NULL,
+    DEC_PROP_2 NUMERIC(13,4) NULL,
+    BOOL_PROP_1 VARCHAR(1) NULL,
+    BOOL_PROP_2 VARCHAR(1) NULL,
+    PRIMARY KEY (SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP),
+    FOREIGN KEY (SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP)
+    REFERENCES QRTZ_TRIGGERS(SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP))
+ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS QRTZ_BLOB_TRIGGERS (
+SCHED_NAME VARCHAR(120) NOT NULL,
+TRIGGER_NAME VARCHAR(200) NOT NULL,
+TRIGGER_GROUP VARCHAR(200) NOT NULL,
+BLOB_DATA BLOB NULL,
+PRIMARY KEY (SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP),
+INDEX (SCHED_NAME,TRIGGER_NAME, TRIGGER_GROUP),
+FOREIGN KEY (SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP)
+REFERENCES QRTZ_TRIGGERS(SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP))
+ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS QRTZ_CALENDARS (
+SCHED_NAME VARCHAR(120) NOT NULL,
+CALENDAR_NAME VARCHAR(200) NOT NULL,
+CALENDAR BLOB NOT NULL,
+PRIMARY KEY (SCHED_NAME,CALENDAR_NAME))
+ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS QRTZ_PAUSED_TRIGGER_GRPS (
+SCHED_NAME VARCHAR(120) NOT NULL,
+TRIGGER_GROUP VARCHAR(200) NOT NULL,
+PRIMARY KEY (SCHED_NAME,TRIGGER_GROUP))
+ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS QRTZ_FIRED_TRIGGERS (
+SCHED_NAME VARCHAR(120) NOT NULL,
+ENTRY_ID VARCHAR(95) NOT NULL,
+TRIGGER_NAME VARCHAR(200) NOT NULL,
+TRIGGER_GROUP VARCHAR(200) NOT NULL,
+INSTANCE_NAME VARCHAR(200) NOT NULL,
+FIRED_TIME BIGINT(13) NOT NULL,
+SCHED_TIME BIGINT(13) NOT NULL,
+PRIORITY INTEGER NOT NULL,
+STATE VARCHAR(16) NOT NULL,
+JOB_NAME VARCHAR(200) NULL,
+JOB_GROUP VARCHAR(200) NULL,
+IS_NONCONCURRENT VARCHAR(1) NULL,
+REQUESTS_RECOVERY VARCHAR(1) NULL,
+PRIMARY KEY (SCHED_NAME,ENTRY_ID))
+ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS QRTZ_SCHEDULER_STATE (
+SCHED_NAME VARCHAR(120) NOT NULL,
+INSTANCE_NAME VARCHAR(200) NOT NULL,
+LAST_CHECKIN_TIME BIGINT(13) NOT NULL,
+CHECKIN_INTERVAL BIGINT(13) NOT NULL,
+PRIMARY KEY (SCHED_NAME,INSTANCE_NAME))
+ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS QRTZ_LOCKS (
+SCHED_NAME VARCHAR(120) NOT NULL,
+LOCK_NAME VARCHAR(40) NOT NULL,
+PRIMARY KEY (SCHED_NAME,LOCK_NAME))
+ENGINE=InnoDB;
+
+
+DROP PROCEDURE IF EXISTS schema_change;
+CREATE PROCEDURE schema_change()
+DELIMITER $$
+BEGIN
+DECLARE  CurrentDatabase VARCHAR(100);
+SELECT DATABASE() INTO CurrentDatabase;
+IF NOT EXISTS (SELECT * FROM information_schema.statistics WHERE table_schema=CurrentDatabase AND table_name = &#39;QRTZ_JOB_DETAILS&#39; AND index_name = &#39;IDX_QRTZ_J_REQ_RECOVERY&#39;) THEN
+  CREATE INDEX IDX_QRTZ_J_REQ_RECOVERY ON QRTZ_JOB_DETAILS(SCHED_NAME,REQUESTS_RECOVERY);
+END IF;
+
+IF NOT EXISTS (SELECT * FROM information_schema.statistics WHERE table_schema=CurrentDatabase AND table_name = &#39;QRTZ_JOB_DETAILS&#39; AND index_name = &#39;IDX_QRTZ_J_GRP&#39;) THEN
+  CREATE INDEX IDX_QRTZ_J_GRP ON QRTZ_JOB_DETAILS(SCHED_NAME,JOB_GROUP);
+END IF;
+
+IF NOT EXISTS (SELECT * FROM information_schema.statistics WHERE table_schema=CurrentDatabase AND table_name = &#39;QRTZ_TRIGGERS&#39; AND index_name = &#39;IDX_QRTZ_T_J&#39;) THEN
+  CREATE INDEX IDX_QRTZ_T_J ON QRTZ_TRIGGERS(SCHED_NAME,JOB_NAME,JOB_GROUP);
+END IF;
+
+IF NOT EXISTS (SELECT * FROM information_schema.statistics WHERE table_schema=CurrentDatabase AND table_name = &#39;QRTZ_TRIGGERS&#39; AND index_name = &#39;IDX_QRTZ_T_JG&#39;) THEN
+  CREATE INDEX IDX_QRTZ_T_JG ON QRTZ_TRIGGERS(SCHED_NAME,JOB_GROUP);
+END IF;
+IF NOT EXISTS (SELECT * FROM information_schema.statistics WHERE table_schema=CurrentDatabase AND table_name = &#39;QRTZ_TRIGGERS&#39; AND index_name = &#39;IDX_QRTZ_T_C&#39;) THEN
+  CREATE INDEX IDX_QRTZ_T_C ON QRTZ_TRIGGERS(SCHED_NAME,CALENDAR_NAME);
+END IF;
+IF NOT EXISTS (SELECT * FROM information_schema.statistics WHERE table_schema=CurrentDatabase AND table_name = &#39;QRTZ_TRIGGERS&#39; AND index_name = &#39;IDX_QRTZ_T_G&#39;) THEN
+  CREATE INDEX IDX_QRTZ_T_G ON QRTZ_TRIGGERS(SCHED_NAME,TRIGGER_GROUP);
+END IF;
+IF NOT EXISTS (SELECT * FROM information_schema.statistics WHERE table_schema=CurrentDatabase AND table_name = &#39;QRTZ_TRIGGERS&#39; AND index_name = &#39;IDX_QRTZ_T_STATE&#39;) THEN
+  CREATE INDEX IDX_QRTZ_T_STATE ON QRTZ_TRIGGERS(SCHED_NAME,TRIGGER_STATE);
+END IF;
+IF NOT EXISTS (SELECT * FROM information_schema.statistics WHERE table_schema=CurrentDatabase AND table_name = &#39;QRTZ_TRIGGERS&#39; AND index_name = &#39;IDX_QRTZ_T_N_STATE&#39;) THEN
+  CREATE INDEX IDX_QRTZ_T_N_STATE ON QRTZ_TRIGGERS(SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP,TRIGGER_STATE);
+END IF;
+IF NOT EXISTS (SELECT * FROM information_schema.statistics WHERE table_schema=CurrentDatabase AND table_name = &#39;QRTZ_TRIGGERS&#39; AND index_name = &#39;IDX_QRTZ_T_N_G_STATE&#39;) THEN
+  CREATE INDEX IDX_QRTZ_T_N_G_STATE ON QRTZ_TRIGGERS(SCHED_NAME,TRIGGER_GROUP,TRIGGER_STATE);
+END IF;
+IF NOT EXISTS (SELECT * FROM information_schema.statistics WHERE table_schema=CurrentDatabase AND table_name = &#39;QRTZ_TRIGGERS&#39; AND index_name = &#39;IDX_QRTZ_T_NEXT_FIRE_TIME&#39;) THEN
+  CREATE INDEX IDX_QRTZ_T_NEXT_FIRE_TIME ON QRTZ_TRIGGERS(SCHED_NAME,NEXT_FIRE_TIME);
+END IF;
+IF NOT EXISTS (SELECT * FROM information_schema.statistics WHERE table_schema=CurrentDatabase AND table_name = &#39;QRTZ_TRIGGERS&#39; AND index_name = &#39;IDX_QRTZ_T_NFT_ST&#39;) THEN
+  CREATE INDEX IDX_QRTZ_T_NFT_ST ON QRTZ_TRIGGERS(SCHED_NAME,TRIGGER_STATE,NEXT_FIRE_TIME);
+END IF;
+IF NOT EXISTS (SELECT * FROM information_schema.statistics WHERE table_schema=CurrentDatabase AND table_name = &#39;QRTZ_TRIGGERS&#39; AND index_name = &#39;IDX_QRTZ_T_NFT_MISFIRE&#39;) THEN
+  CREATE INDEX IDX_QRTZ_T_NFT_MISFIRE ON QRTZ_TRIGGERS(SCHED_NAME,MISFIRE_INSTR,NEXT_FIRE_TIME);
+END IF;
+
+IF NOT EXISTS (SELECT * FROM information_schema.statistics WHERE table_schema=CurrentDatabase AND table_name = &#39;QRTZ_TRIGGERS&#39; AND index_name = &#39;IDX_QRTZ_T_NFT_ST_MISFIRE&#39;) THEN
+  CREATE INDEX IDX_QRTZ_T_NFT_ST_MISFIRE ON QRTZ_TRIGGERS(SCHED_NAME,MISFIRE_INSTR,NEXT_FIRE_TIME,TRIGGER_STATE);
+END IF;
+IF NOT EXISTS (SELECT * FROM information_schema.statistics WHERE table_schema=CurrentDatabase AND table_name = &#39;QRTZ_TRIGGERS&#39; AND index_name = &#39;IDX_QRTZ_T_NFT_ST_MISFIRE_GRP&#39;) THEN
+  CREATE INDEX IDX_QRTZ_T_NFT_ST_MISFIRE_GRP ON QRTZ_TRIGGERS(SCHED_NAME,MISFIRE_INSTR,NEXT_FIRE_TIME,TRIGGER_GROUP,TRIGGER_STATE);
+END IF;
+IF NOT EXISTS (SELECT * FROM information_schema.statistics WHERE table_schema=CurrentDatabase AND table_name = &#39;QRTZ_FIRED_TRIGGERS&#39; AND index_name = &#39;IDX_QRTZ_FT_TRIG_INST_NAME&#39;) THEN
+  CREATE INDEX IDX_QRTZ_FT_TRIG_INST_NAME ON QRTZ_FIRED_TRIGGERS(SCHED_NAME,INSTANCE_NAME);
+END IF;
+IF NOT EXISTS (SELECT * FROM information_schema.statistics WHERE table_schema=CurrentDatabase AND table_name = &#39;QRTZ_FIRED_TRIGGERS&#39; AND index_name = &#39;IDX_QRTZ_FT_INST_JOB_REQ_RCVRY&#39;) THEN
+  CREATE INDEX IDX_QRTZ_FT_INST_JOB_REQ_RCVRY ON QRTZ_FIRED_TRIGGERS(SCHED_NAME,INSTANCE_NAME,REQUESTS_RECOVERY);
+END IF;
+IF NOT EXISTS (SELECT * FROM information_schema.statistics WHERE table_schema=CurrentDatabase AND table_name = &#39;QRTZ_FIRED_TRIGGERS&#39; AND index_name = &#39;IDX_QRTZ_FT_J_G&#39;) THEN
+  CREATE INDEX IDX_QRTZ_FT_J_G ON QRTZ_FIRED_TRIGGERS(SCHED_NAME,JOB_NAME,JOB_GROUP);
+END IF;
+IF NOT EXISTS (SELECT * FROM information_schema.statistics WHERE table_schema=CurrentDatabase AND table_name = &#39;QRTZ_FIRED_TRIGGERS&#39; AND index_name = &#39;IDX_QRTZ_FT_JG&#39;) THEN
+  CREATE INDEX IDX_QRTZ_FT_JG ON QRTZ_FIRED_TRIGGERS(SCHED_NAME,JOB_GROUP);
+END IF;
+
+IF NOT EXISTS (SELECT * FROM information_schema.statistics WHERE table_schema=CurrentDatabase AND table_name = &#39;QRTZ_FIRED_TRIGGERS&#39; AND index_name = &#39;IDX_QRTZ_FT_T_G&#39;) THEN
+  CREATE INDEX IDX_QRTZ_FT_T_G ON QRTZ_FIRED_TRIGGERS(SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP);
+END IF;
+IF NOT EXISTS (SELECT * FROM information_schema.statistics WHERE table_schema=CurrentDatabase AND table_name = &#39;QRTZ_FIRED_TRIGGERS&#39; AND index_name = &#39;IDX_QRTZ_FT_TG&#39;) THEN
+  CREATE INDEX IDX_QRTZ_FT_TG ON QRTZ_FIRED_TRIGGERS(SCHED_NAME,TRIGGER_GROUP);
+END IF;
+
+END $$
+DELIMITER;
+CALL schema_change();
+</code></pre>
+<p>刚才说到基于配置的初始化SQL脚本不能去执行存储过程，原因是，springboot默认的SQL分隔符为;，也就是说，当它读到脚本中的;时就会默认为这是一条可执行的语句，所以我们的存储过程就没有办法执行，就会报如下错误：</p>
+<pre><code>Caused by: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: You have an error in your SQL syntax; 
+check the manual that corresponds to your MySQL server version for the right syntax to use near
+&#39;$$ BEGIN DECLARE CurrentDatabase VARCHAR(100)&#39; at line 1
+</code></pre>
+<p>显然就是说我们的SQL语法有问题，实际上就是上面我所提到的问题导致的，那么如何解决呢，这里参考了网上一种解决方法就是修改springboot默认的SQL分隔符。这里我们修改分隔符为$$。在配置文件中添加：</p>
+<pre><code class="yaml">spirng.datasource.separator: $$
+</code></pre>
+<p>然后就是修改我们的SQL脚本，将原来的;改为;$$，存储过程中的;不变。</p>
+<p>脚本如下所示：</p>
+<pre><code class="sql">CREATE TABLE IF NOT EXISTS  QRTZ_JOB_DETAILS (
+SCHED_NAME VARCHAR(120) NOT NULL,
+JOB_NAME VARCHAR(200) NOT NULL,
+JOB_GROUP VARCHAR(200) NOT NULL,
+DESCRIPTION VARCHAR(250) NULL,
+JOB_CLASS_NAME VARCHAR(250) NOT NULL,
+IS_DURABLE VARCHAR(1) NOT NULL,
+IS_NONCONCURRENT VARCHAR(1) NOT NULL,
+IS_UPDATE_DATA VARCHAR(1) NOT NULL,
+REQUESTS_RECOVERY VARCHAR(1) NOT NULL,
+JOB_DATA BLOB NULL,
+PRIMARY KEY (SCHED_NAME,JOB_NAME,JOB_GROUP))
+ENGINE=InnoDB;$$
+
+CREATE TABLE IF NOT EXISTS QRTZ_TRIGGERS (
+SCHED_NAME VARCHAR(120) NOT NULL,
+TRIGGER_NAME VARCHAR(200) NOT NULL,
+TRIGGER_GROUP VARCHAR(200) NOT NULL,
+JOB_NAME VARCHAR(200) NOT NULL,
+JOB_GROUP VARCHAR(200) NOT NULL,
+DESCRIPTION VARCHAR(250) NULL,
+NEXT_FIRE_TIME BIGINT(13) NULL,
+PREV_FIRE_TIME BIGINT(13) NULL,
+PRIORITY INTEGER NULL,
+TRIGGER_STATE VARCHAR(16) NOT NULL,
+TRIGGER_TYPE VARCHAR(8) NOT NULL,
+START_TIME BIGINT(13) NOT NULL,
+END_TIME BIGINT(13) NULL,
+CALENDAR_NAME VARCHAR(200) NULL,
+MISFIRE_INSTR SMALLINT(2) NULL,
+JOB_DATA BLOB NULL,
+PRIMARY KEY (SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP),
+FOREIGN KEY (SCHED_NAME,JOB_NAME,JOB_GROUP)
+REFERENCES QRTZ_JOB_DETAILS(SCHED_NAME,JOB_NAME,JOB_GROUP))
+ENGINE=InnoDB;$$
+
+CREATE TABLE IF NOT EXISTS QRTZ_SIMPLE_TRIGGERS (
+SCHED_NAME VARCHAR(120) NOT NULL,
+TRIGGER_NAME VARCHAR(200) NOT NULL,
+TRIGGER_GROUP VARCHAR(200) NOT NULL,
+REPEAT_COUNT BIGINT(7) NOT NULL,
+REPEAT_INTERVAL BIGINT(12) NOT NULL,
+TIMES_TRIGGERED BIGINT(10) NOT NULL,
+PRIMARY KEY (SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP),
+FOREIGN KEY (SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP)
+REFERENCES QRTZ_TRIGGERS(SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP))
+ENGINE=InnoDB;$$
+
+CREATE TABLE IF NOT EXISTS QRTZ_CRON_TRIGGERS (
+SCHED_NAME VARCHAR(120) NOT NULL,
+TRIGGER_NAME VARCHAR(200) NOT NULL,
+TRIGGER_GROUP VARCHAR(200) NOT NULL,
+CRON_EXPRESSION VARCHAR(120) NOT NULL,
+TIME_ZONE_ID VARCHAR(80),
+PRIMARY KEY (SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP),
+FOREIGN KEY (SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP)
+REFERENCES QRTZ_TRIGGERS(SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP))
+ENGINE=InnoDB;$$
+
+CREATE TABLE IF NOT EXISTS QRTZ_SIMPROP_TRIGGERS
+  (
+    SCHED_NAME VARCHAR(120) NOT NULL,
+    TRIGGER_NAME VARCHAR(200) NOT NULL,
+    TRIGGER_GROUP VARCHAR(200) NOT NULL,
+    STR_PROP_1 VARCHAR(512) NULL,
+    STR_PROP_2 VARCHAR(512) NULL,
+    STR_PROP_3 VARCHAR(512) NULL,
+    INT_PROP_1 INT NULL,
+    INT_PROP_2 INT NULL,
+    LONG_PROP_1 BIGINT NULL,
+    LONG_PROP_2 BIGINT NULL,
+    DEC_PROP_1 NUMERIC(13,4) NULL,
+    DEC_PROP_2 NUMERIC(13,4) NULL,
+    BOOL_PROP_1 VARCHAR(1) NULL,
+    BOOL_PROP_2 VARCHAR(1) NULL,
+    PRIMARY KEY (SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP),
+    FOREIGN KEY (SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP)
+    REFERENCES QRTZ_TRIGGERS(SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP))
+ENGINE=InnoDB;$$
+
+CREATE TABLE IF NOT EXISTS QRTZ_BLOB_TRIGGERS (
+SCHED_NAME VARCHAR(120) NOT NULL,
+TRIGGER_NAME VARCHAR(200) NOT NULL,
+TRIGGER_GROUP VARCHAR(200) NOT NULL,
+BLOB_DATA BLOB NULL,
+PRIMARY KEY (SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP),
+INDEX (SCHED_NAME,TRIGGER_NAME, TRIGGER_GROUP),
+FOREIGN KEY (SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP)
+REFERENCES QRTZ_TRIGGERS(SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP))
+ENGINE=InnoDB;$$
+
+CREATE TABLE IF NOT EXISTS QRTZ_CALENDARS (
+SCHED_NAME VARCHAR(120) NOT NULL,
+CALENDAR_NAME VARCHAR(200) NOT NULL,
+CALENDAR BLOB NOT NULL,
+PRIMARY KEY (SCHED_NAME,CALENDAR_NAME))
+ENGINE=InnoDB;$$
+
+CREATE TABLE IF NOT EXISTS QRTZ_PAUSED_TRIGGER_GRPS (
+SCHED_NAME VARCHAR(120) NOT NULL,
+TRIGGER_GROUP VARCHAR(200) NOT NULL,
+PRIMARY KEY (SCHED_NAME,TRIGGER_GROUP))
+ENGINE=InnoDB;$$
+
+CREATE TABLE IF NOT EXISTS QRTZ_FIRED_TRIGGERS (
+SCHED_NAME VARCHAR(120) NOT NULL,
+ENTRY_ID VARCHAR(95) NOT NULL,
+TRIGGER_NAME VARCHAR(200) NOT NULL,
+TRIGGER_GROUP VARCHAR(200) NOT NULL,
+INSTANCE_NAME VARCHAR(200) NOT NULL,
+FIRED_TIME BIGINT(13) NOT NULL,
+SCHED_TIME BIGINT(13) NOT NULL,
+PRIORITY INTEGER NOT NULL,
+STATE VARCHAR(16) NOT NULL,
+JOB_NAME VARCHAR(200) NULL,
+JOB_GROUP VARCHAR(200) NULL,
+IS_NONCONCURRENT VARCHAR(1) NULL,
+REQUESTS_RECOVERY VARCHAR(1) NULL,
+PRIMARY KEY (SCHED_NAME,ENTRY_ID))
+ENGINE=InnoDB;$$
+
+CREATE TABLE IF NOT EXISTS QRTZ_SCHEDULER_STATE (
+SCHED_NAME VARCHAR(120) NOT NULL,
+INSTANCE_NAME VARCHAR(200) NOT NULL,
+LAST_CHECKIN_TIME BIGINT(13) NOT NULL,
+CHECKIN_INTERVAL BIGINT(13) NOT NULL,
+PRIMARY KEY (SCHED_NAME,INSTANCE_NAME))
+ENGINE=InnoDB;$$
+
+CREATE TABLE IF NOT EXISTS QRTZ_LOCKS (
+SCHED_NAME VARCHAR(120) NOT NULL,
+LOCK_NAME VARCHAR(40) NOT NULL,
+PRIMARY KEY (SCHED_NAME,LOCK_NAME))
+ENGINE=InnoDB;$$
+
+DROP PROCEDURE IF EXISTS schema_change;$$
+CREATE PROCEDURE schema_change()
+BEGIN
+DECLARE  CurrentDatabase VARCHAR(100);
+SELECT DATABASE() INTO CurrentDatabase;
+IF NOT EXISTS (SELECT * FROM information_schema.statistics WHERE table_schema=CurrentDatabase AND table_name = &#39;QRTZ_JOB_DETAILS&#39; AND index_name = &#39;IDX_QRTZ_J_REQ_RECOVERY&#39;) THEN
+  CREATE INDEX IDX_QRTZ_J_REQ_RECOVERY ON QRTZ_JOB_DETAILS(SCHED_NAME,REQUESTS_RECOVERY);
+END IF;
+
+IF NOT EXISTS (SELECT * FROM information_schema.statistics WHERE table_schema=CurrentDatabase AND table_name = &#39;QRTZ_JOB_DETAILS&#39; AND index_name = &#39;IDX_QRTZ_J_GRP&#39;) THEN
+  CREATE INDEX IDX_QRTZ_J_GRP ON QRTZ_JOB_DETAILS(SCHED_NAME,JOB_GROUP);
+END IF;
+
+IF NOT EXISTS (SELECT * FROM information_schema.statistics WHERE table_schema=CurrentDatabase AND table_name = &#39;QRTZ_TRIGGERS&#39; AND index_name = &#39;IDX_QRTZ_T_J&#39;) THEN
+  CREATE INDEX IDX_QRTZ_T_J ON QRTZ_TRIGGERS(SCHED_NAME,JOB_NAME,JOB_GROUP);
+END IF;
+
+IF NOT EXISTS (SELECT * FROM information_schema.statistics WHERE table_schema=CurrentDatabase AND table_name = &#39;QRTZ_TRIGGERS&#39; AND index_name = &#39;IDX_QRTZ_T_JG&#39;) THEN
+  CREATE INDEX IDX_QRTZ_T_JG ON QRTZ_TRIGGERS(SCHED_NAME,JOB_GROUP);
+END IF;
+IF NOT EXISTS (SELECT * FROM information_schema.statistics WHERE table_schema=CurrentDatabase AND table_name = &#39;QRTZ_TRIGGERS&#39; AND index_name = &#39;IDX_QRTZ_T_C&#39;) THEN
+  CREATE INDEX IDX_QRTZ_T_C ON QRTZ_TRIGGERS(SCHED_NAME,CALENDAR_NAME);
+END IF;
+IF NOT EXISTS (SELECT * FROM information_schema.statistics WHERE table_schema=CurrentDatabase AND table_name = &#39;QRTZ_TRIGGERS&#39; AND index_name = &#39;IDX_QRTZ_T_G&#39;) THEN
+  CREATE INDEX IDX_QRTZ_T_G ON QRTZ_TRIGGERS(SCHED_NAME,TRIGGER_GROUP);
+END IF;
+IF NOT EXISTS (SELECT * FROM information_schema.statistics WHERE table_schema=CurrentDatabase AND table_name = &#39;QRTZ_TRIGGERS&#39; AND index_name = &#39;IDX_QRTZ_T_STATE&#39;) THEN
+  CREATE INDEX IDX_QRTZ_T_STATE ON QRTZ_TRIGGERS(SCHED_NAME,TRIGGER_STATE);
+END IF;
+IF NOT EXISTS (SELECT * FROM information_schema.statistics WHERE table_schema=CurrentDatabase AND table_name = &#39;QRTZ_TRIGGERS&#39; AND index_name = &#39;IDX_QRTZ_T_N_STATE&#39;) THEN
+  CREATE INDEX IDX_QRTZ_T_N_STATE ON QRTZ_TRIGGERS(SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP,TRIGGER_STATE);
+END IF;
+IF NOT EXISTS (SELECT * FROM information_schema.statistics WHERE table_schema=CurrentDatabase AND table_name = &#39;QRTZ_TRIGGERS&#39; AND index_name = &#39;IDX_QRTZ_T_N_G_STATE&#39;) THEN
+  CREATE INDEX IDX_QRTZ_T_N_G_STATE ON QRTZ_TRIGGERS(SCHED_NAME,TRIGGER_GROUP,TRIGGER_STATE);
+END IF;
+IF NOT EXISTS (SELECT * FROM information_schema.statistics WHERE table_schema=CurrentDatabase AND table_name = &#39;QRTZ_TRIGGERS&#39; AND index_name = &#39;IDX_QRTZ_T_NEXT_FIRE_TIME&#39;) THEN
+  CREATE INDEX IDX_QRTZ_T_NEXT_FIRE_TIME ON QRTZ_TRIGGERS(SCHED_NAME,NEXT_FIRE_TIME);
+END IF;
+IF NOT EXISTS (SELECT * FROM information_schema.statistics WHERE table_schema=CurrentDatabase AND table_name = &#39;QRTZ_TRIGGERS&#39; AND index_name = &#39;IDX_QRTZ_T_NFT_ST&#39;) THEN
+  CREATE INDEX IDX_QRTZ_T_NFT_ST ON QRTZ_TRIGGERS(SCHED_NAME,TRIGGER_STATE,NEXT_FIRE_TIME);
+END IF;
+IF NOT EXISTS (SELECT * FROM information_schema.statistics WHERE table_schema=CurrentDatabase AND table_name = &#39;QRTZ_TRIGGERS&#39; AND index_name = &#39;IDX_QRTZ_T_NFT_MISFIRE&#39;) THEN
+  CREATE INDEX IDX_QRTZ_T_NFT_MISFIRE ON QRTZ_TRIGGERS(SCHED_NAME,MISFIRE_INSTR,NEXT_FIRE_TIME);
+END IF;
+
+IF NOT EXISTS (SELECT * FROM information_schema.statistics WHERE table_schema=CurrentDatabase AND table_name = &#39;QRTZ_TRIGGERS&#39; AND index_name = &#39;IDX_QRTZ_T_NFT_ST_MISFIRE&#39;) THEN
+  CREATE INDEX IDX_QRTZ_T_NFT_ST_MISFIRE ON QRTZ_TRIGGERS(SCHED_NAME,MISFIRE_INSTR,NEXT_FIRE_TIME,TRIGGER_STATE);
+END IF;
+IF NOT EXISTS (SELECT * FROM information_schema.statistics WHERE table_schema=CurrentDatabase AND table_name = &#39;QRTZ_TRIGGERS&#39; AND index_name = &#39;IDX_QRTZ_T_NFT_ST_MISFIRE_GRP&#39;) THEN
+  CREATE INDEX IDX_QRTZ_T_NFT_ST_MISFIRE_GRP ON QRTZ_TRIGGERS(SCHED_NAME,MISFIRE_INSTR,NEXT_FIRE_TIME,TRIGGER_GROUP,TRIGGER_STATE);
+END IF;
+IF NOT EXISTS (SELECT * FROM information_schema.statistics WHERE table_schema=CurrentDatabase AND table_name = &#39;QRTZ_FIRED_TRIGGERS&#39; AND index_name = &#39;IDX_QRTZ_FT_TRIG_INST_NAME&#39;) THEN
+  CREATE INDEX IDX_QRTZ_FT_TRIG_INST_NAME ON QRTZ_FIRED_TRIGGERS(SCHED_NAME,INSTANCE_NAME);
+END IF;
+IF NOT EXISTS (SELECT * FROM information_schema.statistics WHERE table_schema=CurrentDatabase AND table_name = &#39;QRTZ_FIRED_TRIGGERS&#39; AND index_name = &#39;IDX_QRTZ_FT_INST_JOB_REQ_RCVRY&#39;) THEN
+  CREATE INDEX IDX_QRTZ_FT_INST_JOB_REQ_RCVRY ON QRTZ_FIRED_TRIGGERS(SCHED_NAME,INSTANCE_NAME,REQUESTS_RECOVERY);
+END IF;
+IF NOT EXISTS (SELECT * FROM information_schema.statistics WHERE table_schema=CurrentDatabase AND table_name = &#39;QRTZ_FIRED_TRIGGERS&#39; AND index_name = &#39;IDX_QRTZ_FT_J_G&#39;) THEN
+  CREATE INDEX IDX_QRTZ_FT_J_G ON QRTZ_FIRED_TRIGGERS(SCHED_NAME,JOB_NAME,JOB_GROUP);
+END IF;
+IF NOT EXISTS (SELECT * FROM information_schema.statistics WHERE table_schema=CurrentDatabase AND table_name = &#39;QRTZ_FIRED_TRIGGERS&#39; AND index_name = &#39;IDX_QRTZ_FT_JG&#39;) THEN
+  CREATE INDEX IDX_QRTZ_FT_JG ON QRTZ_FIRED_TRIGGERS(SCHED_NAME,JOB_GROUP);
+END IF;
+
+IF NOT EXISTS (SELECT * FROM information_schema.statistics WHERE table_schema=CurrentDatabase AND table_name = &#39;QRTZ_FIRED_TRIGGERS&#39; AND index_name = &#39;IDX_QRTZ_FT_T_G&#39;) THEN
+  CREATE INDEX IDX_QRTZ_FT_T_G ON QRTZ_FIRED_TRIGGERS(SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP);
+END IF;
+IF NOT EXISTS (SELECT * FROM information_schema.statistics WHERE table_schema=CurrentDatabase AND table_name = &#39;QRTZ_FIRED_TRIGGERS&#39; AND index_name = &#39;IDX_QRTZ_FT_TG&#39;) THEN
+  CREATE INDEX IDX_QRTZ_FT_TG ON QRTZ_FIRED_TRIGGERS(SCHED_NAME,TRIGGER_GROUP);
+END IF;
+
+END $$
+CALL schema_change();$$
+</code></pre>
+<p>如上修改完我们的SQL脚本之后，就可以在启动项目的时候自动初始化项目了 。</p>
+<h5 id="4-1-1-2-基于编程的SQL初始化"><a href="#4-1-1-2-基于编程的SQL初始化" class="headerlink" title="4.1.1.2 基于编程的SQL初始化"></a>4.1.1.2 基于编程的SQL初始化</h5><p>基于编程的SQL初始化就是手动加载DataSource和SQL脚本，然后去执行脚本。因为我们之前将Quartz与Spring整合，需要将Scheduler以Bean的形式注入到IOC容器中，所以我们的初始化脚本要在这之前执行。这里我们将在之前的QuartzConfig类里添加相应修改。</p>
+<p>注释掉之前的基于配置的SQL初始化配置</p>
+<pre><code class="yaml">#   schema-username: root
+#   schema-password: hollysys
+#   schema: classpath:quartz_tables.sql
+#   initialization-mode: always
+#   separator: $$
+</code></pre>
+<p>在QuartzConfig类里注入Springboot的DataSource</p>
+<pre><code class="java">    @Autowired
+    DataSource dataSource;
+</code></pre>
+<p>在QuartzConfig类创建初始化数据库方法initDataBase()</p>
+<pre><code class="java">public void initDataBase(DataSource dataSource) &#123;
+        log.info(&quot;============== init quartz database started ==============&quot;);
+        try &#123;
+            //加载SQL
+            ClassPathResource recordsSys = new ClassPathResource(&quot;quartz_tables.sql&quot;);
+            //使用DataSourceInitializer初始化
+            DataSourceInitializer dsi = new DataSourceInitializer();
+            dsi.setDataSource(dataSource);
+            dsi.setDatabasePopulator(new ResourceDatabasePopulator(true, true, &quot;utf-8&quot;, recordsSys));
+            dsi.setEnabled(true);
+            dsi.afterPropertiesSet();
+            log.info(&quot;============== init quartz database succeed ==============&quot;);
+        &#125; catch (Exception e) &#123;
+            log.error(&quot;init quartz database failed:&#123;&#125;&quot;, e.getMessage());
+        &#125;
+    &#125;
+</code></pre>
+<p>在创建SchedulerFactoryBean的时候，去初始化数据库</p>
+<pre><code class="java">    @Bean
+    public SchedulerFactoryBean schedulerFactoryBean() throws IOException &#123;
+        //初始化数据库
+        initDataBase(dataSource);
+        SchedulerFactoryBean schedulerFactoryBean = new SchedulerFactoryBean();
+        schedulerFactoryBean.setOverwriteExistingJobs(true);
+        schedulerFactoryBean.setQuartzProperties(quartzProperties());
+        schedulerFactoryBean.setJobFactory(jobFactory);
+        return schedulerFactoryBean;
+    &#125;
+</code></pre>
+<p>这样我们就完成基于编程的SQL初始化。</p>
+<h4 id="4-1-2-使用Quartz自定义DataSource时，初始化Quartz建表SQL"><a href="#4-1-2-使用Quartz自定义DataSource时，初始化Quartz建表SQL" class="headerlink" title="4.1.2 使用Quartz自定义DataSource时，初始化Quartz建表SQL"></a>4.1.2 使用Quartz自定义DataSource时，初始化Quartz建表SQL</h4><p>上面我们介绍了两种方式实现使用Springboot的DataSource去初始化Quartz的建表SQL。这里我们来讲一下，使用自定义的DataSource该如何初始化呢？其实原理与上面的基于编程的方式一样，只不过不能通过注解的方式注入DataSource，而是需要我们手动创建DataSource，然后传入上面编写的initDataBase(）方法。</p>
+<p>首先在quartz.properties配置文件中开启我们的数据库相关配置</p>
+<pre><code>#存储方式使用JobStoreTX，也就是数据库
+org.quartz.jobStore.class:org.quartz.impl.jdbcjobstore.JobStoreTX
+org.quartz.jobStore.driverDelegateClass:org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+#是否使用集群（如果项目只部署到 一台服务器，就不用了）
+org.quartz.jobStore.isClustered = false
+org.quartz.jobStore.clusterCheckinInterval=20000
+org.quartz.jobStore.tablePrefix = QRTZ_
+org.quartz.jobStore.dataSource = myDS
+
+#配置数据源
+#数据库中quartz表的表名前缀
+org.quartz.dataSource.myDS.driver = com.mysql.jdbc.Driver
+org.quartz.dataSource.myDS.URL = jdbc:mysql://localhost:3306/springboot?characterEncoding=utf-8&amp;useSSL=false
+org.quartz.dataSource.myDS.user = root
+org.quartz.dataSource.myDS.password = hollysys
+org.quartz.dataSource.myDS.maxConnections = 5
+</code></pre>
+<p>在QuartzConfig类里添加创建DataSource的方法 quartzSource()如下所示：</p>
+<pre><code class="java">    @Bean
+    public DataSource quartzSource() throws IOException &#123;
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        Properties properties = quartzProperties();
+        dataSource.setDriverClassName(properties.getProperty(&quot;org.quartz.dataSource.myDS.driver&quot;));
+        dataSource.setUrl(properties.getProperty(&quot;org.quartz.dataSource.myDS.URL&quot;));
+        dataSource.setUsername(properties.getProperty(&quot;org.quartz.dataSource.myDS.user&quot;));
+        dataSource.setPassword(properties.getProperty(&quot;org.quartz.dataSource.myDS.password&quot;));
+        return dataSource;
+    &#125;
+</code></pre>
+<p>然后同样在创建SchedulerFactoryBean的时候，去初始化数据库</p>
+<pre><code class="java">    @Bean
+    public SchedulerFactoryBean schedulerFactoryBean() throws IOException &#123;
+        //初始化数据库,这时候DataSource就要使用上面的quartzSource()方法创建了
+        initDataBase(quartzSource());
+        SchedulerFactoryBean schedulerFactoryBean = new SchedulerFactoryBean();
+        schedulerFactoryBean.setOverwriteExistingJobs(true);
+        schedulerFactoryBean.setQuartzProperties(quartzProperties());
+        schedulerFactoryBean.setJobFactory(jobFactory);
+        return schedulerFactoryBean;
+    &#125;
+</code></pre>
+<p>这样我们就可以实现基于自定义DataSource的SQL初始化。</p>
+<h3 id="4-2-关于实现多租户的几点思路"><a href="#4-2-关于实现多租户的几点思路" class="headerlink" title="4.2 关于实现多租户的几点思路"></a>4.2 关于实现多租户的几点思路</h3><h4 id="4-2-1-租户独享服务模式的实现"><a href="#4-2-1-租户独享服务模式的实现" class="headerlink" title="4.2.1 租户独享服务模式的实现"></a>4.2.1 租户独享服务模式的实现</h4><p>这里所说的租户独享服务包含两种情景：一种是一个租户对应一个服务，另一种是一个租户对应多个服务(服务集群）即一个租户对应一个集群。这两种场景的实现方式都可以用一种方案解决。我的思路是使用Scheduler容器来区分租户，即一个租户对应一个Scheduler容器或一个Scheduler容器集群。该租户的Scheduler容器，只会管理在该Scheduler实例中创建的定时任务。生产中，我们的租户以服务作为隔离级别，租户各自有自己的服务。Quartz集群以Scheduler容器作为隔离级别，租户各自的定时任务在自己的Scheduler容器和Scheduler集群里执行。</p>
+<p>那么如何通过Scheduler去做租户隔离呢？其实很简单，只需要在创建SchedulerFactoryBean的时候，指定一下SchedulerName即可，这个地方我们用租户ID来做SchedulerName，从而实现基于Scheduler容器的多租户。</p>
+<pre><code class="java">    @Bean
+    public SchedulerFactoryBean schedulerFactoryBean() throws IOException &#123;
+        //初始化数据库
+        initDataBase(dataSource);
+        SchedulerFactoryBean schedulerFactoryBean = new SchedulerFactoryBean();
+        schedulerFactoryBean.setOverwriteExistingJobs(true);
+        schedulerFactoryBean.setQuartzProperties(quartzProperties());
+        schedulerFactoryBean.setJobFactory(jobFactory);
+        //通过租户ID来设置SchedulerName从而实现多租户
+        schedulerFactoryBean.setSchedulerName(tenant_id);
+        return schedulerFactoryBean;
+    &#125;
+</code></pre>
+<p>这样我们租户下的服务只会执行自己租户ID对应的Scheduler容器中的定时任务。</p>
+<h4 id="4-2-1-租户共享服务模式的实现"><a href="#4-2-1-租户共享服务模式的实现" class="headerlink" title="4.2.1 租户共享服务模式的实现"></a>4.2.1 租户共享服务模式的实现</h4><p>租户共享服务模式是指一个服务对应多个租户，或者一个服务集群对应多个租户。这样的服务模式原本隔离性就很差。这样的多租户实现，可以使用JobGroup来进行隔离。使用同一个Scheduler容器或者一个Scheduler集群来共同调度所有的定时任务，只不过是通过JobGroup来区分，哪个定时任务对应哪个租户。这时候我们就可以使用租户ID来作为group名就能实现。具体实现，根据自己的业务场景定制，这里不做演示。</p>
+<h2 id="5-总结"><a href="#5-总结" class="headerlink" title="5 总结"></a>5 总结</h2><p>至此，已经完成了所有Springboot整合Quartz实现定时任务调度管理的内容。项目的实现我也是从0到1，从接触Quartz调度框架到整合到自己的项目中，其中一些思路来自于强大的网络，另一些是自己不成熟的见解。希望记录整合过程，对以后开发有所帮助。</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-springboot%E6%95%B4%E5%90%88Quartz%E7%9B%B8%E5%85%B3%E9%85%8D%E7%BD%AE"><span class="toc-number">1.</span> <span class="toc-text">1 springboot整合Quartz相关配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E5%BC%95%E5%85%A5%E4%BE%9D%E8%B5%96"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 引入依赖</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2%E6%9C%AA%E6%95%B4%E5%90%88%E5%89%8D%E4%BD%BF%E7%94%A8Quartz"><span class="toc-number">1.2.</span> <span class="toc-text">1.2未整合前使用Quartz</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-Springboot%E6%95%B4%E5%90%88Quartz"><span class="toc-number">1.3.</span> <span class="toc-text">1.3 Springboot整合Quartz</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-4-%E8%87%AA%E5%AE%9A%E4%B9%89%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E4%B8%8E%E6%8C%81%E4%B9%85%E5%8C%96"><span class="toc-number">1.4.</span> <span class="toc-text">1.4 自定义配置文件与持久化</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%AE%9E%E7%8E%B0%E5%9F%BA%E4%BA%8EsimpleTrigger%E7%9A%84%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1"><span class="toc-number">2.</span> <span class="toc-text">2 实现基于simpleTrigger的定时任务</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E5%88%9B%E5%BB%BASchedule%E8%A1%A8"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 创建Schedule表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E5%9F%BA%E4%BA%8ESimpleTrigger%E5%B0%81%E8%A3%85Quartz%E7%9B%B8%E5%85%B3%E6%93%8D%E4%BD%9C"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 基于SimpleTrigger封装Quartz相关操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E5%AF%B9%E5%A4%96%E6%8F%90%E4%BE%9B%E7%9B%B8%E5%85%B3API"><span class="toc-number">2.3.</span> <span class="toc-text">2.3 对外提供相关API</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%AE%9E%E7%8E%B0%E5%9F%BA%E4%BA%8ECronTrigger%E7%9A%84%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1"><span class="toc-number">3.</span> <span class="toc-text">3 实现基于CronTrigger的定时任务</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E5%9F%BA%E4%BA%8ECronTrigger%E5%88%86%E8%A3%85Quartz%E7%9B%B8%E5%85%B3%E6%93%8D%E4%BD%9C"><span class="toc-number">3.1.</span> <span class="toc-text">3.1 基于CronTrigger分装Quartz相关操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E5%AF%B9%E5%A4%96%E6%8F%90%E4%BE%9B%E7%9B%B8%E5%85%B3API"><span class="toc-number">3.2.</span> <span class="toc-text">3.2 对外提供相关API</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-Springboot%E6%95%B4%E5%90%88Quartz%E8%BF%9B%E9%98%B6"><span class="toc-number">4.</span> <span class="toc-text">4 Springboot整合Quartz进阶</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E8%87%AA%E5%8A%A8%E5%88%9D%E5%A7%8B%E5%8C%96Quartz%E5%BB%BA%E8%A1%A8SQL"><span class="toc-number">4.1.</span> <span class="toc-text">4.1 自动初始化Quartz建表SQL</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-%E5%85%B3%E4%BA%8E%E5%AE%9E%E7%8E%B0%E5%A4%9A%E7%A7%9F%E6%88%B7%E7%9A%84%E5%87%A0%E7%82%B9%E6%80%9D%E8%B7%AF"><span class="toc-number">4.2.</span> <span class="toc-text">4.2 关于实现多租户的几点思路</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E6%80%BB%E7%BB%93"><span class="toc-number">5.</span> <span class="toc-text">5 总结</span></a></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

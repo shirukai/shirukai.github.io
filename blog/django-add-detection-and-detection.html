@@ -1,0 +1,592 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>django增删改查 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="models.py
+class Student(models.Model):
+    stu_name = models.CharField(max_length=30)
+    stu_no = ,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">django增删改查</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/8.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/Python"><b>「
+                    </b>PYTHON<b> 」</b></a>
+                
+                August 19, 2018
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/django-add-detection-and-detection.html" title="django增删改查" class="">django增删改查</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    7.3k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    7 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/django/" rel="tag">django</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <p>models.py</p>
+<pre><code>class Student(models.Model):
+    stu_name = models.CharField(max_length=30)
+    stu_no = models.CharField(max_length=20)
+    stu_sex = models.CharField(max_length=10)
+    stu_age = models.IntegerField()
+    stu_birth = models.DateTimeField(auto_now_add=True)
+
+    def __unicode__(self):
+        return &#39;%s %s %s %s %s&#39; % (self.stu_name, self.stu_name, self.stu_sex, self.stu_age, self.stu_birth)
+</code></pre>
+<pre><code>python manage.py shell
+from blog.models import Student
+</code></pre>
+<h2 id="添加数据"><a href="#添加数据" class="headerlink" title="添加数据"></a>添加数据</h2><p>第一种方法：</p>
+<pre><code>Student.objects.create(stu_name = &#39;test&#39;, stu_no = &#39;201457507203&#39;, stu_age = 20)
+</code></pre>
+<p>第二种方法：</p>
+<pre><code>s  = Student(stu_name = &#39;test&#39;, stu_no = &#39;201457507203&#39;, stu_age = 20)
+s.save()
+</code></pre>
+<p>第三种方法：</p>
+<pre><code>s = Student()
+s.stu_name = &#39;test&#39;
+s.stu_no = &#39;201457507203&#39;
+s.stu_age = &#39;20&#39;
+s.save()
+</code></pre>
+<p>第四种方法：</p>
+<pre><code>Student.objects.get_or_create(stu_name = &#39;test&#39;, stu_no = &#39;201457507203&#39;, stu_age = 20)
+</code></pre>
+<p>这种方法是防止重复很好的方法，但是速度要相对慢些，返回一个元组，第一个为Person对象，第二个为True或False, 新建时返回的是True, 已经存在时返回False.</p>
+<pre><code>(&lt;Student: test test  20 2017-09-26 02:40:19.959604+00:00&gt;, True)
+</code></pre>
+<h2 id="删除数据"><a href="#删除数据" class="headerlink" title="删除数据"></a>删除数据</h2><h3 id="删除一条数据"><a href="#删除一条数据" class="headerlink" title="删除一条数据"></a>删除一条数据</h3><pre><code>Student.objects.get(stu_name = &#39;test&#39;).delete()
+</code></pre>
+<blockquote>
+<p>注意：此时只能数据库只能有一条 stu_name = ‘test’的数据，这样才能删除，如果存在多条，则会显示：</p>
+</blockquote>
+<pre><code>Traceback (most recent call last):
+  File &quot;&lt;console&gt;&quot;, line 1, in &lt;module&gt;
+  File &quot;/usr/lib/python2.7/site-packages/django/db/models/manager.py&quot;, line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File &quot;/usr/lib/python2.7/site-packages/django/db/models/query.py&quot;, line 384, in get
+    (self.model._meta.object_name, num)
+MultipleObjectsReturned: get() returned more than one Student -- it returned 2!
+</code></pre>
+<p>这时候我们就要用到下列操作：</p>
+<h3 id="删除一组数据"><a href="#删除一组数据" class="headerlink" title="删除一组数据"></a>删除一组数据</h3><pre><code>Student.objects.filter(stu_name = &#39;test&#39;).delete();
+</code></pre>
+<pre><code>(2L, &#123;u&#39;blog.Student&#39;: 2L&#125;)
+</code></pre>
+<h2 id="修改数据"><a href="#修改数据" class="headerlink" title="修改数据"></a>修改数据</h2><p>修改 stu_name = ‘test’ 的stu_no字段为‘201457507208’</p>
+<pre><code>&gt;&gt;&gt; student = Student.objects.get(stu_name = &#39;test&#39;)
+&gt;&gt;&gt; student.stu_no = &#39;201457507208&#39;
+&gt;&gt;&gt; student.save()
+</code></pre>
+<p>批量修改，<strong>适用于 .all()  .filter()  .exclude() 等后面 (危险操作，正式场合操作务必谨慎)</strong></p>
+<pre><code>Person.objects.filter(name__contains=&quot;abc&quot;).update(name=&#39;xxx&#39;) # 名称中包含 &quot;abc&quot;的人 都改成 xxx
+Person.objects.all().delete() # 删除所有 Person 记录
+</code></pre>
+<h2 id="查询记录"><a href="#查询记录" class="headerlink" title="查询记录"></a>查询记录</h2><ol>
+<li>获取所有对象Student.objects.all()</li>
+</ol>
+<pre><code>&gt;&gt;&gt; Student.objects.all()
+&lt;QuerySet [&lt;Student: shirukai shirukai  20 2017-09-26 02:30:33.850131+00:00&gt;, &lt;Student: test test  20 2017-09-26 02:59:01.191525+00:00&gt;]&gt;
+</code></pre>
+<ol start="2">
+<li><p>切片操作某个区间Student.objects.all()[]</p>
+<p>如获取2到5区间3条记录[2:5]</p>
+</li>
+</ol>
+<pre><code>&gt;&gt;&gt; Student.objects.all()
+&lt;QuerySet [
+&lt;Student: test1 test1  20 2017-09-26 02:59:01.191525+00:00&gt;, 
+&lt;Student: test2 test2  20 2017-09-26 03:03:38.216921+00:00&gt;, 
+&lt;Student: test3 test3  20 2017-09-26 03:03:39.481338+00:00&gt;,
+&lt;Student: test4 test4  20 2017-09-26 03:03:40.457119+00:00&gt;,
+&lt;Student: test5 test5  20 2017-09-26 03:03:41.025110+00:00&gt;,
+&lt;Student: test6 test6  20 2017-09-26 03:03:41.592895+00:00&gt;, 
+&lt;Student: test7 test7  20 2017-09-26 03:03:42.152777+00:00&gt;]&gt;
+</code></pre>
+<pre><code>Student.objects.all()[2:5]
+&lt;QuerySet [
+&lt;Student: test3 test3  20 2017-09-26 03:03:39.481338+00:00&gt;, 
+&lt;Student: test4 test4  20 2017-09-26 03:03:40.457119+00:00&gt;, 
+&lt;Student: test5 test5  20 2017-09-26 03:03:41.025110+00:00&gt;]&gt;
+</code></pre>
+<ol start="3">
+<li><p>Student.objects.get(stu_uname = ‘test1’)获取的是一条记录</p>
+</li>
+<li><p>Student.objects.filter(stu_uname = ‘test1’)获取的是多条名字为test1的记录</p>
+</li>
+<li><p>Student.objects.filter(stu_uname __iexact=”abc”)  # 名称为 abc 但是不区分大小写，可以找到 ABC, Abc, aBC，这些都符合条件</p>
+</li>
+<li><p>Student.objects.filter(stu_uname __contains=”abc”)  # 名称中包含 “abc”的人</p>
+</li>
+<li><p>Student.objects.filter(stu_uname __icontains=”abc”)  #名称中包含 “abc”，且abc不区分大小写</p>
+</li>
+<li><p>Student.objects.filter(stu_uname __regex=”^abc”)  # 正则表达式查询</p>
+</li>
+<li><p>Student.objects.filter(stu_uname __iregex=”^abc”)  # 正则表达式不区分大小写</p>
+<p>filter是找出满足条件的，当然也有排除符合某条件的</p>
+</li>
+<li><p>Person.objects.exclude(stu_uname __contains=”WZ”)  # 排除包含 WZ 的Person对象</p>
+</li>
+<li><p>Person.objects.filter(stu_uname __contains=”abc”).exclude(age=23)  # 找出名称含有abc, 但是排除年龄是23岁的</p>
+</li>
+</ol>
+<blockquote>
+<p>注意事项：</p>
+</blockquote>
+<p>(1). 如果只是检查 Student 中是否有对象，应该用 Student .objects.all().<strong>exists()</strong></p>
+<p>(2). QuerySet 支持切片 Student .objects.all()[:10] 取出10条，可以节省内存</p>
+<p>(3). 用 len(es) 可以得到Student 的数量，但是推荐用 Student .objects.count()来查询数量，后者用的是SQL：SELECT COUNT(*)</p>
+<p>(4). list(es) 可以强行将 QuerySet 变成 列表</p>
+<h3 id="查询排序"><a href="#查询排序" class="headerlink" title="查询排序"></a>查询排序</h3><p>按照名称排序</p>
+<pre><code>Student.objects.all().order_by(&#39;stu_name&#39;)
+Student.objects.all().order_by(&#39;-stu_name&#39;) # 在 column name 前加一个负号，可以实现倒序
+</code></pre>
+<h3 id="链式查询"><a href="#链式查询" class="headerlink" title="链式查询"></a>链式查询</h3><p>查询名字包含test的且年龄为20的学生</p>
+<pre><code>Student.objects.filter(stu_name__contains=&#39;test&#39;).filter(stu_age=&#39;20&#39;)
+</code></pre>
+<p>结果：</p>
+<pre><code>&lt;QuerySet [
+&lt;Student: test1 test1  20 2017-09-26 02:59:01.191525+00:00&gt;, 
+&lt;Student: test5 test5  20 2017-09-26 03:03:41.025110+00:00&gt;, 
+&lt;Student: test7 test7  20 2017-09-26 03:03:42.152777+00:00&gt;]&gt;
+</code></pre>
+<p>查询名字包含test的且年龄不为20的学生</p>
+<pre><code>Student.objects.filter(stu_name__contains=&#39;test&#39;).exclude(stu_age=&#39;20&#39;)
+</code></pre>
+<p>结果：</p>
+<pre><code>&lt;QuerySet 
+[&lt;Student: test1 test1  20 2017-09-26 02:59:01.191525+00:00&gt;, 
+&lt;Student: test5 test5  20 2017-09-26 03:03:41.025110+00:00&gt;, 
+&lt;Student: test7 test7  20 2017-09-26 03:03:42.152777+00:00&gt;]&gt;
+</code></pre>
+<h3 id="QuerySet不支持负索引"><a href="#QuerySet不支持负索引" class="headerlink" title="QuerySet不支持负索引"></a>QuerySet不支持负索引</h3><pre><code>Student.objects.all()[:10] 切片操作，前10条
+Student.objects.all()[-10:] 会报错！！！
+# 1. 使用 reverse() 解决
+Student.objects.all().reverse()[:2] # 最后两条
+Student.objects.all().reverse()[0] # 最后一条
+ 
+# 2. 使用 order_by，在栏目名（column name）前加一个负号
+Student.objects.order_by(&#39;-id&#39;)[:3] # id最大的3条
+</code></pre>
+<h3 id="QuerySet-重复的问题，使用-distinct-去重"><a href="#QuerySet-重复的问题，使用-distinct-去重" class="headerlink" title="QuerySet 重复的问题，使用 .distinct() 去重"></a>QuerySet 重复的问题，使用 .distinct() 去重</h3><pre><code>stu = Student.objects.all()
+stu = stu.distinct()
+</code></pre>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E6%95%B0%E6%8D%AE"><span class="toc-number">1.</span> <span class="toc-text">添加数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E6%95%B0%E6%8D%AE"><span class="toc-number">2.</span> <span class="toc-text">删除数据</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E4%B8%80%E6%9D%A1%E6%95%B0%E6%8D%AE"><span class="toc-number">2.1.</span> <span class="toc-text">删除一条数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E4%B8%80%E7%BB%84%E6%95%B0%E6%8D%AE"><span class="toc-number">2.2.</span> <span class="toc-text">删除一组数据</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E6%95%B0%E6%8D%AE"><span class="toc-number">3.</span> <span class="toc-text">修改数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E8%AE%B0%E5%BD%95"><span class="toc-number">4.</span> <span class="toc-text">查询记录</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E6%8E%92%E5%BA%8F"><span class="toc-number">4.1.</span> <span class="toc-text">查询排序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%93%BE%E5%BC%8F%E6%9F%A5%E8%AF%A2"><span class="toc-number">4.2.</span> <span class="toc-text">链式查询</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#QuerySet%E4%B8%8D%E6%94%AF%E6%8C%81%E8%B4%9F%E7%B4%A2%E5%BC%95"><span class="toc-number">4.3.</span> <span class="toc-text">QuerySet不支持负索引</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#QuerySet-%E9%87%8D%E5%A4%8D%E7%9A%84%E9%97%AE%E9%A2%98%EF%BC%8C%E4%BD%BF%E7%94%A8-distinct-%E5%8E%BB%E9%87%8D"><span class="toc-number">4.4.</span> <span class="toc-text">QuerySet 重复的问题，使用 .distinct() 去重</span></a></li></ol></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

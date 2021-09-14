@@ -1,0 +1,988 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Flink DataStream API之Operators - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="官网位置：https://ci.apache.org/projects/flink/flink-docs-release-1.9/zh/dev/stream/operators/
+Operators,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">Flink DataStream API之Operators</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/8.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/Flink"><b>「
+                    </b>FLINK<b> 」</b></a>
+                
+                August 24, 2020
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/flink-datastream-api-operators.html" title="Flink DataStream API之Operators" class="">Flink DataStream API之Operators</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    21k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    19 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Flink/" rel="tag">Flink</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <p>官网位置：<a target="_blank" rel="noopener" href="https://ci.apache.org/projects/flink/flink-docs-release-1.9/zh/dev/stream/operators/">https://ci.apache.org/projects/flink/flink-docs-release-1.9/zh/dev/stream/operators/</a></p>
+<p>Operators transform one or more DataStreams into a new DataStream. Programs can combine multiple transformations into sophisticated dataflow topologies.</p>
+<p>算子可以将一个或多个DataStream转化为新的DataStream。程序可以将多种转换组合成复杂的数据流拓扑。下面将介绍一下Flink DataStream API中一些常用的算子，注意：本文是以Scala代码为例，有些语法在Java里不通用。</p>
+<h1 id="1-DataStream-Transformations"><a href="#1-DataStream-Transformations" class="headerlink" title="1 DataStream Transformations"></a>1 DataStream Transformations</h1><blockquote>
+<p>官网以表格的形式列了一些转换类的算子，有些可能不好理解，这里以实际的代码例子进行演示。</p>
+</blockquote>
+<p>DataStream常用转换如下图所示：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/292b69faad4563d93db2a0b8d16ada43.jpg"></p>
+<h2 id="1-1-map"><a href="#1-1-map" class="headerlink" title="1.1 map"></a>1.1 map</h2><p><strong>类型转换：</strong></p>
+<p>DataStream-&gt;DataStream</p>
+<p><strong>描述：</strong></p>
+<p>熟悉scala的同学，对于这个map应该很好理解，map操作是依次取DataStream中一个元素并生成另一个元素。</p>
+<p><strong>调用方式:</strong> </p>
+<ol>
+<li>传入一个继承自MapFunction[T,R]的实例</li>
+</ol>
+<pre><code class="scala">def map[R: TypeInformation](mapper: MapFunction[T, R]): DataStream[R]
+</code></pre>
+<ol start="2">
+<li>函数式调用，传入一个参数类型为T，返回值为R的函数</li>
+</ol>
+<pre><code class="scala">  def map[R: TypeInformation](fun: T =&gt; R): DataStream[R] 
+</code></pre>
+<p><strong>代码演示：</strong></p>
+<p>先通过1到10的集合生成一个DataStream，并通过map操作，将其每个元素都乘以2，生成新的DataStream。</p>
+<pre><code class="scala">    // create DataStream from collection
+    val data = env.fromCollection(1 to 10)
+
+    // 将每个元素*2
+    data.map(_ * 2).print(&quot;map&quot;)
+</code></pre>
+<p>输出：</p>
+<pre><code>map:7&gt; 10
+map:4&gt; 4
+map:3&gt; 2
+map:2&gt; 16
+map:8&gt; 12
+map:6&gt; 8
+map:5&gt; 6
+map:1&gt; 14
+map:3&gt; 18
+map:4&gt; 20
+</code></pre>
+<h2 id="1-2-flatMap"><a href="#1-2-flatMap" class="headerlink" title="1.2 flatMap"></a>1.2 flatMap</h2><p><strong>类型转换：</strong></p>
+<p>DataStream-&gt;DataStream</p>
+<p><strong>描述：</strong></p>
+<p>flatMap与map类似，只是它是依次取DataStream中的一个元素生成0个或多个元素。</p>
+<p><strong>调用方式：</strong></p>
+<p>它在scala里提供了三种调用方式：</p>
+<ol>
+<li>传入一个继承自FlatMapFunction[T, R]的类实例</li>
+</ol>
+<pre><code class="scala">def flatMap[R: TypeInformation](flatMapper: FlatMapFunction[T, R]): DataStream[R]
+</code></pre>
+<ol start="2">
+<li>传入参数为T和Collector[R]无返回值的函数</li>
+</ol>
+<pre><code class="scala"> def flatMap[R: TypeInformation](fun: (T, Collector[R]) =&gt; Unit): DataStream[R]
+</code></pre>
+<ol start="3">
+<li>传入参数类型为T，返回值类型为TraversableOnce(集合特质，常见集合都继承该特质)的函数</li>
+</ol>
+<pre><code class="scala">def flatMap[R: TypeInformation](fun: T =&gt; TraversableOnce[R]): DataStream[R]
+</code></pre>
+<p><strong>代码演示：</strong></p>
+<p>先通过Array(1,2,3)和Array(4,5,6)两个元素生成一个DataStream，并通过flatMap操作，将两个数组展开</p>
+<pre><code class="scala">    // create DataStream from elements
+    val data = env.fromElements(Array(1,2,3),Array(4,5,6))
+    // 将数据展开
+    data.flatMap(_.toList).print(&quot;flatMap&quot;)
+</code></pre>
+<p>结果：</p>
+<pre><code>flatMap:1&gt; 4
+flatMap:8&gt; 1
+flatMap:1&gt; 5
+flatMap:8&gt; 2
+flatMap:1&gt; 6
+flatMap:8&gt; 3
+</code></pre>
+<h2 id="1-3-filter"><a href="#1-3-filter" class="headerlink" title="1.3 filter"></a>1.3 filter</h2><p><strong>类型转换：</strong></p>
+<p>DataStream-&gt;DataStream</p>
+<p><strong>描述：</strong></p>
+<p>按照条件过滤，得到满足条件的元素生成新的DataStream</p>
+<p><strong>调用方式：</strong></p>
+<p>调用方式有两种：</p>
+<ol>
+<li>传入一个继承自FilterFunction[T]类实例</li>
+</ol>
+<pre><code class="scala">def filter(filter: FilterFunction[T]): DataStream[T]
+</code></pre>
+<ol start="2">
+<li>传入一个入参类型为T，返回值类型为Boolean的函数</li>
+</ol>
+<pre><code class="scala">def filter(fun: T =&gt; Boolean): DataStream[T]
+</code></pre>
+<p><strong>代码演示：</strong></p>
+<p>先通过1 到10的集合生成一个DataStream，并通过filter操作，过滤出奇数</p>
+<pre><code class="scala">    // create DataStream from collection
+    val data = env.fromCollection(1 to 10)
+    // 输出奇数
+    data.filter(_ % 2 == 1).print(&quot;filter&quot;)
+</code></pre>
+<p>输出：</p>
+<pre><code>filter:3&gt; 1
+filter:5&gt; 3
+filter:7&gt; 5
+filter:1&gt; 7
+filter:3&gt; 9
+</code></pre>
+<h2 id="1-4-keyBy"><a href="#1-4-keyBy" class="headerlink" title="1.4 keyBy"></a>1.4 keyBy</h2><p><strong>类型转换：</strong></p>
+<p>DataStream-&gt;KeyedStream</p>
+<p><strong>描述：</strong></p>
+<p>根据指定的Key选择器，进行分区，生成KeyedStream</p>
+<p><strong>调用方式：</strong></p>
+<p>在scala里key选择器有四种指定方式：</p>
+<ol>
+<li>对于tuple和array类型，我们可以指定一个或多个key的位置</li>
+</ol>
+<pre><code class="scala">def keyBy(fields: Int*): KeyedStream[T, JavaTuple]
+</code></pre>
+<ol start="2">
+<li>指定一个或多个key的字段表达式</li>
+</ol>
+<pre><code class="scala">def keyBy(firstField: String, otherFields: String*): KeyedStream[T, JavaTuple]
+</code></pre>
+<ol start="3">
+<li>传入key选择函数</li>
+</ol>
+<pre><code>def keyBy[K: TypeInformation](fun: T =&gt; K): KeyedStream[T, K]
+</code></pre>
+<ol start="4">
+<li>实现key选择器KeySelector，并传入该实例</li>
+</ol>
+<pre><code>def keyBy[K: TypeInformation](fun: KeySelector[T, K]): KeyedStream[T, K]
+</code></pre>
+<p><strong>代码演示：</strong></p>
+<p>先通过集合生成一个DataStream，然后根据第一个元素进行KeyBy</p>
+<pre><code class="scala">    // create DataStream from collection
+    val data = env.fromCollection(List((&quot;device-1&quot;, 1), (&quot;device-2&quot;, 2), (&quot;device-1&quot;, 2)))
+    data.keyBy(_._1)
+</code></pre>
+<p>输出：</p>
+<pre><code>keyed:3&gt; (device-2,2)
+keyed:1&gt; (device-1,1)
+keyed:1&gt; (device-1,2)
+</code></pre>
+<h2 id="1-5-reduce"><a href="#1-5-reduce" class="headerlink" title="1.5 reduce"></a>1.5 reduce</h2><p><strong>类型转换：</strong></p>
+<p>KeyedStream-&gt;DataStream</p>
+<p><strong>描述：</strong></p>
+<p>在KeyedStream上，将当前值以及上次计算结果应用到指定的reduce函数中得到新的值，依次计算</p>
+<p><strong>调用方式：</strong></p>
+<p>在scala里reduce调用有两种方式：</p>
+<ol>
+<li>实现ReduceFunction[T]接口中的reduce方法，并传入该实例</li>
+</ol>
+<pre><code class="scala"> def reduce(reducer: ReduceFunction[T]): DataStream[T]
+</code></pre>
+<ol start="2">
+<li>传入参数类型为T,T返回值为T的函数</li>
+</ol>
+<pre><code class="scala">def reduce(fun: (T, T) =&gt; T): DataStream[T] 
+</code></pre>
+<p><strong>代码演示：</strong></p>
+<p>将上面KeyBy之后生成的KeyedStream，应用reduce算子，进行累加</p>
+<pre><code class="scala">    keyedStream.reduce((value1, value2) =&gt; &#123;
+      (value1._1, value1._2 + value2._2)
+    &#125;).print(&quot;reduce&quot;)
+</code></pre>
+<p>输出：</p>
+<pre><code>reduce:1&gt; (device-1,1)
+reduce:3&gt; (device-2,2)
+reduce:1&gt; (device-1,3)
+</code></pre>
+<h2 id="1-6-fold-deprecated"><a href="#1-6-fold-deprecated" class="headerlink" title="1.6 fold(deprecated)"></a>1.6 fold(deprecated)</h2><p><strong>类型转换：</strong></p>
+<p>KeyedStream-&gt;DataStream</p>
+<p><strong>描述：</strong></p>
+<p>在KeyedStream上，与reduce类似，只是多了一个初始值。</p>
+<p><strong>调用方式：</strong></p>
+<p>在scala里fold调用有两种方式：</p>
+<ol>
+<li>实现FoldFunction[T,R]接口中的fold方法，并传入该实例,另外还需要传入初始化值。</li>
+</ol>
+<pre><code class="scala">  def fold[R: TypeInformation](initialValue: R, folder: FoldFunction[T,R]): 
+      DataStream[R]
+</code></pre>
+<ol start="2">
+<li>柯里化传参，第一个参数为初始值，第二个参数为函数表达式</li>
+</ol>
+<pre><code class="scala">def fold[R: TypeInformation](initialValue: R)(fun: (R,T) =&gt; R): DataStream[R]
+</code></pre>
+<p><strong>代码演示：</strong></p>
+<p>将上面KeyBy之后生成的KeyedStream，应用fold算子，进行字符串拼接</p>
+<pre><code class="scala">    keyedStream.fold(&quot;start&quot;)((accumulator, value) =&gt; &#123;
+      s&quot;$accumulator-$&#123;value._1&#125;-$&#123;value._2&#125;&quot;
+    &#125;).print(&quot;fold&quot;)
+</code></pre>
+<p>输出：</p>
+<pre><code>fold:1&gt; start-device-1-1
+fold:3&gt; start-device-2-2
+fold:1&gt; start-device-1-1-device-1-2
+</code></pre>
+<h2 id="1-7-aggregations"><a href="#1-7-aggregations" class="headerlink" title="1.7 aggregations"></a>1.7 aggregations</h2><p><strong>类型转换：</strong></p>
+<p>KeyedStream-&gt;DataStream</p>
+<p><strong>描述：</strong></p>
+<p>在KeyedStream上，应用聚合方法，Flink提供内置的聚合方法有：sum、min、minBy、maxBy。这里解释一下min和minBy，max和maxBy之间的却别。以max和maxBy为例，max(position|field)只是返回指定的position或field的最大值，其它字段的值为第一次出现的记录值，而maxBy(position|field)则是返回position或field最大值所在的记录。怎么理解呢？假如streamData:DataStream[DeviceEvent]有两条记录 DeviceEvent(1,1,1)、 DeviceEvent(2,2,2)，即</p>
+<pre><code class="scala">val streamData:DataStream[DeviceEvent]=env.fromElements(DeviceEvent(1,1,1),DeviceEvent(2,2,2))
+</code></pre>
+<p>我们通过按照第一个元素keyBy，然后按照第二个元素max</p>
+<pre><code class="scala">streamData.keyBy(0).max(1)
+</code></pre>
+<p>我们会得到结果：</p>
+<pre><code>1,1,1
+1,2,1
+</code></pre>
+<p>如果我们同样按照第一个元素keyBy，但是按照第二个元素maxBy</p>
+<pre><code class="scala">streamData.keyBy(0).maxBy(1)
+</code></pre>
+<p>将会得到如下结果：</p>
+<pre><code>1,1,1
+2,2,2
+</code></pre>
+<p>min和minBy同理。</p>
+<p><strong>调用方式：</strong></p>
+<p>flink内置聚合方法在scala里的调用方式有两种：</p>
+<ol>
+<li>传入position参数</li>
+</ol>
+<pre><code class="scala">def sum(position: Int): DataStream[T]
+</code></pre>
+<ol start="2">
+<li>传入field参数</li>
+</ol>
+<pre><code class="scala">def sum(field: String): DataStream[T]
+</code></pre>
+<p><strong>代码演示：</strong></p>
+<p>演示这几种聚合方法</p>
+<pre><code class="scala">    // create DataStream from collection
+    val data: DataStream[(String, Int, String)] = env.fromCollection(List((&quot;device-1&quot;, 3, &quot;1-3&quot;), (&quot;device-1&quot;, 1, &quot;1-1&quot;), (&quot;device-2&quot;, 2, &quot;2-2&quot;), (&quot;device-1&quot;, 2, &quot;1-2&quot;)))
+    val keyedStream = data.keyBy(0)
+    keyedStream.sum(1).print(&quot;sum&quot;)
+    keyedStream.min(1).print(&quot;min&quot;)
+    keyedStream.max(1).print(&quot;max&quot;)
+    keyedStream.minBy(1).print(&quot;minBy&quot;)
+    keyedStream.maxBy(1).print(&quot;maxBy&quot;)
+</code></pre>
+<p>输出：</p>
+<pre><code>sum:3&gt; (device-2,2,2-2)
+max:3&gt; (device-2,2,2-2)
+min:1&gt; (device-1,3,1-3)
+maxBy:3&gt; (device-2,2,2-2)
+maxBy:1&gt; (device-1,3,1-3)
+minBy:1&gt; (device-1,3,1-3)
+sum:1&gt; (device-1,3,1-3)
+max:1&gt; (device-1,3,1-3)
+minBy:3&gt; (device-2,2,2-2)
+min:3&gt; (device-2,2,2-2)
+max:1&gt; (device-1,3,1-3)
+minBy:1&gt; (device-1,1,1-1)
+maxBy:1&gt; (device-1,3,1-3)
+max:1&gt; (device-1,3,1-3)
+min:1&gt; (device-1,1,1-3)
+minBy:1&gt; (device-1,1,1-1)
+sum:1&gt; (device-1,4,1-3)
+min:1&gt; (device-1,1,1-3)
+maxBy:1&gt; (device-1,3,1-3)
+sum:1&gt; (device-1,6,1-3)
+</code></pre>
+<h2 id="1-8-window"><a href="#1-8-window" class="headerlink" title="1.8 window"></a>1.8 window</h2><p><strong>类型转换：</strong></p>
+<p>KeyedStream-&gt;WindowedStream</p>
+<p><strong>描述：</strong></p>
+<p>在KeyedStream上的窗口装换，Flink提供了四种窗口类型：Tumbling Windows(滚动窗口)、Sliding Windows(滑动窗口)、Session Windows(会话窗口)、Global Windows(全局窗口)，滚动窗口和滑动窗口分为基于时间的窗口和基于个数的窗口，而基于时间的窗口又分为事件时间窗口和处理时间窗口。关于窗口的更多内容会在下一篇文章中记录，这里只做简单演示。</p>
+<p><strong>调用方式：</strong></p>
+<p>window在scala里的调用方式有五种：</p>
+<ol>
+<li>timeWindow(size: Time)，传入类型为Time的窗口大小，Flink会根据指定的time characteristic来判断是处理时间滚动窗口还是事件时间滚动窗口。</li>
+</ol>
+<pre><code class="scala">def timeWindow(size: Time): WindowedStream[T, K, TimeWindow]
+</code></pre>
+<ol start="2">
+<li>timeWindow(size: Time, slide: Time)，传入类型为Time的窗口大小，以及类型为Time的窗口滑动大小，Flink同样会根据指定的time characteristic来判断是处理时间滑动窗口还是事件时间滑动窗口。</li>
+</ol>
+<pre><code class="scala">def timeWindow(size: Time, slide: Time): WindowedStream[T, K, TimeWindow]
+</code></pre>
+<ol start="3">
+<li>countWindow(size: Long)，传入Long类型的窗口大小，Flink会应用为基于个数的滚动窗口。</li>
+</ol>
+<pre><code class="scala">def countWindow(size: Long): WindowedStream[T, K, GlobalWindow]
+</code></pre>
+<ol start="4">
+<li>countWindow(size: Long, slide: Long)，传入Long类型的窗口大小，以及Long类型的窗口滑动带下，生成基于个数的滑动窗口。</li>
+</ol>
+<pre><code class="scala">def countWindow(size: Long, slide: Long): WindowedStream[T, K, GlobalWindow]
+</code></pre>
+<ol start="5">
+<li>window，需要传入WindowAssigner实例</li>
+</ol>
+<pre><code class="scala">def window[W &lt;: Window](assigner: WindowAssigner[_ &gt;: T, W]): WindowedStream[T, K, W]
+</code></pre>
+<p><strong>代码演示：</strong></p>
+<pre><code class="scala">    // create data from collection
+    val data = env.fromCollection(1 to 10)
+    data.countWindowAll(5)
+</code></pre>
+<h2 id="1-9-windowAll"><a href="#1-9-windowAll" class="headerlink" title="1.9 windowAll"></a>1.9 windowAll</h2><p><strong>类型转换：</strong></p>
+<p>DataStream-&gt;AllWindowedStream</p>
+<p><strong>描述：</strong></p>
+<p>在DataStream上的窗口装换，与window类似，只是window应用在KeyedStream上，需要先进行KeyBy操作，windowAll可以直接应用到DataStream上。</p>
+<p><strong>调用方式：</strong></p>
+<p>window在scala里的调用方式有五种：</p>
+<ol>
+<li>timeWindowAll(size: Time)传入类型为Time的窗口大小，Flink会根据指定的time characteristic来判断是处理时间滚动窗口还是事件时间滚动窗口。</li>
+</ol>
+<pre><code class="scala">def timeWindowAll(size: Time): AllWindowedStream[T, TimeWindow] 
+</code></pre>
+<ol start="2">
+<li>timeWindow(size: Time, slide: Time)，传入类型为Time的窗口大小，以及类型为Time的窗口滑动大小，Flink同样会根据指定的time characteristic来判断是处理时间滑动窗口还是事件时间滑动窗口。</li>
+</ol>
+<pre><code class="scala">def timeWindowAll(size: Time, slide: Time): AllWindowedStream[T, TimeWindow]
+</code></pre>
+<ol start="3">
+<li>countWindow(size: Long)，传入Long类型的窗口大小，Flink会应用为基于个数的滚动窗口。</li>
+</ol>
+<pre><code class="scala">def countWindowAll(size: Long, slide: Long): AllWindowedStream[T, GlobalWindow]
+</code></pre>
+<ol start="4">
+<li>countWindow(size: Long, slide: Long)，传入Long类型的窗口大小，以及Long类型的窗口滑动带下，生成基于个数的滑动窗口。</li>
+</ol>
+<pre><code class="scala">def countWindowAll(size: Long): AllWindowedStream[T, GlobalWindow]
+</code></pre>
+<ol start="5">
+<li>windowAll，需要传入WindowAssigner实例</li>
+</ol>
+<pre><code class="scala">windowAll[W &lt;: Window](assigner: WindowAssigner[_ &gt;: T, W]): AllWindowedStream[T, W]
+</code></pre>
+<p><strong>代码演示：</strong></p>
+<pre><code class="scala">    // create data from collection
+    val data = env.fromCollection((1 to 10).map(x =&gt; (x % 2, x)))
+    // get KeyedDataStream
+    val keyedStream = data.keyBy(0)
+    val windowStream = keyedStream.countWindow(5)
+</code></pre>
+<p>输出：</p>
+<pre><code class="scala">windowStream.sum(1).print(&quot;countWindow&quot;)
+</code></pre>
+<pre><code>countWindow:6&gt; (1,25)
+countWindow:6&gt; (0,30)
+</code></pre>
+<h2 id="1-10-WindowedStream-apply"><a href="#1-10-WindowedStream-apply" class="headerlink" title="1.10 WindowedStream apply"></a>1.10 WindowedStream apply</h2><p><strong>类型转换：</strong></p>
+<p>WindowedStream-&gt;DataStream</p>
+<p><strong>描述：</strong></p>
+<p>在WindowedStream上应用WindowFunction，当窗口被触发时调用指定的WindowFunction。</p>
+<p><strong>调用方式：</strong></p>
+<p>apply在scala里的调用方式有两种(其它预聚合的调用方式已废弃)：</p>
+<ol>
+<li>继承WindowFunction实现apply方法，并传入该实例</li>
+</ol>
+<pre><code class="scala">def apply[R: TypeInformation](
+      function: WindowFunction[T, R, K, W]): DataStream[R]
+</code></pre>
+<ol start="2">
+<li>传入匿名函数</li>
+</ol>
+<pre><code class="scala">def apply[R: TypeInformation](
+      function: (K, W, Iterable[T], Collector[R]) =&gt; Unit): DataStream[R]
+</code></pre>
+<p><strong>代码演示：</strong></p>
+<p>在上面生成的windowStream调用apply</p>
+<pre><code class="scala">    val dataStream = windowedStream.apply((key, window, input, out: Collector[(Int, String, Int)]) =&gt; &#123;
+      var sum = 0
+      input.foreach(element =&gt; &#123;
+        sum += element._2
+      &#125;)
+      out.collect(key.getField(0), window.toString, sum)
+    &#125;)
+    dataStream.print(&quot;simple apply&quot;)
+</code></pre>
+<p>输出：</p>
+<pre><code>simple apply:6&gt; (1,GlobalWindow,25)
+simple apply:6&gt; (0,GlobalWindow,30)
+</code></pre>
+<h2 id="1-11-WindowedStream-reduce"><a href="#1-11-WindowedStream-reduce" class="headerlink" title="1.11 WindowedStream reduce"></a>1.11 WindowedStream reduce</h2><p><strong>类型转换：</strong></p>
+<p>WindowedStream-&gt;DataStream</p>
+<p><strong>描述：</strong></p>
+<p>在WindowedStream上应用ReduceFunction，与DataStream上的ReduceFunction相同，当窗口被触发时调用指定的ReduceFunction。</p>
+<p><strong>调用方式：</strong></p>
+<p>reduce在scala里的调用方式有六种，其中包括几种预聚合的方式调用：</p>
+<ol>
+<li>继承ReduceFunction实现reduce方法，并传入该实例</li>
+</ol>
+<pre><code class="scala">def reduce(function: ReduceFunction[T]): DataStream[T]
+</code></pre>
+<ol start="2">
+<li>传入匿名函数</li>
+</ol>
+<pre><code class="scala">def reduce(function: (T, T) =&gt; T): DataStream[T]
+</code></pre>
+<ol start="3">
+<li>传入ReduceFunction[T]作为预聚合器,当数据到达时调用，传入WindowFunction作为窗口函数，当触发窗口计算的时候调用。</li>
+</ol>
+<pre><code class="scala">  def reduce[R: TypeInformation](
+  preAggregator: ReduceFunction[T],
+  function: WindowFunction[T, R, K, W]): DataStream[R]
+</code></pre>
+<ol start="4">
+<li>传入匿名函数作为预聚合器,当数据到达时调用，传入WindowFunction作为窗口函数，当触发窗口计算的时候调用。</li>
+</ol>
+<pre><code class="scala">  def reduce[R: TypeInformation](
+      preAggregator: (T, T) =&gt; T,
+      windowFunction: (K, W, Iterable[T], Collector[R]) =&gt; Unit): DataStream[R]
+</code></pre>
+<ol start="5">
+<li>传入匿名函数作为预聚合器,当数据到达时调用，传入ProcessWindowFunction作为窗口函数，当触发窗口计算的时候调用。</li>
+</ol>
+<pre><code class="scala">  def reduce[R: TypeInformation](
+      preAggregator: (T, T) =&gt; T,
+      function: ProcessWindowFunction[T, R, K, W]): DataStream[R]
+</code></pre>
+<ol start="6">
+<li>传入ReduceFunction[T]作为预聚合器,当数据到达时调用，传入ProcessWindowFunction作为窗口函数，当触发窗口计算的时候调用。</li>
+</ol>
+<pre><code class="scala">  def reduce[R: TypeInformation](
+      preAggregator: ReduceFunction[T],
+      function: ProcessWindowFunction[T, R, K, W]): DataStream[R]
+</code></pre>
+<p><strong>代码演示：</strong></p>
+<p>在上面生成的windowStream调用reduce</p>
+<pre><code class="scala">    windowedStream.reduce(new ReduceSum).print(&quot;function reduce&quot;)
+    windowedStream.reduce((value1, value2) =&gt; (value2._1, value1._2 + value2._2)).print(&quot;simple reduce&quot;)
+</code></pre>
+<p>输出：</p>
+<pre><code>simple reduce:6&gt; (1,25)
+function reduce:6&gt; (1,25)
+simple reduce:6&gt; (0,30)
+function reduce:6&gt; (0,30)
+</code></pre>
+<h2 id="1-11-WindowedStream-fold-deprecated"><a href="#1-11-WindowedStream-fold-deprecated" class="headerlink" title="1.11 WindowedStream fold(deprecated)"></a>1.11 WindowedStream fold(deprecated)</h2><p>deprecated</p>
+<h2 id="1-12-WindowedStream-aggregations"><a href="#1-12-WindowedStream-aggregations" class="headerlink" title="1.12 WindowedStream aggregations"></a>1.12 WindowedStream aggregations</h2><p><strong>类型转换：</strong></p>
+<p>WindowedStream-&gt;DataStream</p>
+<p><strong>描述：</strong></p>
+<p>WindowedStream上的聚合函数，与DataStream上的相同，也有sum、min、minBy、max、maxBy，参考DataStream上的aggregations。</p>
+<p><strong>调用方式：</strong></p>
+<p>参考DataStream上的aggregations。</p>
+<p><strong>代码演示：</strong></p>
+<pre><code class="scala">    windowedStream.sum(0).print(&quot;sum&quot;)
+    windowedStream.min(0).print(&quot;min&quot;)
+    windowedStream.max(0).print(&quot;max&quot;)
+    windowedStream.minBy(0).print(&quot;minBy&quot;)
+    windowedStream.maxBy(0).print(&quot;maxBy&quot;)
+</code></pre>
+<p>输出：</p>
+<pre><code class="scala">maxBy:6&gt; (1,1)
+minBy:6&gt; (1,1)
+max:6&gt; (1,1)
+sum:6&gt; (5,1)
+min:6&gt; (1,1)
+maxBy:6&gt; (0,2)
+minBy:6&gt; (0,2)
+max:6&gt; (0,2)
+sum:6&gt; (0,2)
+min:6&gt; (0,2)
+</code></pre>
+<h2 id="1-13-union"><a href="#1-13-union" class="headerlink" title="1.13 union"></a>1.13 union</h2><p><strong>类型转换：</strong></p>
+<p>DataStream[T],DataStream[T],*-&gt;DataStream[T]</p>
+<p><strong>描述：</strong></p>
+<p>将两个或更多的流进行合并，要求数据类的类型是一直的。</p>
+<p><strong>调用方式：</strong></p>
+<p>该算子调用方式只有一种：</p>
+<ol>
+<li>传入不定长的DataStream[T]</li>
+</ol>
+<pre><code class="scala">def union(dataStreams: DataStream[T]*): DataStream[T]
+</code></pre>
+<p><strong>代码演示：</strong></p>
+<p>先通过1 到10的集合生成一个DataStream，并通过filter操作，过滤出奇数</p>
+<pre><code class="scala">    val stream1 = env.fromCollection(1 to 10)
+    val stream2 = env.fromCollection(101 to 110)
+    stream1.union(stream2).print(&quot;union&quot;)
+</code></pre>
+<p>输出：</p>
+<pre><code>union:4&gt; 1
+union:7&gt; 101
+union:4&gt; 9
+union:2&gt; 104
+union:3&gt; 105
+union:5&gt; 107
+union:5&gt; 2
+union:1&gt; 103
+union:6&gt; 108
+union:1&gt; 6
+union:6&gt; 3
+union:8&gt; 102
+union:5&gt; 10
+union:2&gt; 7
+union:4&gt; 106
+union:3&gt; 8
+union:7&gt; 109
+union:8&gt; 110
+union:7&gt; 4
+union:8&gt; 5
+</code></pre>
+<h2 id="1-13-join"><a href="#1-13-join" class="headerlink" title="1.13 join"></a>1.13 join</h2><p><strong>类型转换：</strong></p>
+<p>DataStream[T],DataStream[T2]-&gt;JoinedStreams[T, T2]</p>
+<p><strong>描述：</strong></p>
+<p>将两个按照指定的条件流进行join，两个流的数据类型可以不同，需要与窗口函数结合使用。</p>
+<p><strong>调用方式：</strong></p>
+<p>该算子调用方式只有一种：</p>
+<ol>
+<li>传入需要Join的DataStream[T2]</li>
+</ol>
+<pre><code class="scala">def join[T2](otherStream: DataStream[T2]): JoinedStreams[T, T2] 
+</code></pre>
+<p><strong>代码演示：</strong></p>
+<p>定义两个流，一个是从集合中创建，另一个从socket中创建。</p>
+<pre><code class="scala">    val stream1 = env.fromCollection(List((&quot;device-1&quot;, 1), (&quot;device-2&quot;, 2)))
+    val stream2 = env.socketTextStream(&quot;localhost&quot;, 9090).map(x =&gt; &#123;
+      val token = x.split(&quot; &quot;)
+      (token(0), token(1))
+    &#125;)
+    val joinedStream: JoinedStreams[(String, Int), (String, String)]#Where[String]#EqualTo = stream1.join(stream2).where(_._1).equalTo(_._1)
+
+    joinedStream.window(TumblingProcessingTimeWindows.of(Time.seconds(10)))
+      .apply((first, second) =&gt; (first._1, second._2, first._2)).print(&quot;join&quot;)
+</code></pre>
+<p>使用nc -lk 9090监听9090端口，启动程序后，发送数据：</p>
+<pre><code>
+</code></pre>
+<p>输出：</p>
+<pre><code>union:4&gt; 1
+union:7&gt; 101
+union:4&gt; 9
+union:2&gt; 104
+union:3&gt; 105
+union:5&gt; 107
+union:5&gt; 2
+union:1&gt; 103
+union:6&gt; 108
+union:1&gt; 6
+union:6&gt; 3
+union:8&gt; 102
+union:5&gt; 10
+union:2&gt; 7
+union:4&gt; 106
+union:3&gt; 8
+union:7&gt; 109
+union:8&gt; 110
+union:7&gt; 4
+union:8&gt; 5
+</code></pre>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-DataStream-Transformations"><span class="toc-number">1.</span> <span class="toc-text">1 DataStream Transformations</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-map"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 map</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-flatMap"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 flatMap</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3-filter"><span class="toc-number">1.3.</span> <span class="toc-text">1.3 filter</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-4-keyBy"><span class="toc-number">1.4.</span> <span class="toc-text">1.4 keyBy</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-5-reduce"><span class="toc-number">1.5.</span> <span class="toc-text">1.5 reduce</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-6-fold-deprecated"><span class="toc-number">1.6.</span> <span class="toc-text">1.6 fold(deprecated)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-7-aggregations"><span class="toc-number">1.7.</span> <span class="toc-text">1.7 aggregations</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-8-window"><span class="toc-number">1.8.</span> <span class="toc-text">1.8 window</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-9-windowAll"><span class="toc-number">1.9.</span> <span class="toc-text">1.9 windowAll</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-10-WindowedStream-apply"><span class="toc-number">1.10.</span> <span class="toc-text">1.10 WindowedStream apply</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-11-WindowedStream-reduce"><span class="toc-number">1.11.</span> <span class="toc-text">1.11 WindowedStream reduce</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-11-WindowedStream-fold-deprecated"><span class="toc-number">1.12.</span> <span class="toc-text">1.11 WindowedStream fold(deprecated)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-12-WindowedStream-aggregations"><span class="toc-number">1.13.</span> <span class="toc-text">1.12 WindowedStream aggregations</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-13-union"><span class="toc-number">1.14.</span> <span class="toc-text">1.13 union</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-13-join"><span class="toc-number">1.15.</span> <span class="toc-text">1.13 join</span></a></li></ol></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

@@ -1,0 +1,745 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>StructuredStreaming有状态聚合 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="
+版本说明：Spark2.3
+
+为保证多个Batch之间能够进行有状态的计算，SparkStreaming在1.6版本之前就引入了updateStateByKey的状态管理机制，在1.6之后又引入了,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">StructuredStreaming有状态聚合</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/8.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/Spark"><b>「
+                    </b>SPARK<b> 」</b></a>
+                
+                March 01, 2019
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/structuredstreaming-stateful-aggregation.html" title="StructuredStreaming有状态聚合" class="">StructuredStreaming有状态聚合</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    13k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    12 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Spark/" rel="tag">Spark</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <blockquote>
+<p>版本说明：Spark2.3</p>
+</blockquote>
+<p>为保证多个Batch之间能够进行有状态的计算，SparkStreaming在1.6版本之前就引入了updateStateByKey的状态管理机制，在1.6之后又引入了mapWithState的状态管理机制。关于SparkStreaming的updateStateByKey和mapWithState的以查看<a target="_blank" rel="noopener" href="https://blog.csdn.net/struggle3014/article/details/79792695">《Spark-Streaming 状态管理应用优化之路》</a>。StructuredStreaming原本就是有状态的计算，这里我主要记录一下在StructuredStreaming里可以自定义状态操作的算子。</p>
+<h1 id="1-关于StructuredStreaming有状态操作算子"><a href="#1-关于StructuredStreaming有状态操作算子" class="headerlink" title="1 关于StructuredStreaming有状态操作算子"></a>1 关于StructuredStreaming有状态操作算子</h1><p>在StructuredStreaming里主要提供了两种自定义状态操作算子：mapGroupWithState和flatMapGroupWithState，可以帮助我们进行自定义的有状态的计算。这两个算法需要在KeyValueGroupedDataSet后使用，即在groupByKey之后使用这两个方法。下面将分别介绍一下mapGroupWithState和flatMapGroupWithState算子的使用</p>
+<h1 id="2-mapGroupWithState"><a href="#2-mapGroupWithState" class="headerlink" title="2 mapGroupWithState"></a>2 mapGroupWithState</h1><p>参考：<a target="_blank" rel="noopener" href="https://jaceklaskowski.gitbooks.io/spark-structured-streaming/spark-sql-streaming-KeyValueGroupedDataset-mapGroupsWithState.html">https://jaceklaskowski.gitbooks.io/spark-structured-streaming/spark-sql-streaming-KeyValueGroupedDataset-mapGroupsWithState.html</a></p>
+<p>mapGroupWithState源码如下：</p>
+<pre><code class="scala">def mapGroupsWithState[S: Encoder, U: Encoder](
+    func: (K, Iterator[V], GroupState[S]) =&gt; U): Dataset[U]
+
+def mapGroupsWithState[S: Encoder, U: Encoder](
+      timeoutConf: GroupStateTimeout)(
+      func: (K, Iterator[V], GroupState[S]) =&gt; U): Dataset[U]
+</code></pre>
+<p>以第一种传参为例，需要我们传入一个函数(K, Iterator[V], GroupState[S]) =&gt; U): Dataset[U]，第一个参数为key,groupByKey中的那个key，类型与Key一致。第二个参数为values，当前key组下的所有数据，类型是Iterator[V]。第三个参数为组状态，类型是GroupState[S]。返回值是个U，DataSet中的单条数据。例如下面的函数：</p>
+<pre><code class="scala">  case class Word(time: Long, word: String)
+  type State = mutable.ListBuffer[Word]    
+
+    def mapGroupWithStateFunc(key: String, values: Iterator[Word], state: GroupState[State]): Word = &#123;
+      // 获取状态
+      val historyState = state.getOption.getOrElse(mutable.ListBuffer[Word]())
+      val valueList = values.toList
+      println(s&quot;Key为 $key 的历史状态：$historyState&quot;)
+      println(s&quot;Key为 $key 的当前数据：$valueList&quot;)
+      valueList.foreach(w =&gt; &#123;
+        historyState += w
+      &#125;)
+      state.update(historyState)
+      historyState.last
+    &#125;
+</code></pre>
+<p>完整代码：</p>
+<pre><code class="scala">package com.hollysys.spark.structured.usecase
+
+import java.util.UUID
+
+import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.streaming.&#123;GroupStateTimeout, OutputMode&#125;
+import org.apache.spark.sql.types.TimestampType
+
+import scala.collection.mutable
+
+/**
+  * Created by shirukai on 2019-02-28 18:05
+  * 使用mapGroupWithState进行有状态聚合操作
+  */
+object MapGroupsWithStateTest &#123;
+  def main(args: Array[String]): Unit = &#123;
+    val spark = SparkSession
+      .builder
+      .master(&quot;local[2]&quot;)
+      .appName(&quot;MapGroupsWithStateTest&quot;)
+      .getOrCreate()
+    import spark.implicits._
+    val lines = spark.
+      readStream
+      .format(&quot;socket&quot;)
+      .option(&quot;host&quot;, &quot;localhost&quot;)
+      .option(&quot;port&quot;, &quot;9090&quot;)
+      .load
+      .as[String]
+
+    import org.apache.spark.sql.streaming.GroupState
+
+    def mapGroupWithStateFunc(key: String, values: Iterator[Word], state: GroupState[State]): Word = &#123;
+      // 获取状态
+      val historyState = state.getOption.getOrElse(mutable.ListBuffer[Word]())
+      val valueList = values.toList
+      println(s&quot;Key为 $key 的历史状态：$historyState&quot;)
+      println(s&quot;Key为 $key 的当前数据：$valueList&quot;)
+      valueList.foreach(w =&gt; &#123;
+        historyState += w
+      &#125;)
+      state.update(historyState)
+      historyState.last
+    &#125;
+
+
+    val df = lines.as[String].flatMap(line =&gt; &#123;
+      val lineSplits = line.split(&quot;[|]&quot;)
+      lineSplits.flatMap(item =&gt; &#123;
+        val itemSplits = item.split(&quot;:&quot;)
+        val t = itemSplits(0).toLong
+        itemSplits(1).split(&quot; &quot;).map(word =&gt; (t, word))
+      &#125;)
+    &#125;).toDF(&quot;time&quot;, &quot;word&quot;).select($&quot;time&quot;.cast(TimestampType), $&quot;word&quot;).as[Word]
+      .groupByKey(_.word)
+//      .mapGroupsWithState(mapGroupWithStateFunc _)
+    .mapGroupsWithState(timeoutConf = GroupStateTimeout.ProcessingTimeTimeout)(func = mapGroupWithStateFunc)
+    val query = df
+      .writeStream
+      .format(&quot;console&quot;)
+      .outputMode(OutputMode.Update)
+      // 是否压缩显示
+      .option(&quot;truncate&quot;, value = false)
+      // 显示条数
+      .option(&quot;numRows&quot;, 30)
+      .option(&quot;checkpointLocation&quot;, &quot;/tmp/temporary-&quot; + UUID.randomUUID.toString)
+      .start()
+
+    query.awaitTermination()
+  &#125;
+
+  case class Word(time: Long, word: String)
+
+  type State = mutable.ListBuffer[Word]
+  //  type State = mutable.TreeMap[String,Long]
+  //  implicit val State: Encoder[State] = org.apache.spark.sql.Encoders.kryo[State]
+&#125;
+</code></pre>
+<p>我们可以使用Socket终端进行验证：nc -lk 9090</p>
+<p>发送数据：1551326520:cat dog|1551326580:dog dog</p>
+<pre><code>Key为 cat 的历史状态：ListBuffer()
+Key为 dog 的历史状态：ListBuffer()
+Key为 cat 的当前数据：List(Word(1551326520,cat))
+Key为 dog 的当前数据：List(Word(1551326520,dog), Word(1551326580,dog), Word(1551326580,dog))
+-------------------------------------------
+Batch: 0
+-------------------------------------------
++----------+----+
+|time      |word|
++----------+----+
+|1551326580|dog |
+|1551326520|cat |
++----------+----+
+</code></pre>
+<p>再发送数据：1551326520:cat dog|1551326580:dog dog</p>
+<pre><code>Key为 dog 的历史状态：ListBuffer(Word(1551326520,dog), Word(1551326580,dog), Word(1551326580,dog))
+Key为 dog 的当前数据：List(Word(1551326520,dog), Word(1551326580,dog), Word(1551326580,dog))
+Key为 cat 的历史状态：ListBuffer(Word(1551326520,cat))
+Key为 cat 的当前数据：List(Word(1551326520,cat))
+-------------------------------------------
+Batch: 1
+-------------------------------------------
++----------+----+
+|time      |word|
++----------+----+
+|1551326580|dog |
+|1551326520|cat |
++----------+----+
+</code></pre>
+<h1 id="3-flatMapGroupWithState"><a href="#3-flatMapGroupWithState" class="headerlink" title="3 flatMapGroupWithState"></a>3 flatMapGroupWithState</h1><p>参考：<a target="_blank" rel="noopener" href="https://jaceklaskowski.gitbooks.io/spark-structured-streaming/spark-sql-streaming-KeyValueGroupedDataset-flatMapGroupsWithState.html">https://jaceklaskowski.gitbooks.io/spark-structured-streaming/spark-sql-streaming-KeyValueGroupedDataset-flatMapGroupsWithState.html</a></p>
+<p>flatMapGroupWithState与mapGroupWithState类似，区别有点像map和flatmap。上面我们可以看到mapGroupWithState回返回一条记录，而这里我们将的flatMapGroupWithState可以返回多条记录。</p>
+<pre><code class="scala">flatMapGroupsWithState[S: Encoder, U: Encoder](
+  outputMode: OutputMode,
+  timeoutConf: GroupStateTimeout)(
+  func: (K, Iterator[V], GroupState[S]) =&gt; Iterator[U]): Dataset[U]
+</code></pre>
+<p>注意：flatMapGroupWithState函数仅可以在Append和Update输出模式下使用</p>
+<p>说明：</p>
+<p>outputMode：输出模式，通过OutputMode.Append设置</p>
+<p>timeoutConf：状态过期设置，通过GroupStateTimeout.NoTimeout设置</p>
+<p>func：自定义函数</p>
+<p>func函数参数说明：</p>
+<p>K,为groupByKey中的key的类型，该key将以参数的形式传入</p>
+<p>V key分组下的所有数据类型，这些数据Iterator[V]将以参数的形式传入</p>
+<p>S自定义状态的存储类型</p>
+<p>U 自定义返回类型</p>
+<p>上面说到flatMapGroupWithState与mapGroupWithState类似，这里对上面mapGroupWithState自定义的函数进行稍加修改，只改一下返回值类型即可。如下所示：</p>
+<pre><code class="scala">def mapGroupWithStateFunc(key: String, values: Iterator[Word], state: GroupState[State]): Iterator[Word] = &#123;
+  // 获取状态
+  val historyState = state.getOption.getOrElse(mutable.ListBuffer[Word]())
+  val valueList = values.toList
+  println(s&quot;Key为 $key 的历史状态：$historyState&quot;)
+  println(s&quot;Key为 $key 的当前数据：$valueList&quot;)
+  valueList.foreach(w =&gt; &#123;
+    historyState += w
+  &#125;)
+  state.update(historyState)
+  historyState.iterator
+&#125;
+</code></pre>
+<p>除此之外我们还要指定一个下数据的输出模式：</p>
+<pre><code class="scala">      .groupByKey(_.word)
+      //      .mapGroupsWithState(mapGroupWithStateFunc _)
+      .flatMapGroupsWithState(
+      outputMode = OutputMode.Update(),
+      timeoutConf = GroupStateTimeout.ProcessingTimeTimeout)(func = mapGroupWithStateFunc)
+</code></pre>
+<p>完整代码：</p>
+<pre><code class="scala">package com.hollysys.spark.structured.usecase
+
+import java.util.UUID
+
+import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.streaming.&#123;GroupStateTimeout, OutputMode&#125;
+import org.apache.spark.sql.types.TimestampType
+
+import scala.collection.mutable
+
+/**
+  * Created by shirukai on 2019-02-28 18:05
+  * 使用flatMapGroupWithState进行有状态聚合操作
+  */
+object FlatMapGroupsWithStateTest &#123;
+  def main(args: Array[String]): Unit = &#123;
+    val spark = SparkSession
+      .builder
+      .master(&quot;local[2]&quot;)
+      .appName(&quot;MapGroupsWithStateTest&quot;)
+      .getOrCreate()
+    import spark.implicits._
+    val lines = spark.
+      readStream
+      .format(&quot;socket&quot;)
+      .option(&quot;host&quot;, &quot;localhost&quot;)
+      .option(&quot;port&quot;, &quot;9090&quot;)
+      .load
+      .as[String]
+
+    import org.apache.spark.sql.streaming.GroupState
+
+    def mapGroupWithStateFunc(key: String, values: Iterator[Word], state: GroupState[State]): Iterator[Word] = &#123;
+      // 获取状态
+      val historyState = state.getOption.getOrElse(mutable.ListBuffer[Word]())
+      val valueList = values.toList
+      println(s&quot;Key为 $key 的历史状态：$historyState&quot;)
+      println(s&quot;Key为 $key 的当前数据：$valueList&quot;)
+      valueList.foreach(w =&gt; &#123;
+        historyState += w
+      &#125;)
+      state.update(historyState)
+      historyState.iterator
+    &#125;
+
+
+    val df = lines.as[String].flatMap(line =&gt; &#123;
+      val lineSplits = line.split(&quot;[|]&quot;)
+      lineSplits.flatMap(item =&gt; &#123;
+        val itemSplits = item.split(&quot;:&quot;)
+        val t = itemSplits(0).toLong
+        itemSplits(1).split(&quot; &quot;).map(word =&gt; (t, word))
+      &#125;)
+    &#125;).toDF(&quot;time&quot;, &quot;word&quot;).select($&quot;time&quot;.cast(TimestampType), $&quot;word&quot;).as[Word]
+      .groupByKey(_.word)
+      //      .mapGroupsWithState(mapGroupWithStateFunc _)
+      .flatMapGroupsWithState(
+      outputMode = OutputMode.Update(),
+      timeoutConf = GroupStateTimeout.ProcessingTimeTimeout)(func = mapGroupWithStateFunc)
+    val query = df
+      .writeStream
+      .format(&quot;console&quot;)
+      .outputMode(OutputMode.Update)
+      // 是否压缩显示
+      .option(&quot;truncate&quot;, value = false)
+      // 显示条数
+      .option(&quot;numRows&quot;, 30)
+      .option(&quot;checkpointLocation&quot;, &quot;/tmp/temporary-&quot; + UUID.randomUUID.toString)
+      .start()
+
+    query.awaitTermination()
+  &#125;
+
+  case class Word(time: Long, word: String)
+
+  type State = mutable.ListBuffer[Word]
+  //  type State = mutable.TreeMap[String,Long]
+  //  implicit val State: Encoder[State] = org.apache.spark.sql.Encoders.kryo[State]
+&#125;
+</code></pre>
+<p>我们可以使用Socket终端进行验证：nc -lk 9090</p>
+<p>发送数据：1551326520:cat dog|1551326580:dog dog</p>
+<pre><code>Key为 dog 的历史状态：ListBuffer()
+Key为 dog 的当前数据：List(Word(1551326520,dog), Word(1551326580,dog), Word(1551326580,dog))
+Key为 cat 的历史状态：ListBuffer()
+Key为 cat 的当前数据：List(Word(1551326520,cat))
+-------------------------------------------
+Batch: 0
+-------------------------------------------
++----------+----+
+|time      |word|
++----------+----+
+|1551326520|dog |
+|1551326580|dog |
+|1551326580|dog |
+|1551326520|cat |
++----------+----+
+</code></pre>
+<p>再发送数据：1551326520:cat dog|1551326580:dog dog</p>
+<pre><code>Key为 dog 的历史状态：ListBuffer(Word(1551326520,dog), Word(1551326580,dog), Word(1551326580,dog))
+Key为 dog 的当前数据：List(Word(1551326520,dog), Word(1551326580,dog), Word(1551326580,dog))
+Key为 cat 的历史状态：ListBuffer(Word(1551326520,cat))
+Key为 cat 的当前数据：List(Word(1551326520,cat))
+-------------------------------------------
+Batch: 1
+-------------------------------------------
++----------+----+
+|time      |word|
++----------+----+
+|1551326520|dog |
+|1551326580|dog |
+|1551326580|dog |
+|1551326520|dog |
+|1551326580|dog |
+|1551326580|dog |
+|1551326520|cat |
+|1551326520|cat |
++----------+----+
+</code></pre>
+<h1 id="4-注意"><a href="#4-注意" class="headerlink" title="4 注意"></a>4 注意</h1><p>有时候我么你状态里需要一个有序的集合，如TreeMap、TreeSet等。经过测试scala里的TreeMap和TreeSet没法使用。错误信息：<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/53159151/spark-catalyst-flatmapgroupswithstate-group-state-with-sorted-collection">https://stackoverflow.com/questions/53159151/spark-catalyst-flatmapgroupswithstate-group-state-with-sorted-collection</a> 。而java中的TreeMap也没发直接使用，我么你可以通过Encoder后再使用，如下所示：</p>
+<pre><code class="scala">  type State = util.TreeMap[String,Long]
+  implicit val State: Encoder[State] = org.apache.spark.sql.Encoders.kryo[State]
+</code></pre>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E5%85%B3%E4%BA%8EStructuredStreaming%E6%9C%89%E7%8A%B6%E6%80%81%E6%93%8D%E4%BD%9C%E7%AE%97%E5%AD%90"><span class="toc-number">1.</span> <span class="toc-text">1 关于StructuredStreaming有状态操作算子</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-mapGroupWithState"><span class="toc-number">2.</span> <span class="toc-text">2 mapGroupWithState</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-flatMapGroupWithState"><span class="toc-number">3.</span> <span class="toc-text">3 flatMapGroupWithState</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%E6%B3%A8%E6%84%8F"><span class="toc-number">4.</span> <span class="toc-text">4 注意</span></a></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

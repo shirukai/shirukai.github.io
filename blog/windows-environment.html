@@ -1,0 +1,531 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>windows环境搭建 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="一、安装 Anaconda官网下载：https://www.anaconda.com/download/#windows
+1.下载完成后进行安装，【Next】
+
+2.点击【I Agree】同意条款
+,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">windows环境搭建</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/4.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/Python"><b>「
+                    </b>PYTHON<b> 」</b></a>
+                
+                August 20, 2018
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/windows-environment.html" title="windows环境搭建" class="">windows环境搭建</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    6.1k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    6 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/scrapy/" rel="tag">scrapy</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <h2 id="一、安装-Anaconda"><a href="#一、安装-Anaconda" class="headerlink" title="一、安装 Anaconda"></a>一、安装 Anaconda</h2><p>官网下载：<a target="_blank" rel="noopener" href="https://www.anaconda.com/download/#windows">https://www.anaconda.com/download/#windows</a></p>
+<p>1.下载完成后进行安装，【Next】</p>
+<p><img src="https://shirukai.gitee.io/images/201801301557_945.png"></p>
+<p>2.点击【I Agree】同意条款</p>
+<p><img src="https://shirukai.gitee.io/images/201801301558_628.png"></p>
+<p>3.选择安装类型，第一个是安装到当前用户，第二个是安装到所有用户。</p>
+<p><img src="https://shirukai.gitee.io/images/201801301600_379.png"></p>
+<p>4.选择安装路径</p>
+<p><img src="https://shirukai.gitee.io/images/201801301600_78.png"></p>
+<p>5.勾选Add Anaconda to my PATH environment variable选项，将 anaconda加入的环境变量里。</p>
+<p><img src="https://shirukai.gitee.io/images/201801301605_543.png"></p>
+<p>6.点击【Install】即可等待安装完成。</p>
+<h2 id="二、安装scrapy"><a href="#二、安装scrapy" class="headerlink" title="二、安装scrapy"></a>二、安装scrapy</h2><p>命令行输入</p>
+<pre><code>conda install scrapy
+</code></pre>
+<p>安装过程会检查相关依赖，输入【Y】即可继续安装。</p>
+<p><img src="https://shirukai.gitee.io/images/201801301613_752.png"></p>
+<h2 id="三、Scrapy使用"><a href="#三、Scrapy使用" class="headerlink" title="三、Scrapy使用"></a>三、Scrapy使用</h2><h3 id="1-创建项目"><a href="#1-创建项目" class="headerlink" title="1.创建项目"></a>1.创建项目</h3><p>在自己的代码仓库文件夹下，执行下列命令(tutorial 是项目名)：</p>
+<pre><code>scrapy startproject tutorial
+</code></pre>
+<p><img src="https://shirukai.gitee.io/images/201801301617_902.png"></p>
+<p>创建完成后可以导入到pycharm里，然后看一下项目结构：</p>
+<pre><code>tutorial/
+    scrapy.cfg
+    tutorial/
+        __init__.py
+        items.py
+        pipelines.py
+        settings.py
+        spiders/
+            __init__.py
+            ...
+</code></pre>
+<p><img src="https://shirukai.gitee.io/images/201801301619_902.png"></p>
+<h3 id="2-定义Item"><a href="#2-定义Item" class="headerlink" title="2.定义Item"></a>2.定义Item</h3><p>Item 是保存爬取到的数据的容器；其使用方法和python字典类似。虽然您也可以在Scrapy中直接使用dict，但是 Item 提供了额外保护机制来避免拼写错误导致的未定义字段错误。 They can also be used with <a target="_blank" rel="noopener" href="http://scrapy-chs.readthedocs.io/zh_CN/1.0/topics/loaders.html#topics-loaders">Item Loaders</a>, a mechanism with helpers to conveniently populate Items.</p>
+<p>类似在ORM中做的一样，您可以通过创建一个 <a target="_blank" rel="noopener" href="http://scrapy-chs.readthedocs.io/zh_CN/1.0/topics/items.html#scrapy.item.Item"><code>scrapy.Item</code></a> 类， 并且定义类型为 <a target="_blank" rel="noopener" href="http://scrapy-chs.readthedocs.io/zh_CN/1.0/topics/items.html#scrapy.item.Field"><code>scrapy.Field</code></a> 的类属性来定义一个Item。 (如果不了解ORM, 不用担心，您会发现这个步骤非常简单)</p>
+<p>首先根据需要从dmoz.org获取到的数据对item进行建模。 我们需要从dmoz中获取名字，url，以及网站的描述。 对此，在item中定义相应的字段。编辑 <code>tutorial</code> 目录中的 <code>items.py</code> 文件:</p>
+<pre><code>class DmozItem(scrapy.Item):
+    title = scrapy.Field()
+    link = scrapy.Field()
+    desc = scrapy.Field()
+</code></pre>
+<h3 id="3-编写第一个爬虫-Spider"><a href="#3-编写第一个爬虫-Spider" class="headerlink" title="3.编写第一个爬虫(Spider)"></a>3.编写第一个爬虫(Spider)</h3><p>Spider是用户编写用于从单个网站(或者一些网站)爬取数据的类。</p>
+<p>其包含了一个用于下载的初始URL，如何跟进网页中的链接以及如何分析页面中的内容， 提取生成 <a target="_blank" rel="noopener" href="http://scrapy-chs.readthedocs.io/zh_CN/1.0/topics/items.html#topics-items">item</a> 的方法。</p>
+<p>为了创建一个Spider，您必须继承 <a target="_blank" rel="noopener" href="http://scrapy-chs.readthedocs.io/zh_CN/1.0/topics/spiders.html#scrapy.spiders.Spider"><code>scrapy.Spider</code></a> 类， 且定义一些属性:</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="http://scrapy-chs.readthedocs.io/zh_CN/1.0/topics/spiders.html#scrapy.spiders.Spider.name"><code>name</code></a>: 用于区别Spider。 该名字必须是唯一的，您不可以为不同的Spider设定相同的名字。</li>
+<li><a target="_blank" rel="noopener" href="http://scrapy-chs.readthedocs.io/zh_CN/1.0/topics/spiders.html#scrapy.spiders.Spider.start_urls"><code>start_urls</code></a>: 包含了Spider在启动时进行爬取的url列表。 因此，第一个被获取到的页面将是其中之一。 后续的URL则从初始的URL获取到的数据中提取。</li>
+<li><a target="_blank" rel="noopener" href="http://scrapy-chs.readthedocs.io/zh_CN/1.0/topics/spiders.html#scrapy.spiders.Spider.parse"><code>parse()</code></a> 是spider的一个方法。 被调用时，每个初始URL完成下载后生成的 <a target="_blank" rel="noopener" href="http://scrapy-chs.readthedocs.io/zh_CN/1.0/topics/request-response.html#scrapy.http.Response"><code>Response</code></a> 对象将会作为唯一的参数传递给该函数。 该方法负责解析返回的数据(response data)，提取数据(生成item)以及生成需要进一步处理的URL的 <a target="_blank" rel="noopener" href="http://scrapy-chs.readthedocs.io/zh_CN/1.0/topics/request-response.html#scrapy.http.Request"><code>Request</code></a> 对象。</li>
+</ul>
+<p>以下为我们的第一个Spider代码，保存在 <code>tutorial/spiders</code> 目录下的 <code>dmoz_spider.py</code> 文件中:</p>
+<pre><code>class DmozSpider(scrapy.Spider):
+    name = &quot;dmoz&quot;
+    allowed_domains = [&quot;dmoz.org&quot;]
+    start_urls = [
+        &quot;http://scrapy-chs.readthedocs.io/zh_CN/1.0/intro/tutorial.html&quot;,
+        &quot;http://blog.51cto.com/linuxliu/2066060&quot;
+    ]
+
+    def parse(self, response):
+        filename = response.url.split(&quot;/&quot;)[-2] + &#39;.html&#39;
+        with open(filename, &#39;wb&#39;) as f:
+            f.write(response.body)
+</code></pre>
+<h3 id="4-爬取"><a href="#4-爬取" class="headerlink" title="4.爬取"></a>4.爬取</h3><p>进入项目的根目录，执行下列命令启动spider:</p>
+<pre><code>scrapy crawl dmoz
+</code></pre>
+<p><img src="https://shirukai.gitee.io/images/201801301705_32.png"></p>
+<p>运行完成后，后再当前目录下生成两个页面：</p>
+<p><img src="https://shirukai.gitee.io/images/201801301706_26.png"></p>
+<h3 id="5-pycharm-调试scrapy项目"><a href="#5-pycharm-调试scrapy项目" class="headerlink" title="5.pycharm 调试scrapy项目"></a>5.pycharm 调试scrapy项目</h3><blockquote>
+<p>scrapy在pycharm里是没法直接运行调试的，我们可以通过以下方式，对齐进行调试输出。</p>
+</blockquote>
+<p>我们可以尝试在pycharm里直接对scrapy项目进行调试</p>
+<p>首相在项目根目录下创建一个main.py：</p>
+<pre><code>from scrapy.cmdline import execute
+execute([&#39;scrapy&#39;, &#39;crawl&#39;, &#39;dmoz&#39;])
+</code></pre>
+<p>然后直接右击运行main.py</p>
+<p><img src="https://shirukai.gitee.io/images/201801301710_512.png"></p>
+<p>这是会发现，报错：</p>
+<pre><code>    from cryptography.hazmat.bindings._openssl import ffi, lib
+ImportError: DLL load failed: 操作系统无法运行 %1。
+</code></pre>
+<h4 id="解决方法："><a href="#解决方法：" class="headerlink" title="解决方法："></a>解决方法：</h4><p>安装 OpenSSL 并将安装目录/bin下的 libeay.dll 和 ssleay.dll复制到 C:\Windows\System32目录下。</p>
+<p>OpenSSL 64位的版本，在这个链接下载：<a target="_blank" rel="noopener" href="http://ov1a6etyz.bkt.clouddn.com/201801301720_87.exe">http://ov1a6etyz.bkt.clouddn.com/201801301720_87.exe</a></p>
+<p>注意安装的时候，这一步，选择【The OpenSSL binaries（/bin）directory】这个选项。这样在安装目录的bin下才会找到需要的两个.dll文件。</p>
+<p><img src="https://shirukai.gitee.io/images/201801301722_244.png"></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%AE%89%E8%A3%85-Anaconda"><span class="toc-number">1.</span> <span class="toc-text">一、安装 Anaconda</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%AE%89%E8%A3%85scrapy"><span class="toc-number">2.</span> <span class="toc-text">二、安装scrapy</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81Scrapy%E4%BD%BF%E7%94%A8"><span class="toc-number">3.</span> <span class="toc-text">三、Scrapy使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%88%9B%E5%BB%BA%E9%A1%B9%E7%9B%AE"><span class="toc-number">3.1.</span> <span class="toc-text">1.创建项目</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%AE%9A%E4%B9%89Item"><span class="toc-number">3.2.</span> <span class="toc-text">2.定义Item</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E7%BC%96%E5%86%99%E7%AC%AC%E4%B8%80%E4%B8%AA%E7%88%AC%E8%99%AB-Spider"><span class="toc-number">3.3.</span> <span class="toc-text">3.编写第一个爬虫(Spider)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E7%88%AC%E5%8F%96"><span class="toc-number">3.4.</span> <span class="toc-text">4.爬取</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-pycharm-%E8%B0%83%E8%AF%95scrapy%E9%A1%B9%E7%9B%AE"><span class="toc-number">3.5.</span> <span class="toc-text">5.pycharm 调试scrapy项目</span></a></li></ol></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

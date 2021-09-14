@@ -1,0 +1,1226 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Flink中使用嵌入式ElasticSearch进行单元测试 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="
+Flink版本 1.8.0
+ElasticSearch版本 5.1.2
+Scala版本 2.11.12
+Java版本 1.8
+Github地址：https://github.com/shiruka,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">Flink中使用嵌入式ElasticSearch进行单元测试</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/6.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/Flink"><b>「
+                    </b>FLINK<b> 」</b></a>
+                
+                June 23, 2020
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/embedded-elasticsearch-is-used-in-flink.html" title="Flink中使用嵌入式ElasticSearch进行单元测试" class="">Flink中使用嵌入式ElasticSearch进行单元测试</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    39k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    35 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Flink/" rel="tag">Flink</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <blockquote>
+<p>Flink版本 1.8.0</p>
+<p>ElasticSearch版本 5.1.2</p>
+<p>Scala版本 2.11.12</p>
+<p>Java版本 1.8</p>
+<p>Github地址：<a target="_blank" rel="noopener" href="https://github.com/shirukai/flink-examples-embedded-elasticsearch.git">https://github.com/shirukai/flink-examples-embedded-elasticsearch.git</a></p>
+</blockquote>
+<h1 id="1-前言"><a href="#1-前言" class="headerlink" title="1 前言"></a>1 前言</h1><p>前些时间同学在群里问关于ElasticSearch的单元测试，如何mock。当时看到这个问题，我想的是mock一个写ElasticSearch的客户端的类？但是一直没想好怎么实现，这个问题一直困扰我。刚好最近接手的工作上，要求单元测试的覆盖率，恰好也有写ES的单元测试。先说一下我的工作需求，我是一个写es的flink任务，要求进行单元测试。通过查看flink 关于es connector的源码，豁然开朗，它的做法是启动了一个嵌入式的es节点。这篇文章将介绍一下三种方式启动嵌ElasticSearch服务用以单元测试：</p>
+<ol>
+<li>从ElasticSearch官方包中启动单个Node节点</li>
+<li>使用第三方依赖包启动ElasticSearch服务</li>
+<li>使用Testcontainers启动ElasticSearch服务</li>
+</ol>
+<p>并将我在Flink中使用嵌入式ES踩过的坑统一记录下来，避免让更多的同学踩坑，话说今天是周三，掉坑里两天了终于爬出来了。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200617113607.png" alt="image-20200617113607294"></p>
+<h1 id="2-快速创建Flink项目"><a href="#2-快速创建Flink项目" class="headerlink" title="2 快速创建Flink项目"></a>2 快速创建Flink项目</h1><p>按照惯例，我给每一个需要验证的技术点都搭建一个新环境，确保做的验证没有污染。废话不多说，执行如下命令基于flink官方模板创建一个Maven项目：</p>
+<pre><code class="shell">mvn archetype:generate -DarchetypeGroupId=org.apache.flink -DarchetypeArtifactId=flink-quickstart-scala -DarchetypeVersion=1.8.0 -DgroupId=flink.examples -DartifactId=flink-examples-embedded-elasticsearch -Dversion=1.0 -Dpackage=flink.examples.embedded.elasticsearch -DinteractiveMode=false
+</code></pre>
+<p>pom.xml文件中加入如下依赖</p>
+<pre><code class="xml">        &lt;!-- elasticsearch --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.apache.flink&lt;/groupId&gt;
+            &lt;artifactId&gt;flink-connector-elasticsearch5_$&#123;scala.binary.version&#125;&lt;/artifactId&gt;
+            &lt;version&gt;$&#123;flink.version&#125;&lt;/version&gt;
+        &lt;/dependency&gt;
+
+        &lt;!-- json4s --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.json4s&lt;/groupId&gt;
+            &lt;artifactId&gt;json4s-jackson_$&#123;scala.binary.version&#125;&lt;/artifactId&gt;
+            &lt;version&gt;3.6.7&lt;/version&gt;
+        &lt;/dependency&gt;
+</code></pre>
+<h1 id="3-简单编写一个Flink写入ES的任务"><a href="#3-简单编写一个Flink写入ES的任务" class="headerlink" title="3 简单编写一个Flink写入ES的任务"></a>3 简单编写一个Flink写入ES的任务</h1><p>在flink.embedded.elasticsearch.examples下创建一个名为WriteElasticSearchJob的Scala object，实现比较简单：</p>
+<ol>
+<li>从集合中构建一个事件流</li>
+<li>将事件流写入ES</li>
+</ol>
+<p>代码如下所示：</p>
+<pre><code class="scala">package flink.embedded.elasticsearch.examples
+
+import java.net.&#123;InetAddress, InetSocketAddress&#125;
+
+import org.apache.flink.api.common.functions.RuntimeContext
+import org.apache.flink.api.java.utils.ParameterTool
+import org.apache.flink.streaming.api.scala.StreamExecutionEnvironment
+import org.apache.flink.streaming.api.scala._
+import org.apache.flink.streaming.connectors.elasticsearch.&#123;ElasticsearchSinkFunction, RequestIndexer&#125;
+import org.apache.flink.streaming.connectors.elasticsearch5.ElasticsearchSink
+import org.elasticsearch.client.Requests
+import org.json4s.&#123;Formats, NoTypeHints&#125;
+import org.json4s.jackson.Serialization
+
+import scala.util.Random
+
+/**
+ * 模拟数据写入Es
+ *
+ * @author shirukai
+ */
+object WriteElasticSearchJob &#123;
+
+  case class Event(id: String, v: Double, t: Long)
+
+  def main(args: Array[String]): Unit = &#123;
+    // 获取执行环境
+    val env: StreamExecutionEnvironment = StreamExecutionEnvironment.getExecutionEnvironment
+
+    // 解析参数
+    val params: ParameterTool = ParameterTool.fromArgs(args)
+
+    // 1. 从集合中创建一个DataStream
+    val events = env.fromCollection(1 to 20).map(i =&gt; &#123;
+      val v = Random.nextDouble()
+      val t = System.currentTimeMillis()
+      Event(&quot;event-&quot; + i, v, t)
+    &#125;)
+
+    // 2. 将事件写入Es
+    val (userConfig, transportAddresses) = parseEsConfigs(params)
+    import scala.collection.JavaConversions._
+    val esSink = new ElasticsearchSink(userConfig, transportAddresses, new EventSinkFunction)
+    events.addSink(esSink)
+
+    env.execute(&quot;WriteElasticSearchJob&quot;)
+
+  &#125;
+
+  def parseEsConfigs(params: ParameterTool): (Map[String, String], List[InetSocketAddress]) = &#123;
+    // 构建userConfig，主要设置Es集群名称
+    val userConfig = Map[String, String](
+      &quot;cluster.name&quot; -&gt; params.get(&quot;es.cluster.name&quot;, &quot;es-test&quot;)
+    )
+    // 构建transport地址
+    val esNodes = params.get(&quot;es.cluster.nodes&quot;, &quot;127.0.0.1&quot;).split(&quot;,&quot;).toList
+    val esPort = params.getInt(&quot;es.cluster.port&quot;, 9300)
+    val transportAddresses = esNodes.map(node =&gt; new InetSocketAddress(InetAddress.getByName(node), esPort))
+    (userConfig, transportAddresses)
+  &#125;
+
+  /**
+   * 继承ElasticsearchSinkFunction实现构建索引的方法
+   */
+  class EventSinkFunction extends ElasticsearchSinkFunction[Event] &#123;
+    override def process(t: Event, runtimeContext: RuntimeContext, requestIndexer: RequestIndexer): Unit = &#123;
+      implicit val formats: AnyRef with Formats = Serialization.formats(NoTypeHints)
+      val source: String = Serialization.write(t)
+      requestIndexer.add(Requests.indexRequest()
+        .index(&quot;events&quot;)
+        .`type`(&quot;test&quot;)
+        .id(t.id)
+        .source(source)
+      )
+    &#125;
+  &#125;
+
+&#125;
+</code></pre>
+<p>flink任务写好了，就可以执行main方法进行验证了，从上面代码中可以看出，程序接受如下参数：</p>
+<ul>
+<li>es.cluster.name 集群名称，默认值：es-test</li>
+<li>es.cluster.nodes 集群节点IP，多个IP以逗号分隔，默认值：127.0.0.1</li>
+<li>es.cluster.port 集群节点端口号，默认值：9300</li>
+</ul>
+<p>可以在启动程序的时候指定上面的参数，如果不指定将使用默认值。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200618195333.png" alt="image-20200618195231344"></p>
+<h1 id="4-三种方式启动嵌入式ElasticSearch服务"><a href="#4-三种方式启动嵌入式ElasticSearch服务" class="headerlink" title="4 三种方式启动嵌入式ElasticSearch服务"></a>4 三种方式启动嵌入式ElasticSearch服务</h1><h2 id="4-1-从ElasticSearch官方包中启动单个Node节点"><a href="#4-1-从ElasticSearch官方包中启动单个Node节点" class="headerlink" title="4.1 从ElasticSearch官方包中启动单个Node节点"></a>4.1 从ElasticSearch官方包中启动单个Node节点</h2><p>这种方式是Flink在他们的单元测试中使用的，可以下载flink的源码在flink-connectors/flink-connector-elasticsearch5模块下查看。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200618200359.png" alt="image-20200618200359635"></p>
+<p>上述代码相对比较简单，通过Settings构建一个配置实例，然后创建一个Node实例即可。</p>
+<h3 id="4-1-1-快速入门示例"><a href="#4-1-1-快速入门示例" class="headerlink" title="4.1.1 快速入门示例"></a>4.1.1 快速入门示例</h3><p>使用Java先实现一个快速入门的示例，创建flink.embedded.elasticsearch.examples.LocalNodeQuickStartExample类，实现内容如下：</p>
+<pre><code class="scala">package flink.embedded.elasticsearch.examples;
+
+import org.elasticsearch.common.network.NetworkModule;
+import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.node.Node;
+import org.elasticsearch.node.NodeValidationException;
+import org.elasticsearch.node.internal.InternalSettingsPreparer;
+import org.elasticsearch.transport.Netty4Plugin;
+
+import java.util.Collections;
+
+/**
+ * Es本地节点快速入门示例
+ * @author shirukai
+ */
+public class LocalNodeQuickStartExample &#123;
+    private static class PluginNode extends Node &#123;
+        public PluginNode(Settings settings) &#123;
+            super(InternalSettingsPreparer.prepareEnvironment(settings, null), Collections.singletonList(Netty4Plugin.class));
+        &#125;
+    &#125;
+    public static void main(String[] args) throws NodeValidationException &#123;
+        String systemTempDir = System.getProperty(&quot;java.io.tmpdir&quot;);
+        String esTempDir = systemTempDir+&quot;/es&quot;;
+        Settings settings = Settings.builder()
+                .put(&quot;cluster.name&quot;, &quot;test&quot;)
+                .put(&quot;http.enabled&quot;, true)
+                .put(&quot;path.home&quot;, systemTempDir)
+                .put(&quot;path.data&quot;, esTempDir)
+                .put(NetworkModule.HTTP_TYPE_KEY, Netty4Plugin.NETTY_HTTP_TRANSPORT_NAME)
+                .put(NetworkModule.TRANSPORT_TYPE_KEY, Netty4Plugin.NETTY_TRANSPORT_NAME)
+                .build();
+        PluginNode node = new PluginNode(settings);
+        node.start();
+        // 让它一直阻塞吧
+        Thread.currentThread().join();
+    &#125;
+&#125;
+</code></pre>
+<p>运行mian方法，应该会报出如下异常：</p>
+<pre><code class="shell">Exception in thread &quot;main&quot; java.lang.ExceptionInInitializerError
+    at org.elasticsearch.node.Node.&lt;init&gt;(Node.java:268)
+    at flink.embedded.elasticsearch.examples.LocalNodeQuickStartExample$PluginNode.&lt;init&gt;(LocalNodeQuickStartExample.java:19)
+    at flink.embedded.elasticsearch.examples.LocalNodeQuickStartExample.main(LocalNodeQuickStartExample.java:33)
+Caused by: java.lang.IllegalStateException: Error finding the build shortHash. Stopping Elasticsearch now so it doesn&#39;t run in subtly broken ways. This is likely a build bug.
+    at org.elasticsearch.Build.&lt;clinit&gt;(Build.java:62)
+    ... 3 more
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200619095327.png" alt="image-20200619095326976"></p>
+<p>出现这个异常，是由于依赖包的问题导致的，我们需要在pom文件中加入es的依赖：</p>
+<pre><code class="xml">        &lt;!-- Dependency for Elasticsearch 5.x Java Client --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.elasticsearch.client&lt;/groupId&gt;
+            &lt;artifactId&gt;transport&lt;/artifactId&gt;
+            &lt;version&gt;$&#123;elasticsearch.version&#125;&lt;/version&gt;
+        &lt;/dependency&gt;
+</code></pre>
+<p><em>注意这个依赖一定要放在flink-connector-elasticsearch5依赖之前，因为flink的es连接器里打包了es的依赖，没有办法排除，只能在它之前引入新的es依赖，并且版本要与connector里的版本一致，以elasticsearch5为例，它里面指定的es版本为5.1.2</em></p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200619175246.png" alt="image-20200619100128453"></p>
+<p>加入es依赖之后如果还报错，可以尝试清空maven仓库.m2下对应的缓存.m2/repository/org/apache/flink/flink-connector-elasticsearch5_2.11/*。</p>
+<p>再次运行mian方法，应该还会报出如下异常:</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200621201803.png" alt="image-20200621201715360"></p>
+<pre><code class="shell">Exception in thread &quot;main&quot; java.lang.NoClassDefFoundError: org/apache/logging/log4j/Logger
+    at org.elasticsearch.common.logging.Loggers.getLogger(Loggers.java:105)
+    at org.elasticsearch.node.Node.&lt;init&gt;(Node.java:237)
+    at flink.embedded.elasticsearch.examples.LocalNodeQuickStartExample$PluginNode.&lt;init&gt;(LocalNodeQuickStartExample.java:19)
+    at flink.embedded.elasticsearch.examples.LocalNodeQuickStartExample.main(LocalNodeQuickStartExample.java:33)
+Caused by: java.lang.ClassNotFoundException: org.apache.logging.log4j.Logger
+    at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:581)
+    at java.base/jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:178)
+    at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:522)
+    ... 4 more
+</code></pre>
+<p>这是由于缺少log4j2相关的依赖，flink的做法是使用log4j-to-slf4j将其路由到slf4j，关于log4j-to-slf4j的介绍参考<a target="_blank" rel="noopener" href="http://logging.apache.org/log4j/2.x/log4j-to-slf4j/%E3%80%82">http://logging.apache.org/log4j/2.x/log4j-to-slf4j/。</a></p>
+<p>所以这里需要在pom中添加如下依赖：</p>
+<pre><code class="xml">        &lt;!--
+            Elasticsearch 5.x uses Log4j2 and no longer detects logging implementations, making
+            Log4j2 a strict dependency. The following is added so that the Log4j2 API in
+            Elasticsearch 5.x is routed to SLF4J. This way, user projects can remain flexible
+            in the logging implementation preferred.
+        --&gt;
+
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.apache.logging.log4j&lt;/groupId&gt;
+            &lt;artifactId&gt;log4j-to-slf4j&lt;/artifactId&gt;
+            &lt;version&gt;2.7&lt;/version&gt;
+        &lt;/dependency&gt;
+</code></pre>
+<p>现在终于可以正常运行了。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200619180127.png" alt="image-20200619175447835"></p>
+<p>发送个接口查看一下集群状态<a target="_blank" rel="noopener" href="http://127.0.0.1:9200/_cluster/health?pretty=true">http://127.0.0.1:9200/_cluster/health?pretty=true</a></p>
+<pre><code class="json">&#123;
+    &quot;cluster_name&quot;: &quot;test&quot;,
+    &quot;status&quot;: &quot;green&quot;,
+    &quot;timed_out&quot;: false,
+    &quot;number_of_nodes&quot;: 1,
+    &quot;number_of_data_nodes&quot;: 1,
+    &quot;active_primary_shards&quot;: 0,
+    &quot;active_shards&quot;: 0,
+    &quot;relocating_shards&quot;: 0,
+    &quot;initializing_shards&quot;: 0,
+    &quot;unassigned_shards&quot;: 0,
+    &quot;delayed_unassigned_shards&quot;: 0,
+    &quot;number_of_pending_tasks&quot;: 0,
+    &quot;number_of_in_flight_fetch&quot;: 0,
+    &quot;task_max_waiting_in_queue_millis&quot;: 0,
+    &quot;active_shards_percent_as_number&quot;: 100
+&#125;
+</code></pre>
+<h3 id="4-1-2-使用Builder模式封装ElasticSearchLocalNode"><a href="#4-1-2-使用Builder模式封装ElasticSearchLocalNode" class="headerlink" title="4.1.2 使用Builder模式封装ElasticSearchLocalNode"></a>4.1.2 使用Builder模式封装ElasticSearchLocalNode</h3><p>在flink.embedded.elasticsearch.examples下创建一个名为ElasticSearchLocalNode的类，主要是使用builder模式，构建setting，然后通过setting构建一个Node实例。</p>
+<p>实现内容如下：</p>
+<pre><code class="java">package flink.embedded.elasticsearch.examples;
+
+import org.elasticsearch.common.network.NetworkModule;
+import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.node.Node;
+import org.elasticsearch.node.internal.InternalSettingsPreparer;
+import org.elasticsearch.transport.Netty4Plugin;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Collections;
+import java.util.Comparator;
+
+/**
+ * 继承org.elasticsearch.node.Node实现一个本地节点
+ *
+ * @author shirukai
+ */
+public class ElasticSearchLocalNode extends Node &#123;
+    private static final Logger LOG = LoggerFactory.getLogger(ElasticSearchLocalNode.class);
+    private final String tempDir;
+
+    private ElasticSearchLocalNode(Settings preparedSettings, String tempDir) &#123;
+        super(InternalSettingsPreparer.prepareEnvironment(preparedSettings, null), Collections.singletonList(Netty4Plugin.class));
+        this.tempDir = tempDir;
+    &#125;
+
+    public static class Builder &#123;
+        private final Settings.Builder builder;
+        private String tempDir;
+
+        public Builder() &#123;
+            builder = Settings.builder();
+            builder.put(&quot;network.host&quot;, &quot;0.0.0.0&quot;);
+            builder.put(NetworkModule.HTTP_TYPE_KEY, Netty4Plugin.NETTY_HTTP_TRANSPORT_NAME);
+            builder.put(NetworkModule.TRANSPORT_TYPE_KEY, Netty4Plugin.NETTY_TRANSPORT_NAME);
+            builder.put(&quot;http.enabled&quot;, true);
+        &#125;
+
+
+        public ElasticSearchLocalNode.Builder put(String key, String value) &#123;
+            this.builder.put(key, value);
+            return this;
+        &#125;
+
+        public ElasticSearchLocalNode.Builder setClusterName(String name) &#123;
+            this.builder.put(&quot;cluster.name&quot;, name);
+            return this;
+        &#125;
+
+        public ElasticSearchLocalNode.Builder setTcpPort(int port) &#123;
+            this.builder.put(&quot;transport.tcp.port&quot;, port);
+            return this;
+        &#125;
+
+        public ElasticSearchLocalNode.Builder setTempDir(String tempDir) &#123;
+            this.tempDir = tempDir;
+            this.builder.put(&quot;path.home&quot;, tempDir + &quot;/home&quot;);
+            this.builder.put(&quot;path.data&quot;, tempDir + &quot;/data&quot;);
+            return this;
+        &#125;
+
+        public ElasticSearchLocalNode.Builder enableHttpCors(boolean enable) &#123;
+            this.builder.put(&quot;http.cors.enabled&quot;, enable);
+            if (enable) &#123;
+                this.builder.put(&quot;http.cors.allow-origin&quot;, &quot;*&quot;);
+            &#125;
+            return this;
+        &#125;
+
+        public ElasticSearchLocalNode build() &#123;
+            return new ElasticSearchLocalNode(this.builder.build(), tempDir);
+        &#125;
+    &#125;
+
+    public void stop() &#123;
+        this.stop(false);
+    &#125;
+
+    public void stop(boolean cleanDataDir) &#123;
+
+        if (cleanDataDir &amp;&amp; tempDir != null) &#123;
+            try &#123;
+                this.close();
+                Files.walk(new File(tempDir).toPath())
+                        .sorted(Comparator.reverseOrder())
+                        .map(Path::toFile)
+                        .forEach(File::delete);
+    
+            &#125; catch (IOException e) &#123;
+                LOG.error(&quot;Failed to stop elasticsearch local node.&quot;, e);
+            &#125;
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<h3 id="4-1-3-对ElasticSearchLocalNode进行单元测试"><a href="#4-1-3-对ElasticSearchLocalNode进行单元测试" class="headerlink" title="4.1.3 对ElasticSearchLocalNode进行单元测试"></a>4.1.3 对ElasticSearchLocalNode进行单元测试</h3><ol>
+<li><p>引入单元测试依赖</p>
+<pre><code class="xml">        &lt;!-- dependencies for test --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;junit&lt;/groupId&gt;
+            &lt;artifactId&gt;junit&lt;/artifactId&gt;
+            &lt;version&gt;4.12&lt;/version&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+</code></pre>
+</li>
+<li><p>实现单元测试ElasticSearchLocalNodeTest</p>
+<pre><code class="java">package flink.embedded.elasticsearch.examples;
+
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.node.NodeValidationException;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+
+/**
+ * 对ElasticSearchLocalNode进行单元测试
+ *
+ * @author shirukai
+ */
+public class ElasticSearchLocalNodeTest &#123;
+    private static ElasticSearchLocalNode esNode;
+
+    /**
+     * 单元测试之前，创建es节点实例，绑定端口19300
+     */
+    @BeforeClass
+    public static void prepare() throws NodeValidationException &#123;
+        esNode = new ElasticSearchLocalNode.Builder()
+                .setClusterName(&quot;test-es&quot;)
+                .setTcpPort(19300)
+                .setTempDir(&quot;data/es&quot;)
+                .build();
+        esNode.start();
+
+    &#125;
+
+    @Test
+    public void addIndexTest() &#123;
+        People people = new People(&quot;xiaoming&quot;, 19, 15558800456L);
+        esNode.client().prepareIndex()
+                .setIndex(&quot;people&quot;)
+                .setType(&quot;man&quot;)
+                .setId(&quot;1&quot;)
+                .setSource(people.toString())
+                .get();
+    &#125;
+
+    @Test
+    public void getIndexTest() throws InterruptedException &#123;
+        Thread.sleep(1000);
+        SearchResponse response = esNode.client().prepareSearch(&quot;people&quot;).execute().actionGet();
+        System.out.println(response.toString());
+    &#125;
+
+    /**
+     * 单元测试之后，停止es节点
+     */
+    @AfterClass
+    public static void shutdown() &#123;
+        if (null != esNode) &#123;
+            esNode.stop(true);
+        &#125;
+    &#125;
+
+    public static class People &#123;
+        private String name;
+        private int age;
+        private long phone;
+
+        public People(String name, int age, long phone) &#123;
+            this.name = name;
+            this.age = age;
+            this.phone = phone;
+        &#125;
+
+        public String getName() &#123;
+            return name;
+        &#125;
+
+        public void setName(String name) &#123;
+            this.name = name;
+        &#125;
+
+        public int getAge() &#123;
+            return age;
+        &#125;
+
+        public void setAge(int age) &#123;
+            this.age = age;
+        &#125;
+
+        public long getPhone() &#123;
+            return phone;
+        &#125;
+
+        public void setPhone(long phone) &#123;
+            this.phone = phone;
+        &#125;
+
+        @Override
+        public String toString() &#123;
+            return &quot;&#123;&quot; +
+                    &quot;\&quot;name\&quot;:\&quot;&quot; + name + &quot;\&quot;&quot; +
+                    &quot;, \&quot;age\&quot;:\&quot;&quot; + age + &quot;\&quot;&quot; +
+                    &quot;, \&quot;phone\&quot;:\&quot;&quot; + phone + &quot;\&quot;&quot; +
+                    &quot;&#125;&quot;;
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+</li>
+<li><p>运行单元测试，这时会被如下错误</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200621200415.png" alt="image-20200621200415475"></p>
+<pre><code class="shell">Exception in thread &quot;elasticsearch[nfllutF][clusterService#updateTask][T#1]&quot; java.lang.NoClassDefFoundError: org/apache/logging/log4j/core/config/Configurator
+    at org.elasticsearch.common.logging.Loggers.setLevel(Loggers.java:149)
+    at org.elasticsearch.common.logging.Loggers.setLevel(Loggers.java:144)
+    at org.elasticsearch.index.SearchSlowLog.setLevel(SearchSlowLog.java:111)
+    at org.elasticsearch.index.SearchSlowLog.&lt;init&gt;(SearchSlowLog.java:106)
+    at org.elasticsearch.index.IndexModule.&lt;init&gt;(IndexModule.java:127)
+    at org.elasticsearch.indices.IndicesService.createIndexService(IndicesService.java:421)
+    at org.elasticsearch.indices.IndicesService.createIndex(IndicesService.java:394)
+    at org.elasticsearch.cluster.metadata.MetaDataCreateIndexService$1.execute(MetaDataCreateIndexService.java:352)
+    at org.elasticsearch.cluster.ClusterStateUpdateTask.execute(ClusterStateUpdateTask.java:45)
+    at org.elasticsearch.cluster.service.ClusterService.runTasksForExecutor(ClusterService.java:581)
+    at org.elasticsearch.cluster.service.ClusterService$UpdateTask.run(ClusterService.java:920)
+    at org.elasticsearch.common.util.concurrent.ThreadContext$ContextPreservingRunnable.run(ThreadContext.java:458)
+    at org.elasticsearch.common.util.concurrent.PrioritizedEsThreadPoolExecutor$TieBreakingPrioritizedRunnable.runAndClean(PrioritizedEsThreadPoolExecutor.java:238)
+    at org.elasticsearch.common.util.concurrent.PrioritizedEsThreadPoolExecutor$TieBreakingPrioritizedRunnable.run(PrioritizedEsThreadPoolExecutor.java:201)
+    at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+    at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+    at java.base/java.lang.Thread.run(Thread.java:834)
+Caused by: java.lang.ClassNotFoundException: org.apache.logging.log4j.core.config.Configurator
+    at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:581)
+    at java.base/jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:178)
+    at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:522)
+    ... 17 more
+</code></pre>
+<p>看错误日志，是由于lo4j相关的类找不到导致的，这类flink的源码里也有提到，需要我们在pom里引进相关的依赖：</p>
+<pre><code class="xml">        &lt;!--
+            Including Log4j2 dependencies for tests is required for the
+            embedded Elasticsearch nodes used in tests to run correctly.
+        --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.apache.logging.log4j&lt;/groupId&gt;
+            &lt;artifactId&gt;log4j-api&lt;/artifactId&gt;
+            &lt;version&gt;2.7&lt;/version&gt;
+        &lt;/dependency&gt;
+
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.apache.logging.log4j&lt;/groupId&gt;
+            &lt;artifactId&gt;log4j-core&lt;/artifactId&gt;
+            &lt;version&gt;2.7&lt;/version&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+</code></pre>
+<p>引进log4j相关依赖之后，再次运行，仍然会报错：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200621201819.png" alt="image-20200621201001090"></p>
+<pre><code class="shell">java.lang.ClassCastException: class org.apache.logging.slf4j.SLF4JLoggerContext cannot be cast to class org.apache.logging.log4j.core.LoggerContext (org.apache.logging.slf4j.SLF4JLoggerContext and org.apache.logging.log4j.core.LoggerContext are in unnamed module of loader &#39;app&#39;)
+
+    at org.apache.logging.log4j.core.LoggerContext.getContext(LoggerContext.java:187)
+    at org.apache.logging.log4j.core.config.Configurator.setLevel(Configurator.java:291)
+    at org.elasticsearch.common.logging.Loggers.setLevel(Loggers.java:149)
+    at org.elasticsearch.common.logging.Loggers.setLevel(Loggers.java:144)
+    at org.elasticsearch.index.SearchSlowLog.setLevel(SearchSlowLog.java:111)
+    at org.elasticsearch.index.SearchSlowLog.&lt;init&gt;(SearchSlowLog.java:106)
+    at org.elasticsearch.index.IndexModule.&lt;init&gt;(IndexModule.java:127)
+    at org.elasticsearch.indices.IndicesService.createIndexService(IndicesService.java:421)
+    at org.elasticsearch.indices.IndicesService.createIndex(IndicesService.java:394)
+    at org.elasticsearch.cluster.metadata.MetaDataCreateIndexService$1.execute(MetaDataCreateIndexService.java:352)
+    at org.elasticsearch.cluster.ClusterStateUpdateTask.execute(ClusterStateUpdateTask.java:45)
+    at org.elasticsearch.cluster.service.ClusterService.runTasksForExecutor(ClusterService.java:581)
+    at org.elasticsearch.cluster.service.ClusterService$UpdateTask.run(ClusterService.java:920)
+    at org.elasticsearch.common.util.concurrent.ThreadContext$ContextPreservingRunnable.run(ThreadContext.java:458)
+    at org.elasticsearch.common.util.concurrent.PrioritizedEsThreadPoolExecutor$TieBreakingPrioritizedRunnable.runAndClean(PrioritizedEsThreadPoolExecutor.java:238)
+    at org.elasticsearch.common.util.concurrent.PrioritizedEsThreadPoolExecutor$TieBreakingPrioritizedRunnable.run(PrioritizedEsThreadPoolExecutor.java:201)
+    at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+    at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+    at java.base/java.lang.Thread.run(Thread.java:834)
+</code></pre>
+<p>这个问题比较有趣，也是当时坑的时间比较长的一个问题。之前有提到提过一个错误java.lang.NoClassDefFoundError: org/apache/logging/log4j/Logger，当发生这个错误时，我们是引入了一个叫log4j-to-slf4j的依赖来解决问题的，它会将log4j的应用路由到slf4j上，但是对于ElasticSearch来说，它内部是使用log4j2，如果我们继续使用log4j-to-slf4j就会导致上述的异常产生，flink的做法是在测试时，将log4j-to-slf4j排除掉，使用maven的maven-surefire-plugin插件将相关依赖排除掉，如下在pom中添加如下插件：</p>
+<pre><code class="xml">            &lt;!--
+                For the tests, we need to exclude the Log4j2 to slf4j adapter dependency
+                and let Elasticsearch directly use Log4j2, otherwise the embedded Elasticsearch node
+                used in tests will fail to work.
+
+                In other words, the connector jar is routing Elasticsearch 5.x&#39;s Log4j2 API&#39;s to SLF4J,
+                but for the test builds, we still stick to directly using Log4j2.
+            --&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                &lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;
+                &lt;configuration&gt;
+                    &lt;classpathDependencyExcludes&gt;
+                        &lt;classpathDependencyExclude&gt;org.apache.logging.log4j:log4j-to-slf4j&lt;/classpathDependencyExclude&gt;
+                    &lt;/classpathDependencyExcludes&gt;
+                &lt;/configuration&gt;
+            &lt;/plugin&gt;
+</code></pre>
+<p>再次启动单元测试：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200621212820.png" alt="image-20200621210639203"></p>
+<p>如上图所示，这时我们的测试用例已经跑过，插入的索引已经能够查出来。但是可以只能看到一条ERROR的日志，其它日志显示不出来，看日志内容是说没有找到log4j2相关的配置文件，只会打印ERROR级别的日志：</p>
+<pre><code>ERROR StatusLogger No log4j2 configuration file found. Using default configuration: logging only errors to the console.
+</code></pre>
+<p>有些同学回说，我的resources下有log4j.properties这个配置文件呀，怎么还报错，这里要注意了，日志是说没有log4j2，2啊，log4j2的配置文件一般为log4j2.xxx，具体配置可以查看官网<a target="_blank" rel="noopener" href="https://logging.apache.org/log4j/2.x/manual/configuration.html%EF%BC%8C%E8%BF%99%E9%87%8C%E7%AE%80%E5%8D%95%E9%85%8D%E7%BD%AE%E4%B8%80%E4%B8%8B%EF%BC%8C%E5%9C%A8resources%E4%B8%8B%E6%B7%BB%E5%8A%A0%E4%B8%80%E4%B8%AA%E5%90%8D%E4%B8%BAlog4j2.xml%EF%BC%8C%E5%86%85%E5%AE%B9%E5%A6%82%E4%B8%8B%EF%BC%9A">https://logging.apache.org/log4j/2.x/manual/configuration.html，这里简单配置一下，在resources下添加一个名为log4j2.xml，内容如下：</a></p>
+<pre><code class="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Configuration status=&quot;WARN&quot;&gt;
+    &lt;Appenders&gt;
+        &lt;Console name=&quot;Console&quot; target=&quot;SYSTEM_OUT&quot;&gt;
+            &lt;PatternLayout pattern=&quot;%d&#123;HH:mm:ss,SSS&#125; %-5p %-60c - %m%n&quot;/&gt;
+        &lt;/Console&gt;
+    &lt;/Appenders&gt;
+    &lt;Loggers&gt;
+        &lt;Root level=&quot;INFO&quot;&gt;
+            &lt;AppenderRef ref=&quot;Console&quot;/&gt;
+        &lt;/Root&gt;
+    &lt;/Loggers&gt;
+&lt;/Configuration&gt;
+</code></pre>
+<p>配置日志文件后，再次启动，日志就可以正常输出了。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200621212807.png" alt="image-20200621212807852"></p>
+</li>
+</ol>
+<h2 id="4-2-使用安装包启动ElasticSearch服务"><a href="#4-2-使用安装包启动ElasticSearch服务" class="headerlink" title="4.2 使用安装包启动ElasticSearch服务"></a>4.2 使用安装包启动ElasticSearch服务</h2><p>这里要介绍的是<a target="_blank" rel="noopener" href="https://github.com/allegro/embedded-elasticsearch%E6%8F%90%E4%BE%9B%E7%9A%84%E5%B5%8C%E5%85%A5%E5%BC%8FES%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%A1%88%EF%BC%8C%E5%8E%9F%E7%90%86%E5%85%B6%E5%AE%9E%E5%BE%88%E7%AE%80%E5%8D%95%EF%BC%8C%E5%B0%B1%E6%98%AF%E7%94%A8Java%E5%B0%86ES%E5%AE%89%E8%A3%85%E5%8C%85%E8%A7%A3%E5%8E%8B%EF%BC%8C%E7%84%B6%E5%90%8E%E8%B0%83%E7%94%A8%E5%90%AF%E5%8A%A8%E8%84%9A%E6%9C%AC%E5%90%AF%E5%8A%A8%E4%B8%80%E4%B8%AAES%E9%9B%86%E7%BE%A4%E5%AE%9E%E4%BE%8B%EF%BC%8C%E7%94%A8%E5%AE%8C%E5%86%8D%E5%B0%86%E5%85%B6%E5%8D%B8%E8%BD%BD%E6%8E%89%EF%BC%8C%E7%9B%B8%E5%BD%93%E4%BA%8E%E4%BB%A3%E6%9B%BF%E4%BA%86%E6%88%91%E4%BB%AC%E6%89%8B%E5%8A%A8%E9%83%A8%E7%BD%B2%E5%90%AF%E5%8A%A8ES%E7%9A%84%E5%B7%A5%E4%BD%9C%EF%BC%8C%E4%B8%8B%E9%9D%A2%E5%B0%B1%E9%80%9A%E8%BF%87%E4%B8%80%E4%B8%AA%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8%E7%9A%84%E7%A4%BA%E4%BE%8B%EF%BC%8C%E6%9D%A5%E4%BD%93%E9%AA%8C%E4%B8%80%E4%B8%8B%E8%BF%99%E6%98%AFES%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%A1%88%E3%80%82">https://github.com/allegro/embedded-elasticsearch提供的嵌入式ES的实现方案，原理其实很简单，就是用Java将ES安装包解压，然后调用启动脚本启动一个ES集群实例，用完再将其卸载掉，相当于代替了我们手动部署启动ES的工作，下面就通过一个快速入门的示例，来体验一下这是ES的实现方案。</a></p>
+<h3 id="4-2-1-快速入门示例"><a href="#4-2-1-快速入门示例" class="headerlink" title="4.2.1 快速入门示例"></a>4.2.1 快速入门示例</h3><ol>
+<li><p>首先在pom中引入依赖</p>
+<pre><code class="xml">        &lt;!-- Embedded es following Github repository，https://github.com/allegro/embedded-elasticsearch --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;pl.allegro.tech&lt;/groupId&gt;
+            &lt;artifactId&gt;embedded-elasticsearch&lt;/artifactId&gt;
+            &lt;version&gt;2.10.0&lt;/version&gt;
+        &lt;/dependency&gt;
+</code></pre>
+</li>
+<li><p>创建flink.embedded.elasticsearch.examples.EmbeddedEsQuickStartExample类，实现内容如下：</p>
+<pre><code class="java">package flink.embedded.elasticsearch.examples;
+
+import pl.allegro.tech.embeddedelasticsearch.EmbeddedElastic;
+import pl.allegro.tech.embeddedelasticsearch.PopularProperties;
+
+import java.io.File;
+import java.io.IOException;
+
+/**
+ * 使用第三方依赖实现内置ES集群
+ * &lt;p&gt;Following Github repository&lt;/p&gt;
+ * &lt;a href=&quot;https://github.com/allegro/embedded-elasticsearch&quot;&gt;
+ * https://github.com/allegro/embedded-elasticsearch&lt;/a&gt;
+ *
+ * @author shirukai
+ */
+public class EmbeddedEsQuickStartExample &#123;
+    public static void main(String[] args) throws IOException, InterruptedException &#123;
+        EmbeddedElastic esCluster = EmbeddedElastic.builder()
+                .withElasticVersion(&quot;5.6.16&quot;)
+                .withSetting(PopularProperties.TRANSPORT_TCP_PORT, 19300)
+                .withSetting(PopularProperties.CLUSTER_NAME, &quot;test-es&quot;)
+                .withSetting(&quot;http.cors.enabled&quot;, true)
+                .withSetting(&quot;http.cors.allow-origin&quot;, &quot;*&quot;)
+                // 安装包下载路径
+                .withDownloadDirectory(new File(&quot;data&quot;))
+                .build();
+        esCluster.start();
+        Thread.currentThread().join();
+    &#125;
+&#125;
+</code></pre>
+</li>
+<li><p>执行mian方法，这时会看到如下日志，程序启动后会先根据指定的es版本号，从官网下载对应的安装包。</p>
+</li>
+</ol>
+<pre><code>21:50:35,087 INFO  pl.allegro.tech.embeddedelasticsearch.ElasticDownloader       - Downloading https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-5.6.16.zip to data/elasticsearch-5.6.16.zip ...
+</code></pre>
+<p>这里下载安装包的时候可能会比较慢，如果我们本地有.zip后缀的安装包，可以取消执行，然后直接将本地的安装包拷到我们指定的目录下，比如上面代码指定的项目中的data目录，另外要注意的是，我们拷贝安装包到指定目录之后，一定要再创建一个空文件名为elasticsearch-{版本号}.zip-downloaded，如：</p>
+<pre><code>data
+├── elasticsearch-5.6.16.zip
+└── elasticsearch-5.6.16.zip-downloaded
+</code></pre>
+<p>安装包下载或者拷贝完成之后，再次执行。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200622103015.png" alt="image-20200622103015632"></p>
+<h2 id="4-3-使用Testcontainers启动ElasticSearch服务"><a href="#4-3-使用Testcontainers启动ElasticSearch服务" class="headerlink" title="4.3 使用Testcontainers启动ElasticSearch服务"></a>4.3 使用Testcontainers启动ElasticSearch服务</h2><p>Testcontiners是一个Java单元测试库，它能够基于Docker容器启动一个服务实例。详情可以查看官网<a target="_blank" rel="noopener" href="https://www.testcontainers.org/%E3%80%82%E8%BF%99%E9%87%8C%E4%BB%8B%E7%BB%8D%E4%BD%BF%E7%94%A8Testcontainers%E5%90%AF%E5%8A%A8ElasticSearch%E6%9C%8D%E5%8A%A1%EF%BC%8C%E6%B3%A8%E6%84%8F%E5%89%8D%E6%8F%90%E6%98%AF%E6%9C%BA%E5%99%A8%E4%B8%8A%E8%A6%81%E6%9C%89Docker%E7%8E%AF%E5%A2%83%E3%80%82">https://www.testcontainers.org/。这里介绍使用Testcontainers启动ElasticSearch服务，注意前提是机器上要有Docker环境。</a></p>
+<h3 id="4-3-1-快速入门示例"><a href="#4-3-1-快速入门示例" class="headerlink" title="4.3.1 快速入门示例"></a>4.3.1 快速入门示例</h3><ol>
+<li><p>创建flink.embedded.elasticsearch.examples.ContainersEsQuickStartExample类，实现内容如下：</p>
+<pre><code class="java">package flink.embedded.elasticsearch.examples;
+
+import org.testcontainers.elasticsearch.ElasticsearchContainer;
+
+import java.util.Collections;
+
+/**
+ * TestContainer启动es快速入门示例
+ * &lt;a href=&quot;https://www.testcontainers.org/modules/elasticsearch/&quot;&gt;
+ * https://www.testcontainers.org/modules/elasticsearch/&lt;/a&gt;
+ *
+ * @author shirukai
+ */
+public class ContainersEsQuickStartExample &#123;
+    public static void main(String[] args) throws InterruptedException &#123;
+        // Create the elasticsearch container.
+        try (ElasticsearchContainer container = new ElasticsearchContainer(&quot;docker.elastic.co/elasticsearch/elasticsearch:5.6.16&quot;)) &#123;
+            // Disable x-pack
+            container.setEnv(Collections.singletonList(&quot;xpack.security.enabled=false&quot;));
+
+            // Start the container. This step might take some time...
+            container.start();
+
+            // Add shutdown hook
+            Runtime.getRuntime().addShutdownHook(new Thread(container::close));
+
+            // 让它阻塞一会吧
+            Thread.currentThread().join();
+        &#125;
+
+    &#125;
+&#125;
+</code></pre>
+</li>
+<li><p>确保docker环境可用，然后运行mian方法</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200623120436.png" alt="image-20200623113923602"></p>
+<p>如果报如下错误，这是由于进docker拉取镜像的时候网络抖动导致的，可以尝试先手动将镜像拉取下来：</p>
+<pre><code class="shell">docker pull docker.elastic.co/elasticsearch/elasticsearch:5.6.16
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200622111005.png" alt="image-20200622111005307"></p>
+</li>
+</ol>
+<p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/41298467/how-to-start-elasticsearch-5-1-embedded-in-my-java-application">https://stackoverflow.com/questions/41298467/how-to-start-elasticsearch-5-1-embedded-in-my-java-application</a></p>
+<h1 id="5-Flink任务单元测试"><a href="#5-Flink任务单元测试" class="headerlink" title="5 Flink任务单元测试"></a>5 Flink任务单元测试</h1><p>在第4章已经介绍了三种方式启动嵌入式ElasticSearch服务，这章我们进入主题，利用嵌入式的ES对Flink任务进行单元测试。</p>
+<p>有了上面4个章节的铺垫，本章节实现起来相对简单多了，这里我们使用内置Node的方式启动一个ES节点实例，来完成我们的单元测试。</p>
+<ol>
+<li><p>创建测试类flink.embedded.elasticsearch.examples.WriteElasticSearchJobTest</p>
+<pre><code class="java">package flink.embedded.elasticsearch.examples;
+
+import org.apache.flink.configuration.Configuration;
+import org.apache.flink.runtime.testutils.MiniClusterResourceConfiguration;
+import org.apache.flink.test.util.MiniClusterWithClientResource;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.client.Client;
+import org.elasticsearch.node.NodeValidationException;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.ClassRule;
+import org.junit.Test;
+
+
+/**
+ * 写es单元测试
+ *
+ * @author shirukai
+ */
+public class WriteElasticSearchJobTest &#123;
+    /**
+     * 设置绑定端口
+     */
+    private static final Integer ES_BIND_PORT = 19300;
+    /**
+     * 设置集群名称
+     */
+    private static final String ES_CLUSTER_NAME = &quot;test-es&quot;;
+    /**
+     * 内置es节点实例
+     */
+    private static ElasticSearchLocalNode esNode;
+
+    /**
+     * 创建Flink mini cluster，当涉及多个flink任务时，可以避免创建多次集群。
+     * 同时可以通过mini cluster 自定义task数量以及slot的数量。
+     */
+    @ClassRule
+    public static MiniClusterWithClientResource flinkMiniCluster =
+            new MiniClusterWithClientResource(new MiniClusterResourceConfiguration
+                    .Builder()
+                    .setConfiguration(new Configuration())
+                    .setNumberTaskManagers(1)
+                    .setNumberSlotsPerTaskManager(1)
+                    .build());
+
+
+    @Test
+    public void writeElasticSearchJobTest() throws InterruptedException &#123;
+        String[] args = new String[]&#123;
+                &quot;--es.cluster.nodes&quot;,
+                &quot;127.0.0.1&quot;,
+                &quot;-es.cluster.port&quot;,
+                ES_BIND_PORT.toString(),
+                &quot;-es.cluster.name&quot;,
+                ES_CLUSTER_NAME
+        &#125;;
+        // 提交flink任务
+        WriteElasticSearchJob.main(args);
+
+        Client esClient = esNode.client();
+        Thread.sleep(1000);
+        SearchResponse response = esClient.prepareSearch(&quot;events&quot;).execute().actionGet();
+        System.out.println(response.toString());
+    &#125;
+
+    /**
+     * 测试类执行前，创建es节点实例
+     *
+     * @throws NodeValidationException e
+     */
+    @BeforeClass
+    public static void prepare() throws NodeValidationException &#123;
+        esNode = new ElasticSearchLocalNode.Builder()
+                .setClusterName(ES_CLUSTER_NAME)
+                .setTcpPort(ES_BIND_PORT)
+                .setTempDir(&quot;data/es&quot;)
+                .build();
+        esNode.start();
+    &#125;
+
+    /**
+     * 测试类执行后，关闭es节点实例
+     */
+    @AfterClass
+    public static void shutdown() &#123;
+        if (esNode != null) &#123;
+            esNode.stop(true);
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+</li>
+<li><p>运行单元测试</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200623155635.png" alt="image-20200623155634887"></p>
+</li>
+</ol>
+<h1 id="5-总结"><a href="#5-总结" class="headerlink" title="5 总结"></a>5 总结</h1><p>使用嵌入式ElasticSearch集群进行单元测试确实能够很好的解决目前的问题，同时也给了我一个新的思路，原来类似这种单元的测试可以使用内置服务的方式进行，让我从想尽办法mock类的坑中爬了出来。简单总结一下文章中提到的三种方式：</p>
+<ul>
+<li>第一种启动单个Node，优点：无需额外的依赖，内置client可以直接使用 缺点：使用时坑比较多，比如日志的问题，同时官方是不建议我们使用这种方式的查看<a target="_blank" rel="noopener" href="https://github.com/elastic/elasticsearch/issues/19930">https://github.com/elastic/elasticsearch/issues/19930</a></li>
+<li>第二种使用安装包启动ElasticSearch服务，优点：入门简单，版本可以指定，缺点：需要引入第三方依赖，需要Es的安装包</li>
+<li>第三种Testcontainers启动ElasticSearch服务，优点：入门简单，版本可指定，缺点：需要Docker环境</li>
+</ul>
+<p>其实我个人还是比较倾向于第一种方式的，虽然坑多，但是踩过了就不怕了。最后感慨一下吧，遇到问题一定要多想多看，不要一条路走到黑。</p>
+<p>项目代码已经更新到Github上了，欢迎大家有问题一起交流。</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">1 前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E5%BF%AB%E9%80%9F%E5%88%9B%E5%BB%BAFlink%E9%A1%B9%E7%9B%AE"><span class="toc-number">2.</span> <span class="toc-text">2 快速创建Flink项目</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E7%AE%80%E5%8D%95%E7%BC%96%E5%86%99%E4%B8%80%E4%B8%AAFlink%E5%86%99%E5%85%A5ES%E7%9A%84%E4%BB%BB%E5%8A%A1"><span class="toc-number">3.</span> <span class="toc-text">3 简单编写一个Flink写入ES的任务</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%E4%B8%89%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%90%AF%E5%8A%A8%E5%B5%8C%E5%85%A5%E5%BC%8FElasticSearch%E6%9C%8D%E5%8A%A1"><span class="toc-number">4.</span> <span class="toc-text">4 三种方式启动嵌入式ElasticSearch服务</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-%E4%BB%8EElasticSearch%E5%AE%98%E6%96%B9%E5%8C%85%E4%B8%AD%E5%90%AF%E5%8A%A8%E5%8D%95%E4%B8%AANode%E8%8A%82%E7%82%B9"><span class="toc-number">4.1.</span> <span class="toc-text">4.1 从ElasticSearch官方包中启动单个Node节点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-1-%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8%E7%A4%BA%E4%BE%8B"><span class="toc-number">4.1.1.</span> <span class="toc-text">4.1.1 快速入门示例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-2-%E4%BD%BF%E7%94%A8Builder%E6%A8%A1%E5%BC%8F%E5%B0%81%E8%A3%85ElasticSearchLocalNode"><span class="toc-number">4.1.2.</span> <span class="toc-text">4.1.2 使用Builder模式封装ElasticSearchLocalNode</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-3-%E5%AF%B9ElasticSearchLocalNode%E8%BF%9B%E8%A1%8C%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95"><span class="toc-number">4.1.3.</span> <span class="toc-text">4.1.3 对ElasticSearchLocalNode进行单元测试</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-%E4%BD%BF%E7%94%A8%E5%AE%89%E8%A3%85%E5%8C%85%E5%90%AF%E5%8A%A8ElasticSearch%E6%9C%8D%E5%8A%A1"><span class="toc-number">4.2.</span> <span class="toc-text">4.2 使用安装包启动ElasticSearch服务</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-1-%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8%E7%A4%BA%E4%BE%8B"><span class="toc-number">4.2.1.</span> <span class="toc-text">4.2.1 快速入门示例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-3-%E4%BD%BF%E7%94%A8Testcontainers%E5%90%AF%E5%8A%A8ElasticSearch%E6%9C%8D%E5%8A%A1"><span class="toc-number">4.3.</span> <span class="toc-text">4.3 使用Testcontainers启动ElasticSearch服务</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-1-%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8%E7%A4%BA%E4%BE%8B"><span class="toc-number">4.3.1.</span> <span class="toc-text">4.3.1 快速入门示例</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-Flink%E4%BB%BB%E5%8A%A1%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95"><span class="toc-number">5.</span> <span class="toc-text">5 Flink任务单元测试</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%E6%80%BB%E7%BB%93"><span class="toc-number">6.</span> <span class="toc-text">5 总结</span></a></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

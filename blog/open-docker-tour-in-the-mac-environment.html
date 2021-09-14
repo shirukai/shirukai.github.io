@@ -1,0 +1,571 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Mac环境下开启Docker之旅 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="使用桌面版的docker已经有一段时间了，主要是在平时的开发中用以搭建各种开发环境。总的来说，在mac上使用桌面版的docker比较容易上手，桌面版也提供k8s的功能，但是开启时总是不能成功，而且在,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">Mac环境下开启Docker之旅</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/1.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/环境搭建"><b>「
+                    </b>环境搭建<b> 」</b></a>
+                
+                June 14, 2020
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/open-docker-tour-in-the-mac-environment.html" title="Mac环境下开启Docker之旅" class="">Mac环境下开启Docker之旅</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    8.4k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    8 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" rel="tag">环境搭建</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <p>使用桌面版的docker已经有一段时间了，主要是在平时的开发中用以搭建各种开发环境。总的来说，在mac上使用桌面版的docker比较容易上手，桌面版也提供k8s的功能，但是开启时总是不能成功，而且在此基础上使用Rancher管理k8s也遇到了各种问题，这里就记录一下这一路上遇到的各种坑。</p>
+<h1 id="1-Docker-Desktop-for-Mac"><a href="#1-Docker-Desktop-for-Mac" class="headerlink" title="1 Docker Desktop for Mac"></a>1 Docker Desktop for Mac</h1><p>使用桌面版的Docker很简单，官网也提供Mac/Window的版本下载，这里为了后面使用k8s集群，下载的是edge版本的docker。</p>
+<p>下载页面：<a target="_blank" rel="noopener" href="https://docs.docker.com/docker-for-mac/edge-release-notes/">https://docs.docker.com/docker-for-mac/edge-release-notes/</a></p>
+<p>下载完成后，我们就可以直接安装即可。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/14b6cc5acdd6397670c0e643b8c89b05.jpg"></p>
+<p>输入自己的Docker账户和密码</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/4d73b2a2b45624bc01943767be324e29.jpg"></p>
+<p>命令行查看我们的docker版本</p>
+<pre><code class="bash">docker version
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/e164603eae1a075498d6af113bbdb5ed.jpg"></p>
+<p>小试牛刀，使用docker快速启动一个redis容器。</p>
+<pre><code>docker run -itd -p 6379:6379  --name redis hub.c.163.com/public/redis:2.8.4
+</code></pre>
+<p>查看容器</p>
+<pre><code>docker ps
+</code></pre>
+<h1 id="2-安装Kubernetes集群"><a href="#2-安装Kubernetes集群" class="headerlink" title="2 安装Kubernetes集群"></a>2 安装Kubernetes集群</h1><p>如下图所示，桌面版的docker提供开启k8s的选项，但是如果我么直接勾选的话，由于qiang的原因，会一直处于starting的状态。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/e4ba641dbdcfa2fb00bd93e07164b7dc.jpg"></p>
+<p>所以要想开启k8s需要做一下几项工作：</p>
+<ol>
+<li>添加国内镜像库</li>
+<li>手动使用脚本拉取k8s镜像</li>
+<li>开启k8s</li>
+</ol>
+<h2 id="2-1-添加国内镜像库"><a href="#2-1-添加国内镜像库" class="headerlink" title="2.1 添加国内镜像库"></a>2.1 添加国内镜像库</h2><p>将<a target="_blank" rel="noopener" href="https://link.jianshu.com/?t=https://docker.mirrors.ustc.edu.cn">https://docker.mirrors.ustc.edu.cn</a>，<a target="_blank" rel="noopener" href="https://registry.docker-cn.com添加到镜像库列表,可在/">https://registry.docker-cn.com添加到镜像库列表，可在</a> Docker -&gt; Preferences… -&gt; Advanced -&gt; Registry Mirror添加。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/93678c78aaff196de02a6f6193295197.jpg"></p>
+<p>添加完成后，点击Apply&amp;Restart按钮。</p>
+<h2 id="2-2-手动使用脚本拉取k8s镜像"><a href="#2-2-手动使用脚本拉取k8s镜像" class="headerlink" title="2.2 手动使用脚本拉取k8s镜像"></a>2.2 手动使用脚本拉取k8s镜像</h2><p>先从github上download脚本</p>
+<pre><code class="bash">git clone https://github.com/maguowei/k8s-docker-desktop-for-mac.git
+</code></pre>
+<p>然后进行k8s-docker-desktop-for-mac目录，执行load_images.sh 脚本</p>
+<pre><code class="bash">./load_images.sh
+</code></pre>
+<h2 id="2-3-开启k8s"><a href="#2-3-开启k8s" class="headerlink" title="2.3 开启k8s"></a>2.3 开启k8s</h2><h3 id="2-3-1-开启"><a href="#2-3-1-开启" class="headerlink" title="2.3.1 开启"></a>2.3.1 开启</h3><p>镜像完成之后，我们就可以开启k8s了。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/161560092361f98e41fa83fb7be09130.jpg"></p>
+<p>k8s显示running状态，说明集群已经启动成功了。</p>
+<h3 id="2-3-2-查看状态"><a href="#2-3-2-查看状态" class="headerlink" title="2.3.2 查看状态"></a>2.3.2 查看状态</h3><p>查看集群状态：kubectl cluster-info</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/7361d076f286ac10a04958428cab50ee.jpg"></p>
+<p>查看节点：kubectl get nodes</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/d91543cf7a29f5306e4d112e81fa7916.jpg"></p>
+<h3 id="2-3-3-开启dashboard"><a href="#2-3-3-开启dashboard" class="headerlink" title="2.3.3 开启dashboard"></a>2.3.3 开启dashboard</h3><p>官网：<a target="_blank" rel="noopener" href="https://github.com/kubernetes/dashboard">https://github.com/kubernetes/dashboard</a></p>
+<pre><code class="bash">kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v1.10.1/src/deploy/recommended/kubernetes-dashboard.yaml
+</code></pre>
+<p>要从本地工作站访问仪表板，您必须为Kubernetes群集创建安全通道。运行以下命令：</p>
+<pre><code>kubectl proxy
+</code></pre>
+<p>访问：</p>
+<p><a target="_blank" rel="noopener" href="http://localhost:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/"><code>http://localhost:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/</code></a></p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/a199dec432d864c8b623be1d8667c0ae.jpg"></p>
+<p>如上图所示，需要验证，这里我们可以创建一个简单的用户，参考<a target="_blank" rel="noopener" href="https://github.com/kubernetes/dashboard/wiki/Creating-sample-user%EF%BC%8C%E5%A6%82%E8%A6%81%E4%B8%80%E4%B8%8B%E5%87%A0%E6%AD%A5%EF%BC%9A">https://github.com/kubernetes/dashboard/wiki/Creating-sample-user，如要一下几步：</a></p>
+<ol>
+<li><p>创建dashboard-adminuser.yaml文件</p>
+<p>文件内容：</p>
+<pre><code class="yaml">apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: admin-user
+  namespace: kube-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: admin-user
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- kind: ServiceAccount
+  name: admin-user
+  namespace: kube-system
+</code></pre>
+</li>
+<li><p>创建Service Account和ClusterRoleBinding</p>
+<p>执行命令</p>
+<pre><code class="bassh">kubectl apply -f dashboard-adminuser.yaml
+</code></pre>
+</li>
+<li><p>获取Token</p>
+<p>执行命令获取Token</p>
+<pre><code class="bash">kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk &#39;&#123;print $1&#125;&#39;)
+</code></pre>
+<p>我们可以得到如下输出：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/c8f9cbf6ea2c6894f6d6974107933664.jpg"></p>
+<p>只需要将token内容粘贴到web端即可。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/ecce1c44fbef0fc471bbd54e9aeb31d3.jpg"></p>
+</li>
+</ol>
+<h3 id="2-3-4-Helm"><a href="#2-3-4-Helm" class="headerlink" title="2.3.4 Helm"></a>2.3.4 Helm</h3><p>Helm 是一个命令行下的客户端工具。主要用于 Kubernetes 应用程序 Chart 的创建、打包、发布以及创建和管理本地和远程的 Chart 仓库。Tiller 是 Helm 的服务端，部署在 Kubernetes 集群中。Tiller 用于接收 Helm 的请求，并根据 Chart 生成 Kubernetes 的部署文件（ Helm 称为 Release ），然后提交给 Kubernetes 创建应用。Tiller 还提供了 Release 的升级、删除、回滚等一系列功能。</p>
+<p>在mac上安装helm比较简单，使用brew就可以直接安装。如果mac上没有安装brew，可以跳转到<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/08a9d9479c2a">https://www.jianshu.com/p/08a9d9479c2a</a></p>
+<pre><code>brew install helm
+</code></pre>
+<p>初始化本地 CLI 并 将 Tiller 安装到 Kubernetes cluster</p>
+<pre><code class="bash">helm init
+</code></pre>
+<p> 原先的stable仓库</p>
+<pre><code>helm repo remove stable
+</code></pre>
+<p>添加新的仓库地址</p>
+<pre><code class="bash">helm repo add stable https://kubernetes.oss-cn-hangzhou.aliyuncs.com/charts
+</code></pre>
+<p>更新仓库</p>
+<pre><code class="bash">helm repo update
+</code></pre>
+<h1 id="3-使用Rancher管理k8s集群"><a href="#3-使用Rancher管理k8s集群" class="headerlink" title="3 使用Rancher管理k8s集群"></a>3 使用Rancher管理k8s集群</h1><p>接下来进行高能操作，使用Rancher来管理k8s集群。参考<a target="_blank" rel="noopener" href="https://rancher.com/blog/2018/2018-05-18-how-to-run-rancher-2-0-on-your-desktop/">https://rancher.com/blog/2018/2018-05-18-how-to-run-rancher-2-0-on-your-desktop/</a></p>
+<p>在安装Rancher之前，一定要执行第2节里的Helm的操作。更换stable为国内源。</p>
+<h2 id="3-1-添加-Ingress-Controller"><a href="#3-1-添加-Ingress-Controller" class="headerlink" title="3.1 添加 Ingress Controller"></a>3.1 添加 Ingress Controller</h2><p>Ingress Controller用于提供从外部世界到在Kubernetes中运行的服务的L7（主机名或路径库）http路由。</p>
+<p>我们将用于<code>helm</code>安装Kubernetes稳定社区<code>nginx-ingress</code> <code>chart</code>。这将在我们的本地群集上创建Ingress Controller。</p>
+<pre><code class="bash">helm install stable/nginx-ingress --name ingress-nginx --namespace ingress-nginx --wait
+</code></pre>
+<h2 id="3-2-安装-Cert-Manager"><a href="#3-2-安装-Cert-Manager" class="headerlink" title="3.2 安装 Cert-Manager"></a>3.2 安装 Cert-Manager</h2><p>Kubernetes 的<a target="_blank" rel="noopener" href="http://docs.cert-manager.io/en/latest/">Cert-Manger</a>项目将管理本地Rancher安装的SSL证书。</p>
+<p>因为cert-manager会拉取国外的镜像，可能会报错，这里我写了个脚本，可以先拉取国内源，然后替换，所以先从我的git上拉取脚本。</p>
+<pre><code>git clone https://github.com/shirukai/docker-desktop-for-mac.git
+</code></pre>
+<p>然后切换到rancher目录</p>
+<pre><code>cd docker-desktop-for-mac/rancher
+</code></pre>
+<p>执行load_images.sh脚本</p>
+<pre><code>./load_images.sh
+</code></pre>
+<p>然后安装Cert-Manager</p>
+<pre><code class="bash">helm install stable/cert-manager --name cert-manager --namespace kube-system --wait
+</code></pre>
+<h2 id="3-3-安装-Rancher"><a href="#3-3-安装-Rancher" class="headerlink" title="3.3 安装 Rancher"></a>3.3 安装 Rancher</h2><p>接下来就开始安装Rancher了，首先添加Rancher的chart仓库</p>
+<pre><code class="bash">helm repo add rancher-latest https://releases.rancher.com/server-charts/latest
+</code></pre>
+<p>安装rancher</p>
+<pre><code class="bash">helm install rancher-latest/rancher --name rancher --namespace cattle-system --set hostname=rancher.localhost --wait
+</code></pre>
+<p>访问：<a target="_blank" rel="noopener" href="https://rancher.localhost/">https://rancher.localhost</a></p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/689f229a6d698c4789dc73c75fa518cf.jpg"></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-Docker-Desktop-for-Mac"><span class="toc-number">1.</span> <span class="toc-text">1 Docker Desktop for Mac</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E5%AE%89%E8%A3%85Kubernetes%E9%9B%86%E7%BE%A4"><span class="toc-number">2.</span> <span class="toc-text">2 安装Kubernetes集群</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-%E6%B7%BB%E5%8A%A0%E5%9B%BD%E5%86%85%E9%95%9C%E5%83%8F%E5%BA%93"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 添加国内镜像库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-%E6%89%8B%E5%8A%A8%E4%BD%BF%E7%94%A8%E8%84%9A%E6%9C%AC%E6%8B%89%E5%8F%96k8s%E9%95%9C%E5%83%8F"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 手动使用脚本拉取k8s镜像</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-%E5%BC%80%E5%90%AFk8s"><span class="toc-number">2.3.</span> <span class="toc-text">2.3 开启k8s</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-1-%E5%BC%80%E5%90%AF"><span class="toc-number">2.3.1.</span> <span class="toc-text">2.3.1 开启</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-2-%E6%9F%A5%E7%9C%8B%E7%8A%B6%E6%80%81"><span class="toc-number">2.3.2.</span> <span class="toc-text">2.3.2 查看状态</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-3-%E5%BC%80%E5%90%AFdashboard"><span class="toc-number">2.3.3.</span> <span class="toc-text">2.3.3 开启dashboard</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-4-Helm"><span class="toc-number">2.3.4.</span> <span class="toc-text">2.3.4 Helm</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E4%BD%BF%E7%94%A8Rancher%E7%AE%A1%E7%90%86k8s%E9%9B%86%E7%BE%A4"><span class="toc-number">3.</span> <span class="toc-text">3 使用Rancher管理k8s集群</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-%E6%B7%BB%E5%8A%A0-Ingress-Controller"><span class="toc-number">3.1.</span> <span class="toc-text">3.1 添加 Ingress Controller</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-%E5%AE%89%E8%A3%85-Cert-Manager"><span class="toc-number">3.2.</span> <span class="toc-text">3.2 安装 Cert-Manager</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-%E5%AE%89%E8%A3%85-Rancher"><span class="toc-number">3.3.</span> <span class="toc-text">3.3 安装 Rancher</span></a></li></ol></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

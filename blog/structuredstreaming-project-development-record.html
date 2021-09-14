@@ -1,0 +1,1558 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>StructuredStreaming项目开发记录 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="
+版本说明:Spark2.4
+
+
+前言
+
+最近基于Spark Structured Streaming开发一套实时数据判别清洗系统，在开发过程接触了一些StructuredStreaming的新特性,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">StructuredStreaming项目开发记录</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/5.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/Spark"><b>「
+                    </b>SPARK<b> 」</b></a>
+                
+                August 24, 2020
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/structuredstreaming-project-development-record.html" title="StructuredStreaming项目开发记录" class="">StructuredStreaming项目开发记录</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    51k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    46 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Spark/" rel="tag">Spark</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <blockquote>
+<p>版本说明:Spark2.4</p>
+</blockquote>
+<blockquote>
+<p>前言</p>
+</blockquote>
+<p>最近基于Spark Structured Streaming开发一套实时数据判别清洗系统，在开发过程接触了一些StructuredStreaming的新特性以及新用法。本文主要记录一下在开发过程中使用到的技术点，以及遇到的问题总结。</p>
+<h1 id="1-放弃Spark-Streaming-选用Structured-Streaming"><a href="#1-放弃Spark-Streaming-选用Structured-Streaming" class="headerlink" title="1 放弃Spark Streaming 选用Structured Streaming"></a>1 放弃Spark Streaming 选用Structured Streaming</h1><p>关于当时项目技术选型最终选择StructuredStreaming的原因，主要是因为团队具有Spark开发经验且Structured 比Spark Streaming具有基于事件时间处理机制。这里简单对Spark Streaming 和Structured Streaming 做一个优劣对比，详细的内容可以参考<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/51883927">《是时候放弃Spark Streaming，转向Structured Streaming了》</a></p>
+<h2 id="1-1-Spark-Streaming的不足"><a href="#1-1-Spark-Streaming的不足" class="headerlink" title="1.1 Spark Streaming的不足"></a>1.1 Spark Streaming的不足</h2><ul>
+<li><strong>使用Processing Time 而不是 Event Time</strong></li>
+</ul>
+<p>刚才提到，我们技术选型的时候，就是因为Spark Streaming没有事件时间处理机制，所以被放弃。简单解释一下这两个时间的概念：Processing Time 是数据到达Spark被处理的时间，Event Time 是数据自身的时间，一般表示数据产生于数据源的时间。</p>
+<ul>
+<li><strong>Complex,low-level api</strong></li>
+</ul>
+<p>DStream （Spark Streaming 的数据模型）提供的 API 类似 RDD 的 API 的，非常的 low level。当我们编写 Spark Streaming 程序的时候，本质上就是要去构造 RDD 的 DAG 执行图，然后通过 Spark Engine 运行。这样导致一个问题是，DAG 可能会因为开发者的水平参差不齐而导致执行效率上的天壤之别。这样导致开发者的体验非常不好，也是任何一个基础框架不想看到的（基础框架的口号一般都是：你们专注于自己的业务逻辑就好，其他的交给我）。这也是很多基础系统强调 <strong>Declarative</strong> 的一个原因。</p>
+<ul>
+<li><strong>reason about end-to-end application</strong></li>
+</ul>
+<p>DStream 只能保证自己的一致性语义是 exactly-once的，而Spark Streaming的inpu 和 output的一致性语义需要用户自己来保证。</p>
+<ul>
+<li><strong>批流代码不统一</strong></li>
+</ul>
+<p>尽管批流本是两套系统，但是这两套系统统一起来确实很有必要，我们有时候确实需要将我们的流处理逻辑运行到批数据上面。关于这一点，最早在 2014 年 Google 提出 Dataflow 计算服务的时候就批判了 streaming/batch 这种叫法，而是提出了 unbounded/bounded data 的说法。DStream 尽管是对 RDD 的封装，但是我们要将 DStream 代码完全转换成 RDD 还是有一点工作量的，更何况现在 Spark 的批处理都用 DataSet/DataFrame API 了。</p>
+<h2 id="1-2-Structured-Streaming-优势"><a href="#1-2-Structured-Streaming-优势" class="headerlink" title="1.2 Structured Streaming 优势"></a>1.2 Structured Streaming 优势</h2><ul>
+<li><strong>简洁的模型</strong></li>
+</ul>
+<p>Structured Streaming 的模型很简单，易于理解，用户可以直接把一个流想象成一个无限增长的表格</p>
+<ul>
+<li><strong>一致的API</strong></li>
+</ul>
+<p>和Spark SQL 共用大部分API，对Spark SQL熟悉的用户很容易上手。批处理和流处理程序可以共用代码，提高开发效率。</p>
+<ul>
+<li><strong>卓越的性能</strong></li>
+</ul>
+<p>Structured Streaming 在与 Spark SQL 共用 API 的同时，也直接使用了 Spark SQL 的 Catalyst 优化器和 Tungsten，数据处理性能十分出色。此外，Structured Streaming 还可以直接从未来 Spark SQL 的各种性能优化中受益。</p>
+<ul>
+<li><strong>多编程语言支持</strong></li>
+</ul>
+<p>Structured Streaming 直接支持目前 Spark SQL 支持的语言，包括 Scala，Java，Python，R 和 SQL。用户可以选择自己喜欢的语言进行开发</p>
+<h1 id="2-Structured-数据源"><a href="#2-Structured-数据源" class="headerlink" title="2 Structured 数据源"></a>2 Structured 数据源</h1><p>关于Structured数据源的问题，我在<a href="https://shirukai.github.io/2019/01/25/StructuredStreaming%20%E5%86%85%E7%BD%AE%E6%95%B0%E6%8D%AE%E6%BA%90%E5%8F%8A%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE%E6%BA%90/">《Structured Streaming 内置数据源及实现自定义数据源》</a>这边文章里有详细介绍。</p>
+<h1 id="3-Kafka-JSON格式数据解析"><a href="#3-Kafka-JSON格式数据解析" class="headerlink" title="3 Kafka JSON格式数据解析"></a>3 Kafka JSON格式数据解析</h1><p>Kafka是最为常见的数据源，kafka里我们通常会以JSON格式存储数据。Spark Structured 在处理kafka数据的时候，通常需要将kafka数据转成DataFrame，之前在<a href="https://shirukai.github.io/2018/11/08/SparkStreaming%20%E8%A7%A3%E6%9E%90Kafka%20JSON%E6%A0%BC%E5%BC%8F%E6%95%B0%E6%8D%AE/">《Spark Streaming解析Kafka JSON格式数据》</a>这篇文章中介绍了几种Streaming处理Kafka JSON格式的方法，并在文末思考中，提到了Structured Streaming解析的方法。这里重新介绍几种方法。</p>
+<h2 id="3-1-通过定义schema-和-from-json函数解析"><a href="#3-1-通过定义schema-和-from-json函数解析" class="headerlink" title="3.1 通过定义schema 和 from_json函数解析"></a>3.1 通过定义schema 和 from_json函数解析</h2><p>Kafka数据里的value如下所示为json字符串：</p>
+<pre><code class="json">&#123;&quot;deviceId&quot;:&quot;4d6021db-7483-4911-8025-87494776ba87&quot;,&quot;deviceName&quot;:&quot;风机温度&quot;,&quot;deviceValue&quot;:76.3,&quot;deviceTime&quot;:1553140083&#125;
+</code></pre>
+<p>Structured 使用select($”value”.cast(“String”))解析如下所示：</p>
+<p><img src="http://shirukai.gitee.io/images/a0e1c655a73d998b938dc2f3bcdefe80.jpg"></p>
+<p>为了使用from_json解析，我们首先要根据json结构定义好schema，如下：</p>
+<pre><code class="scala">    val schema = StructType(Seq(
+      StructField(&quot;deviceId&quot;, StringType),
+      StructField(&quot;deviceName&quot;, StringType),
+      StructField(&quot;deviceValue&quot;, DoubleType),
+      StructField(&quot;deviceTime&quot;, LongType)
+    ))
+</code></pre>
+<p>使用from_json函数进行解析，需要通过import org.apache.spark.sql.functions._引入函数。</p>
+<pre><code class="scala"> .select(from_json($&quot;value&quot;.cast(&quot;String&quot;), schema).as(&quot;json&quot;)).select(&quot;json.*&quot;)
+</code></pre>
+<p>结果如下所示：</p>
+<p><img src="http://shirukai.gitee.io/images/4166439b013b1b2dd4cd841fdc9187bd.jpg"></p>
+<p>完整代码：</p>
+<pre><code class="scala">package com.hollysys.spark.structured.usecase
+
+import com.google.gson.Gson
+import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.types._
+
+/**
+  * Created by shirukai on 2019-03-21 11:36
+  * Structured 解析Kafka数据
+  */
+object HandleKafkaJSONExample &#123;
+  def main(args: Array[String]): Unit = &#123;
+    val spark = SparkSession
+      .builder()
+      .appName(this.getClass.getSimpleName)
+      .master(&quot;local[2]&quot;)
+      .getOrCreate()
+
+    val source = spark
+      .readStream
+      .format(&quot;kafka&quot;)
+      .option(&quot;kafka.bootstrap.servers&quot;, &quot;localhost:9092&quot;)
+      .option(&quot;subscribe&quot;, &quot;structured-json-data&quot;)
+      .option(&quot;maxOffsetsPerTrigger&quot;, 1000)
+      .option(&quot;startingOffsets&quot;, &quot;earliest&quot;)
+      .option(&quot;failOnDataLoss&quot;, &quot;true&quot;)
+      .load()
+
+    import spark.implicits._
+    import org.apache.spark.sql.functions._
+
+    val schema = StructType(Seq(
+      StructField(&quot;deviceId&quot;, StringType),
+      StructField(&quot;deviceName&quot;, StringType),
+      StructField(&quot;deviceValue&quot;, DoubleType),
+      StructField(&quot;deviceTime&quot;, LongType)
+    ))
+
+    val query = source
+      .select(from_json($&quot;value&quot;.cast(&quot;String&quot;), schema).as(&quot;json&quot;)).select(&quot;json.*&quot;)
+      .writeStream
+      .outputMode(&quot;update&quot;)
+      .format(&quot;console&quot;)
+      //.option(&quot;checkpointLocation&quot;, checkpointLocation)
+      .option(&quot;truncate&quot;, value = false)
+      .start()
+
+    query.awaitTermination()
+  &#125;
+&#125;
+</code></pre>
+<h2 id="3-2-通过定义case-class-解析"><a href="#3-2-通过定义case-class-解析" class="headerlink" title="3.2 通过定义case class 解析"></a>3.2 通过定义case class 解析</h2><p>此方法是先定义好case class，然后通过map函数，将json字符串使用gson转成case class 返回。</p>
+<p>首先根据json结构定义case class：</p>
+<pre><code class="scala">case class Device(deviceId: String, deviceName: String, deviceValue: Double, deviceTime: Long)
+</code></pre>
+<p>定义json字符串转case class 函数，这里使用gson</p>
+<pre><code class="scala">  def handleJson(json: String): Device = &#123;
+    val gson = new Gson()
+    gson.fromJson(json, classOf[Device])
+  &#125;
+</code></pre>
+<p>使用map转换</p>
+<pre><code class="scala">.select($&quot;value&quot;.cast(&quot;String&quot;)).as[String].map(handleJson)
+</code></pre>
+<p>结果如下所示：</p>
+<p><img src="http://shirukai.gitee.io/images/4166439b013b1b2dd4cd841fdc9187bd.jpg"></p>
+<p>完整代码：</p>
+<pre><code class="scala">package com.hollysys.spark.structured.usecase
+
+import com.google.gson.Gson
+import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.types._
+
+/**
+  * Created by shirukai on 2019-03-21 11:36
+  * Structured 解析Kafka数据
+  */
+object HandleKafkaJSONExample &#123;
+  def main(args: Array[String]): Unit = &#123;
+    val spark = SparkSession
+      .builder()
+      .appName(this.getClass.getSimpleName)
+      .master(&quot;local[2]&quot;)
+      .getOrCreate()
+
+    val source = spark
+      .readStream
+      .format(&quot;kafka&quot;)
+      .option(&quot;kafka.bootstrap.servers&quot;, &quot;localhost:9092&quot;)
+      .option(&quot;subscribe&quot;, &quot;structured-json-data&quot;)
+      .option(&quot;maxOffsetsPerTrigger&quot;, 1000)
+      .option(&quot;startingOffsets&quot;, &quot;earliest&quot;)
+      .option(&quot;failOnDataLoss&quot;, &quot;true&quot;)
+      .load()
+
+    import spark.implicits._
+    import org.apache.spark.sql.functions._
+    val query = source
+      .select($&quot;value&quot;.cast(&quot;String&quot;)).as[String].map(handleJson)
+      .writeStream
+      .outputMode(&quot;update&quot;)
+      .format(&quot;console&quot;)
+      //.option(&quot;checkpointLocation&quot;, checkpointLocation)
+      .option(&quot;truncate&quot;, value = false)
+      .start()
+    query.awaitTermination()
+  &#125;
+
+  def handleJson(json: String): Device = &#123;
+    val gson = new Gson()
+    gson.fromJson(json, classOf[Device])
+  &#125;
+&#125;
+
+case class Device(deviceId: String, deviceName: String, deviceValue: Double, deviceTime: Long)
+</code></pre>
+<h2 id="3-3-处理JSONArray格式数据"><a href="#3-3-处理JSONArray格式数据" class="headerlink" title="3.3 处理JSONArray格式数据"></a>3.3 处理JSONArray格式数据</h2><p>上面提到的两种方法，是处理JSONObject的情况，即”{}”。如果数据为JSONArray格式，如[{},{}]该如何处理呢？</p>
+<p>假如我们Kafka名为structured-json-array-data的topic里的单条数据如下：</p>
+<pre><code class="json">[
+    &#123;
+        &quot;deviceId&quot;: &quot;4d6021db-7483-4911-8025-87494776ba87&quot;,
+        &quot;deviceName&quot;: &quot;风机温度&quot;,
+        &quot;deviceValue&quot;: 76.3,
+        &quot;deviceTime&quot;: 1553140083
+    &#125;,
+    &#123;
+        &quot;deviceId&quot;: &quot;89cf0815-9a1e-4dd5-a2d9-ff16c2308ddf&quot;,
+        &quot;deviceName&quot;: &quot;风机转速&quot;,
+        &quot;deviceValue&quot;: 600,
+        &quot;deviceTime&quot;: 1553140021
+    &#125;
+]
+</code></pre>
+<h3 id="3-3-1-from-json-explode函数处理JSONArray格式数据"><a href="#3-3-1-from-json-explode函数处理JSONArray格式数据" class="headerlink" title="3.3.1 from_json+explode函数处理JSONArray格式数据"></a>3.3.1 from_json+explode函数处理JSONArray格式数据</h3><p>首先同样需要定义好schema，这里就不重复了，与上面定义schema相同。只不过这里我们使用from_json时需要在schema外嵌套一层结构ArrayType(schema)，这时拿到的是array嵌套结构的json，然后我们在使用explode函数将其展开。代码如下：</p>
+<pre><code class="scala">.select(from_json($&quot;value&quot;.cast(&quot;String&quot;), ArrayType(schema))
+.as(&quot;jsonArray&quot;))
+.select(explode($&quot;jsonArray&quot;))
+.select(&quot;col.*&quot;)
+</code></pre>
+<p><img src="http://shirukai.gitee.io/images/07eb91699ac22f1ed735d437e52e48ff.jpg"></p>
+<h3 id="3-3-2-flatmap-case-class-处理JSONArray格式数据"><a href="#3-3-2-flatmap-case-class-处理JSONArray格式数据" class="headerlink" title="3.3.2 flatmap + case class 处理JSONArray格式数据"></a>3.3.2 flatmap + case class 处理JSONArray格式数据</h3><p>上面我们提到使用map + case class 能够处理JSONObject 格式的数据，同样的道理，这里我们可以使用flatmap + case class 处理 JSONArray 格式的数据。具体思路是，重写上面handleJson 的方法，将json字符串转为 Array[clase class]格式,然后传入flatmap函数。</p>
+<p>编写handleJsonArray方法：</p>
+<pre><code class="scala">  def handleJsonArray(jsonArray: String): Array[Device] = &#123;
+    val gson = new Gson()
+    gson.fromJson(jsonArray, classOf[Array[Device]])
+  &#125;
+</code></pre>
+<p>使用flatmap函数展开</p>
+<pre><code class="scala">.select($&quot;value&quot;.cast(&quot;String&quot;)).as[String].flatMap(handleJsonArray)
+</code></pre>
+<p><img src="http://shirukai.gitee.io/images/07eb91699ac22f1ed735d437e52e48ff.jpg"></p>
+<h1 id="4-输出模式"><a href="#4-输出模式" class="headerlink" title="4 输出模式"></a>4 输出模式</h1><p>Structured Streaming 提供了三种输出模式：complete、update、append</p>
+<ul>
+<li>complete:将整个更新的结果表将写入外部存储器</li>
+<li>update:只有自上次触发后在结果表中更新的行才会写入外部存储(结果表中更新的行=新增行+更新历史行)</li>
+<li>append:自上次触发后，只有结果表中附加的新行才会写入外部存储器。这仅适用于预计结果表中的现有行不会更改的查询，因此，这种方式能保证每行数据仅仅输出一次。例如，带有Select，where，map，flatmap，filter，join等的query操作支持append模式。</li>
+</ul>
+<p>不同类型的Streaming query 支持不同的输出模式：如下表所示：</p>
+<p><img src="http://shirukai.gitee.io/images/ac1eedd8bedb62e093ab580743d5edec.jpg"></p>
+<h2 id="4-1-Complete-模式"><a href="#4-1-Complete-模式" class="headerlink" title="4.1 Complete 模式"></a>4.1 Complete 模式</h2><h3 id="描述："><a href="#描述：" class="headerlink" title="描述："></a>描述：</h3><p>complete模式下，会将整个更新的结果表写出到外部存储，即会将整张结果表写出，重点注意”更新”这个词，这就意味着，使用Complete模式是需要有聚合操作的，因为在结果表中保存非聚合的数据是没有意义的，所以，当在没有聚合的query中使用complete输出模式，就会报如下错误：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/5888629fad4c9d308e76467915308861.jpg"></p>
+<h3 id="可应用Query："><a href="#可应用Query：" class="headerlink" title="可应用Query："></a>可应用Query：</h3><p>具有聚合操作的Query</p>
+<h3 id="Example"><a href="#Example" class="headerlink" title="Example:"></a>Example:</h3><p>以wordcount为例</p>
+<pre><code class="scala">/**
+  * 测试输出模式为complete
+  * 整个更新的结果表将写入外部存储器
+  * -------------------------------------------
+  * 输入：dog cat
+  * 结果：
+  * +-----+-----+
+  * |value|count|
+  * +-----+-----+
+  * |dog  |1    |
+  * |cat  |1    |
+  * +-----+-----+
+  * -------------------------------------------
+  * 输入：dog fish
+  * 结果：
+  * +-----+-----+
+  * |value|count|
+  * +-----+-----+
+  * |dog  |2    |
+  * |cat  |1    |
+  * |fish |1    |
+  * +-----+-----+
+  * -------------------------------------------
+  * 输入：cat lion
+  * 结果：
+  * +-----+-----+
+  * |value|count|
+  * +-----+-----+
+  * |lion |1    |
+  * |dog  |2    |
+  * |cat  |2    |
+  * |fish |1    |
+  * +-----+-----+
+  * -------------------------------------------
+  */
+</code></pre>
+<p>代码：</p>
+<pre><code class="scala">/**
+  * Created by shirukai on 2019-03-21 15:27
+  * Structured Streaming 三种输出模式的例子
+  * 以wordcount为例
+  * socket 命令:nc -lk 9090
+  */
+object OutputModeExample &#123;
+  def main(args: Array[String]): Unit = &#123;
+    val spark = SparkSession
+      .builder()
+      .appName(this.getClass.getSimpleName)
+      .master(&quot;local[2]&quot;)
+      .getOrCreate()
+
+    val line = spark.readStream
+      .format(&quot;socket&quot;)
+      .option(&quot;host&quot;, &quot;localhost&quot;)
+      .option(&quot;port&quot;, 9090)
+      .load()
+    import spark.implicits._
+    import org.apache.spark.sql.functions._
+    val words = line.as[String].flatMap(_.split(&quot; &quot;))
+
+    /**
+      * 测试输出模式为complete
+      * 整个更新的结果表将写入外部存储器
+      * -------------------------------------------
+      * 输入：dog cat
+      * 结果：
+      * +-----+-----+
+      * |value|count|
+      * +-----+-----+
+      * |dog  |1    |
+      * |cat  |1    |
+      * +-----+-----+
+      * -------------------------------------------
+      * 输入：dog fish
+      * 结果：
+      * +-----+-----+
+      * |value|count|
+      * +-----+-----+
+      * |dog  |2    |
+      * |cat  |1    |
+      * |fish |1    |
+      * +-----+-----+
+      * -------------------------------------------
+      * 输入：cat lion
+      * 结果：
+      * +-----+-----+
+      * |value|count|
+      * +-----+-----+
+      * |lion |1    |
+      * |dog  |2    |
+      * |cat  |2    |
+      * |fish |1    |
+      * +-----+-----+
+      * -------------------------------------------
+      */
+       val completeQuery = words.groupBy(&quot;value&quot;).count().writeStream
+          .outputMode(OutputMode.Complete())
+          .format(&quot;console&quot;)
+          .option(&quot;truncate&quot;, value = false)
+          .start()
+       completeQuery.awaitTermination()
+
+  &#125;
+&#125;
+</code></pre>
+<h2 id="4-2-Update模式"><a href="#4-2-Update模式" class="headerlink" title="4.2 Update模式"></a>4.2 Update模式</h2><h3 id="描述：-1"><a href="#描述：-1" class="headerlink" title="描述："></a>描述：</h3><p>update模式下，会将自上次触发后在结果表中更新的行写入外部存储(结果表中更新的行=新增行+更新历史行)</p>
+<h3 id="可应用Query"><a href="#可应用Query" class="headerlink" title="可应用Query:"></a>可应用Query:</h3><p>所有的query</p>
+<h3 id="Example-1"><a href="#Example-1" class="headerlink" title="Example:"></a>Example:</h3><pre><code class="scala">    /**
+      * 测试输出模式为：update
+      * 只有自上次触发后在结果表中更新的行才会写入外部存储(结果表中更新的行=新增行+更新历史行)
+      * -------------------------------------------
+      * 输入：dog cat
+      * 结果：
+      * +-----+-----+
+      * |value|count|
+      * +-----+-----+
+      * |dog  |1    |
+      * |cat  |1    |
+      * +-----+-----+
+      * -------------------------------------------
+      * 输入：dog fish
+      * 结果：
+      * +-----+-----+
+      * |value|count|
+      * +-----+-----+
+      * |dog  |2    |
+      * |fish |1    |
+      * +-----+-----+
+      * -------------------------------------------
+      * 输入：cat lion
+      * 结果：
+      * +-----+-----+
+      * |value|count|
+      * +-----+-----+
+      * |lion |1    |
+      * |cat  |2    |
+      * +-----+-----+
+      * -------------------------------------------
+      */
+</code></pre>
+<p>代码：</p>
+<pre><code class="scala">package com.hollysys.spark.structured.usecase
+
+import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.streaming.OutputMode
+
+/**
+  * Created by shirukai on 2019-03-21 15:27
+  * Structured Streaming 三种输出模式的例子
+  * 以wordcount为例
+  * socket 命令:nc -lk 9090
+  */
+object OutputModeExample &#123;
+  def main(args: Array[String]): Unit = &#123;
+    val spark = SparkSession
+      .builder()
+      .appName(this.getClass.getSimpleName)
+      .master(&quot;local[2]&quot;)
+      .getOrCreate()
+
+    val line = spark.readStream
+      .format(&quot;socket&quot;)
+      .option(&quot;host&quot;, &quot;localhost&quot;)
+      .option(&quot;port&quot;, 9090)
+      .load()
+    import spark.implicits._
+    import org.apache.spark.sql.functions._
+    val words = line.as[String].flatMap(_.split(&quot; &quot;))
+    /**
+      * 测试输出模式为：update
+      * 只有自上次触发后在结果表中更新的行才会写入外部存储(结果表中更新的行=新增行+更新历史行)
+      * -------------------------------------------
+      * 输入：dog cat
+      * 结果：
+      * +-----+-----+
+      * |value|count|
+      * +-----+-----+
+      * |dog  |1    |
+      * |cat  |1    |
+      * +-----+-----+
+      * -------------------------------------------
+      * 输入：dog fish
+      * 结果：
+      * +-----+-----+
+      * |value|count|
+      * +-----+-----+
+      * |dog  |2    |
+      * |fish |1    |
+      * +-----+-----+
+      * -------------------------------------------
+      * 输入：cat lion
+      * 结果：
+      * +-----+-----+
+      * |value|count|
+      * +-----+-----+
+      * |lion |1    |
+      * |cat  |2    |
+      * +-----+-----+
+      * -------------------------------------------
+      */
+    val updateQuery = words.groupBy(&quot;value&quot;).count().writeStream
+      .outputMode(OutputMoade.Update())
+      .format(&quot;console&quot;)
+      .option(&quot;truncate&quot;, value = false)
+      .start()
+    updateQuery.awaitTermination()
+&#125;
+</code></pre>
+<h2 id="4-3-Append-模式"><a href="#4-3-Append-模式" class="headerlink" title="4.3  Append 模式"></a>4.3  Append 模式</h2><h3 id="描述：-2"><a href="#描述：-2" class="headerlink" title="描述："></a>描述：</h3><p>此模式下，会将上次触发后，结果表中附加的新行写入外部存储器。这仅适用于预计结果表中的现有行不会更改的查询，因此，这种方式能保证每行数据仅仅输出一次。例如，带有Select，where，map，flatmap，filter，join等的query操作支持append模式。支持聚合操作下使用Append模式，但是要求聚合操作必须设置Watermark，否则会报如下错误：</p>
+<p><img src="http://shirukai.gitee.io/images/e633dc5a75d6161c368c2cd056f1b72a.jpg"></p>
+<h3 id="可应用Query-1"><a href="#可应用Query-1" class="headerlink" title="可应用Query:"></a>可应用Query:</h3><p>带Watermark的聚合操作</p>
+<p>flatMapGroupWithState函数之后使用聚合操作</p>
+<p>非聚合操作</p>
+<h3 id="Example-2"><a href="#Example-2" class="headerlink" title="Example:"></a>Example:</h3><pre><code class="scala">package com.hollysys.spark.structured.usecase
+
+import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.streaming.OutputMode
+
+/**
+  * Created by shirukai on 2019-03-21 15:27
+  * Structured Streaming 三种输出模式的例子
+  * 以wordcount为例
+  * socket 命令:nc -lk 9090
+  */
+object OutputModeExample &#123;
+  def main(args: Array[String]): Unit = &#123;
+    val spark = SparkSession
+      .builder()
+      .appName(this.getClass.getSimpleName)
+      .master(&quot;local[2]&quot;)
+      .getOrCreate()
+
+    val line = spark.readStream
+      .format(&quot;socket&quot;)
+      .option(&quot;host&quot;, &quot;localhost&quot;)
+      .option(&quot;port&quot;, 9090)
+      .load()
+    import spark.implicits._
+    import org.apache.spark.sql.functions._
+    val words = line.as[String].flatMap(_.split(&quot; &quot;))
+    /**
+      * 测试输出模式为：append
+      * 自上次触发后，只有结果表中附加的新行才会写入外部存储器。这仅适用于预计结果表中的现有行不会更改的查询
+      * -------------------------------------------
+      * 输入：dog cat
+      * 结果：
+      * +-----+
+      * |value|
+      * +-----+
+      * |dog  |
+      * |cat  |
+      * +-----+
+      * -------------------------------------------
+      * 输入：dog fish
+      * 结果：
+      * +-----+
+      * |value|
+      * +-----+
+      * |dog  |
+      * |fish |
+      * +-----+
+      * -------------------------------------------
+      * 输入：cat lion
+      * 结果：
+      * +-----+
+      * |value|
+      * +-----+
+      * |cat  |
+      * |lion |
+      * +-----+
+      * -------------------------------------------
+      */
+    val appendQuery = words.writeStream
+      .outputMode(OutputMode.Complete())
+      .format(&quot;console&quot;)
+      .option(&quot;truncate&quot;, value = false)
+      .start()
+    appendQuery.awaitTermination()
+&#125;
+</code></pre>
+<h1 id="5基于事件时间的窗口操作"><a href="#5基于事件时间的窗口操作" class="headerlink" title="5基于事件时间的窗口操作"></a>5基于事件时间的窗口操作</h1><p>使用Structured Streaming 基于时间的滑动窗口的聚合操作是很简单的，使用window()函数即可，很像分组聚合。在一个分组聚合操作中，聚合值被唯一保存在用户指定的列中。在基于窗口的聚合情况下，对于行的事件时间的每个窗口，维护聚合指。</p>
+<h2 id="5-1-窗口函数的简单使用：对十分钟的数据进行WordCount"><a href="#5-1-窗口函数的简单使用：对十分钟的数据进行WordCount" class="headerlink" title="5.1 窗口函数的简单使用：对十分钟的数据进行WordCount"></a>5.1 窗口函数的简单使用：对十分钟的数据进行WordCount</h2><p>在前面的输出模式的例子中，我们使用了wordcount进行演示。现在有这样的一个需求：要求我们以10分钟为窗口，且每5分钟滑动一次来进行10分钟内的词频统计。如下图所示，此图是官网的改进版，按照实际输出画图。由于使用的输出模式是Complete，会将完整的结果表输出。很容易理解，12:05时触发计算，计算12:02 和12:03来的两条数据，因为我们的窗口为滑动窗口，10分钟窗口大小，5分钟滑动一次，所以Spark会为每条数据划分两个窗口，结果如图所示。关于窗口的划分，后面会单独解释。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/0d7b62bf1191a3944f4090900c8fb7f0.jpg"></p>
+<p>下面将使用具体的程序，进行演示。</p>
+<pre><code class="scala">package com.hollysys.spark.structured.usecase
+
+import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.streaming.OutputMode
+import org.apache.spark.sql.types.TimestampType
+
+/**
+  * Created by shirukai on 2019-03-22 14:17
+  * Structured Streaming 窗口函数操作例子
+  * 基于事件时间的wordcount
+  * socket：nc -lk 9090
+  */
+object WindowOptionExample &#123;
+  def main(args: Array[String]): Unit = &#123;
+
+    val spark = SparkSession
+      .builder()
+      .appName(this.getClass.getSimpleName)
+      .master(&quot;local[2]&quot;)
+      .getOrCreate()
+
+    // Read stream form socket,The data format is: 1553235690:dog cat|1553235691:cat fish
+    val lines = spark.readStream
+      .format(&quot;socket&quot;)
+      .option(&quot;host&quot;, &quot;localhost&quot;)
+      .option(&quot;port&quot;, 9090)
+      .load()
+
+    import spark.implicits._
+    import org.apache.spark.sql.functions._
+
+    // Transform socket lines to DataFrame of schema &#123; timestamp: Timestamp, word: String &#125;
+    val count = lines.as[String].flatMap(line =&gt; &#123;
+      val lineSplits = line.split(&quot;[|]&quot;)
+      lineSplits.flatMap(item =&gt; &#123;
+        val itemSplits = item.split(&quot;:&quot;)
+        val t = itemSplits(0).toLong
+        itemSplits(1).split(&quot; &quot;).map(word =&gt; (t, word))
+      &#125;)
+    &#125;).toDF(&quot;time&quot;, &quot;word&quot;)
+      .select($&quot;time&quot;.cast(TimestampType), $&quot;word&quot;)
+      // Group the data by window and word and compute the count of each group
+      .groupBy(
+      window($&quot;time&quot;, &quot;10 minutes&quot;, &quot;5 minutes&quot;),
+      $&quot;word&quot;
+    ).count()
+
+    val query = count.writeStream
+      .outputMode(OutputMode.Complete())
+      .format(&quot;console&quot;)
+      .option(&quot;truncate&quot;, value = false)
+      .start()
+
+    query.awaitTermination()
+  &#125;
+&#125;
+</code></pre>
+<p>上面的程序，是模拟数据处理，从socket里读取1553235690:dog cat|1553235691:cat owl格式的数据，然后经过转换，转成schema为{ timestamp: Timestamp, word: String }的DataFrame，然后使用window函数进行窗口划分，再使用groupBy进行聚合count，最后将结果输出到控制台，输出模式为Complete。</p>
+<p>通过nc -lk 9090向socket发送数据</p>
+<p>发送：1553227320:cat dog|1553227380:dog dog</p>
+<p>结果：</p>
+<pre><code class="scala">-------------------------------------------
+Batch: 0
+-------------------------------------------
++------------------------------------------+----+-----+
+|window                                    |word|count|
++------------------------------------------+----+-----+
+|[2019-03-22 11:55:00, 2019-03-22 12:05:00]|cat |1    |
+|[2019-03-22 12:00:00, 2019-03-22 12:10:00]|cat |1    |
+|[2019-03-22 11:55:00, 2019-03-22 12:05:00]|dog |3    |
+|[2019-03-22 12:00:00, 2019-03-22 12:10:00]|dog |3    |
++------------------------------------------+----+-----+
+</code></pre>
+<p>发送：1553227620:owl cat</p>
+<p>结果:</p>
+<pre><code class="scala">-------------------------------------------
+Batch: 1
+-------------------------------------------
++------------------------------------------+----+-----+
+|window                                    |word|count|
++------------------------------------------+----+-----+
+|[2019-03-22 11:55:00, 2019-03-22 12:05:00]|cat |1    |
+|[2019-03-22 12:05:00, 2019-03-22 12:15:00]|cat |1    |
+|[2019-03-22 12:05:00, 2019-03-22 12:15:00]|owl |1    |
+|[2019-03-22 12:00:00, 2019-03-22 12:10:00]|owl |1    |
+|[2019-03-22 12:00:00, 2019-03-22 12:10:00]|cat |2    |
+|[2019-03-22 11:55:00, 2019-03-22 12:05:00]|dog |3    |
+|[2019-03-22 12:00:00, 2019-03-22 12:10:00]|dog |3    |
++------------------------------------------+----+-----+
+</code></pre>
+<p>发送：1553227860:dog|1553227980:owl</p>
+<p>结果：</p>
+<pre><code class="scala">-------------------------------------------
+Batch: 2
+-------------------------------------------
++------------------------------------------+----+-----+
+|window                                    |word|count|
++------------------------------------------+----+-----+
+|[2019-03-22 11:55:00, 2019-03-22 12:05:00]|cat |1    |
+|[2019-03-22 12:05:00, 2019-03-22 12:15:00]|dog |1    |
+|[2019-03-22 12:05:00, 2019-03-22 12:15:00]|cat |1    |
+|[2019-03-22 12:05:00, 2019-03-22 12:15:00]|owl |2    |
+|[2019-03-22 12:00:00, 2019-03-22 12:10:00]|owl |1    |
+|[2019-03-22 12:10:00, 2019-03-22 12:20:00]|owl |1    |
+|[2019-03-22 12:00:00, 2019-03-22 12:10:00]|cat |2    |
+|[2019-03-22 12:10:00, 2019-03-22 12:20:00]|dog |1    |
+|[2019-03-22 11:55:00, 2019-03-22 12:05:00]|dog |3    |
+|[2019-03-22 12:00:00, 2019-03-22 12:10:00]|dog |3    |
++------------------------------------------+----+-----+
+</code></pre>
+<h2 id="5-2-窗口划分：window-函数"><a href="#5-2-窗口划分：window-函数" class="headerlink" title="5.2 窗口划分：window()函数"></a>5.2 窗口划分：window()函数</h2><p>上面基于窗口的词频统计例子中，我们接触到了window()函数，这是spark的内置函数，具体底层实现，没要找到的源码位置，如有人知晓，烦请指点。我们可以看到在org.apache.spark.sql.functions中的window函数解析成表达式之前的函数定义：</p>
+<pre><code class="scala">  /**
+    * window
+    *
+    * @param timeColumn     事件时间所在的列
+    * @param windowDuration 窗口间隔 字符串表达式：&quot;10 seconds&quot; or &quot;10 minutes&quot;等
+    * @param slideDuration  滑动间隔 字符串表达式：&quot;10 seconds&quot; or &quot;10 minutes&quot;等
+    * @return Column
+    */  
+ def window(timeColumn: Column, windowDuration: String, slideDuration: String): Column = &#123;
+    window(timeColumn, windowDuration, slideDuration, &quot;0 second&quot;)
+  &#125;
+</code></pre>
+<h3 id="5-2-1-简单例子"><a href="#5-2-1-简单例子" class="headerlink" title="5.2.1 简单例子"></a>5.2.1 简单例子</h3><p>这里通过一个简单的例子，来演示一下window()函数的作用。</p>
+<p>我们对上面的WordCount的例子做一下改变，不去groupBy(window())，直接select来看一下window()的效果。</p>
+<pre><code class="scala">    // Transform socket lines to DataFrame of schema &#123; timestamp: Timestamp, word: String &#125;
+    val count = lines.as[String].flatMap(line =&gt; &#123;
+      val lineSplits = line.split(&quot;[|]&quot;)
+      lineSplits.flatMap(item =&gt; &#123;
+        val itemSplits = item.split(&quot;:&quot;)
+        val t = itemSplits(0).toLong
+        itemSplits(1).split(&quot; &quot;).map(word =&gt; (t, word))
+      &#125;)
+    &#125;).toDF(&quot;time&quot;, &quot;word&quot;)
+      .select($&quot;time&quot;.cast(TimestampType), $&quot;word&quot;)
+      .select(
+      window($&quot;time&quot;, &quot;10 minutes&quot;, &quot;5 minutes&quot;),
+      $&quot;word&quot;,
+      $&quot;time&quot;
+    )
+</code></pre>
+<p>如上，我们以10分钟为一个窗口，5分钟滑动一次，这时输入一个2019-03-23 13:58:24时间的数据，会产生几个窗口呢？</p>
+<p>输入：1553320704:cat</p>
+<p>结果：如下所示产生了两个窗口，13:50-14:00 和13:55-14:05</p>
+<pre><code class="scala">-------------------------------------------
+Batch: 1
+-------------------------------------------
++------------------------------------------+----+-------------------+
+|window                                    |word|time               |
++------------------------------------------+----+-------------------+
+|[2019-03-23 13:50:00, 2019-03-23 14:00:00]|cat |2019-03-23 13:58:24|
+|[2019-03-23 13:55:00, 2019-03-23 14:05:00]|cat |2019-03-23 13:58:24|
++------------------------------------------+----+-------------------+
+</code></pre>
+<p>如果我同样设置10分钟的窗口，3分钟滑动一次，同样输入2019-03-23 13:58:24时间的数据，这时会产生几个窗口呢？</p>
+<p>输入：1553320704:cat</p>
+<p>结果：如下所示产生了三个窗口</p>
+<pre><code class="scala">-------------------------------------------
+Batch: 0
+-------------------------------------------
++------------------------------------------+----+-------------------+
+|window                                    |word|time               |
++------------------------------------------+----+-------------------+
+|[2019-03-23 13:51:00, 2019-03-23 14:01:00]|cat |2019-03-23 13:58:24|
+|[2019-03-23 13:54:00, 2019-03-23 14:04:00]|cat |2019-03-23 13:58:24|
+|[2019-03-23 13:57:00, 2019-03-23 14:07:00]|cat |2019-03-23 13:58:24|
++------------------------------------------+----+-------------------+
+</code></pre>
+<p>如果我同样设置10分钟的窗口，2分钟滑动一次，同样输入2019-03-23 13:58:24时间的数据，这时会产生几个窗口呢？</p>
+<p>输入：1553320704:cat</p>
+<p>结果：如下所示产生了五个窗口</p>
+<pre><code class="scala">-------------------------------------------
+Batch: 0
+-------------------------------------------
++------------------------------------------+----+-------------------+
+|window                                    |word|time               |
++------------------------------------------+----+-------------------+
+|[2019-03-23 13:50:00, 2019-03-23 14:00:00]|cat |2019-03-23 13:58:24|
+|[2019-03-23 13:52:00, 2019-03-23 14:02:00]|cat |2019-03-23 13:58:24|
+|[2019-03-23 13:54:00, 2019-03-23 14:04:00]|cat |2019-03-23 13:58:24|
+|[2019-03-23 13:56:00, 2019-03-23 14:06:00]|cat |2019-03-23 13:58:24|
+|[2019-03-23 13:58:00, 2019-03-23 14:08:00]|cat |2019-03-23 13:58:24|
++------------------------------------------+----+-------------------+
+</code></pre>
+<h3 id="5-2-3-窗口划分逻辑"><a href="#5-2-3-窗口划分逻辑" class="headerlink" title="5.2.3 窗口划分逻辑"></a>5.2.3 窗口划分逻辑</h3><p>上面例子中，我们可以使用简单的窗口函数，根据不同的窗口大小和滑动间隔划分出不同的窗口，那么具体Spark是如何划分窗口的呢？如下图所示，我们以窗口大小为10分钟，滑动间隔为5分为例，进行窗口划分。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/a94ca1c92836ef00533d42fe4204f1ce.jpg"></p>
+<p>通过上面的图我们可以看出，当00:12这个时间点来了一条数据之后，它会落在00:05-00:15和00:10-00:20这两个窗口里，同样，当00:28来的数据会落到00:20-00:30和00:25-00:35这两个窗口。对于这个例子来说，每一条数据都会落到两个窗口里，那么，关于具体落到哪个窗口里是如何计算的呢？我们可以查看Spark window函数的实现，源码位置在org.apache.spark.sql.catalyst.analysis包下的SimpleAnalyzer，查看TimeWindowing的实现，注释里说的很清楚。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/8a9adf03620fa190055afc37999e7d87.jpg"></p>
+<p>大体步骤如下</p>
+<p><strong>1 首先计算一个窗口跨度里最多有多少个重叠窗口</strong></p>
+<p>maxNumOverlapping = ceil(windowDuration / slideDuration)</p>
+<p>使用窗口跨度除以滑动间隔向上取整，即可以得到最大重叠窗口个数，如windowDuration=10，slideDuration=5，则maxNumOverlapping=2；windowDuration=10，slideDuration=3，则maxNumOverlapping=4。</p>
+<pre><code class="scala">val overlappingWindows =
+math.ceil(window.windowDuration * 1.0 / window.slideDuration).toInt
+</code></pre>
+<p><strong>2 计算当前时间落入的距离窗口开始时间最近的窗口ID</strong></p>
+<p>windowId = ceil((timestamp - startTime) / slideDuration)</p>
+<p>startTime这里指的是整个时间维度的开始时间，默认为0，即时间戳的0</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/dbf6f9a23f5fe001b8eb0d02b43f809e.jpg"></p>
+<p>使用当前时间减去开始时间startTime然后除以窗口跨度向上取整就能求出窗口ID来，这个ID表示，从startTime开始，一共划分了多少个窗口。</p>
+<pre><code class="scala">val division = (PreciseTimestampConversion(
+window.timeColumn, TimestampType, LongType) - window.startTime) / window.slideDuration
+val ceil = Ceil(division)
+</code></pre>
+<p><strong>3 按最多的情况窗口划分</strong></p>
+<p>上面第一步中，我们计算出了一个窗口跨度里最多有多少个重叠窗口，这个有什么意义呢？其实它可以表示，一条数据，最多可以落到多少个窗口里，注意这里是最多，有些情况下，一条数据可能落不到计算的最多窗口里。比如说，当我窗口时间设置为10分钟，窗口跨度设置为3分钟的时候，这个时候计算出最多重叠个数为4，大多数情况下为3，如下图所示：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/efcb757823f0d6cf59bc292426d24e69.jpg"></p>
+<p>所以这里Spark先按照最多的情况划分窗口</p>
+<pre><code class="scala">  val windows =
+            Seq.tabulate(overlappingWindows)(i =&gt; getWindow(i, overlappingWindows))
+</code></pre>
+<p><strong>4 过滤不符合要求的窗口</strong></p>
+<p>通过上面的图，我们可以看出，如果我们按照最多重叠个数来划分窗口，数据会落到不正确的窗口中，如果我们 划分00:11:10这条数据，它会落到：00:00-00:10、00:03-00:13、00:06-00:16、00:09-00:19这四个窗口中，显然，00:00-00:10这个窗口是个错误的窗口，不需要出现，所以这里Spark又对窗口进行了一次过滤。</p>
+<pre><code class="scala">val filterExpr =
+    window.timeColumn &gt;= windowAttr.getField(WINDOW_START) &amp;&amp;
+    window.timeColumn &lt; windowAttr.getField(WINDOW_END)
+</code></pre>
+<p>通过上面四个步骤，spark很容易将我们的数据，划分到不同的窗口中，从而实现了窗口计算。</p>
+<p>下面我按照源码思路，简单的实现了一个窗口划分的Demo，代码如下：</p>
+<pre><code class="scala">package com.hollysys.spark.structured.usecase
+
+import java.util.Date
+
+import org.apache.commons.lang3.time.FastDateFormat
+import org.apache.spark.unsafe.types.CalendarInterval
+
+/**
+  * Created by shirukai on 2019-03-23 11:29
+  * 官方源码window()函数实现
+  *
+  *
+  * The windows are calculated as below:
+  * maxNumOverlapping &lt;- ceil(windowDuration / slideDuration)
+  * for (i &lt;- 0 until maxNumOverlapping)
+  * windowId &lt;- ceil((timestamp - startTime) / slideDuration)
+  * windowStart &lt;- windowId * slideDuration + (i - maxNumOverlapping) * slideDuration + startTime
+  * windowEnd &lt;- windowStart + windowDuration
+  * return windowStart, windowEnd
+  */
+object WindowSourceFunctionExample &#123;
+  val TARGET_FORMAT: FastDateFormat = FastDateFormat.getInstance(&quot;yyyy-MM-dd HH:mm:ss&quot;)
+
+
+  /**
+    * 计算窗口ID
+    *
+    * @param t 事件时间
+    * @param s 滑动间隔
+    * @return id
+    */
+  def calculateWindowId(t: Long, s: Long): Int = Math.ceil(t.toDouble / s.toDouble).toInt
+
+  /**
+    * 计算窗口开始时间
+    *
+    * @param windowId          窗口ID
+    * @param s                 滑动间隔
+    * @param maxNumOverlapping 最大重叠窗口个数
+    * @param numOverlapping    当前重叠数
+    * @return start
+    */
+  def calculateWindowStart(windowId: Int, s: Long, maxNumOverlapping: Int, numOverlapping: Int): Long =
+    windowId * s + (numOverlapping - maxNumOverlapping) * s
+
+  /**
+    * 计算窗口结束时间
+    *
+    * @param start 开始时间
+    * @param w     窗口大小
+    * @return end
+    */
+  def calculateWindowEnd(start: Long, w: Long): Long = start + w
+
+  /**
+    * 计算最多的窗口重叠个数
+    * 思路：当前事件时间到所在窗口的结束时间 / 滑动间隔 向上取整，即是窗口个数
+    *
+    * @param w 窗口间隔
+    * @param s 滑动间隔
+    * @return 窗口个数
+    */
+  def calculateMaxNumOverlapping(w: Long, s: Long): Int = Math.ceil(w.toDouble / s.toDouble).toInt
+
+  /**
+    * 模拟计算某个时间的窗口
+    *
+    * @param eventTime      事件时间 毫秒级时间戳
+    * @param windowDuration 窗口间隔 字符串表达式：&quot;10 seconds&quot; or &quot;10 minutes&quot;
+    * @param slideDuration  滑动间隔 字符串表达式：&quot;10 seconds&quot; or &quot;10 minutes&quot;
+    * @return List
+    */
+  def window(eventTime: Long, windowDuration: String, slideDuration: String): List[String] = &#123;
+
+    // Format window`s interval by CalendarInterval, e.g. &quot;10 seconds&quot; =&gt; &quot;10000&quot;
+    val windowInterval = CalendarInterval.fromString(s&quot;interval $windowDuration&quot;).milliseconds()
+
+    // Format slide`s interval by CalendarInterval, e.g. &quot;10 seconds&quot; =&gt; &quot;10000&quot;
+    val slideInterval = CalendarInterval.fromString(s&quot;interval $slideDuration&quot;).milliseconds()
+
+    if (slideInterval &gt; windowInterval) throw
+      new RuntimeException(s&quot;The slide duration ($slideInterval) must be less than or equal to the windowDuration ($windowInterval).&quot;)
+
+    val maxNumOverlapping = calculateMaxNumOverlapping(windowInterval, slideInterval)
+
+    val windowId = calculateWindowId(eventTime, slideInterval)
+
+    List.tabulate(maxNumOverlapping)(x =&gt; &#123;
+      val start = calculateWindowStart(windowId, slideInterval, maxNumOverlapping, x)
+      val end = calculateWindowEnd(start, windowInterval)
+      (start, end)
+    &#125;).filter(x =&gt; x._1 &lt; eventTime &amp;&amp; x._2 &gt; eventTime)
+      .map(x =&gt;
+        s&quot;[$&#123;TARGET_FORMAT.format(new Date(x._1))&#125;, $&#123;TARGET_FORMAT.format(new Date(x._2))&#125;]&quot;
+      )
+  &#125;
+
+  def main(args: Array[String]): Unit = &#123;
+    window(1553320704000L, &quot;10 minutes&quot;, &quot;2 minutes&quot;).foreach(println)
+  &#125;
+&#125;
+</code></pre>
+<p>之前没看找到源码前，一开始没想明白Spark是如何实现的窗口划分。后来按照自己的逻辑实现了一版窗口划分，与源码实现有异曲同工之处，但是还是有不少出入，下面贴一下我的思路，我的思路大体有三步:</p>
+<p><strong>1 计算事件时间最近的窗口的开始时间</strong></p>
+<p>windowStartTime = timestamp - (timestamp % slideDuration)</p>
+<p>默认以0为第一个窗口的开始时间，滑动时间为s</p>
+<p>第二个窗口的开始时间:0+s</p>
+<p>第三个窗口的开始时间:0+2s</p>
+<p>第四个窗口的开始时间:0+3s，第n个窗口的开始时间:(n-1)s</p>
+<p>设时间t落在第n个窗口，根据上面的公式，t所在的窗口开始时间为：startTime_n = (n-1)s</p>
+<p>再设时间t距离所在窗口开始时间为x，那么窗口开始时间也可以表示为：startTime_n = t-x</p>
+<p>由上面两个式子可以得出：</p>
+<p>t-x = (n-1)s</p>
+<p>n-1 = (t-x)/s</p>
+<p>n-1为整数，由上面式子可以得出，x = t % s</p>
+<p>所以：startTime_n = t - (t % s)</p>
+<pre><code class="scala">def calculateWindowStartTime(t: Long, s: Long): Long = t - (t % s)
+</code></pre>
+<p><strong>2 精确计算产生的窗口个数</strong></p>
+<p>windowNumber =ceil ((windowDuration - (timestamp % slideDuration)) / slideDuration) </p>
+<p>当前事件时间到所在窗口的结束时间 / 滑动间隔 向上取整，即是窗口个数</p>
+<pre><code class="scala"> def calculateWindowNumber(t: Long, w: Long, s: Long): Int = ((w - (t % s) + (s - 1)) / s).toInt
+</code></pre>
+<p><strong>3 划分窗口</strong></p>
+<p>计算出最后一个窗口的开始时间，根据窗口跨度可以计算出最后一个窗口，根据窗口个数和滑动间隔，向前可以计算出所有的窗口</p>
+<pre><code class="scala">List.tabulate(windowNumber)(x =&gt; &#123;
+  val start = windowStartTime - x * slideInterval
+  val end = start + windowInterval
+  s&quot;[$&#123;TARGET_FORMAT.format(new Date(start))&#125;, $&#123;TARGET_FORMAT.format(new Date(end))&#125;]&quot;
+&#125;).reverse
+</code></pre>
+<p>完整代码：</p>
+<pre><code class="scala">package com.hollysys.spark.structured.usecase
+
+import java.util.Date
+
+import org.apache.commons.lang3.time.FastDateFormat
+import org.apache.spark.unsafe.types.CalendarInterval
+
+/**
+  * Created by shirukai on 2019-03-23 11:29
+  * 模拟window()函数实现
+  */
+object WindowMockFunctionExample &#123;
+  val TARGET_FORMAT: FastDateFormat = FastDateFormat.getInstance(&quot;yyyy-MM-dd HH:mm:ss&quot;)
+
+  /**
+    * 计算最近窗口开始时间
+    * 思路：
+    * 默认以0为第一个窗口的开始时间，滑动时间为s
+    * 第二个窗口的开始时间:0+s
+    * 第三个窗口的开始时间:0+2s
+    * 第四个窗口的开始时间:0+3s
+    * ……
+    * 第n个窗口的开始时间:(n-1)s
+    *
+    * 设时间t落在第n个窗口，根据上面的公式，t所在的窗口开始时间为：startTime_n = (n-1)s
+    * 再设时间t距离所在窗口开始时间为x，那么窗口开始时间也可以表示为：startTime_n = t-x
+    * t-x = (n-1)s
+    * n-1 = (t-x)/s
+    * n-1为整数，由上面式子可以得出，x = t % s
+    * 所以：startTime_n = t - (t % s)
+    *
+    * @param t 事件时间
+    * @param s 滑动间隔
+    * @return 窗口开始时间
+    */
+  def calculateWindowStartTime(t: Long, s: Long): Long = t - (t % s)
+
+  /**
+    * 计算窗口个数
+    * 思路：当前事件时间到所在窗口的结束时间 / 滑动间隔 向上取整，即是窗口个数
+    * @param w 窗口间隔
+    * @param s 滑动间隔
+    * @return 窗口个数
+    */
+  def calculateWindowNumber(t: Long, w: Long, s: Long): Int = ((w - (t % s) + (s - 1)) / s).toInt
+
+  /**
+    * 模拟计算某个时间的窗口
+    *
+    * @param eventTime      事件时间 毫秒级时间戳
+    * @param windowDuration 窗口间隔 字符串表达式：&quot;10 seconds&quot; or &quot;10 minutes&quot;
+    * @param slideDuration  滑动间隔 字符串表达式：&quot;10 seconds&quot; or &quot;10 minutes&quot;
+    * @return List
+    */
+  def window(eventTime: Long, windowDuration: String, slideDuration: String): List[String] = &#123;
+
+    // Format window`s interval by CalendarInterval, e.g. &quot;10 seconds&quot; =&gt; &quot;10000&quot;
+    val windowInterval = CalendarInterval.fromString(s&quot;interval $windowDuration&quot;).milliseconds()
+
+    // Format slide`s interval by CalendarInterval, e.g. &quot;10 seconds&quot; =&gt; &quot;10000&quot;
+    val slideInterval = CalendarInterval.fromString(s&quot;interval $slideDuration&quot;).milliseconds()
+
+    if (slideInterval &gt; windowInterval) throw
+      new RuntimeException(s&quot;The slide duration ($slideInterval) must be less than or equal to the windowDuration ($windowInterval).&quot;)
+
+    val windowStartTime = calculateWindowStartTime(eventTime, slideInterval)
+    val windowNumber = calculateWindowNumber(eventTime,windowInterval, slideInterval)
+
+    List.tabulate(windowNumber)(x =&gt; &#123;
+      val start = windowStartTime - x * slideInterval
+      val end = start + windowInterval
+      s&quot;[$&#123;TARGET_FORMAT.format(new Date(start))&#125;, $&#123;TARGET_FORMAT.format(new Date(end))&#125;]&quot;
+    &#125;).reverse
+  &#125;
+
+  def main(args: Array[String]): Unit = &#123;
+    window(1553320704000L, &quot;10 minutes&quot;, &quot;3 minutes&quot;).foreach(println)
+  &#125;
+
+&#125;
+</code></pre>
+<h1 id="6-处理延迟数据和水位设置"><a href="#6-处理延迟数据和水位设置" class="headerlink" title="6 处理延迟数据和水位设置"></a>6 处理延迟数据和水位设置</h1><p>对于业务中的延迟数据，我们该如何处理呢？同样是wordCount的例子，假如在12:11分时，接收到了12:04分的数据，那么Spark是如何处理的呢？这里为了方便理解，将上面的wordcount例子输出模式改为Update.</p>
+<pre><code class="scala">    val query = count.writeStream
+      .outputMode(OutputMode.Update())
+      .format(&quot;console&quot;)
+      .option(&quot;truncate&quot;, value = false)
+      .start()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/e45c5d5f7ddb70645db401b6de0da801.jpg"></p>
+<p>通过上面的图可以看出，Spark会我们保存历史状态，当遇到延迟数据后仍然会根据状态进行计算。但是，如果我们要持续执行这个Query，系统必须限制其积累的内存中间状态的数量。这意味着系统要知道何时可以从内存状态中删除旧聚合，因为应用程序不会再为该聚合接收到较晚的数据。为了实现这一点，在Spark2.1之后，引入了watermark，使得引擎可以自动跟踪数据中的当前事件时间，并尝试相应地清除旧状态。假如我们设置watermark的延迟阈值为10分钟，上一次Trigger中事件最大时间为12:15，那么本次Trigger中，12:05之前的数据将不会被计算。这里我们继续进行代码演示，上面我们修改了之前的wordcount例子的输出模式为update，因为使用complete模式，watermark是不生效的，也就是说complete会一直保存聚合状态。现在我们对程序设置watermark，并进行测试。</p>
+<pre><code class="scala">.withWatermark(&quot;time&quot;, &quot;10 minutes&quot;)
+// Group the data by window and word and compute the count of each group
+.groupBy(
+  window($&quot;time&quot;, &quot;10 minutes&quot;, &quot;5 minutes&quot;),
+  $&quot;word&quot;
+).count()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/6fc46a8ab40dc1ec1c1b856cb6238f35.jpg"></p>
+<p>如上图所示为输出模式为Update，窗口时间为10分钟，滑动间隔为5分钟，watermark阈值设置为10分钟的计算过程。X轴表示trigger时间即触发计算的时间，Y轴表示事件时间，即数据产生的时间。蓝色虚线表示最大事件时间，红色时间为watermark时间。在红色线和蓝色虚线之间的数据会被计算，之外的数据所在的部分窗口或者全部窗口将会被丢弃。如12:25时，由于上一次trigger计算的watermark为12:06，表示11:55-12:05之前的窗口将会被丢弃，此时来了一条12:04的延迟数据，所以这条数据在11:55-12:05的窗口会被丢弃，但是在12:00-12:10的窗口仍然会参与计算。同理，12:30时，上一次trigger计算的watermark为12:11，表示12:00-12:10分之前的窗口将会被丢弃，此时来了也一条12:04的延迟数据，因为12:04的数据会落到11:55-12:05和12:00-12:10这两个窗口，都在watermark之前，所以这两个窗口都会被丢弃，该数据不参与计算。下面以Trigger顺序进行分析。</p>
+<p><strong>12:05</strong></p>
+<p>由于没有数据，此次计算为空。</p>
+<p><strong>12:10</strong></p>
+<p>此时接收到12:06 dog、12:08 owl 两条数据，最大事件时间为12:08，因为我们设置watermark的delayThreshold=10min分钟，所以计算下一个trigger的watermark=12:08-10min = 11:58，因为程序是从12:00开启的，所以这里Spark认为不会有延迟数据，就没有画出watermark为11:58分的线。</p>
+<p><strong>12:15</strong></p>
+<p>此时接收到12:14 dog和一条延迟的数据12:09 cat，最大事件时间为12:14，上一次计算的wm为11:58所以没有数据需要被丢弃。计算下一个trigger的watermark=12:14-10min = 12:04。</p>
+<p><strong>12:20</strong></p>
+<p>此时接收到12:16 cat、延迟数据12:08 dog 、延迟数据12:13 owl，上一次计算的wm为12:04，没有窗口被丢弃。此次最大事件时间为12:16，计算wm=12:16-10min=12:06。</p>
+<p><strong>12:25</strong></p>
+<p>此时接收到12:21 owl、延迟数据12:17 owl、延迟数据12:04 fish，上一次计算wm=12:06，所以11:55-12:05的窗口数据将会被丢弃。12:04的数据有一个窗口是落在了11:55-12:05，所以这个窗口中间状态将会被丢弃，但是12:04在12:00-12:10的窗口将继续参与计算。计算下一个trigger的wm =12:21-10min=12:11。</p>
+<p><strong>12：30</strong></p>
+<p>此时接收到12:27 owl、延迟数据12:04 lion,上一次计算的wm为12:11，所以在12:00-12:10之前的窗口中间状态将会被丢弃。12:04数据的窗口都在12:00-12:10之前，所以该条数据所有窗口都不会参与计算，计算下一个trigger的wm=12:27-10min=12:17。</p>
+<p>……</p>
+<p>代码示例：</p>
+<pre><code class="scala">package com.hollysys.spark.structured.usecase
+
+import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.streaming.OutputMode
+import org.apache.spark.sql.types.TimestampType
+
+/**
+  * Created by shirukai on 2019-03-22 14:17
+  * Structured Streaming 窗口函数操作例子
+  * 基于事件时间的wordcount,设置watermark
+  * socket：nc -lk 9090
+  */
+object WindowOptionWithWatermarkExample &#123;
+  def main(args: Array[String]): Unit = &#123;
+
+    val spark = SparkSession
+      .builder()
+      .appName(this.getClass.getSimpleName)
+      .master(&quot;local[2]&quot;)
+      .getOrCreate()
+
+    // Read stream form socket,The data format is: 1553235690:dog cat|1553235691:cat fish
+    val lines = spark.readStream
+      .format(&quot;socket&quot;)
+      .option(&quot;host&quot;, &quot;localhost&quot;)
+      .option(&quot;port&quot;, 9090)
+      .load()
+
+    import org.apache.spark.sql.functions._
+    import spark.implicits._
+
+    // Transform socket lines to DataFrame of schema &#123; timestamp: Timestamp, word: String &#125;
+    val count = lines.as[String].flatMap(line =&gt; &#123;
+      val lineSplits = line.split(&quot;[|]&quot;)
+      lineSplits.flatMap(item =&gt; &#123;
+        val itemSplits = item.split(&quot;:&quot;)
+        val t = itemSplits(0).toLong
+        itemSplits(1).split(&quot; &quot;).map(word =&gt; (t, word))
+      &#125;)
+    &#125;).toDF(&quot;time&quot;, &quot;word&quot;)
+      .select($&quot;time&quot;.cast(TimestampType), $&quot;word&quot;)
+      .withWatermark(&quot;time&quot;, &quot;10 minutes&quot;)
+      // Group the data by window and word and compute the count of each group
+      .groupBy(
+      window($&quot;time&quot;, &quot;10 minutes&quot;, &quot;5 minutes&quot;),
+      $&quot;word&quot;
+    ).count()
+    val query = count.writeStream
+      .outputMode(OutputMode.Update())
+      .format(&quot;console&quot;)
+      .option(&quot;truncate&quot;, value = false)
+      .start()
+    query.awaitTermination()
+  &#125;
+&#125;
+/*
+输入：1553227560:dog|1553227680:owl
+-------------------------------------------
+Batch: 0
+-------------------------------------------
++------------------------------------------+----+-----+
+|window                                    |word|count|
++------------------------------------------+----+-----+
+|[2019-03-22 12:05:00, 2019-03-22 12:15:00]|dog |1    |
+|[2019-03-22 12:05:00, 2019-03-22 12:15:00]|owl |1    |
+|[2019-03-22 12:00:00, 2019-03-22 12:10:00]|owl |1    |
+|[2019-03-22 12:00:00, 2019-03-22 12:10:00]|dog |1    |
++------------------------------------------+----+-----+
+
+
+输入：1553227740:cat|1553228040:dog
+-------------------------------------------
+Batch: 1
+-------------------------------------------
++------------------------------------------+----+-----+
+|window                                    |word|count|
++------------------------------------------+----+-----+
+|[2019-03-22 12:05:00, 2019-03-22 12:15:00]|dog |2    |
+|[2019-03-22 12:05:00, 2019-03-22 12:15:00]|cat |1    |
+|[2019-03-22 12:00:00, 2019-03-22 12:10:00]|cat |1    |
+|[2019-03-22 12:10:00, 2019-03-22 12:20:00]|dog |1    |
++------------------------------------------+----+-----+
+
+
+输入：1553228160:cat|1553227680:dog|1553227980:owl
+-------------------------------------------
+Batch: 2
+-------------------------------------------
++------------------------------------------+----+-----+
+|window                                    |word|count|
++------------------------------------------+----+-----+
+|[2019-03-22 12:05:00, 2019-03-22 12:15:00]|dog |3    |
+|[2019-03-22 12:05:00, 2019-03-22 12:15:00]|owl |2    |
+|[2019-03-22 12:15:00, 2019-03-22 12:25:00]|cat |1    |
+|[2019-03-22 12:10:00, 2019-03-22 12:20:00]|owl |1    |
+|[2019-03-22 12:10:00, 2019-03-22 12:20:00]|cat |1    |
+|[2019-03-22 12:00:00, 2019-03-22 12:10:00]|dog |2    |
++------------------------------------------+----+-----+
+
+输入：1553228460:owl|1553227440:fish|1553228220:owl
+-------------------------------------------
+Batch: 3
+-------------------------------------------
++------------------------------------------+------+-----+
+|window                                    |word  |count|
++------------------------------------------+------+-----+
+|[2019-03-22 12:20:00, 2019-03-22 12:30:00]|owl   |1    |
+|[2019-03-22 12:10:00, 2019-03-22 12:20:00]|owl   |2    |
+|[2019-03-22 12:00:00, 2019-03-22 12:10:00]|fish  |1    |
+|[2019-03-22 12:15:00, 2019-03-22 12:25:00]|owl   |2    |
++------------------------------------------+------+-----+
+
+输入：1553227440:lion|1553228820:owl
+-------------------------------------------
+Batch: 4
+-------------------------------------------
++------------------------------------------+----+-----+
+|window                                    |word|count|
++------------------------------------------+----+-----+
+|[2019-03-22 12:25:00, 2019-03-22 12:35:00]|owl |1    |
+|[2019-03-22 12:20:00, 2019-03-22 12:30:00]|owl |2    |
++------------------------------------------+----+-----+
+ */
+</code></pre>
+<p>上面讲解了在Update模式下，设置watermark之后，我们的聚合操作对延迟数据的处理。下面，我们来看一下在Append模式下，设置watermark之后，聚合操作是如何作用的?</p>
+<p>首先，将上面的代码稍作修改，将输出模式改为Append</p>
+<pre><code class="scala">    val query = count.writeStream
+      .outputMode(OutputMode.Append())
+      .format(&quot;console&quot;)
+      .option(&quot;truncate&quot;, value = false)
+      .start()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/38789f10578bacb9b6441d965952b4d3.jpg"></p>
+<p>如上图所示为Append模式下，设置watermark的聚合操作。与update模式不同，append模式不会立即输出结果集，而是等到设置的watermark下，再没有数据更新的情况下再输出到结果集。12:00到12:25 这段时间，12:00-12:10这个窗口的数据一直可能被更新，所以没有结果集输出。12:30时的trigger，由于上一个trigger计算的wm=12:11，所以12:00-12:10窗口的数据将会拒之门外，12:04 lion不会参与计算，因此12:00-12:10的窗口，不会被更新，最后12:00-12:10的中间状态将会被输出到结果集，同时中间状态将会被丢弃。</p>
+<p>Watermark清理聚合状态的条件需要重点注意，为了清理聚合状态(从Spark2.1.1开始，将来会更改)，必须满足以下条件：</p>
+<p>A) 输出模式必须是Append或者Update，Complete模式要求保留所有聚合数据，因此不能使用watermark来中断状态。</p>
+<p>B) 聚合必须具有时间时间列活事件时间列上的窗口</p>
+<p>C) 必须在聚合中使用的时间戳列相同的列上调用withWatermark。例如：df.withWatermark(“time”, “1 min”).groupBy(“time2”).count() 是在Append模式下是无效的，因为watermark定义的列和聚合的列不一致。</p>
+<p>D) 必须在聚合之前调用withWatermark 才能使用watermark 细节。例如，在附加输出模式下，df.groupBy(“time”).count().withWatermark(“time”,”1 min”)无效。</p>
+<h1 id="7-动态更新参数"><a href="#7-动态更新参数" class="headerlink" title="7  动态更新参数"></a>7  动态更新参数</h1><p>在使用StructuredStreaming的时候，我们可能会遇到在不重启Spark应用的情况下动态的更新参数，如：动态更新某个过滤条件、动态更新分区数量、动态更新join的静态数据等。在工作中，遇到了一个应用场景，是实时数据与静态DataFrame去Join，然后做一些处理，但是这个静态DataFrame偶尔会发生变化，要求在不重启Spark应用的前提下去动态更新。目前总结了两种解决方案，详细可以阅读我的<a href="https://shirukai.github.io/2019/02/14/StructuredStreaming%E5%8A%A8%E6%80%81%E6%9B%B4%E6%96%B0%E5%8F%82%E6%95%B0/">《StructuredStreaming动态更新参数》</a>这篇文章。</p>
+<h1 id="8-有状态计算函数"><a href="#8-有状态计算函数" class="headerlink" title="8 有状态计算函数"></a>8 有状态计算函数</h1><p>为保证多个Batch之间能够进行有状态的计算，SparkStreaming在1.6版本之前就引入了updateStateByKey的状态管理机制，在1.6之后又引入了mapWithState的状态管理机制。StructuredStreaming原本就是有状态的计算，这里我主要记录一下在StructuredStreaming里可以自定义状态操作的算子。详细内容可以阅读我的<a href="https://shirukai.github.io/2019/02/28/StructuredStreaming%E6%9C%89%E7%8A%B6%E6%80%81%E8%81%9A%E5%90%88/">《StructuredStreaming有状态聚合》</a>这篇文章。</p>
+<h1 id="9-提交应用到Yarn集群与参数调优"><a href="#9-提交应用到Yarn集群与参数调优" class="headerlink" title="9 提交应用到Yarn集群与参数调优"></a>9 提交应用到Yarn集群与参数调优</h1><h1 id="10-遇到的错误与异常处理"><a href="#10-遇到的错误与异常处理" class="headerlink" title="10 遇到的错误与异常处理"></a>10 遇到的错误与异常处理</h1>
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E6%94%BE%E5%BC%83Spark-Streaming-%E9%80%89%E7%94%A8Structured-Streaming"><span class="toc-number">1.</span> <span class="toc-text">1 放弃Spark Streaming 选用Structured Streaming</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-Spark-Streaming%E7%9A%84%E4%B8%8D%E8%B6%B3"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 Spark Streaming的不足</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-Structured-Streaming-%E4%BC%98%E5%8A%BF"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 Structured Streaming 优势</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-Structured-%E6%95%B0%E6%8D%AE%E6%BA%90"><span class="toc-number">2.</span> <span class="toc-text">2 Structured 数据源</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-Kafka-JSON%E6%A0%BC%E5%BC%8F%E6%95%B0%E6%8D%AE%E8%A7%A3%E6%9E%90"><span class="toc-number">3.</span> <span class="toc-text">3 Kafka JSON格式数据解析</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-%E9%80%9A%E8%BF%87%E5%AE%9A%E4%B9%89schema-%E5%92%8C-from-json%E5%87%BD%E6%95%B0%E8%A7%A3%E6%9E%90"><span class="toc-number">3.1.</span> <span class="toc-text">3.1 通过定义schema 和 from_json函数解析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-%E9%80%9A%E8%BF%87%E5%AE%9A%E4%B9%89case-class-%E8%A7%A3%E6%9E%90"><span class="toc-number">3.2.</span> <span class="toc-text">3.2 通过定义case class 解析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-%E5%A4%84%E7%90%86JSONArray%E6%A0%BC%E5%BC%8F%E6%95%B0%E6%8D%AE"><span class="toc-number">3.3.</span> <span class="toc-text">3.3 处理JSONArray格式数据</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-1-from-json-explode%E5%87%BD%E6%95%B0%E5%A4%84%E7%90%86JSONArray%E6%A0%BC%E5%BC%8F%E6%95%B0%E6%8D%AE"><span class="toc-number">3.3.1.</span> <span class="toc-text">3.3.1 from_json+explode函数处理JSONArray格式数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-2-flatmap-case-class-%E5%A4%84%E7%90%86JSONArray%E6%A0%BC%E5%BC%8F%E6%95%B0%E6%8D%AE"><span class="toc-number">3.3.2.</span> <span class="toc-text">3.3.2 flatmap + case class 处理JSONArray格式数据</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%E8%BE%93%E5%87%BA%E6%A8%A1%E5%BC%8F"><span class="toc-number">4.</span> <span class="toc-text">4 输出模式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-Complete-%E6%A8%A1%E5%BC%8F"><span class="toc-number">4.1.</span> <span class="toc-text">4.1 Complete 模式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8F%8F%E8%BF%B0%EF%BC%9A"><span class="toc-number">4.1.1.</span> <span class="toc-text">描述：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%AF%E5%BA%94%E7%94%A8Query%EF%BC%9A"><span class="toc-number">4.1.2.</span> <span class="toc-text">可应用Query：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Example"><span class="toc-number">4.1.3.</span> <span class="toc-text">Example:</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-Update%E6%A8%A1%E5%BC%8F"><span class="toc-number">4.2.</span> <span class="toc-text">4.2 Update模式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8F%8F%E8%BF%B0%EF%BC%9A-1"><span class="toc-number">4.2.1.</span> <span class="toc-text">描述：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%AF%E5%BA%94%E7%94%A8Query"><span class="toc-number">4.2.2.</span> <span class="toc-text">可应用Query:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Example-1"><span class="toc-number">4.2.3.</span> <span class="toc-text">Example:</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-3-Append-%E6%A8%A1%E5%BC%8F"><span class="toc-number">4.3.</span> <span class="toc-text">4.3  Append 模式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8F%8F%E8%BF%B0%EF%BC%9A-2"><span class="toc-number">4.3.1.</span> <span class="toc-text">描述：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%AF%E5%BA%94%E7%94%A8Query-1"><span class="toc-number">4.3.2.</span> <span class="toc-text">可应用Query:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Example-2"><span class="toc-number">4.3.3.</span> <span class="toc-text">Example:</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5%E5%9F%BA%E4%BA%8E%E4%BA%8B%E4%BB%B6%E6%97%B6%E9%97%B4%E7%9A%84%E7%AA%97%E5%8F%A3%E6%93%8D%E4%BD%9C"><span class="toc-number">5.</span> <span class="toc-text">5基于事件时间的窗口操作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#5-1-%E7%AA%97%E5%8F%A3%E5%87%BD%E6%95%B0%E7%9A%84%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8%EF%BC%9A%E5%AF%B9%E5%8D%81%E5%88%86%E9%92%9F%E7%9A%84%E6%95%B0%E6%8D%AE%E8%BF%9B%E8%A1%8CWordCount"><span class="toc-number">5.1.</span> <span class="toc-text">5.1 窗口函数的简单使用：对十分钟的数据进行WordCount</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-2-%E7%AA%97%E5%8F%A3%E5%88%92%E5%88%86%EF%BC%9Awindow-%E5%87%BD%E6%95%B0"><span class="toc-number">5.2.</span> <span class="toc-text">5.2 窗口划分：window()函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-1-%E7%AE%80%E5%8D%95%E4%BE%8B%E5%AD%90"><span class="toc-number">5.2.1.</span> <span class="toc-text">5.2.1 简单例子</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-3-%E7%AA%97%E5%8F%A3%E5%88%92%E5%88%86%E9%80%BB%E8%BE%91"><span class="toc-number">5.2.2.</span> <span class="toc-text">5.2.3 窗口划分逻辑</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-%E5%A4%84%E7%90%86%E5%BB%B6%E8%BF%9F%E6%95%B0%E6%8D%AE%E5%92%8C%E6%B0%B4%E4%BD%8D%E8%AE%BE%E7%BD%AE"><span class="toc-number">6.</span> <span class="toc-text">6 处理延迟数据和水位设置</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-%E5%8A%A8%E6%80%81%E6%9B%B4%E6%96%B0%E5%8F%82%E6%95%B0"><span class="toc-number">7.</span> <span class="toc-text">7  动态更新参数</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#8-%E6%9C%89%E7%8A%B6%E6%80%81%E8%AE%A1%E7%AE%97%E5%87%BD%E6%95%B0"><span class="toc-number">8.</span> <span class="toc-text">8 有状态计算函数</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#9-%E6%8F%90%E4%BA%A4%E5%BA%94%E7%94%A8%E5%88%B0Yarn%E9%9B%86%E7%BE%A4%E4%B8%8E%E5%8F%82%E6%95%B0%E8%B0%83%E4%BC%98"><span class="toc-number">9.</span> <span class="toc-text">9 提交应用到Yarn集群与参数调优</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#10-%E9%81%87%E5%88%B0%E7%9A%84%E9%94%99%E8%AF%AF%E4%B8%8E%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86"><span class="toc-number">10.</span> <span class="toc-text">10 遇到的错误与异常处理</span></a></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

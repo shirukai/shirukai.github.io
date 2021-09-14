@@ -1,0 +1,675 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>vildForm表单校验 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="一、 HTML部分&amp;lt;!-- 页面结构 --&amp;gt;
+&amp;lt;div class=&amp;quot;ue-container&amp;quot; id=&amp;quot;sandbox-container&amp;quot,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">vildForm表单校验</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/5.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/前端技术"><b>「
+                    </b>前端技术<b> 」</b></a>
+                
+                August 19, 2018
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/vildform-form-check.html" title="vildForm表单校验" class="">vildForm表单校验</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    14k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    13 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E5%89%8D%E7%AB%AF%E6%8A%80%E6%9C%AF/" rel="tag">前端技术</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E5%89%8D%E7%AB%AF%E6%8F%92%E4%BB%B6%E7%9A%84%E4%BD%BF%E7%94%A8%E8%AE%B0%E5%BD%95/" rel="tag">前端插件的使用记录</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <h2 id="一、-HTML部分"><a href="#一、-HTML部分" class="headerlink" title="一、 HTML部分"></a>一、 HTML部分</h2><pre><code>&lt;!-- 页面结构 --&gt;
+&lt;div class=&quot;ue-container&quot; id=&quot;sandbox-container&quot;&gt;
+    &lt;!-- 验证信息nowrap --&gt;
+    &lt;form class=&quot;form-horizontal&quot; id=&quot;saveForm&quot; name=&quot;saveForm&quot; onsubmit=&quot;return false&quot;&gt;
+        &lt;div class=&quot;form-group&quot;&gt;
+            &lt;label class=&quot;col-sm-3 control-label&quot;&gt;名称&lt;span class=&quot;required&quot;&gt;*&lt;/span&gt;&lt;/label&gt;
+            &lt;div class=&quot;col-sm-8&quot;&gt;
+                &lt;input type=&quot;text&quot; class=&quot;form-control ue-form Validform_input&quot; id=&quot;userName&quot;
+                       name=&quot;userName&quot; value=&quot;&quot; placeholder=&quot;名称&quot; datatype=&quot;s5-16&quot; errormsg=&quot;昵称至少5个字符,最多16个字符！&quot; nullmsg=&quot;请设置正确名称&quot; /&gt;
+                &lt;span class=&quot;Validform_checktip Validform_span&quot;&gt;&lt;/span&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;form-group&quot;&gt;
+            &lt;label class=&quot;col-sm-3 control-label&quot;&gt;账号状态&lt;/label&gt;
+            &lt;div class=&quot;col-sm-8&quot;&gt;
+                &lt;select class=&quot;form-control ue-form Validform_input&quot; name=&quot;userStatus&quot; datatype=&quot;s&quot; nullmsg=&quot;请设置账号状态&quot;&gt;
+                    &lt;option value=&quot;&quot;&gt;请选择&lt;/option&gt;
+                    &lt;option value=&quot;N&quot;&gt;启用&lt;/option&gt;
+                    &lt;option value=&quot;X&quot;&gt;停用&lt;/option&gt;
+                &lt;/select&gt;
+                &lt;span class=&quot;Validform_checktip Validform_span&quot;&gt;&lt;/span&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;form-group&quot;&gt;
+            &lt;label class=&quot;col-sm-3 control-label&quot;&gt;身份证号&lt;span class=&quot;required&quot;&gt;*&lt;/span&gt;&lt;/label&gt;
+            &lt;div class=&quot;col-sm-8&quot;&gt;
+                &lt;input type=&quot;text&quot; class=&quot;form-control ue-form Validform_input&quot; id=&quot;id&quot;
+                       name=&quot;userArchiveId&quot; value=&quot;&quot;
+                       placeholder=&quot;身份证号&quot; datatype=&quot;idcard&quot; nullmsg=&quot;请填写身份证号&quot; errormsg=&quot;请填写合法的身份证号&quot;/&gt;
+                &lt;span class=&quot;Validform_checktip Validform_span&quot;&gt;&lt;/span&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;form-group&quot;&gt;
+            &lt;label class=&quot;col-sm-3 control-label&quot;&gt;生日&lt;/label&gt;
+            &lt;div class=&quot;col-sm-8&quot;&gt;
+                &lt;div class=&quot;input-group date Validform_input&quot; &gt;
+                    &lt;div id=&quot;birthday&quot;&gt;&lt;input type=&quot;text&quot; class=&quot;form-control ue-form&quot;
+                                              name=&quot;userArchiveBirthday&quot;
+                                              placeholder=&quot;生日&quot; datatype=&quot;*&quot; nullmsg=&quot;请设置出生日期&quot;/&gt;&lt;/div&gt; &lt;span class=&quot;input-group-addon ue-form-btn&quot;&gt;&lt;i
+                        class=&quot;fa fa-calendar&quot;&gt;&lt;/i&gt;&lt;/span&gt;
+                &lt;/div&gt;
+                &lt;span class=&quot;Validform_checktip Validform_span&quot; &gt;&lt;/span&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;form-group&quot;&gt;
+            &lt;label class=&quot;col-sm-3 control-label&quot;&gt;学历&lt;/label&gt;
+            &lt;div class=&quot;col-sm-8 text-left radio&quot;&gt;
+                &lt;label&gt;&lt;input type=&quot;radio&quot;  name=&quot;userArchiveEducation&quot; value=&quot;0&quot; datatype=&quot;*&quot; nullmsg=&quot;请选择学历&quot;/&gt;本科     &lt;/label&gt;
+                &lt;label&gt;&lt;input type=&quot;radio&quot;  name=&quot;userArchiveEducation&quot; value=&quot;1&quot;/&gt;硕士&lt;/label&gt;
+                &lt;label&gt;&lt;input type=&quot;radio&quot;  name=&quot;userArchiveEducation&quot; value=&quot;2&quot;/&gt;博士&lt;/label&gt;
+                &lt;span class=&quot;Validform_checktip&quot;&gt;&lt;/span&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;form-group&quot;&gt;
+            &lt;label class=&quot;col-sm-3 control-label&quot;&gt;学校&lt;span class=&quot;required&quot;&gt;*&lt;/span&gt;&lt;/label&gt;
+            &lt;div class=&quot;col-sm-8&quot;&gt;
+                &lt;input type=&quot;text&quot; class=&quot;form-control ue-form Validform_input&quot; id=&quot;school&quot;
+                       name=&quot;archivesSchool&quot; value=&quot;&quot;
+                       placeholder=&quot;学校&quot; datatype=&quot;s&quot; nullmsg=&quot;请填写学校名称&quot;/&gt;
+                &lt;span class=&quot;Validform_checktip Validform_span&quot;&gt;&lt;/span&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;form-group&quot;&gt;
+            &lt;label class=&quot;col-sm-3 control-label&quot;&gt;爱好&lt;/label&gt;
+            &lt;div class=&quot;col-sm-8 text-left checkbox&quot;&gt;
+                &lt;label&gt;&lt;input type=&quot;checkbox&quot; value=&quot;0&quot; name=&quot;archivesFavor&quot; datatype=&quot;*&quot; nullmsg=&quot;请填写兴趣爱好&quot; errormsg=&quot;请填写兴趣爱好&quot;/&gt;篮球&lt;/label&gt;
+                &lt;label&gt;&lt;input type=&quot;checkbox&quot; value=&quot;1&quot; name=&quot;archivesFavor&quot;/&gt;足球&lt;/label&gt;
+                &lt;label&gt;&lt;input type=&quot;checkbox&quot; value=&quot;2&quot; name=&quot;archivesFavor&quot;/&gt;排球&lt;/label&gt;
+                &lt;span class=&quot;Validform_checktip&quot; &gt;&lt;/span&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;form-group&quot;&gt;
+            &lt;label class=&quot;col-sm-3 control-label&quot;&gt;电子邮件&lt;/label&gt;
+            &lt;div class=&quot;col-sm-8&quot;&gt;
+                &lt;input type=&quot;text&quot; class=&quot;form-control ue-form Validform_input&quot; id=&quot;email&quot;
+                       name=&quot;archivesEmail&quot; value=&quot;&quot;
+                       placeholder=&quot;邮件地址&quot; datatype=&quot;email&quot; nullmsg=&quot;请填写邮箱地址&quot; errormsg=&quot;请填写正确的邮箱地址&quot;/&gt;
+                &lt;span class=&quot;Validform_checktip Validform_span&quot; &gt;&lt;/span&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;form-group&quot;&gt;
+            &lt;label class=&quot;col-sm-3 control-label&quot;&gt;密码&lt;/label&gt;
+            &lt;div class=&quot;col-sm-8&quot;&gt;
+                &lt;input type=&quot;password&quot; class=&quot;form-control ue-form Validform_input&quot; id=&quot;pwd&quot;
+                       name=&quot;pwd&quot; value=&quot;&quot;
+                       placeholder=&quot;请输入6-16位密码&quot; datatype=&quot;s6-16&quot; nullmsg=&quot;密码不能为空&quot; errormsg=&quot;请输入6-16位密码&quot;/&gt;
+                &lt;span class=&quot;Validform_checktip Validform_span&quot; &gt;&lt;/span&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;form-group&quot;&gt;
+            &lt;label class=&quot;col-sm-3 control-label&quot;&gt;重复密码&lt;/label&gt;
+            &lt;div class=&quot;col-sm-8&quot;&gt;
+                &lt;input type=&quot;password&quot; class=&quot;form-control ue-form Validform_input&quot; id=&quot;pwd-confirm&quot;
+                       name=&quot;pwd-confirm&quot; value=&quot;&quot;
+                       placeholder=&quot;重复密码&quot; datatype=&quot;s6-16&quot; nullmsg=&quot;密码不能为空&quot; errormsg=&quot;两次密码不一致，请重新填写&quot; recheck=&quot;pwd&quot;/&gt;
+                &lt;span class=&quot;Validform_checktip Validform_span&quot; &gt;&lt;/span&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;h4&gt;自定义正则校验&lt;/h4&gt;
+        &lt;div class=&quot;form-group&quot;&gt;
+            &lt;label class=&quot;col-sm-3 control-label&quot;&gt;第一个字符为字母&lt;/label&gt;
+            &lt;div class=&quot;col-sm-8&quot;&gt;
+                &lt;input type=&quot;text&quot; class=&quot;form-control ue-form Validform_input&quot; id=&quot;inital&quot;
+                       name=&quot;inital&quot; value=&quot;&quot;
+                       placeholder=&quot;首字母校验&quot; datatype=&quot;inital&quot; nullmsg=&quot;请填写内容&quot;/&gt;
+                &lt;span class=&quot;Validform_checktip Validform_span&quot; &gt;&lt;/span&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;h4&gt;ajax当前表单参数校验&lt;/h4&gt;
+        &lt;div class=&quot;form-group&quot;&gt;
+            &lt;label class=&quot;col-sm-3 control-label&quot;&gt;判断用户名是否存在&lt;/label&gt;
+            &lt;div class=&quot;col-sm-8&quot;&gt;
+                &lt;input type=&quot;text&quot; class=&quot;form-control ue-form Validform_input&quot; ajaxurl=&quot;data/checkName.json&quot; id=&quot;uname&quot;
+                       name=&quot;uname&quot; value=&quot;&quot;
+                       placeholder=&quot;判断用户名是否存在&quot; datatype=&quot;*&quot; nullmsg=&quot;输入用户名&quot;/&gt;
+                &lt;span class=&quot;Validform_checktip Validform_span&quot; &gt;&lt;/span&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;form-group&quot; &gt;
+            &lt;label class=&quot;col-sm-3 control-label&quot;&gt;&lt;/label&gt;
+            &lt;div class=&quot;col-sm-8&quot;&gt;
+                &lt;button type=&quot;button&quot; class=&quot;btn ue-btn-primary&quot; id=&quot;validate&quot;&gt;
+                    保存
+                &lt;/button&gt;
+                &lt;button type=&quot;button&quot; class=&quot;btn ue-btn&quot; id=&quot;cancel&quot;&gt;
+                    取消
+                &lt;/button&gt;
+                &lt;span id=&quot;msgdemo&quot;&gt;&lt;/span&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/form&gt;
+&lt;/div&gt;
+</code></pre>
+<p>说明：</p>
+<ol>
+<li>input里添加class属性Validform_input，</li>
+<li>datatype属性是校验的类型，如datatype=“s5-16”意思是5到16个字符，插件分装好的几个正则判断如下：</li>
+</ol>
+<pre><code>*：检测是否有输入，可以输入任何字符，不留空即可通过验证；
+*6-16：检测是否为6到16位任意字符；
+n：数字类型；
+n6-16：6到16位数字；
+s：字符串类型；
+s6-18：6到18位字符串；
+p：验证是否为邮政编码；
+m：手机号码格式；
+e：email格式；
+url：验证字符串是否为网址。
+</code></pre>
+<ol start="3">
+<li><p>errormsg属性是，不符合正则时的显示的字符串</p>
+</li>
+<li><p>nullmsg属性是，当输入为空时显示的字符串</p>
+</li>
+</ol>
+<h2 id="二、js部分"><a href="#二、js部分" class="headerlink" title="二、js部分"></a>二、js部分</h2><pre><code>    &lt;script type=&quot;text/javascript&quot;&gt;
+        $(function () &#123;
+            $(&quot;#saveForm&quot;).uValidform(&#123;
+                btnSubmit:&quot;#validate&quot;,
+                datatype:&#123;
+                    &quot;idcard&quot;: idcard,
+                    &quot;email&quot; : email,
+                    //自定义校验
+                    &quot;inital&quot;:function (gets,obj,curform,regxp) &#123;
+                        //参数gets是获取到的表单元素值，obj为当前表单元素，curform为当前验证的表单，regxp为内置的一些正则表达式的引用;
+                        //首字母校验,这里写正则表达式或者函数
+                        var reg1=/^[a-zA-Z]\w*$/ ;
+                        //长度校验
+                        var reg2=/^\w&#123;6,16&#125;/;
+                        var errormsg;
+                        if (reg1.test(gets))&#123;
+                            if (reg2.test(gets))&#123;
+                                return true
+                            &#125;else &#123;
+                                errormsg = &quot;长度为6-16字符&quot;;
+                                return errormsg
+                            &#125;
+                        &#125;else &#123;
+                            errormsg = &quot;第一个字符必须为首字母&quot;;
+                            return errormsg;
+                        &#125;
+                    &#125;
+                &#125;,
+                callback:function(form)&#123;
+                    $.dialog(&#123;
+                        type: &#39;confirm&#39;,
+                        content: &#39;您确定要提交表单吗？&#39;,
+                        ok: function () &#123;save();&#125;,
+                        cancel: function () &#123;&#125;
+                    &#125;);
+                &#125;
+            &#125;);
+            //日期插件
+            $(&#39;.input-group.date&#39;).datetimepicker(&#123;
+                container: $(&quot;#birthday&quot;),
+                language: &quot;zh-CN&quot;,
+                autoclose: true,
+                minView: 2,
+                format: &quot;yyyy-mm-dd&quot;
+            &#125;).on(&quot;changeDate&quot;,function()&#123;
+                $(this).find(&quot;input&quot;).blur();
+            &#125;);
+        &#125;)
+    &lt;/script&gt;
+</code></pre>
+<p>说明</p>
+<ol>
+<li>#saveForm 为表单form的id</li>
+<li>btnSubmit:”#validate”中的#validate 为提交表单的按钮</li>
+<li>datatype里为自定义正则判断或者函数方法，这里可以自己去写一些正则表达式，或者是方法，甚至可以通过ajax发送数据请求后台数据来判断前端表单数据的合法性。</li>
+<li>callback里为提交表单前执行的回调函数，return true择执行form表单默认的post请求，return false则不自动执行</li>
+</ol>
+<h2 id="三、扩展-ajax表单验证的两证方法"><a href="#三、扩展-ajax表单验证的两证方法" class="headerlink" title="三、扩展 ajax表单验证的两证方法"></a>三、扩展 ajax表单验证的两证方法</h2><ol>
+<li>ajax判断用户名是否存在（当前表单内容为参数）</li>
+</ol>
+<pre><code>        &lt;div class=&quot;form-group&quot;&gt;
+            &lt;label class=&quot;col-sm-3 control-label&quot;&gt;用户名&lt;span class=&quot;required&quot;&gt;*&lt;/span&gt;&lt;/label&gt;
+            &lt;div class=&quot;col-sm-8&quot;&gt;
+                &lt;input type=&quot;text&quot; class=&quot;form-control ue-form Validform_input&quot; id=&quot;uname&quot;
+                       name=&quot;uname&quot; value=&quot;&quot; placeholder=&quot;邮箱或者手机号&quot; datatype=&quot;m|e&quot; ajaxurl=&quot;&lt;%=request.getContextPath()%&gt;/service/checkName&quot;  errormsg=&quot;注册用户名必须为邮箱或者手机号！&quot; nullmsg=&quot;请设置正确用户名&quot; /&gt;
+                &lt;span class=&quot;Validform_checktip Validform_span&quot;&gt;&lt;/span&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+</code></pre>
+<p>ajaxurl里为请求的链接，当前表单里的内容会以参数的形式发送。<br>后台返回的数据格式如下：</p>
+<pre><code>&#123;
+&quot;status&quot;: &quot;y&quot;,
+&quot;info&quot;: &quot;用户名可用&quot;
+&#125;
+</code></pre>
+<p>如果用户名不可用status为n，Info是要提示用户的信息，如“用户名已存在”</p>
+<ol start="2">
+<li>在js中自定义datatype中可以发送ajax请求，去判断输入的合法性，注意ajax请求必须为同步。</li>
+</ol>
+<p>官网文档地址：<a target="_blank" rel="noopener" href="http://validform.rjboy.cn/document.html">http://validform.rjboy.cn/document.html</a></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81-HTML%E9%83%A8%E5%88%86"><span class="toc-number">1.</span> <span class="toc-text">一、 HTML部分</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81js%E9%83%A8%E5%88%86"><span class="toc-number">2.</span> <span class="toc-text">二、js部分</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E6%89%A9%E5%B1%95-ajax%E8%A1%A8%E5%8D%95%E9%AA%8C%E8%AF%81%E7%9A%84%E4%B8%A4%E8%AF%81%E6%96%B9%E6%B3%95"><span class="toc-number">3.</span> <span class="toc-text">三、扩展 ajax表单验证的两证方法</span></a></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

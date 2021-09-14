@@ -1,0 +1,1007 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ElasticSearch基础入门 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="
+索引 含有相同属性的文档集合
+类型 索引可以定义一个或多个类型，文档必须属于一个类型
+文档 文档是可以被索引的基本数据单位
+分片 每个索引都有多个分片，每个分片是一个Lucene索引
+备份 拷贝一,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">ElasticSearch基础入门</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/3.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/ElasticSearch"><b>「
+                    </b>ELASTICSEARCH<b> 」</b></a>
+                
+                June 11, 2020
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/elasticsearch-foundation.html" title="ElasticSearch基础入门" class="">ElasticSearch基础入门</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    22k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    20 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/ElasticSearch/" rel="tag">ElasticSearch</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <ul>
+<li>索引 含有相同属性的文档集合</li>
+<li>类型 索引可以定义一个或多个类型，文档必须属于一个类型</li>
+<li>文档 文档是可以被索引的基本数据单位</li>
+<li>分片 每个索引都有多个分片，每个分片是一个Lucene索引</li>
+<li>备份 拷贝一份分片就可以完成了分片的备份</li>
+</ul>
+<h1 id="2-基础用法"><a href="#2-基础用法" class="headerlink" title="2 基础用法"></a>2 基础用法</h1><h2 id="2-1-RESTFul-API"><a href="#2-1-RESTFul-API" class="headerlink" title="2.1 RESTFul API"></a>2.1 RESTFul API</h2><p>API基本格式：http://&lt;ip&gt;:&lt;port&gt;/&lt;索引&gt;/&lt;索引类型&gt;/&lt;文档id&gt;</p>
+<p>常用HTTP动词：GET/PUT/POST/DELETE</p>
+<h2 id="2-2-创建索引"><a href="#2-2-创建索引" class="headerlink" title="2.2 创建索引"></a>2.2 创建索引</h2><h3 id="2-2-1-使用默认配置创建索引"><a href="#2-2-1-使用默认配置创建索引" class="headerlink" title="2.2.1 使用默认配置创建索引"></a>2.2.1 使用默认配置创建索引</h3><p>例如创建一个名为people的索引库</p>
+<p>请求URL：<a target="_blank" rel="noopener" href="http://127.0.0.1:9200/people">http://127.0.0.1:9200/people</a></p>
+<p>请求方法：PUT</p>
+<p>请求参数：无</p>
+<p>返回结果：</p>
+<pre><code class="json">&#123;
+    &quot;acknowledged&quot;: true,
+    &quot;shards_acknowledged&quot;: true
+&#125;
+</code></pre>
+<h3 id="2-2-2-指定配置创建索引"><a href="#2-2-2-指定配置创建索引" class="headerlink" title="2.2.2 指定配置创建索引"></a>2.2.2 指定配置创建索引</h3><p>例如创建一个名为people的索引库，并指定分片个数为3，副本数为1</p>
+<p>请求URL：<a target="_blank" rel="noopener" href="http://127.0.0.1:9200/people">http://127.0.0.1:9200/people</a></p>
+<p>请求方法：PUT</p>
+<p>请求参数：</p>
+<pre><code class="json">&#123;
+    &quot;settings&quot;:&#123;
+        &quot;number_of_shards&quot;:3,
+        &quot;number_of_replicas&quot;:1
+    &#125;
+&#125;
+</code></pre>
+<p>返回结果：</p>
+<pre><code class="json">&#123;
+    &quot;acknowledged&quot;: true,
+    &quot;shards_acknowledged&quot;: true
+&#125;
+</code></pre>
+<h2 id="2-3-文档数据插入"><a href="#2-3-文档数据插入" class="headerlink" title="2.3 文档数据插入"></a>2.3 文档数据插入</h2><h3 id="2-3-1-自定义文档id插入数据"><a href="#2-3-1-自定义文档id插入数据" class="headerlink" title="2.3.1 自定义文档id插入数据"></a>2.3.1 自定义文档id插入数据</h3><p>向people索引库中插入一个类型为man，id为1的数据</p>
+<p>请求URL：<a target="_blank" rel="noopener" href="http://127.0.0.1:9200/people/man/1">http://127.0.0.1:9200/people/man/1</a></p>
+<p>请求方法：PUT</p>
+<p>请求参数：</p>
+<pre><code class="json">&#123;
+    &quot;name&quot;:&quot;rukey&quot;,
+    &quot;age&quot;:24
+&#125;
+</code></pre>
+<p>返回结果：</p>
+<pre><code class="json">&#123;
+    &quot;_index&quot;: &quot;people&quot;,
+    &quot;_type&quot;: &quot;man&quot;,
+    &quot;_id&quot;: &quot;1&quot;,
+    &quot;_version&quot;: 1,
+    &quot;result&quot;: &quot;created&quot;,
+    &quot;_shards&quot;: &#123;
+        &quot;total&quot;: 2,
+        &quot;successful&quot;: 1,
+        &quot;failed&quot;: 0
+    &#125;,
+    &quot;created&quot;: true
+&#125;
+</code></pre>
+<h3 id="2-3-2-自动生成文档id插入数据"><a href="#2-3-2-自动生成文档id插入数据" class="headerlink" title="2.3.2 自动生成文档id插入数据"></a>2.3.2 自动生成文档id插入数据</h3><p>上述例子中显示指定了id为1，也可以让es自动为文档生成ID。</p>
+<p>请求URL：<a target="_blank" rel="noopener" href="http://127.0.0.1:9200/people/man">http://127.0.0.1:9200/people/man</a></p>
+<p>请求方法：POST</p>
+<p>请求参数：</p>
+<pre><code class="json">&#123;
+    &quot;name&quot;:&quot;luke&quot;,
+    &quot;age&quot;:21
+&#125;
+</code></pre>
+<p>返回结果：</p>
+<pre><code class="json">&#123;
+    &quot;_index&quot;: &quot;people&quot;,
+    &quot;_type&quot;: &quot;man&quot;,
+    &quot;_id&quot;: &quot;AXKiIOPUal2MQt749lnL&quot;,
+    &quot;_version&quot;: 1,
+    &quot;result&quot;: &quot;created&quot;,
+    &quot;_shards&quot;: &#123;
+        &quot;total&quot;: 2,
+        &quot;successful&quot;: 1,
+        &quot;failed&quot;: 0
+    &#125;,
+    &quot;created&quot;: true
+&#125;
+</code></pre>
+<h2 id="2-3-文档数据修改"><a href="#2-3-文档数据修改" class="headerlink" title="2.3 文档数据修改"></a>2.3 文档数据修改</h2><h3 id="2-3-1-直接修改文档数据"><a href="#2-3-1-直接修改文档数据" class="headerlink" title="2.3.1 直接修改文档数据"></a>2.3.1 直接修改文档数据</h3><p>将上述people索引库中类型为man，id为1的文档数据中的age字段值改为26。</p>
+<p>请求URL：<a target="_blank" rel="noopener" href="http://127.0.0.1:9200/people/man/1/_update">http://127.0.0.1:9200/people/man/1/_update</a></p>
+<p>请求方法：POST</p>
+<p>请求参数：</p>
+<pre><code class="json">&#123;
+    &quot;doc&quot;:&#123;
+        &quot;age&quot;:26
+    &#125;
+&#125;
+</code></pre>
+<p>返回结果：</p>
+<pre><code class="json">&#123;
+    &quot;_index&quot;: &quot;people&quot;,
+    &quot;_type&quot;: &quot;man&quot;,
+    &quot;_id&quot;: &quot;1&quot;,
+    &quot;_version&quot;: 2,
+    &quot;result&quot;: &quot;updated&quot;,
+    &quot;_shards&quot;: &#123;
+        &quot;total&quot;: 2,
+        &quot;successful&quot;: 1,
+        &quot;failed&quot;: 0
+    &#125;
+&#125;
+</code></pre>
+<h3 id="2-3-2-脚本修改文档数据"><a href="#2-3-2-脚本修改文档数据" class="headerlink" title="2.3.2 脚本修改文档数据"></a>2.3.2 脚本修改文档数据</h3><p>使用脚本的方式将上述people索引库中类型为man，id为1的文档数据中的age字段值减6</p>
+<p>请求URL：<a target="_blank" rel="noopener" href="http://127.0.0.1:9200/people/man/1/_update">http://127.0.0.1:9200/people/man/1/_update</a></p>
+<p>请求方法：POST</p>
+<p>请求参数：</p>
+<pre><code class="json">&#123;
+    &quot;script&quot;:&#123;
+    &quot;lang&quot;: &quot;painless&quot;,
+    &quot;inline&quot;:&quot;ctx._source.age=ctx._source.age-6&quot;
+    &#125;
+&#125;
+</code></pre>
+<p>返回结果：</p>
+<pre><code class="json">&#123;
+    &quot;_index&quot;: &quot;people&quot;,
+    &quot;_type&quot;: &quot;man&quot;,
+    &quot;_id&quot;: &quot;1&quot;,
+    &quot;_version&quot;: 3,
+    &quot;result&quot;: &quot;updated&quot;,
+    &quot;_shards&quot;: &#123;
+        &quot;total&quot;: 2,
+        &quot;successful&quot;: 1,
+        &quot;failed&quot;: 0
+    &#125;
+&#125;
+</code></pre>
+<h2 id="2-4-删除操作"><a href="#2-4-删除操作" class="headerlink" title="2.4 删除操作"></a>2.4 删除操作</h2><h3 id="2-4-1-删除文档数据"><a href="#2-4-1-删除文档数据" class="headerlink" title="2.4.1 删除文档数据"></a>2.4.1 删除文档数据</h3><h4 id="2-4-1-1-根据ID删除单条文档"><a href="#2-4-1-1-根据ID删除单条文档" class="headerlink" title="2.4.1.1 根据ID删除单条文档"></a>2.4.1.1 根据ID删除单条文档</h4><p>例如删除people索引库中类型为man，id为1的文档数据</p>
+<p>请求URL：<a target="_blank" rel="noopener" href="http://127.0.0.1:9200/people/man/1">http://127.0.0.1:9200/people/man/1</a></p>
+<p>请求方法：DELETE</p>
+<p>请求参数：无</p>
+<p>返回结果：</p>
+<pre><code class="json">&#123;
+    &quot;found&quot;: true,
+    &quot;_index&quot;: &quot;people&quot;,
+    &quot;_type&quot;: &quot;man&quot;,
+    &quot;_id&quot;: &quot;1&quot;,
+    &quot;_version&quot;: 4,
+    &quot;result&quot;: &quot;deleted&quot;,
+    &quot;_shards&quot;: &#123;
+        &quot;total&quot;: 2,
+        &quot;successful&quot;: 1,
+        &quot;failed&quot;: 0
+    &#125;
+&#125;
+</code></pre>
+<h4 id="2-4-1-2-删除查询的所有文档"><a href="#2-4-1-2-删除查询的所有文档" class="headerlink" title="2.4.1.2 删除查询的所有文档"></a>2.4.1.2 删除查询的所有文档</h4><h3 id="2-4-2-删除索引库"><a href="#2-4-2-删除索引库" class="headerlink" title="2.4.2 删除索引库"></a>2.4.2 删除索引库</h3><p>删除索引库，会将索引，以及该索引下的所有文档数据一并删除，例如删除名为people的索引库</p>
+<p>请求URL：<a target="_blank" rel="noopener" href="http://127.0.0.1:9200/people">http://127.0.0.1:9200/people</a></p>
+<p>请求方法：DELETE</p>
+<p>请求参数：无</p>
+<p>返回结果：</p>
+<pre><code class="json">&#123;
+    &quot;acknowledged&quot;: true
+&#125;
+</code></pre>
+<h2 id="2-5-常用查询"><a href="#2-5-常用查询" class="headerlink" title="2.5 常用查询"></a>2.5 常用查询</h2><p>在进行查询之前，先准备一下数据。</p>
+<p>创建一个名为people的索引库，并设置mappings</p>
+<p>POST请求<a target="_blank" rel="noopener" href="http://127.0.0.1:9200/people%EF%BC%8C%E8%AF%B7%E6%B1%82%E5%8F%82%E6%95%B0%E5%A6%82%E4%B8%8B">http://127.0.0.1:9200/people，请求参数如下</a></p>
+<pre><code>&#123;
+    &quot;mappings&quot;: &#123;
+        &quot;man&quot;: &#123;
+            &quot;properties&quot;: &#123;
+                &quot;name&quot;: &#123;
+                    &quot;type&quot;: &quot;keyword&quot;
+                &#125;,
+                &quot;age&quot;: &#123;
+                    &quot;type&quot;: &quot;integer&quot;
+                &#125;,
+                &quot;birthday&quot;: &#123;
+                    &quot;type&quot;: &quot;date&quot;,
+                    &quot;format&quot;: &quot;yyyy-MM-dd HH:mm:ss||epoch_millis&quot;
+                &#125;
+            &#125;
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<p>批量插入数据</p>
+<p>POST请求<a target="_blank" rel="noopener" href="http://127.0.0.1:9200/_bulk%EF%BC%8C%E8%AF%B7%E6%B1%82%E5%8F%82%E6%95%B0%E5%A6%82%E4%B8%8B%EF%BC%9A">http://127.0.0.1:9200/_bulk，请求参数如下：</a></p>
+<pre><code class="json">&#123; &quot;index&quot;:&#123;&quot;_index&quot;:&quot;people&quot;,&quot;_type&quot;:&quot;man&quot;,&quot;_id&quot;:1 &#125;&#125; 
+&#123; &quot;name&quot;:&quot;张三&quot;,&quot;age&quot;:16,&quot;birthday&quot;:1086941876000&#125; 
+
+&#123; &quot;index&quot;:&#123;&quot;_index&quot;:&quot;people&quot;,&quot;_type&quot;:&quot;man&quot;,&quot;_id&quot;:2 &#125;&#125; 
+&#123; &quot;name&quot;:&quot;李四&quot;,&quot;age&quot;:20,&quot;birthday&quot;:960711476000&#125;
+
+&#123; &quot;index&quot;:&#123;&quot;_index&quot;:&quot;people&quot;,&quot;_type&quot;:&quot;man&quot;,&quot;_id&quot;:3 &#125;&#125; 
+&#123; &quot;name&quot;:&quot;王五&quot;,&quot;age&quot;:16,&quot;birthday&quot;:1086077876000&#125;
+
+</code></pre>
+<p>请求结果：</p>
+<pre><code class="json">&#123;
+    &quot;took&quot;: 7,
+    &quot;errors&quot;: false,
+    &quot;items&quot;: [
+        &#123;
+            &quot;index&quot;: &#123;
+                &quot;_index&quot;: &quot;people&quot;,
+                &quot;_type&quot;: &quot;man&quot;,
+                &quot;_id&quot;: &quot;1&quot;,
+                &quot;_version&quot;: 1,
+                &quot;result&quot;: &quot;created&quot;,
+                &quot;_shards&quot;: &#123;
+                    &quot;total&quot;: 2,
+                    &quot;successful&quot;: 1,
+                    &quot;failed&quot;: 0
+                &#125;,
+                &quot;created&quot;: true,
+                &quot;status&quot;: 201
+            &#125;
+        &#125;,
+        &#123;
+            &quot;index&quot;: &#123;
+                &quot;_index&quot;: &quot;people&quot;,
+                &quot;_type&quot;: &quot;man&quot;,
+                &quot;_id&quot;: &quot;2&quot;,
+                &quot;_version&quot;: 1,
+                &quot;result&quot;: &quot;created&quot;,
+                &quot;_shards&quot;: &#123;
+                    &quot;total&quot;: 2,
+                    &quot;successful&quot;: 1,
+                    &quot;failed&quot;: 0
+                &#125;,
+                &quot;created&quot;: true,
+                &quot;status&quot;: 201
+            &#125;
+        &#125;,
+        &#123;
+            &quot;index&quot;: &#123;
+                &quot;_index&quot;: &quot;people&quot;,
+                &quot;_type&quot;: &quot;man&quot;,
+                &quot;_id&quot;: &quot;3&quot;,
+                &quot;_version&quot;: 1,
+                &quot;result&quot;: &quot;created&quot;,
+                &quot;_shards&quot;: &#123;
+                    &quot;total&quot;: 2,
+                    &quot;successful&quot;: 1,
+                    &quot;failed&quot;: 0
+                &#125;,
+                &quot;created&quot;: true,
+                &quot;status&quot;: 201
+            &#125;
+        &#125;
+    ]
+&#125;
+</code></pre>
+<h3 id="2-5-1-简单查询"><a href="#2-5-1-简单查询" class="headerlink" title="2.5.1 简单查询"></a>2.5.1 简单查询</h3><h4 id="查询people索引库中类型为man，id为1的文档内容"><a href="#查询people索引库中类型为man，id为1的文档内容" class="headerlink" title="查询people索引库中类型为man，id为1的文档内容"></a>查询people索引库中类型为man，id为1的文档内容</h4><p>请求URL：<a target="_blank" rel="noopener" href="http://127.0.0.1:9200/people/man/1">http://127.0.0.1:9200/people/man/1</a></p>
+<p>请求方法：GET</p>
+<p>请求参数：无</p>
+<p>返回结果：</p>
+<pre><code class="json">&#123;
+    &quot;_index&quot;: &quot;people&quot;,
+    &quot;_type&quot;: &quot;man&quot;,
+    &quot;_id&quot;: &quot;1&quot;,
+    &quot;_version&quot;: 1,
+    &quot;found&quot;: true,
+    &quot;_source&quot;: &#123;
+        &quot;name&quot;: &quot;张三&quot;,
+        &quot;age&quot;: 16,
+        &quot;birthday&quot;: 1086941876000
+    &#125;
+&#125;
+</code></pre>
+<h3 id="2-5-2-条件查询"><a href="#2-5-2-条件查询" class="headerlink" title="2.5.2 条件查询"></a>2.5.2 条件查询</h3><h4 id="查询people索引库中所有数据"><a href="#查询people索引库中所有数据" class="headerlink" title="查询people索引库中所有数据"></a>查询people索引库中所有数据</h4><p>请求URL：<a target="_blank" rel="noopener" href="http://127.0.0.1:9200/people/_search">http://127.0.0.1:9200/people/_search</a></p>
+<p>请求方法：POST</p>
+<p>请求参数：</p>
+<pre><code class="json">&#123;
+    &quot;query&quot;:&#123;
+        &quot;match_all&quot;: &#123;&#125;
+    &#125;
+&#125;
+</code></pre>
+<p>返回结果：</p>
+<pre><code class="json">&#123;
+    &quot;took&quot;: 3,
+    &quot;timed_out&quot;: false,
+    &quot;_shards&quot;: &#123;
+        &quot;total&quot;: 5,
+        &quot;successful&quot;: 5,
+        &quot;failed&quot;: 0
+    &#125;,
+    &quot;hits&quot;: &#123;
+        &quot;total&quot;: 3,
+        &quot;max_score&quot;: 1.0,
+        &quot;hits&quot;: [
+            &#123;
+                &quot;_index&quot;: &quot;people&quot;,
+                &quot;_type&quot;: &quot;man&quot;,
+                &quot;_id&quot;: &quot;2&quot;,
+                &quot;_score&quot;: 1.0,
+                &quot;_source&quot;: &#123;
+                    &quot;name&quot;: &quot;李四&quot;,
+                    &quot;age&quot;: 20,
+                    &quot;birthday&quot;: 960711476000
+                &#125;
+            &#125;,
+            &#123;
+                &quot;_index&quot;: &quot;people&quot;,
+                &quot;_type&quot;: &quot;man&quot;,
+                &quot;_id&quot;: &quot;1&quot;,
+                &quot;_score&quot;: 1.0,
+                &quot;_source&quot;: &#123;
+                    &quot;name&quot;: &quot;张三&quot;,
+                    &quot;age&quot;: 16,
+                    &quot;birthday&quot;: 1086941876000
+                &#125;
+            &#125;,
+            &#123;
+                &quot;_index&quot;: &quot;people&quot;,
+                &quot;_type&quot;: &quot;man&quot;,
+                &quot;_id&quot;: &quot;3&quot;,
+                &quot;_score&quot;: 1.0,
+                &quot;_source&quot;: &#123;
+                    &quot;name&quot;: &quot;王五&quot;,
+                    &quot;age&quot;: 16,
+                    &quot;birthday&quot;: 1086077876000
+                &#125;
+            &#125;
+        ]
+    &#125;
+&#125;
+</code></pre>
+<h4 id="指定分页信息"><a href="#指定分页信息" class="headerlink" title="指定分页信息"></a>指定分页信息</h4><p>通过from指定从哪里返回，通过size指定返回大小</p>
+<p>请求URL：<a target="_blank" rel="noopener" href="http://127.0.0.1:9200/people/_search">http://127.0.0.1:9200/people/_search</a></p>
+<p>请求方法：POST</p>
+<p>请求参数：</p>
+<pre><code class="json">&#123;
+    &quot;query&quot;:&#123;
+        &quot;match_all&quot;: &#123;&#125;
+    &#125;,
+    &quot;from&quot;:1,
+    &quot;size&quot;:1
+&#125;
+</code></pre>
+<p>返回结果：</p>
+<pre><code class="json">&#123;
+    &quot;took&quot;: 1,
+    &quot;timed_out&quot;: false,
+    &quot;_shards&quot;: &#123;
+        &quot;total&quot;: 5,
+        &quot;successful&quot;: 5,
+        &quot;failed&quot;: 0
+    &#125;,
+    &quot;hits&quot;: &#123;
+        &quot;total&quot;: 3,
+        &quot;max_score&quot;: 1.0,
+        &quot;hits&quot;: [
+            &#123;
+                &quot;_index&quot;: &quot;people&quot;,
+                &quot;_type&quot;: &quot;man&quot;,
+                &quot;_id&quot;: &quot;1&quot;,
+                &quot;_score&quot;: 1.0,
+                &quot;_source&quot;: &#123;
+                    &quot;name&quot;: &quot;张三&quot;,
+                    &quot;age&quot;: 16,
+                    &quot;birthday&quot;: 1086941876000
+                &#125;
+            &#125;
+        ]
+    &#125;
+&#125;
+</code></pre>
+<h4 id="指定排序信息查询"><a href="#指定排序信息查询" class="headerlink" title="指定排序信息查询"></a>指定排序信息查询</h4><p>查询所有文档，并按照age字段降序排序</p>
+<p>请求URL：<a target="_blank" rel="noopener" href="http://127.0.0.1:9200/people/_search">http://127.0.0.1:9200/people/_search</a></p>
+<p>请求方法：POST</p>
+<p>请求参数：</p>
+<pre><code class="json">&#123;
+    &quot;query&quot;: &#123;
+        &quot;match_all&quot;: &#123;&#125;
+    &#125;,
+    &quot;sort&quot;: [
+        &#123;
+            &quot;age&quot;: &#123;
+                &quot;order&quot;: &quot;desc&quot;
+            &#125;
+        &#125;
+    ]
+&#125;
+</code></pre>
+<p>返回结果：</p>
+<pre><code class="json">&#123;
+    &quot;took&quot;: 20,
+    &quot;timed_out&quot;: false,
+    &quot;_shards&quot;: &#123;
+        &quot;total&quot;: 5,
+        &quot;successful&quot;: 5,
+        &quot;failed&quot;: 0
+    &#125;,
+    &quot;hits&quot;: &#123;
+        &quot;total&quot;: 3,
+        &quot;max_score&quot;: null,
+        &quot;hits&quot;: [
+            &#123;
+                &quot;_index&quot;: &quot;people&quot;,
+                &quot;_type&quot;: &quot;man&quot;,
+                &quot;_id&quot;: &quot;2&quot;,
+                &quot;_score&quot;: null,
+                &quot;_source&quot;: &#123;
+                    &quot;name&quot;: &quot;李四&quot;,
+                    &quot;age&quot;: 20,
+                    &quot;birthday&quot;: 960711476000
+                &#125;,
+                &quot;sort&quot;: [
+                    20
+                ]
+            &#125;,
+            &#123;
+                &quot;_index&quot;: &quot;people&quot;,
+                &quot;_type&quot;: &quot;man&quot;,
+                &quot;_id&quot;: &quot;1&quot;,
+                &quot;_score&quot;: null,
+                &quot;_source&quot;: &#123;
+                    &quot;name&quot;: &quot;张三&quot;,
+                    &quot;age&quot;: 16,
+                    &quot;birthday&quot;: 1086941876000
+                &#125;,
+                &quot;sort&quot;: [
+                    16
+                ]
+            &#125;,
+            &#123;
+                &quot;_index&quot;: &quot;people&quot;,
+                &quot;_type&quot;: &quot;man&quot;,
+                &quot;_id&quot;: &quot;3&quot;,
+                &quot;_score&quot;: null,
+                &quot;_source&quot;: &#123;
+                    &quot;name&quot;: &quot;王五&quot;,
+                    &quot;age&quot;: 16,
+                    &quot;birthday&quot;: 1086077876000
+                &#125;,
+                &quot;sort&quot;: [
+                    16
+                ]
+            &#125;
+        ]
+    &#125;
+&#125;
+</code></pre>
+<h4 id="指定关键字查询"><a href="#指定关键字查询" class="headerlink" title="指定关键字查询"></a>指定关键字查询</h4><p>查询名字为王五的文档</p>
+<p>请求URL：<a target="_blank" rel="noopener" href="http://127.0.0.1:9200/people/_search">http://127.0.0.1:9200/people/_search</a></p>
+<p>请求方法：POST</p>
+<p>请求参数：</p>
+<pre><code class="json">&#123;
+    &quot;query&quot;: &#123;
+        &quot;match&quot;: &#123;
+            &quot;name&quot;: &quot;王五&quot;
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<p>返回结果：</p>
+<pre><code class="json">&#123;
+    &quot;took&quot;: 2,
+    &quot;timed_out&quot;: false,
+    &quot;_shards&quot;: &#123;
+        &quot;total&quot;: 5,
+        &quot;successful&quot;: 5,
+        &quot;failed&quot;: 0
+    &#125;,
+    &quot;hits&quot;: &#123;
+        &quot;total&quot;: 1,
+        &quot;max_score&quot;: 0.2876821,
+        &quot;hits&quot;: [
+            &#123;
+                &quot;_index&quot;: &quot;people&quot;,
+                &quot;_type&quot;: &quot;man&quot;,
+                &quot;_id&quot;: &quot;3&quot;,
+                &quot;_score&quot;: 0.2876821,
+                &quot;_source&quot;: &#123;
+                    &quot;name&quot;: &quot;王五&quot;,
+                    &quot;age&quot;: 16,
+                    &quot;birthday&quot;: 1086077876000
+                &#125;
+            &#125;
+        ]
+    &#125;
+&#125;
+</code></pre>
+<h3 id="2-5-3-聚合查询"><a href="#2-5-3-聚合查询" class="headerlink" title="2.5.3 聚合查询"></a>2.5.3 聚合查询</h3><h4 id="按照关键字聚合"><a href="#按照关键字聚合" class="headerlink" title="按照关键字聚合"></a>按照关键字聚合</h4><p>查询所有文档，并按照age字段聚合</p>
+<p>请求URL：<a target="_blank" rel="noopener" href="http://127.0.0.1:9200/people/_search">http://127.0.0.1:9200/people/_search</a></p>
+<p>请求方法：POST</p>
+<p>请求参数：</p>
+<pre><code class="json">&#123;
+    &quot;aggs&quot;: &#123;
+        &quot;group_by_age&quot;:&#123;
+            &quot;terms&quot;:&#123;
+                &quot;field&quot;: &quot;age&quot;
+            &#125;
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<p>返回结果：</p>
+<pre><code class="json">&#123;
+    &quot;took&quot;: 16,
+    &quot;timed_out&quot;: false,
+    &quot;_shards&quot;: &#123;
+        &quot;total&quot;: 5,
+        &quot;successful&quot;: 5,
+        &quot;failed&quot;: 0
+    &#125;,
+    &quot;hits&quot;: &#123;
+        &quot;total&quot;: 3,
+        &quot;max_score&quot;: 1.0,
+        &quot;hits&quot;: [
+            &#123;
+                &quot;_index&quot;: &quot;people&quot;,
+                &quot;_type&quot;: &quot;man&quot;,
+                &quot;_id&quot;: &quot;2&quot;,
+                &quot;_score&quot;: 1.0,
+                &quot;_source&quot;: &#123;
+                    &quot;name&quot;: &quot;李四&quot;,
+                    &quot;age&quot;: 20,
+                    &quot;birthday&quot;: 960711476000
+                &#125;
+            &#125;,
+            &#123;
+                &quot;_index&quot;: &quot;people&quot;,
+                &quot;_type&quot;: &quot;man&quot;,
+                &quot;_id&quot;: &quot;1&quot;,
+                &quot;_score&quot;: 1.0,
+                &quot;_source&quot;: &#123;
+                    &quot;name&quot;: &quot;张三&quot;,
+                    &quot;age&quot;: 16,
+                    &quot;birthday&quot;: 1086941876000
+                &#125;
+            &#125;,
+            &#123;
+                &quot;_index&quot;: &quot;people&quot;,
+                &quot;_type&quot;: &quot;man&quot;,
+                &quot;_id&quot;: &quot;3&quot;,
+                &quot;_score&quot;: 1.0,
+                &quot;_source&quot;: &#123;
+                    &quot;name&quot;: &quot;王五&quot;,
+                    &quot;age&quot;: 16,
+                    &quot;birthday&quot;: 1086077876000
+                &#125;
+            &#125;
+        ]
+    &#125;,
+    &quot;aggregations&quot;: &#123;
+        &quot;group_by_age&quot;: &#123;
+            &quot;doc_count_error_upper_bound&quot;: 0,
+            &quot;sum_other_doc_count&quot;: 0,
+            &quot;buckets&quot;: [
+                &#123;
+                    &quot;key&quot;: 16,
+                    &quot;doc_count&quot;: 2
+                &#125;,
+                &#123;
+                    &quot;key&quot;: 20,
+                    &quot;doc_count&quot;: 1
+                &#125;
+            ]
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E5%9F%BA%E7%A1%80%E7%94%A8%E6%B3%95"><span class="toc-number">1.</span> <span class="toc-text">2 基础用法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-RESTFul-API"><span class="toc-number">1.1.</span> <span class="toc-text">2.1 RESTFul API</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95"><span class="toc-number">1.2.</span> <span class="toc-text">2.2 创建索引</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-1-%E4%BD%BF%E7%94%A8%E9%BB%98%E8%AE%A4%E9%85%8D%E7%BD%AE%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95"><span class="toc-number">1.2.1.</span> <span class="toc-text">2.2.1 使用默认配置创建索引</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-2-%E6%8C%87%E5%AE%9A%E9%85%8D%E7%BD%AE%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.2.2 指定配置创建索引</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-%E6%96%87%E6%A1%A3%E6%95%B0%E6%8D%AE%E6%8F%92%E5%85%A5"><span class="toc-number">1.3.</span> <span class="toc-text">2.3 文档数据插入</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-1-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%96%87%E6%A1%A3id%E6%8F%92%E5%85%A5%E6%95%B0%E6%8D%AE"><span class="toc-number">1.3.1.</span> <span class="toc-text">2.3.1 自定义文档id插入数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-2-%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90%E6%96%87%E6%A1%A3id%E6%8F%92%E5%85%A5%E6%95%B0%E6%8D%AE"><span class="toc-number">1.3.2.</span> <span class="toc-text">2.3.2 自动生成文档id插入数据</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-%E6%96%87%E6%A1%A3%E6%95%B0%E6%8D%AE%E4%BF%AE%E6%94%B9"><span class="toc-number">1.4.</span> <span class="toc-text">2.3 文档数据修改</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-1-%E7%9B%B4%E6%8E%A5%E4%BF%AE%E6%94%B9%E6%96%87%E6%A1%A3%E6%95%B0%E6%8D%AE"><span class="toc-number">1.4.1.</span> <span class="toc-text">2.3.1 直接修改文档数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-2-%E8%84%9A%E6%9C%AC%E4%BF%AE%E6%94%B9%E6%96%87%E6%A1%A3%E6%95%B0%E6%8D%AE"><span class="toc-number">1.4.2.</span> <span class="toc-text">2.3.2 脚本修改文档数据</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4-%E5%88%A0%E9%99%A4%E6%93%8D%E4%BD%9C"><span class="toc-number">1.5.</span> <span class="toc-text">2.4 删除操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-1-%E5%88%A0%E9%99%A4%E6%96%87%E6%A1%A3%E6%95%B0%E6%8D%AE"><span class="toc-number">1.5.1.</span> <span class="toc-text">2.4.1 删除文档数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-2-%E5%88%A0%E9%99%A4%E7%B4%A2%E5%BC%95%E5%BA%93"><span class="toc-number">1.5.2.</span> <span class="toc-text">2.4.2 删除索引库</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-5-%E5%B8%B8%E7%94%A8%E6%9F%A5%E8%AF%A2"><span class="toc-number">1.6.</span> <span class="toc-text">2.5 常用查询</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-1-%E7%AE%80%E5%8D%95%E6%9F%A5%E8%AF%A2"><span class="toc-number">1.6.1.</span> <span class="toc-text">2.5.1 简单查询</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-2-%E6%9D%A1%E4%BB%B6%E6%9F%A5%E8%AF%A2"><span class="toc-number">1.6.2.</span> <span class="toc-text">2.5.2 条件查询</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-3-%E8%81%9A%E5%90%88%E6%9F%A5%E8%AF%A2"><span class="toc-number">1.6.3.</span> <span class="toc-text">2.5.3 聚合查询</span></a></li></ol></li></ol></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

@@ -1,0 +1,733 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>HBase基本概念及知识点 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="HBase 写流程
+
+Client会县访问zookeeper，得到对应的RegionServer地址
+Clinet对RegionServer发起请求，RegionServer接收数据写入内
+当Mem,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">HBase基本概念及知识点</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/6.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/HBase"><b>「
+                    </b>HBASE<b> 」</b></a>
+                
+                November 22, 2018
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/hbase-basic-concepts-and-knowledge-points.html" title="HBase基本概念及知识点" class="">HBase基本概念及知识点</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    21k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    19 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/HBase/" rel="tag">HBase</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <h2 id="HBase-写流程"><a href="#HBase-写流程" class="headerlink" title="HBase 写流程"></a>HBase 写流程</h2><p><img src="http://shirukai.gitee.io/images/b0f204f57713df7a54aaa51028cc7307.jpg"></p>
+<ul>
+<li>Client会县访问zookeeper，得到对应的RegionServer地址</li>
+<li>Clinet对RegionServer发起请求，RegionServer接收数据写入内</li>
+<li>当MemStore的大小达到一定的值后，flush到StoreFile并存储到HDFS</li>
+</ul>
+<p><img src="http://shirukai.gitee.io/images/07b7d596a9aa320b48b333afd36195f4.jpg"></p>
+<p>HBase中的WAL（预写日志）的实现：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/ohuang/p/5807543.html">https://www.cnblogs.com/ohuang/p/5807543.html</a></p>
+<h2 id="HBase的读流程"><a href="#HBase的读流程" class="headerlink" title="HBase的读流程"></a>HBase的读流程</h2><p><img src="http://shirukai.gitee.io/images/0f9b89b3da0fa872b9091e9add63b691.jpg"></p>
+<ul>
+<li>Client会先访问zookeeper，得到对应的RegionServer地址</li>
+<li>Client对RegionServer发起读请求</li>
+<li>当RegionServer收到client的读请求后，先扫描哦自己的Memstore，再扫描BlockCache（加速读内容缓存区）如果换没找到则StoreFile读取数据，然后将数据返回给Client</li>
+</ul>
+<h2 id="HBase-模块协作"><a href="#HBase-模块协作" class="headerlink" title="HBase 模块协作"></a>HBase 模块协作</h2><h3 id="HBase启动时发生了什么？"><a href="#HBase启动时发生了什么？" class="headerlink" title="HBase启动时发生了什么？"></a>HBase启动时发生了什么？</h3><ul>
+<li>HMaster启动，注册到Zookeeper，等待RegionServer汇报</li>
+<li>RegionServer注册到Zookeeper，并向HMaster汇报</li>
+<li>对各个RegionServer（包括失效的）的数据进行整理，分配Region和meta信息</li>
+</ul>
+<h3 id="当RegionServer失效后会发生什么？"><a href="#当RegionServer失效后会发生什么？" class="headerlink" title="当RegionServer失效后会发生什么？"></a>当RegionServer失效后会发生什么？</h3><ul>
+<li>HMaster将失效RegionServer上的Region分配到其他节点</li>
+<li>HMaster更新hbase：meta表以保证数据正常访问</li>
+</ul>
+<h3 id="当HMaster失效后会发生什么？"><a href="#当HMaster失效后会发生什么？" class="headerlink" title="当HMaster失效后会发生什么？"></a>当HMaster失效后会发生什么？</h3><ul>
+<li>处于Backup状态的其他HMaster节点推选出一个转为Active状态（配置高可用）</li>
+<li>数据能正常读写，但是不能创建删除表，也不能更改表结构（未配置高可用）</li>
+</ul>
+<h2 id="HBase操作"><a href="#HBase操作" class="headerlink" title="HBase操作"></a>HBase操作</h2><h3 id="HBase-Shell-命令"><a href="#HBase-Shell-命令" class="headerlink" title="HBase Shell 命令"></a>HBase Shell 命令</h3><p><img src="http://shirukai.gitee.io/images/a219b1b1a92e19620bae1c7ecdea7dda.jpg"></p>
+<h4 id="1-查看集群状态-status"><a href="#1-查看集群状态-status" class="headerlink" title="1 查看集群状态: status"></a>1 查看集群状态: status</h4><pre><code class="shell">hbase(main):001:0&gt; status
+1 active master, 0 backup masters, 1 servers, 1 dead, 6.0000 average load
+Took 0.7064 seconds
+</code></pre>
+<h4 id="2-查看所有表：list"><a href="#2-查看所有表：list" class="headerlink" title="2 查看所有表：list"></a>2 查看所有表：list</h4><pre><code class="shell">hbase(main):003:0&gt; list
+TABLE                                                                                                         
+coures_clickcount                                                                                             
+course_search_clickcount                                                                                      
+member                                                                                                        
+table1                                                                                                        
+4 row(s)
+Took 0.0236 seconds                                                                                           
+=&gt; [&quot;coures_clickcount&quot;, &quot;course_search_clickcount&quot;, &quot;member&quot;, &quot;table1&quot;]
+</code></pre>
+<h4 id="3-创建一张表：create-‘tableName’-‘columnFamily’"><a href="#3-创建一张表：create-‘tableName’-‘columnFamily’" class="headerlink" title="3 创建一张表：create  ‘tableName’ ‘columnFamily’"></a>3 创建一张表：create  ‘tableName’ ‘columnFamily’</h4><p>创建一张名为FileTable的表，包含两个列族，分别为fileInfo和saveInfo</p>
+<pre><code class="shell">hbase(main):004:0&gt; create &#39;FileTable&#39;,&#39;fileInfo&#39;,&#39;saveInfo&#39;
+Created table FileTable
+Took 0.8806 seconds                                                                                           
+=&gt; Hbase::Table - FileTable
+</code></pre>
+<h4 id="4-查看表的描述信息：desc-‘tableName’"><a href="#4-查看表的描述信息：desc-‘tableName’" class="headerlink" title="4 查看表的描述信息：desc ‘tableName’"></a>4 查看表的描述信息：desc ‘tableName’</h4><pre><code class="shell">hbase(main):005:0&gt; desc &#39;FileTable&#39;
+Table FileTable is ENABLED                                                                                    
+FileTable                                                                                                     
+COLUMN FAMILIES DESCRIPTION                                                                                   
+&#123;NAME =&gt; &#39;fileInfo&#39;, VERSIONS =&gt; &#39;1&#39;, EVICT_BLOCKS_ON_CLOSE =&gt; &#39;false&#39;, NEW_VERSION_BEHAVIOR =&gt; &#39;false&#39;, KEEP_
+DELETED_CELLS =&gt; &#39;FALSE&#39;, CACHE_DATA_ON_WRITE =&gt; &#39;false&#39;, DATA_BLOCK_ENCODING =&gt; &#39;NONE&#39;, TTL =&gt; &#39;FOREVER&#39;, MIN
+_VERSIONS =&gt; &#39;0&#39;, REPLICATION_SCOPE =&gt; &#39;0&#39;, BLOOMFILTER =&gt; &#39;ROW&#39;, CACHE_INDEX_ON_WRITE =&gt; &#39;false&#39;, IN_MEMORY =
+&gt; &#39;false&#39;, CACHE_BLOOMS_ON_WRITE =&gt; &#39;false&#39;, PREFETCH_BLOCKS_ON_OPEN =&gt; &#39;false&#39;, COMPRESSION =&gt; &#39;NONE&#39;, BLOCKC
+ACHE =&gt; &#39;true&#39;, BLOCKSIZE =&gt; &#39;65536&#39;&#125;                                                                         
+&#123;NAME =&gt; &#39;saveInfo&#39;, VERSIONS =&gt; &#39;1&#39;, EVICT_BLOCKS_ON_CLOSE =&gt; &#39;false&#39;, NEW_VERSION_BEHAVIOR =&gt; &#39;false&#39;, KEEP_
+DELETED_CELLS =&gt; &#39;FALSE&#39;, CACHE_DATA_ON_WRITE =&gt; &#39;false&#39;, DATA_BLOCK_ENCODING =&gt; &#39;NONE&#39;, TTL =&gt; &#39;FOREVER&#39;, MIN
+_VERSIONS =&gt; &#39;0&#39;, REPLICATION_SCOPE =&gt; &#39;0&#39;, BLOOMFILTER =&gt; &#39;ROW&#39;, CACHE_INDEX_ON_WRITE =&gt; &#39;false&#39;, IN_MEMORY =
+&gt; &#39;false&#39;, CACHE_BLOOMS_ON_WRITE =&gt; &#39;false&#39;, PREFETCH_BLOCKS_ON_OPEN =&gt; &#39;false&#39;, COMPRESSION =&gt; &#39;NONE&#39;, BLOCKC
+ACHE =&gt; &#39;true&#39;, BLOCKSIZE =&gt; &#39;65536&#39;&#125;                                                                         
+2 row(s)
+Took 0.3854 seconds 
+</code></pre>
+<h4 id="5-修改表结构：alter"><a href="#5-修改表结构：alter" class="headerlink" title="5 修改表结构：alter"></a>5 修改表结构：alter</h4><h5 id="添加一个列族-alter-‘tableName’-’addColumnFamily’"><a href="#添加一个列族-alter-‘tableName’-’addColumnFamily’" class="headerlink" title="添加一个列族 alter ‘tableName’,’addColumnFamily’"></a>添加一个列族 alter ‘tableName’,’addColumnFamily’</h5><pre><code class="shell">alter &#39;FileTable&#39;,&#39;test&#39;
++Updating all regions with the new schema...
+1/1 regions updated.
+Done.
+Took 1.8539 seconds        
+</code></pre>
+<h5 id="删除一个列族-aleter-‘tableName’-NAME-gt-’columnFamily’-METHOD-gt-’delete’"><a href="#删除一个列族-aleter-‘tableName’-NAME-gt-’columnFamily’-METHOD-gt-’delete’" class="headerlink" title="删除一个列族 aleter ‘tableName’,{NAME=&gt;’columnFamily’,METHOD=&gt;’delete’}"></a>删除一个列族 aleter ‘tableName’,{NAME=&gt;’columnFamily’,METHOD=&gt;’delete’}</h5><pre><code class="shell"> alter &#39;FileTable&#39;,&#123;NAME=&gt;&#39;test&#39;,METHOD=&gt;&#39;delete&#39;&#125;
+Updating all regions with the new schema...
+1/1 regions updated.
+Done.
+Took 1.8177 seconds   
+</code></pre>
+<h4 id="6-插入数据：put-‘tableName’-’rowkey’-’columnFamily-field’-’value’"><a href="#6-插入数据：put-‘tableName’-’rowkey’-’columnFamily-field’-’value’" class="headerlink" title="6 插入数据：put ‘tableName’,’rowkey’,’columnFamily:field’,’value’"></a>6 插入数据：put ‘tableName’,’rowkey’,’columnFamily:field’,’value’</h4><pre><code class="shell">hbase(main):008:0&gt; put &#39;FileTable&#39;,&#39;rowkey1&#39;,&#39;fileInfo:name&#39;,&#39;file1.txt&#39;
+Took 0.1394 seconds                                                                                           
+hbase(main):009:0&gt; put &#39;FileTable&#39;,&#39;rowkey1&#39;,&#39;fileInfo:type&#39;,&#39;txt&#39;
+Took 0.0041 seconds                                                                                           
+hbase(main):010:0&gt; put &#39;FileTable&#39;,&#39;rowkey1&#39;,&#39;fileInfo:size&#39;,&#39;1024&#39;
+Took 0.0048 seconds                                                                                           
+hbase(main):011:0&gt; put &#39;FileTable&#39;,&#39;rowkey1&#39;,&#39;saveInfo:path&#39;,&#39;/home&#39;
+Took 0.0052 seconds                                                                                           
+hbase(main):012:0&gt; put &#39;FileTable&#39;,&#39;rowkey1&#39;,&#39;saveInfo:creator&#39;,&#39;srk&#39;
+Took 0.0061 seconds     
+</code></pre>
+<h4 id="7-查看表有多少行数据：count-‘tableName’"><a href="#7-查看表有多少行数据：count-‘tableName’" class="headerlink" title="7 查看表有多少行数据：count ‘tableName’"></a>7 查看表有多少行数据：count ‘tableName’</h4><pre><code class="shell">hbase(main):013:0&gt; count &#39;FileTable&#39;
+1 row(s)
+Took 0.0676 seconds                                                                                           
+=&gt; 1
+</code></pre>
+<h4 id="8-查询数据-get"><a href="#8-查询数据-get" class="headerlink" title="8 查询数据 get"></a>8 查询数据 get</h4><h5 id="使用get按照rowkey查询-get-‘tableName’-’rowKey’"><a href="#使用get按照rowkey查询-get-‘tableName’-’rowKey’" class="headerlink" title="使用get按照rowkey查询: get ‘tableName’,’rowKey’"></a>使用get按照rowkey查询: get ‘tableName’,’rowKey’</h5><pre><code class="shell">hbase(main):005:0&gt; get &#39;FileTable&#39;,&#39;rowkey1&#39;
+COLUMN                CELL                                                      
+ fileInfo:name        timestamp=1542166201745, value=file1.txt                  
+ fileInfo:size        timestamp=1542166236481, value=1024                       
+ fileInfo:type        timestamp=1542166217417, value=txt                        
+ saveInfo:creator     timestamp=1542166283601, value=srk                        
+ saveInfo:path        timestamp=1542166258675, value=/home                      
+1 row(s)
+Took 0.0281 seconds 
+</code></pre>
+<h5 id="使用get按照rowkey查询某个列族-get-‘tableName’-’rowKey’-’cloumnFamily’"><a href="#使用get按照rowkey查询某个列族-get-‘tableName’-’rowKey’-’cloumnFamily’" class="headerlink" title="使用get按照rowkey查询某个列族: get ‘tableName’,’rowKey’,’cloumnFamily’"></a>使用get按照rowkey查询某个列族: get ‘tableName’,’rowKey’,’cloumnFamily’</h5><pre><code>hbase(main):006:0&gt; get &#39;FileTable&#39;,&#39;rowkey1&#39;,&#39;fileInfo&#39;
+COLUMN                CELL                                                      
+ fileInfo:name        timestamp=1542166201745, value=file1.txt                  
+ fileInfo:size        timestamp=1542166236481, value=1024                       
+ fileInfo:type        timestamp=1542166217417, value=txt                        
+1 row(s)
+Took 0.0260 seconds  
+</code></pre>
+<h5 id="使用get按照rowkey查询某个列子的某个字段-get-‘tableName’-’rowKey’-’cloumnFamily-field’"><a href="#使用get按照rowkey查询某个列子的某个字段-get-‘tableName’-’rowKey’-’cloumnFamily-field’" class="headerlink" title="使用get按照rowkey查询某个列子的某个字段: get ‘tableName’,’rowKey’,’cloumnFamily:field’"></a>使用get按照rowkey查询某个列子的某个字段: get ‘tableName’,’rowKey’,’cloumnFamily:field’</h5><pre><code>hbase(main):008:0&gt; get &#39;FileTable&#39;,&#39;rowkey1&#39;,&#39;fileInfo:name&#39;
+COLUMN                CELL                                                      
+ fileInfo:name        timestamp=1542166201745, value=file1.txt                  
+1 row(s)
+Took 0.0169 seconds 
+</code></pre>
+<h4 id="9-查看整张表的数据-scan"><a href="#9-查看整张表的数据-scan" class="headerlink" title="9 查看整张表的数据 scan"></a>9 查看整张表的数据 scan</h4><h5 id="查看整张表的所有数据数据：-scan-‘tableName’"><a href="#查看整张表的所有数据数据：-scan-‘tableName’" class="headerlink" title="查看整张表的所有数据数据： scan ‘tableName’"></a>查看整张表的所有数据数据： scan ‘tableName’</h5><pre><code class="shell">hbase(main):009:0&gt; scan &#39;FileTable&#39;
+ROW                   COLUMN+CELL                                               
+ rowkey1              column=fileInfo:name, timestamp=1542166201745, value=file1
+                      .txt                                                      
+ rowkey1              column=fileInfo:size, timestamp=1542166236481, value=1024 
+ rowkey1              column=fileInfo:type, timestamp=1542166217417, value=txt  
+ rowkey1              column=saveInfo:creator, timestamp=1542166283601, value=sr
+                      k                                                         
+ rowkey1              column=saveInfo:path, timestamp=1542166258675, value=/home
+1 row(s)
+Took 0.0905 seconds
+</code></pre>
+<h5 id="查看某个列族的所有数据：scan-‘tableName’-COLUMN-gt-’columnFamily’"><a href="#查看某个列族的所有数据：scan-‘tableName’-COLUMN-gt-’columnFamily’" class="headerlink" title="查看某个列族的所有数据：scan ‘tableName’,{COLUMN=&gt;’columnFamily’}"></a>查看某个列族的所有数据：scan ‘tableName’,{COLUMN=&gt;’columnFamily’}</h5><pre><code class="shell">hbase(main):010:0&gt; scan &#39;FileTable&#39;,&#123;COLUMN=&gt;&#39;fileInfo&#39;&#125;
+ROW                   COLUMN+CELL                                               
+ rowkey1              column=fileInfo:name, timestamp=1542166201745, value=file1
+                      .txt                                                      
+ rowkey1              column=fileInfo:size, timestamp=1542166236481, value=1024 
+ rowkey1              column=fileInfo:type, timestamp=1542166217417, value=txt  
+1 row(s)
+Took 0.0191 seconds 
+</code></pre>
+<h5 id="查看某个列族的某个字段的所有数据：scan-‘tableName’-COLUMN-gt-’columnFamily-field’"><a href="#查看某个列族的某个字段的所有数据：scan-‘tableName’-COLUMN-gt-’columnFamily-field’" class="headerlink" title="查看某个列族的某个字段的所有数据：scan ‘tableName’,{COLUMN=&gt;’columnFamily:field’}"></a>查看某个列族的某个字段的所有数据：scan ‘tableName’,{COLUMN=&gt;’columnFamily:field’}</h5><pre><code class="shell">hbase(main):011:0&gt; scan &#39;FileTable&#39;,&#123;COLUMN=&gt;&#39;fileInfo:name&#39;&#125;
+ROW                   COLUMN+CELL                                               
+ rowkey1              column=fileInfo:name, timestamp=1542166201745, value=file1
+                      .txt                                                      
+1 row(s)
+Took 0.0051 seconds  
+</code></pre>
+<h5 id="scan-条件：STARTROW、LIMIT、VERSIONS、ENDROW"><a href="#scan-条件：STARTROW、LIMIT、VERSIONS、ENDROW" class="headerlink" title="scan 条件：STARTROW、LIMIT、VERSIONS、ENDROW"></a>scan 条件：STARTROW、LIMIT、VERSIONS、ENDROW</h5><pre><code class="shell">hbase(main):015:0&gt; scan &#39;FileTable&#39;,&#123;STARTROW=&gt;&#39;rowkey1&#39;,ENDROW=&gt;&#39;rowkey2&#39;,LIMIT=&gt;2,VERSIONS=&gt;1&#125;
+ROW                   COLUMN+CELL                                               
+ rowkey1              column=fileInfo:name, timestamp=1542166201745, value=file1
+                      .txt                                                      
+ rowkey1              column=fileInfo:size, timestamp=1542166236481, value=1024 
+ rowkey1              column=fileInfo:type, timestamp=1542166217417, value=txt  
+ rowkey1              column=saveInfo:creator, timestamp=1542166283601, value=sr
+                      k                                                         
+ rowkey1              column=saveInfo:path, timestamp=1542166258675, value=/home
+1 row(s)
+Took 0.0093 seconds       
+</code></pre>
+<h4 id="10-删除数据"><a href="#10-删除数据" class="headerlink" title="10 删除数据"></a>10 删除数据</h4><h5 id="删除某一列的数据：delete-‘tableName’-’rowKey’-’columnFamily-field’"><a href="#删除某一列的数据：delete-‘tableName’-’rowKey’-’columnFamily-field’" class="headerlink" title="删除某一列的数据：delete ‘tableName’,’rowKey’,’columnFamily:field’"></a>删除某一列的数据：delete ‘tableName’,’rowKey’,’columnFamily:field’</h5><pre><code class="shell">hbase(main):016:0&gt; delete &#39;FileTable&#39;,&#39;rowkey1&#39;,&#39;fileInfo:size&#39;
+Took 0.0628 seconds                                                             
+hbase(main):017:0&gt; get &#39;FileTable&#39;,&#39;rowkey1&#39;,&#39;fileInfo:size&#39;
+COLUMN                CELL                                                      
+0 row(s)
+Took 0.0113 seconds 
+</code></pre>
+<h5 id="删除某一行的数据：deleteall-‘tableName’-’rowKey’"><a href="#删除某一行的数据：deleteall-‘tableName’-’rowKey’" class="headerlink" title="删除某一行的数据：deleteall ‘tableName’,’rowKey’"></a>删除某一行的数据：deleteall ‘tableName’,’rowKey’</h5><pre><code class="shell">hbase(main):023:0&gt; deleteall &#39;FileTable&#39;,&#39;rowkey1&#39;
+Took 0.0118 seconds                                                             
+hbase(main):024:0&gt; get &#39;FileTable&#39;,&#39;rowkey1&#39;
+COLUMN                CELL                                                      
+0 row(s)
+Took 0.0156 seconds
+</code></pre>
+<h4 id="11-删除表"><a href="#11-删除表" class="headerlink" title="11 删除表"></a>11 删除表</h4><p>先禁用表在删除表 </p>
+<p>disable ‘tableName’</p>
+<p>drop ‘tableName’</p>
+<pre><code class="shell">hbase(main):025:0&gt; disable &#39;FileTable&#39;
+Took 1.3645 seconds                                                             
+hbase(main):026:0&gt; is_enabled &#39;FileTable&#39;
+false                                                                           
+Took 0.0067 seconds                                                             
+=&gt; false
+hbase(main):027:0&gt; is_disabled &#39;FileTable&#39;
+true                                                                            
+Took 0.0077 seconds                                                             
+=&gt; 1
+hbase(main):028:0&gt; drop &#39;FileTable&#39;
+Took 0.4925 seconds  
+</code></pre>
+<h3 id="Java-操作HBase"><a href="#Java-操作HBase" class="headerlink" title="Java 操作HBase"></a>Java 操作HBase</h3><p><img src="http://shirukai.gitee.io/images/ab5d15aa2f8ba54e3083a72a13f7fbea.jpg"></p>
+<h2 id="HBase进阶"><a href="#HBase进阶" class="headerlink" title="HBase进阶"></a>HBase进阶</h2><h3 id="HBase-优化策略"><a href="#HBase-优化策略" class="headerlink" title="HBase 优化策略"></a>HBase 优化策略</h3><p>什么导致HBase性能下降：</p>
+<ul>
+<li>Jvm内存分配与GC回收策略</li>
+<li>与HBae运行机制相关的部分配置不合理</li>
+<li>表结构设计及用户使用方式不合理</li>
+</ul>
+<h4 id="HBase服务端优化"><a href="#HBase服务端优化" class="headerlink" title="HBase服务端优化"></a>HBase服务端优化</h4><p>Jvm设置与GC设置</p>
+<p>hbase-site.xml部分属性配置</p>
+<p><img src="http://shirukai.gitee.io/images/fd7ad1cc41d20bc85e57a685cd3ae2f7.jpg"></p>
+<table>
+<thead>
+<tr>
+<th>HBase properties</th>
+<th>简介</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>hbase.regionserver.handler.count</td>
+<td>rpc 请求的线程数量</td>
+<td>10</td>
+</tr>
+<tr>
+<td>hbase.hregion.max.filesize</td>
+<td>当region的大小大于设定值后hbase就会开始split</td>
+<td>10G</td>
+</tr>
+<tr>
+<td>hbase.hregion.majorcompaction</td>
+<td>major compaction 的执行周期</td>
+<td>1000建议设为0</td>
+</tr>
+<tr>
+<td>hbase.hstore.compaction.min</td>
+<td>一个store里的storefile总数超过该值，会触发默认的合并操作</td>
+<td>3</td>
+</tr>
+<tr>
+<td>hbase.hstore.compaction.max</td>
+<td>一次最多合并多少个storefile</td>
+<td></td>
+</tr>
+<tr>
+<td>hbase.hstore.blockingStorefiles</td>
+<td>一个region钟的Strore(CoulmnFamily)内有超过xx个storefile时，则block所有的写请求进行compaction</td>
+<td></td>
+</tr>
+<tr>
+<td>hfile.block.cache.size</td>
+<td>regionserver的block cache 的内存大小限制</td>
+<td></td>
+</tr>
+<tr>
+<td>hbase.hregion.memstore.flush.size</td>
+<td>memstore超过该值将被flush</td>
+<td></td>
+</tr>
+<tr>
+<td>hbase.hregion.memstore.block.multiplier</td>
+<td>如果memstore的内存大小超过flush.size*multiplier，会阻塞该memstore的写操作</td>
+<td></td>
+</tr>
+</tbody></table>
+<h4 id="HBase-常用优化"><a href="#HBase-常用优化" class="headerlink" title="HBase 常用优化"></a>HBase 常用优化</h4><ul>
+<li>预先分区</li>
+<li>RowKey优化</li>
+<li>Column优化</li>
+<li>Schema优化</li>
+</ul>
+<h5 id="预先分区"><a href="#预先分区" class="headerlink" title="预先分区"></a>预先分区</h5><p>创建HBase表的时候回自动创建一个Region分区</p>
+<p>创建HBase表的时候预先创建一些空的Regions</p>
+<h5 id="Rowkey优化"><a href="#Rowkey优化" class="headerlink" title="Rowkey优化"></a>Rowkey优化</h5><ul>
+<li>利用HBase默认排序特点，将一起访问的数据放到一起</li>
+<li>防止热点问题，避免使用时序或者单调的递增递减等</li>
+</ul>
+<h5 id="Column优化"><a href="#Column优化" class="headerlink" title="Column优化"></a>Column优化</h5><ul>
+<li>列族的名称和列的描述命名尽量简短</li>
+<li>同一张表中ColumnFamily的数量不要超过3个</li>
+</ul>
+<h5 id="Schema优化"><a href="#Schema优化" class="headerlink" title="Schema优化"></a>Schema优化</h5><ul>
+<li>宽表：一种“列多行少”的设计</li>
+<li>高表：一种“列少行多”的设计</li>
+</ul>
+<h4 id="HBase-写优化策略"><a href="#HBase-写优化策略" class="headerlink" title="HBase 写优化策略"></a>HBase 写优化策略</h4><ul>
+<li>同步批量提交or异步批量提交</li>
+<li>WAL优化，是否必须，持久化等级</li>
+</ul>
+<h4 id="HBase读优化策略"><a href="#HBase读优化策略" class="headerlink" title="HBase读优化策略"></a>HBase读优化策略</h4><ul>
+<li>客户端：Scan缓存设置，批量获取</li>
+<li>服务端：BlockCache配置是否合理，HFile是否过多</li>
+<li>表结构的设计问题</li>
+</ul>
+<h4 id="HBase-Coprocessor"><a href="#HBase-Coprocessor" class="headerlink" title="HBase Coprocessor"></a>HBase Coprocessor</h4><p>HBase协处理受BigTable协处理器的启发，为用户提供类库和运行时环境，使得代码能够在HBase RegionServer和Master上处理</p>
+<p>系统协处理器and表协处理器</p>
+<p>Observer and Endpoint</p>
+<p>系统协处理器：全局加载到RegionServer托管的所有表和Region上</p>
+<p>表协处理器：用户可以指定一张表使用协处理器</p>
+<p>观察者（Observer）：类似于关系数据库的触发器</p>
+<p>终端（Endpoint）：动态的终端有点像存储过程</p>
+<h5 id="Observer"><a href="#Observer" class="headerlink" title="Observer"></a>Observer</h5><p>RegionObserver:提供客户端的数据操纵时间钩子：Get、Put、Delete、Scan等</p>
+<p>MasterObserver：提供DDL类型的操作钩子，如创建、删除、修改、数据表等</p>
+<p>WALObserver：提供WAL相关操作钩子</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#HBase-%E5%86%99%E6%B5%81%E7%A8%8B"><span class="toc-number">1.</span> <span class="toc-text">HBase 写流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HBase%E7%9A%84%E8%AF%BB%E6%B5%81%E7%A8%8B"><span class="toc-number">2.</span> <span class="toc-text">HBase的读流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HBase-%E6%A8%A1%E5%9D%97%E5%8D%8F%E4%BD%9C"><span class="toc-number">3.</span> <span class="toc-text">HBase 模块协作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#HBase%E5%90%AF%E5%8A%A8%E6%97%B6%E5%8F%91%E7%94%9F%E4%BA%86%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">3.1.</span> <span class="toc-text">HBase启动时发生了什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BD%93RegionServer%E5%A4%B1%E6%95%88%E5%90%8E%E4%BC%9A%E5%8F%91%E7%94%9F%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">3.2.</span> <span class="toc-text">当RegionServer失效后会发生什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BD%93HMaster%E5%A4%B1%E6%95%88%E5%90%8E%E4%BC%9A%E5%8F%91%E7%94%9F%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">3.3.</span> <span class="toc-text">当HMaster失效后会发生什么？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HBase%E6%93%8D%E4%BD%9C"><span class="toc-number">4.</span> <span class="toc-text">HBase操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#HBase-Shell-%E5%91%BD%E4%BB%A4"><span class="toc-number">4.1.</span> <span class="toc-text">HBase Shell 命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Java-%E6%93%8D%E4%BD%9CHBase"><span class="toc-number">4.2.</span> <span class="toc-text">Java 操作HBase</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HBase%E8%BF%9B%E9%98%B6"><span class="toc-number">5.</span> <span class="toc-text">HBase进阶</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#HBase-%E4%BC%98%E5%8C%96%E7%AD%96%E7%95%A5"><span class="toc-number">5.1.</span> <span class="toc-text">HBase 优化策略</span></a></li></ol></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

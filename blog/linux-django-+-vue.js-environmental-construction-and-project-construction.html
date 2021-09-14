@@ -1,0 +1,843 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>linux下django+vue.js环境搭建及项目构建 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="一、环境搭建
+python: 2.7.5
+django: 1.11.7
+node: 8.5.0
+mysql: 5.7
+
+1. 安装pythoncentos下默认已经安装了python
+2. 安装 n,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">linux下django+vue.js环境搭建及项目构建</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/5.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/Python"><b>「
+                    </b>PYTHON<b> 」</b></a>
+                
+                August 20, 2018
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/linux-django-+-vue.js-environmental-construction-and-project-construction.html" title="linux下django+vue.js环境搭建及项目构建" class="">linux下django+vue.js环境搭建及项目构建</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    17k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    16 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/django/" rel="tag">django</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <h2 id="一、环境搭建"><a href="#一、环境搭建" class="headerlink" title="一、环境搭建"></a>一、环境搭建</h2><blockquote>
+<p>python: 2.7.5</p>
+<p>django: 1.11.7</p>
+<p>node: 8.5.0</p>
+<p>mysql: 5.7</p>
+</blockquote>
+<h3 id="1-安装python"><a href="#1-安装python" class="headerlink" title="1. 安装python"></a>1. 安装python</h3><p>centos下默认已经安装了python</p>
+<h3 id="2-安装-node-js"><a href="#2-安装-node-js" class="headerlink" title="2. 安装 node.js"></a>2. 安装 node.js</h3><p>下载安装包 <a target="_blank" rel="noopener" href="https://nodejs.org/dist/">版本地址</a></p>
+<pre><code>wget https://nodejs.org/dist/v8.5.0/node-v8.5.0-linux-x64.tar.gz
+</code></pre>
+<p>解压</p>
+<pre><code>tar zxvf node-v8.5.0-linux-x64.tar.gz
+</code></pre>
+<p>配置环境变量/etc/profile</p>
+<pre><code>export NODE_HOME=&quot;/root/node-v8.5.0-linux-x64&quot;
+export PATH=$PATH:$NODE_HOME/bin
+</code></pre>
+<p>使修改后的文件生效</p>
+<pre><code>source /etc/profile
+</code></pre>
+<p>查看安装情况</p>
+<pre><code>node -v
+npm -v
+</code></pre>
+<h3 id="3-安装mysql"><a href="#3-安装mysql" class="headerlink" title="3. 安装mysql"></a>3. 安装mysql</h3><p>安装mysql源</p>
+<pre><code>wget http://dev.mysql.com/get/mysql57-community-release-el7-9.noarch.rpm
+rpm -ivh mysql57-community-release-el7-9.noarch.rpm
+</code></pre>
+<p>安装</p>
+<pre><code>yum install mysql-community-server
+</code></pre>
+<p>启动mysql</p>
+<pre><code>service mysqld start
+</code></pre>
+<p>查看初始密码</p>
+<pre><code>grep &#39;temporary password&#39; /var/log/mysqld.log
+</code></pre>
+<p>使用初始密码登录</p>
+<pre><code>mysql -u root -p //回车，然后输入上一步查到的初始密码
+</code></pre>
+<p>更改初始密码</p>
+<pre><code>ALTER USER &#39;root&#39;@&#39;localhost&#39; IDENTIFIED BY &#39;123456Aa?&#39;;
+</code></pre>
+<p>创建名为config_tool的数据库</p>
+<pre><code>mysql&gt; create database config_tool;
+Query OK, 1 row affected (0.00 sec)
+</code></pre>
+<h3 id="4-安装pip"><a href="#4-安装pip" class="headerlink" title="4. 安装pip"></a>4. 安装pip</h3><pre><code>yum install python-pip
+</code></pre>
+<p>如果yum源中没有这个安装包，需要安装epel扩展源，然后再尝试安装</p>
+<pre><code>yum -y install epel-release
+</code></pre>
+<h3 id="5-安装Django"><a href="#5-安装Django" class="headerlink" title="5. 安装Django"></a>5. 安装Django</h3><pre><code>pip install Django==1.11.7
+# 查看django版本
+python -m django --version
+</code></pre>
+<p><img src="https://shirukai.gitee.io/images/201801171551_800.png"></p>
+<h3 id="6-安装vue-cli"><a href="#6-安装vue-cli" class="headerlink" title="6. 安装vue-cli"></a>6. 安装vue-cli</h3><p>安装cnpm</p>
+<p>安装npm淘宝源cnpm：在cmd下运行 </p>
+<pre><code>​```
+npm install -g cnpm --registry=https://registry.npm.taobao.org
+​```
+</code></pre>
+<p>安装vue-cli</p>
+<pre><code>//安装全局的vue-cli命令行工具
+cnpm install -g vue-cli
+</code></pre>
+<h4 id="7-安装samba服务"><a href="#7-安装samba服务" class="headerlink" title="7.安装samba服务"></a>7.安装samba服务</h4><p>由于是环境是在linux虚拟机上，我们需要在windows下开发，这时候就需要用到samba服务来共享数据。</p>
+<p>检查是否安装</p>
+<pre><code>#rpm -qa | grep samba
+</code></pre>
+<p>未安装的话，执行安装命令</p>
+<pre><code>yum install samba
+</code></pre>
+<p>重启smb服务</p>
+<pre><code>service smb restart
+</code></pre>
+<p>在Linux上建立samba用户</p>
+<pre><code>useradd samba
+</code></pre>
+<p>创建Smb用户，此用户必须是Linux上已经建立的，输入密码，完成即可</p>
+<pre><code>smbpasswd -a root
+</code></pre>
+<blockquote>
+<p>注意：smbpasswd  -a 是添加用户的意思 后面跟的是用户名，此用户名一定要跟linux登录用户名一样。smbpasswd -x 用户名 ：是删除用户的意思</p>
+</blockquote>
+<p>添加共享目录到samba,修改/etc/samba/smb.conf</p>
+<pre><code>[indta_dev]
+        path = /root/indata_dev
+        browsable=yes
+        writable=yes
+        guest ok=yes
+        read only=no
+</code></pre>
+<p>重启samba服务</p>
+<p>在windos下打开计算机，在导航栏输入 <code>\\192.168.162.111</code></p>
+<p><img src="https://shirukai.gitee.io/images/201801171910_90.png"></p>
+<p>输入用户名和密码，然后右击indata_dev目录，选择映射到网络磁盘驱动器，然后点击【完成】</p>
+<p><img src="https://shirukai.gitee.io/images/201801180817_987.png"></p>
+<h4 id="8-关闭防火墙"><a href="#8-关闭防火墙" class="headerlink" title="8.关闭防火墙"></a>8.关闭防火墙</h4><pre><code>systemctl stop firewalld
+systemctl disable firewalld
+systemctl is-enabled firewalld
+改/etc/selinux/config文件中设置SELINUX=disabled
+</code></pre>
+<h2 id="二、构建项目"><a href="#二、构建项目" class="headerlink" title="二、构建项目"></a>二、构建项目</h2><h3 id="构建Django项目"><a href="#构建Django项目" class="headerlink" title="构建Django项目"></a>构建Django项目</h3><h4 id="1-创建项目"><a href="#1-创建项目" class="headerlink" title="1. 创建项目"></a>1. 创建项目</h4><p>在指定目录下创建一个名字为indata_dev的项目</p>
+<pre><code>django-admin startproject indata_dev
+</code></pre>
+<h4 id="2-创建APP"><a href="#2-创建APP" class="headerlink" title="2. 创建APP"></a>2. 创建APP</h4><p>切换到上一步创建的项目indata_dev目录下</p>
+<pre><code>cd indata_dev
+</code></pre>
+<p>然后创建利用下面的命令创建一个名为 indata_tool_api 的app</p>
+<pre><code>python manage.py startapp indata_tool_api
+</code></pre>
+<p>目录结构：</p>
+<p><img src="https://shirukai.gitee.io/images/201801171547_405.png"></p>
+<h4 id="3-配置数据库"><a href="#3-配置数据库" class="headerlink" title="3.配置数据库"></a>3.配置数据库</h4><p>django默认配置的数据库是 sqlite3，这个数据库无需安装配置，直接就可以用，但是不支持并发操作，性能上不如mysql。</p>
+<pre><code>DATABASES = &#123;
+    &#39;default&#39;: &#123;
+        &#39;ENGINE&#39;: &#39;django.db.backends.sqlite3&#39;,
+        &#39;NAME&#39;: os.path.join(BASE_DIR, &#39;db.sqlite3&#39;),
+    &#125;
+&#125;
+</code></pre>
+<p>所以我们选用mysql数据库，配置在 indata_dev/settiongs.py里，如下图所示：</p>
+<p>name 为数据库的名字,user 为mysql的用户名，password为msql用户密码 host，host是主机地址</p>
+<pre><code># Database
+# https://docs.djangoproject.com/en/1.11/ref/settings/#databases
+
+DATABASES = &#123;
+    &#39;default&#39;: &#123;
+        &#39;ENGINE&#39;: &#39;django.db.backends.mysql&#39;,
+        &#39;NAME&#39;: &#39;config_tool&#39;,
+        &#39;USER&#39;: &#39;root&#39;,
+        &#39;PASSWORD&#39;: &#39;123456Aa?&#39;,
+        &#39;HOST&#39;: &#39;localhost&#39;,
+    &#125;
+&#125;
+</code></pre>
+<h4 id="4-添加app到列表"><a href="#4-添加app到列表" class="headerlink" title="4. 添加app到列表"></a>4. 添加app到列表</h4><p>把创建的 indata_tool_api 加入到 settings.py中的 INSTALLED_APPS列表里</p>
+<pre><code>INSTALLED_APPS = [
+    &#39;django.contrib.admin&#39;,
+    &#39;django.contrib.auth&#39;,
+    &#39;django.contrib.contenttypes&#39;,
+    &#39;django.contrib.sessions&#39;,
+    &#39;django.contrib.messages&#39;,
+    &#39;django.contrib.staticfiles&#39;,
+    &#39;indata_tool_api&#39;
+]
+</code></pre>
+<h4 id="5-创建测试model"><a href="#5-创建测试model" class="headerlink" title="5. 创建测试model"></a>5. 创建测试model</h4><p>在indata_tool_api目录下的models.py里我们写一个测试model 如下：</p>
+<pre><code># -*- coding: utf-8 -*-
+from django.db import models
+
+
+# Create your models here.
+
+class TestModel(models.Model):
+   model_name = models.CharField(max_length=64)
+   add_time = models.DateTimeField(auto_now_add=True)
+</code></pre>
+<h4 id="6-创建测试方法"><a href="#6-创建测试方法" class="headerlink" title="6.创建测试方法"></a>6.创建测试方法</h4><p>在indta_tool_api 目录下的views.py里创建两个测试方法如下：</p>
+<pre><code># -*- coding: utf-8 -*-
+from django.http import JsonResponse
+from indata_tool_api.models import TestModel
+
+
+def add_model(request):
+    model_name = request.GET.get(&#39;model_name&#39;)
+    response = &#123;&#125;
+    try:
+        test_model = TestModel(model_name=model_name)
+        test_model.save()
+        response[&#39;msg&#39;] = &#39;success&#39;
+        response[&#39;error_num&#39;] = 0
+    except Exception, e:
+        response[&#39;msg&#39;] = str(e)
+        response[&#39;error_num&#39;] = 1
+
+    return JsonResponse(response)
+
+
+def show_models(request):
+    response = &#123;&#125;
+    try:
+        test_model = TestModel.objects.values()
+        response[&#39;list&#39;] = list(test_model)
+        response[&#39;msg&#39;] = &#39;success&#39;
+        response[&#39;error_num&#39;] = 0
+    except Exception, e:
+        response[&#39;msg&#39;] = str(e)
+        response[&#39;error_num&#39;] = 1
+
+    return JsonResponse(response)
+</code></pre>
+<h4 id="7-配置URL"><a href="#7-配置URL" class="headerlink" title="7.配置URL"></a>7.配置URL</h4><p>在app目录下创建一个urls.py的文件</p>
+<pre><code>from django.conf.urls import url, include
+from indata_tool_api import views
+
+urlpatterns = [
+url(r&#39;add_model$&#39;, views.add_model, ),
+url(r&#39;show_models$&#39;, views.show_models, ),
+]
+</code></pre>
+<p>把app下的urls.py添加到项目下的urls里。在indata_dev/indta_dev/urls.py里</p>
+<pre><code>from django.conf.urls import url, include
+from django.contrib import admin
+from django.views.generic import TemplateView
+import indata_tool_api.urls
+urlpatterns = [
+    url(r&#39;^admin/&#39;, admin.site.urls),
+    url(r&#39;^api/&#39;, include(indata_tool_api.urls)),
+    url(r&#39;^$&#39;, TemplateView.as_view(template_name=&quot;index.html&quot;)),
+]
+</code></pre>
+<h4 id="8-初始化数据库表"><a href="#8-初始化数据库表" class="headerlink" title="8.初始化数据库表"></a>8.初始化数据库表</h4><p>在项目根目录下运行如下命令，用以生成创建或更改数据库表结构的文件：</p>
+<pre><code>python manage.py makemigrations
+</code></pre>
+<p>将更改应用到数据库</p>
+<pre><code>python manage.py migrate
+</code></pre>
+<p>注意在执行第一条命令的时候会报错：</p>
+<p><img src="https://shirukai.gitee.io/images/201801171636_114.png"></p>
+<p>看错误信息，是因为我们没有安装 mysqlclient导致的。所以我们可以通过pip安装</p>
+<pre><code>pip install mysqlclient
+</code></pre>
+<p><img src="https://shirukai.gitee.io/images/201801171638_670.png"></p>
+<p>但是在安装mysqlclient的时候报错了，原因是没有安装 mysql-devel导致的。</p>
+<p>所以利用yum安装mysql-devel</p>
+<pre><code>yum install mysql-devel
+</code></pre>
+<p><img src="https://shirukai.gitee.io/images/201801171649_295.png"></p>
+<p>仍然报错。。错误信息提示没有安装gcc，执行如下命令安装gcc以及依赖环境</p>
+<pre><code>yum install gcc libffi-devel python-devel openssl-devel
+</code></pre>
+<p><img src="https://shirukai.gitee.io/images/201801171656_435.png"></p>
+<p>执行完上面命令之后，我们就可以看到数据库中被创建了我们需要的表。</p>
+<p><img src="https://shirukai.gitee.io/images/201801171701_586.png"></p>
+<h4 id="9-运行django项目"><a href="#9-运行django项目" class="headerlink" title="9. 运行django项目"></a>9. 运行django项目</h4><pre><code>python manage.py runserver 0.0.0.0:8000 
+</code></pre>
+<pre><code>[root@localhost indata_dev]# python manage.py runserver 0.0.0.0:8000
+Performing system checks...
+
+System check identified no issues (0 silenced).
+January 17, 2018 - 09:02:38
+Django version 1.11.7, using settings &#39;indata_dev.settings&#39;
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+</code></pre>
+<p><img src="https://shirukai.gitee.io/images/201801171708_768.png"></p>
+<p>报错，因为django不允许其他host访问，所以我们可以通过修改settings.py里的配置，来允许所有hosts访问</p>
+<pre><code>ALLOWED_HOSTS = [&#39;*&#39;]
+</code></pre>
+<p><img src="https://shirukai.gitee.io/images/201801171710_107.png"></p>
+<h4 id="10-测试api"><a href="#10-测试api" class="headerlink" title="10.测试api"></a>10.测试api</h4><p>写入数据</p>
+<p><img src="https://shirukai.gitee.io/images/201801171826_772.png"></p>
+<p>读取数据</p>
+<p><img src="https://shirukai.gitee.io/images/201801171839_481.png"></p>
+<h3 id="构建VUE项目"><a href="#构建VUE项目" class="headerlink" title="构建VUE项目"></a>构建VUE项目</h3><h4 id="1-创建项目-1"><a href="#1-创建项目-1" class="headerlink" title="1.创建项目"></a>1.创建项目</h4><p>在indta_dev项目根目录下运行如下命令，创建VUE项目</p>
+<pre><code>vue-init webpack indata_tool_web
+</code></pre>
+<p><img src="https://shirukai.gitee.io/images/201801171849_253.png"></p>
+<p>创建过程需要填写项目名、描述、作者、以及一些选项。</p>
+<h4 id="2-启动服务"><a href="#2-启动服务" class="headerlink" title="2.启动服务"></a>2.启动服务</h4><p>创建完成后，我们进入该vue项目indta_tool_web下进入config目录修改index.js，修改host为0.0.0.0</p>
+<pre><code> host: &#39;0.0.0.0&#39;, 
+</code></pre>
+<p>然后保存退出。</p>
+<p>在VUE项目根目录下，运行如下命令，启动vue server测试vue项目是否创建成功</p>
+<pre><code>npm run dev
+</code></pre>
+<p><img src="https://shirukai.gitee.io/images/201801171855_204.png"></p>
+<p>访问：192.168.162.111:8080</p>
+<p><img src="https://shirukai.gitee.io/images/201801171854_162.png"></p>
+<h4 id="3-安装组件"><a href="#3-安装组件" class="headerlink" title="3.安装组件"></a>3.安装组件</h4><p>vue-router 路由功能（已安装）</p>
+<p>vue-resource 用于发送http请求</p>
+<p>element-ui 饿了吗ui组件库</p>
+<p>nprogress 进度条（可选）</p>
+<h5 id="安装vue-resource"><a href="#安装vue-resource" class="headerlink" title="安装vue-resource"></a>安装vue-resource</h5><p>在vue项目根目录运行如下命令：</p>
+<pre><code>npm install vue-resource
+</code></pre>
+<p><img src="https://shirukai.gitee.io/images/201801180848_626.png"></p>
+<p>在indata_tool_web\src\main.js里引入vue-resource</p>
+<pre><code>import VueResource from &#39;vue-resource&#39;
+Vue.use(VueResource)
+</code></pre>
+<h5 id="安装element-ui"><a href="#安装element-ui" class="headerlink" title="安装element-ui"></a>安装element-ui</h5><p>在vue项目根目录运行如下命令：</p>
+<pre><code>npm install element-ui
+</code></pre>
+<p><img src="https://shirukai.gitee.io/images/201801180852_553.png"></p>
+<p>在indata_tool_web\src\main.js里引入element-ui</p>
+<pre><code>import ElementUI from &#39;element-ui&#39;
+import &#39;element-ui/lib/theme-chalk/index.css&#39;
+Vue.use(ElementUI)
+</code></pre>
+<h5 id="安装-nprogress"><a href="#安装-nprogress" class="headerlink" title="安装 nprogress"></a>安装 nprogress</h5><pre><code>npm install nprogress
+</code></pre>
+<p><img src="https://shirukai.gitee.io/images/201801180857_547.png"></p>
+<p>在indata_tool_web\src\main.js里引入nprogress</p>
+<pre><code>import NProgress from &#39;nprogress&#39; // Progress 进度条
+import &#39;nprogress/nprogress.css&#39;// Progress 进度条样式
+</code></pre>
+<h2 id="三、项目整合"><a href="#三、项目整合" class="headerlink" title="三、项目整合"></a>三、项目整合</h2><p>前面我们已经把django、vue的环境搭建起来，以及能够使他们各自能独立运行起来，下面我们将对两个项目进行整合开发。</p>
+<h3 id="1-项目导入pycharm"><a href="#1-项目导入pycharm" class="headerlink" title="1. 项目导入pycharm"></a>1. 项目导入pycharm</h3><p><img src="https://shirukai.gitee.io/images/201801180835_101.gif"></p>
+<h3 id="2-调用api"><a href="#2-调用api" class="headerlink" title="2. 调用api"></a>2. 调用api</h3><p>在vue 项目里测试调用django的api.</p>
+<p>修改indata_tool_web\src\components\HelloWorld.vue，添加如下代码：</p>
+<pre><code>&lt;template&gt;
+  &lt;div&gt;
+    &lt;el-input v-model=&quot;model_name&quot;&gt;&lt;/el-input&gt;
+    &lt;el-button type=&quot;primary&quot; @click=&quot;addModel&quot;&gt;提交&lt;/el-button&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+</code></pre>
+<pre><code>export default &#123;
+  name: &#39;HelloWorld&#39;,
+  data() &#123;
+    return &#123;
+      model_name: &#39;&#39;
+    &#125;
+  &#125;,
+  methods: &#123;
+    addModel() &#123;
+      this.$http.get(&#39;http://192.168.162.111:8000/api/add_model?model_name=&#39; + this.add_model).then(
+        (response) =&gt; &#123;
+          const res = JSON.parse(response.bodyText);
+          //console.log(res);
+        &#125;,
+        (response) =&gt; &#123;
+        &#125;
+      );
+    &#125;
+  &#125;
+&#125;
+</code></pre>
+<p><img src="https://shirukai.gitee.io/images/201801180917_733.png"></p>
+<p>出现这种错误，是django不允许跨域的问题，所以我们需要设置django允许跨域访问。这时候我们须要在Django层注入header，用Django的第三方包<code>django-cors-headers</code>来解决跨域问题：</p>
+<pre><code>  pip install django-cors-headers
+</code></pre>
+<p><img src="https://shirukai.gitee.io/images/201801180919_585.png"></p>
+<p>修改settings.py</p>
+<pre><code>MIDDLEWARE = [
+    &#39;django.middleware.security.SecurityMiddleware&#39;,
+    &#39;django.contrib.sessions.middleware.SessionMiddleware&#39;,
+    &#39;corsheaders.middleware.CorsMiddleware&#39;,
+    &#39;django.middleware.common.CommonMiddleware&#39;,
+    &#39;django.middleware.csrf.CsrfViewMiddleware&#39;,
+    &#39;django.contrib.auth.middleware.AuthenticationMiddleware&#39;,
+    &#39;django.contrib.messages.middleware.MessageMiddleware&#39;,
+    &#39;django.middleware.clickjacking.XFrameOptionsMiddleware&#39;,
+]
+
+CORS_ORIGIN_ALLOW_ALL = True
+</code></pre>
+<p><img src="https://shirukai.gitee.io/images/201801180920_257.png"></p>
+<h3 id="3-打包vue"><a href="#3-打包vue" class="headerlink" title="3.打包vue"></a>3.打包vue</h3><p>在前端工程目录下，输入<code>npm run build</code>，如果项目没有错误的话，就能够看到所有的组件、css、图片等都被webpack自动打包到dist目录下了：</p>
+<p><img src="https://shirukai.gitee.io/images/201801180925_919.png"></p>
+<h3 id="4-Django、vue整合"><a href="#4-Django、vue整合" class="headerlink" title="4.Django、vue整合"></a>4.Django、vue整合</h3><blockquote>
+<p> 将django的TemplateView指向我们刚才生成的前端dist文件 </p>
+</blockquote>
+<p>找到project目录的urls.py，使用通用视图创建最简单的模板控制器，访问 『/』时直接返回 index.html:</p>
+<pre><code>from django.conf.urls import url, include
+from django.contrib import admin
+from django.views.generic import TemplateView
+import indata_tool_api.urls
+
+
+urlpatterns = [
+    url(r&#39;^admin/&#39;, admin.site.urls),
+    url(r&#39;^api/&#39;, include(indata_tool_api.urls)),
+    url(r&#39;^$&#39;, TemplateView.as_view(template_name=&quot;index.html&quot;)),
+]
+</code></pre>
+<p>上一步使用了Django的模板系统，所以需要配置一下模板使Django知道从哪里找到index.html。在project目录的settings.py下：</p>
+<pre><code>TEMPLATES = [
+    &#123;
+        &#39;BACKEND&#39;: &#39;django.template.backends.django.DjangoTemplates&#39;,
+        &#39;DIRS&#39;: [&#39;indata_tool_web/dist&#39;],
+        &#39;APP_DIRS&#39;: True,
+        &#39;OPTIONS&#39;: &#123;
+            &#39;context_processors&#39;: [
+                &#39;django.template.context_processors.debug&#39;,
+                &#39;django.template.context_processors.request&#39;,
+                &#39;django.contrib.auth.context_processors.auth&#39;,
+                &#39;django.contrib.messages.context_processors.messages&#39;,
+            ],
+        &#125;,
+    &#125;,
+]
+</code></pre>
+<p>我们还需要配置一下静态文件的搜索路径。同样是project目录的settings.py下：</p>
+<pre><code># Add for vuejs
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, &quot;indata_tool_web/dist/static&quot;),
+]
+</code></pre>
+<p>配置完成，我们在project目录下输入命令<code>python manage.py runserver 0.0.0.0:8000</code>，就能够看到我们的前端页面在浏览器上展现：</p>
+<p><img src="https://shirukai.gitee.io/images/201801180932_190.png"></p>
+<p>至此，一个django+vue的环境以及整合项目就搭建完成了。</p>
+<p>参考文章：<a target="_blank" rel="noopener" href="https://www.qcloud.com/community/article/774449">https://www.qcloud.com/community/article/774449：    </a></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="toc-number">1.</span> <span class="toc-text">一、环境搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%AE%89%E8%A3%85python"><span class="toc-number">1.1.</span> <span class="toc-text">1. 安装python</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%AE%89%E8%A3%85-node-js"><span class="toc-number">1.2.</span> <span class="toc-text">2. 安装 node.js</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%AE%89%E8%A3%85mysql"><span class="toc-number">1.3.</span> <span class="toc-text">3. 安装mysql</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E5%AE%89%E8%A3%85pip"><span class="toc-number">1.4.</span> <span class="toc-text">4. 安装pip</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E5%AE%89%E8%A3%85Django"><span class="toc-number">1.5.</span> <span class="toc-text">5. 安装Django</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E5%AE%89%E8%A3%85vue-cli"><span class="toc-number">1.6.</span> <span class="toc-text">6. 安装vue-cli</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E6%9E%84%E5%BB%BA%E9%A1%B9%E7%9B%AE"><span class="toc-number">2.</span> <span class="toc-text">二、构建项目</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%84%E5%BB%BADjango%E9%A1%B9%E7%9B%AE"><span class="toc-number">2.1.</span> <span class="toc-text">构建Django项目</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%84%E5%BB%BAVUE%E9%A1%B9%E7%9B%AE"><span class="toc-number">2.2.</span> <span class="toc-text">构建VUE项目</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E9%A1%B9%E7%9B%AE%E6%95%B4%E5%90%88"><span class="toc-number">3.</span> <span class="toc-text">三、项目整合</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E9%A1%B9%E7%9B%AE%E5%AF%BC%E5%85%A5pycharm"><span class="toc-number">3.1.</span> <span class="toc-text">1. 项目导入pycharm</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E8%B0%83%E7%94%A8api"><span class="toc-number">3.2.</span> <span class="toc-text">2. 调用api</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E6%89%93%E5%8C%85vue"><span class="toc-number">3.3.</span> <span class="toc-text">3.打包vue</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-Django%E3%80%81vue%E6%95%B4%E5%90%88"><span class="toc-number">3.4.</span> <span class="toc-text">4.Django、vue整合</span></a></li></ol></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

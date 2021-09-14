@@ -1,0 +1,1000 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Spark RDD - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="概念：
+一个只读且分区的数据集
+RDD的优势：
+高效容错
+可以控制数据的分区来优化计算性能
+并行处理
+提供了丰富的操作数据的api
+可以显示的将任何类型的中间结果存储在内存中
+RDD的五个主要特性 ,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">Spark RDD</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/4.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/Spark"><b>「
+                    </b>SPARK<b> 」</b></a>
+                
+                August 28, 2018
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/spark-rdd.html" title="Spark RDD" class="">Spark RDD</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    22k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    20 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Spark/" rel="tag">Spark</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <p>概念：</p>
+<p>一个只读且分区的数据集</p>
+<p>RDD的优势：</p>
+<p>高效容错</p>
+<p>可以控制数据的分区来优化计算性能</p>
+<p>并行处理</p>
+<p>提供了丰富的操作数据的api</p>
+<p>可以显示的将任何类型的中间结果存储在内存中</p>
+<h2 id="RDD的五个主要特性"><a href="#RDD的五个主要特性" class="headerlink" title="RDD的五个主要特性"></a>RDD的五个主要特性</h2><pre><code> * Internally, each RDD is characterized by five main properties:
+ *
+ *  - A list of partitions 一系列的分区/分片
+ *  - A function for computing each split 一个用于计算每一个分区的函数
+ *  - A list of dependencies on other RDDs 一些列依赖
+ *  - Optionally, a Partitioner for key-value RDDs (e.g. to say that the RDD is hash-partitioned) 分区器
+ *  - Optionally, a list of preferred locations to compute each split on (e.g. block locations for
+ *    an HDFS file) 数据在哪优先把作业调度到数据所在的节点进行计算：移动数据不如移动计算
+</code></pre>
+<h2 id="深入查看RDD的五个抽象API"><a href="#深入查看RDD的五个抽象API" class="headerlink" title="深入查看RDD的五个抽象API"></a>深入查看RDD的五个抽象API</h2><p>源码：</p>
+<pre><code class="scala">/**
+ * :: DeveloperApi ::
+ * Implemented by subclasses to compute a given partition.
+  *
+  * 在一个task上下文中计算某一个分区的数据得到一个Iterator
+ */
+@DeveloperApi
+def compute(split: Partition, context: TaskContext): Iterator[T]
+
+/**
+ * Implemented by subclasses to return the set of partitions in this RDD. This method will only
+ * be called once, so it is safe to implement a time-consuming computation in it.
+ *
+ * The partitions in this array must satisfy the following property:
+ *   `rdd.partitions.zipWithIndex.forall &#123; case (partition, index) =&gt; partition.index == index &#125;`
+  *   获取RDD的分区列表,用于并行计算
+ */
+protected def getPartitions: Array[Partition]
+
+/**
+ * Implemented by subclasses to return how this RDD depends on parent RDDs. This method will only
+ * be called once, so it is safe to implement a time-consuming computation in it.
+  * 获取依赖列表
+ */
+protected def getDependencies: Seq[Dependency[_]] = deps
+
+/**
+ * Optionally overridden by subclasses to specify placement preferences.
+  * 获取RDD某一个分区的数据存储在哪一个机器上
+ */
+protected def getPreferredLocations(split: Partition): Seq[String] = Nil
+
+/** Optionally overridden by subclasses to specify how they are partitioned.
+  * 分区器
+  * */
+@transient val partitioner: Option[Partitioner] = None
+</code></pre>
+<h2 id="RDD的创建方式"><a href="#RDD的创建方式" class="headerlink" title="RDD的创建方式"></a>RDD的创建方式</h2><ol>
+<li>从一个稳定的存储系统中，比如HDFS文件</li>
+<li>从一个存在的RDD上可以创建一个RDD</li>
+<li>从内存中已存在的序列列表中</li>
+</ol>
+<pre><code class="scala">package com.hollysys.spark
+
+import org.apache.spark.&#123;SparkConf, SparkContext&#125;
+
+/**
+  * Created by shirukai on 2018/6/21
+  */
+object RDDCreationTest &#123;
+  def main(args: Array[String]): Unit = &#123;
+    val conf = new SparkConf().setAppName(this.getClass.toString).setMaster(&quot;local&quot;)
+    val sc = new SparkContext(conf)
+
+    //创建RDD的方法
+    //1.从一个稳定的存储系统中，比如hdfs文件，或者本地文件系统
+    val hdfsFileRDD = sc.textFile(&quot;hdfs://cdh-master:8020//user/root/srk/words.txt&quot;)
+    hdfsFileRDD.count()
+
+    //2.从一个已经存在的RDD中，即RDD的transformation api
+    val mapRDD = hdfsFileRDD.map(x =&gt; x + &quot;test&quot;)
+    mapRDD.count()
+
+    //3.从一个已经存在于内存中的列表，可以指定分区
+    val listRDD = sc.parallelize[Int](Seq(1,2,3,3,4),2)
+    listRDD.collect()
+    //查看哪个分区有哪些元素
+    listRDD.glom().collect()
+    //创建一个range RDD 从0到10步长为2，分区个数是4个
+    val rangeRDD = sc.range(0,10,2,4)
+    rangeRDD.collect()
+    /**
+      * res7: Array[Long] = Array(0, 2, 4, 6, 8)
+      * */
+
+    //与parallelize一样,makeRDD可以指定存储的机器
+    val makeRDD = sc.makeRDD(Seq(1,2,3,3,4),2)
+    makeRDD.collect()
+  &#125;
+&#125;
+</code></pre>
+<h2 id="Parallelize"><a href="#Parallelize" class="headerlink" title="Parallelize"></a>Parallelize</h2><h2 id="RDD-Dependency"><a href="#RDD-Dependency" class="headerlink" title="RDD Dependency"></a>RDD Dependency</h2><p>窄依赖：父亲RDD的一个分区的数据只能被子RDD的一个分区消费</p>
+<p>宽依赖：父亲RDD的一个分区的数据同时被子RDD的多个分区消费</p>
+<h2 id="RDD分区"><a href="#RDD分区" class="headerlink" title="RDD分区"></a>RDD分区</h2><p>从存储系统创建RDD的分区不需要分区</p>
+<p>非key-value RDD分区不需要分区</p>
+<p>key-value需要分区</p>
+<h3 id="HashPartitioner"><a href="#HashPartitioner" class="headerlink" title="HashPartitioner"></a>HashPartitioner</h3><p>partitionBy(newHashPartitioner(2))</p>
+<h3 id="HashPartitioner性能优化"><a href="#HashPartitioner性能优化" class="headerlink" title="HashPartitioner性能优化"></a>HashPartitioner性能优化</h3><p><img src="https://shirukai.gitee.io/images/6a6801dd01f8fd5cdd1db05d51af86a9.jpg"></p>
+<p>两个知识点：</p>
+<p>对RDD预分区会提高计算性能</p>
+<p>是否保留父RDD的分区器</p>
+<h3 id="RangePartitioner原理"><a href="#RangePartitioner原理" class="headerlink" title="RangePartitioner原理"></a>RangePartitioner原理</h3><p>将可以排序的key分到几个大概相等的范围分区中的一个分区汇中</p>
+<p>比如一个有10个分区的RDD[(Int,String)]需要按照RangePartitioner重分区为3个分区：</p>
+<p>分区一接收&gt;=0且&lt;=10的key的数据</p>
+<p>分区二接收&gt;10且&lt;=30的key的数据</p>
+<p>分区三接收&gt;30的key的数据</p>
+<h4 id="实现步骤如下："><a href="#实现步骤如下：" class="headerlink" title="实现步骤如下："></a>实现步骤如下：</h4><ol>
+<li>对每一个分区进行数据采样并计算每一个采样到的数据的权重</li>
+<li>根据采样到的数据和权重计算每一个分区的最大的key值</li>
+<li>用需要分区的key和上面计算得到的每一个分区最大的key值对比决定这个key所在的分区</li>
+</ol>
+<h3 id="自定义Partitioner"><a href="#自定义Partitioner" class="headerlink" title="自定义Partitioner"></a>自定义Partitioner</h3><p>如果key为url，我们希望域名相同的key进入到同一个分区</p>
+<p>我们自定义DomainNamePartitioner</p>
+<pre><code class="scala">package com.hollysys.spark
+
+import java.net.URL
+
+import org.apache.spark.&#123;HashPartitioner, Partitioner, SparkContext&#125;
+
+/**
+  * Created by shirukai on 2018/6/21
+  */
+
+class DomainNamePartitioner(val numParts: Int) extends Partitioner &#123;
+
+
+  //分多少分区
+  override def numPartitions: Int = numParts
+
+  //获取分区
+  override def getPartition(key: Any): Int = &#123;
+    val domain = new URL(key.toString).getHost
+        val code = (domain.hashCode % numParts)
+        if (code &lt; 0) &#123;
+          code + numParts
+        &#125; else &#123;
+          code
+        &#125;
+  &#125;
+
+  override def equals(obj: scala.Any): Boolean = obj match &#123;
+    case dnp: DomainNamePartitioner =&gt;
+      dnp.numParts == numParts
+    case _ =&gt; false
+  &#125;
+
+  //override def hashCode(): Int = numParts
+&#125;
+
+object DomainNamePartitioner &#123;
+  def main(args: Array[String]): Unit = &#123;
+    val sc = new SparkContext(&quot;local&quot;, this.getClass.getSimpleName)
+    val urlRDD = sc.makeRDD(Seq((&quot;http://baidu.com/test&quot;, 2), (&quot;http://baidu.com/index&quot;, 2),
+      (&quot;http://ali.com/index&quot;, 3), (&quot;http://ali.com/bigdata&quot;, 4), (&quot;http://baidu.com/change&quot;, 3)))
+    urlRDD.glom().collect()
+    //Array(Array((http://baidu.com/test,2), (http://baidu.com/index,2)),
+    // Array((http://hollysys.com/index,3), (http://hollysys.com/bigdata,4), (http://baidu.com/change,3)))
+    val hashPartitionedRDD = urlRDD.partitionBy(new HashPartitioner(2))
+    hashPartitionedRDD.glom().collect()
+    //Array(Array(),
+    // Array((http://hollysys.com/index,3), (http://hollysys.com/bigdata,4), (http://baidu.com/change,3), (http://baidu.com/test,2), (http://baidu.com/index,2)))
+
+    val domainNamePartitionedRDD = urlRDD.partitionBy(new DomainNamePartitioner(2))
+    val a = domainNamePartitionedRDD.glom().collect()
+    println(a)
+  &#125;
+&#125;
+</code></pre>
+<h3 id="Hash-与Range两种Partitioner对比"><a href="#Hash-与Range两种Partitioner对比" class="headerlink" title="Hash 与Range两种Partitioner对比"></a>Hash 与Range两种Partitioner对比</h3><p><img src="https://shirukai.gitee.io/images/1ebc29e107ca59af9ab55218ff75516f.jpg"></p>
+<h3 id="coalesce使用场景"><a href="#coalesce使用场景" class="headerlink" title="coalesce使用场景"></a>coalesce使用场景</h3><p>改变RDD的分区数</p>
+<pre><code class="scala">package com.hollysys.spark
+
+import org.apache.spark.SparkContext
+
+/**
+  * Created by shirukai on 2018/6/21
+  */
+object CoalesceTest &#123;
+  def main(args: Array[String]): Unit = &#123;
+    val sc = new SparkContext(&quot;local&quot;,this.getClass.getSimpleName)
+    //创建一个RDD，并设置分区数为1000个
+    val hdfsFileRDD = sc.textFile(&quot;hdfs://cdh-master:8020//user/root/srk/words.txt&quot;,1000)
+    //查看 hdfsFileRDD的分区数是否为1000
+    hdfsFileRDD.partitions.size
+
+    //我们通过coalesce来降低分区数量的目的是：
+    //分区太多，每个分区的数据量太少，导致太多的task，我们想介绍task的数量，所以要降低分区数
+    //第一个参数表示我们期望的分区数
+    //第二个参数表示是否需要经过shuffle来达到我们的分区数
+    val coalesceRDD = hdfsFileRDD.coalesce(100,false)
+    coalesceRDD.partitions.size
+  &#125;
+&#125;
+</code></pre>
+<p>场景一：将一个含有100个分区的RDD的分区降为10个</p>
+<p>APi: hdfsFileRDD.coalesce(10,false)</p>
+<p>场景二：将一个含有10个分区的RDD的分区数升为100个</p>
+<p>Api: hdfsFileRDD.coalesce(100,false) 不会增</p>
+<p>场景三：将一个含有1000个分区的RDD的分区数降为2个</p>
+<p>Api：hdfsFileRDD.coalesce(2,true)</p>
+<p>场景四：将一个含有10个分区的RDD的分区数升为100个</p>
+<p>Api：hdfsFileRDD.coalesce(100,true)</p>
+<h4 id="hdfsFileRDD-repartition-100-hdfsFileRDD-coalesce-100-true"><a href="#hdfsFileRDD-repartition-100-hdfsFileRDD-coalesce-100-true" class="headerlink" title="hdfsFileRDD.repartition(100) ==hdfsFileRDD.coalesce(100,true)"></a>hdfsFileRDD.repartition(100) ==hdfsFileRDD.coalesce(100,true)</h4><h2 id="单类型RDD操作API"><a href="#单类型RDD操作API" class="headerlink" title="单类型RDD操作API"></a>单类型RDD操作API</h2><h3 id="RDD基本transformation-api-介绍"><a href="#RDD基本transformation-api-介绍" class="headerlink" title="RDD基本transformation api 介绍"></a>RDD基本transformation api 介绍</h3><h4 id="map、flatmap、filter、mapPartitions、mapPatitonWithIndexRDD"><a href="#map、flatmap、filter、mapPartitions、mapPatitonWithIndexRDD" class="headerlink" title="map、flatmap、filter、mapPartitions、mapPatitonWithIndexRDD"></a>map、flatmap、filter、mapPartitions、mapPatitonWithIndexRDD</h4><pre><code class="scala">package com.hollysys.spark
+
+import org.apache.spark.SparkContext
+
+/**
+  * Created by shirukai on 2018/6/21
+  */
+object MapApiTest &#123;
+  def main(args: Array[String]): Unit = &#123;
+    val sc = new SparkContext(&quot;local&quot;, this.getClass.getSimpleName)
+    val listRDD = sc.parallelize(Seq(1, 2, 3, 3, 4), 2)
+
+    val mapRDD = listRDD.map(x =&gt; x + 2)
+    mapRDD.collect
+    //Array(3, 4, 5, 5, 6)
+    val users = listRDD.map(x =&gt; &#123;
+      if (x &lt; 3) User(&quot;小于3&quot;, x) else User(&quot;大于3&quot;, x)
+    &#125;)
+    //res0: Array[User] = Array(User(小于3,1), User(小于3,2), User(大于3,3), User(大于3,3), User(大于3,4))
+
+
+    //scala中的map和flatmap的区别
+    val l = List(List(1, 2, 3), List(2, 3, 4))
+    l.map(x =&gt; x.toString())
+    //res0: List[String] = List(List(1, 2, 3), List(2, 3, 4))
+    l.flatMap(x =&gt; x)
+    //res1: List[Int] = List(1, 2, 3, 2, 3, 4)
+    0.to(3)
+    //res2: scala.collection.immutable.Range.Inclusive = Range(0, 1, 2, 3)
+
+    //spark中的flatMap
+    val flatMapRDD = listRDD.flatMap(x =&gt; x.to(3))
+    flatMapRDD.collect()
+    //res3: Array[Int] = Array(1, 2, 3, 2, 3, 3, 3)
+
+    val filterRDD = listRDD.filter(x =&gt; x != 1)
+    filterRDD.collect()
+    //res4: Array[Int] = Array(2, 3, 3, 4)
+
+
+    //将rdd的每一个分区的数据转成一个数组，进而将所有的分区数据转成一个二维数组
+    val glomRDD = listRDD.glom()
+    glomRDD.collect()
+    //res5: Array[Array[Int]] = Array(Array(1, 2), Array(3, 3, 4))
+
+    val mapPartitionRDD = listRDD.mapPartitions(iterator =&gt; &#123;
+      iterator.map(x =&gt; x + 1)
+    &#125;)
+    mapPartitionRDD.collect()
+    //res0: Array[Int] = Array(2, 3, 4, 4, 5)
+
+    val mapPatitonWithIndexRDD = listRDD.mapPartitionsWithIndex((index, iterator) =&gt; &#123;
+      iterator.map(x =&gt; x + index)
+    &#125;)
+    mapPatitonWithIndexRDD.collect()
+
+    mapPartitionRDD.saveAsTextFile(&quot;hdfs://localhost:9000/output&quot;)
+
+  &#125;
+&#125;
+
+case class User(userId: String, amount: Int)
+</code></pre>
+<h3 id="采样API介绍"><a href="#采样API介绍" class="headerlink" title="采样API介绍"></a>采样API介绍</h3><h4 id="sample-false-0-1"><a href="#sample-false-0-1" class="headerlink" title="sample(false,0.1)"></a>sample(false,0.1)</h4><p><img src="https://shirukai.gitee.io/images/2e6fc8237adb859ce64b30c7f72b814d.jpg"></p>
+<pre><code>sample(withReplacement:boolean,fraction:double,seed:Long)
+</code></pre>
+<p>有放回采样，无放回采样</p>
+<p>如果withReplacement=true的话表示有放回的抽样，采用泊松抽样算法实现</p>
+<p>如果withReplacement=false的话表示无返回的抽样，采用伯努利抽样算法实现</p>
+<p>fraction表示每一个元素被抽为样本的概率，并不是表示需要抽取的数据量的因子</p>
+<p>seed 种子，每一个分区采样的随机种子</p>
+<h4 id="takeSample-false-5"><a href="#takeSample-false-5" class="headerlink" title="takeSample(false,5)"></a>takeSample(false,5)</h4><p><img src="https://shirukai.gitee.io/images/8f793f2233a15b6ce6466991f698c804.jpg"></p>
+<h4 id="randomSplit-Array-0-2-0-4-0-4"><a href="#randomSplit-Array-0-2-0-4-0-4" class="headerlink" title="randomSplit(Array(0.2,0.4,0.4))"></a>randomSplit(Array(0.2,0.4,0.4))</h4><pre><code class="scala">package com.hollysys.spark
+
+import org.apache.spark.&#123;SparkConf, SparkContext&#125;
+
+/**
+  * Created by shirukai on 2018/6/22
+  * 抽样api测试
+  */
+object SampleApiTest &#123;
+  def main(args: Array[String]): Unit = &#123;
+    val conf = new SparkConf().setAppName(this.getClass.getSimpleName).setMaster(&quot;local&quot;)
+    val sc = new SparkContext(conf)
+    val listRDD = sc.parallelize(Seq(1, 2, 3, 3), 2)
+
+    //第一个参数为withReplacenment
+    //如果withReplacement=true的话表示又放回的抽样，采用泊松抽样算法实现
+    //如果withReplacement=false的话表示无放回抽样，采用伯努利抽样算法实现
+
+    //第二个参数为：fraction，表示每一个元素被抽取为样本的概率，并不是表示需要抽取的数据量的因子
+    //比如从100个数据中抽样，fraction=0.2，并不是表示需要抽取100*0.2=20个数据，
+    //而是100个元素的被抽取为样本的概率为0.2；样本的大小并不是固定的，而是服从二项分布
+    //当withReplacement=true的时候，fraction&gt;=0
+    //当withReplacement=false的时候，0&lt;fraction&lt;1
+
+    //第三个参数为：reed表示生成随机数的种子，即根据这个reed为rdd的每一个分区生成一个随机种子
+    val sampleRDD = listRDD.sample(false, 0.5, 100)
+    sampleRDD.glom().collect()
+    //Array[Array[Int]] = Array(Array(1), Array(3))
+
+    //按照权重对RDD进行随机抽样切分，有几个权重，就切分成几个RDD
+    val splitRDD = listRDD.randomSplit(Array(0.2, 0.8))
+    splitRDD.size
+    splitRDD(0).glom().collect()
+    //res3: Array[Array[Int]] = Array(Array(), Array())
+    splitRDD(1).glom().collect()
+    //res4: Array[Array[Int]] = Array(Array(1, 2), Array(3, 3))
+    
+
+
+    //随机抽取指定数量的样本数据
+    listRDD.takeSample(false, 1, 100)
+    //res1: Array[Int] = Array(1)
+
+  &#125;
+&#125; 
+</code></pre>
+<h3 id="分层采样API"><a href="#分层采样API" class="headerlink" title="分层采样API"></a>分层采样API</h3><p>分层采样：将数据根据不同的特征组成不同的组，然后按特定条件从不同的组中获取样本并重新组成新的数组。</p>
+<p><img src="https://shirukai.gitee.io/images/fa2719a2ce0d4a6777cebf84ad31f1b4.jpg"></p>
+<p>对于一个键值RDD，key用于分类，value可以使任意的值</p>
+<p>然后我们通过fractions参数定义分类条件和采样几率</p>
+<p>因此fracions参数定义一个Map[K,Double]类型，其中key是键值的分层条件，Double是满足条件的key条件的采样比例</p>
+<h4 id="sampleBykey"><a href="#sampleBykey" class="headerlink" title="sampleBykey"></a>sampleBykey</h4><h4 id="sampleByKeyExact"><a href="#sampleByKeyExact" class="headerlink" title="sampleByKeyExact"></a>sampleByKeyExact</h4><pre><code class="scala">    val pairRDD = sc.parallelize[(Int, Int)](Seq(
+      (1, 2), (3, 4), (3, 6), (5, 6)
+    ), 4)
+    pairRDD.collect()
+    //Array[(Int, Int)] = Array((1,2), (3,4), (3,6), (5,6))
+
+
+    //分层采样
+    val fractions = Map(1 -&gt; 0.3, 3 -&gt; 0.6, 5 -&gt; 0.3)
+
+    val sampleByKeyRDD = pairRDD.sampleByKey(true, fractions)
+    sampleByKeyRDD.glom().collect()
+    //Array[Array[(Int, Int)]] = Array(Array((1,2)), Array(), Array(), Array((5,6)))
+
+    val sampleByKeyExacRDD = pairRDD.sampleByKeyExact(true, fractions)
+    sampleByKeyExacRDD.glom().collect()
+
+    //res1: Array[Array[(Int, Int)]] = Array(Array((1,2)), Array(), Array((3,6), (3,6)), Array((5,6))
+  
+</code></pre>
+<p>sampleBykey 和sampleByKeyExact的区别</p>
+<p>sampleBykey并不对过滤全量数据。因此只得到近似值</p>
+<p>sampleByKeyExtra会对全量数据做采样计算，因此耗费大量的计算资源，但是结果会更准确</p>
+<h3 id="pipe的使用方式及其特点"><a href="#pipe的使用方式及其特点" class="headerlink" title="pipe的使用方式及其特点"></a>pipe的使用方式及其特点</h3><p>执行python或者sh脚本，然后生成新的脚本</p>
+<pre><code class="scala">package com.hollysys.spark
+
+import org.apache.spark.SparkContext
+
+/**
+  * Created by shirukai on 2018/6/27
+  */
+object pipeTest &#123;
+  def main(args: Array[String]): Unit = &#123;
+    val sc = new SparkContext(&quot;local&quot;, this.getClass.getSimpleName)
+
+    val dataRDD = sc.parallelize(List(&quot;hi&quot;, &quot;hello&quot;, &quot;how&quot;, &quot;are&quot;, &quot;you&quot;), 2)
+
+    //运行进程需要的环境变量
+    val env = Map(&quot;env&quot; -&gt; &quot;test-env&quot;)
+
+    def printPipeContext(func: String =&gt; Unit): Unit = &#123;
+      val tastkContextData = &quot;this is task context data per partition&quot;
+      func(tastkContextData)
+    &#125;
+
+    def printRDDElement(ele: String, func: String =&gt; Unit): Unit = &#123;
+      if (ele == &quot;hello&quot;) &#123;
+        func(&quot;dog&quot;)
+      &#125; else func(ele)
+    &#125;
+
+
+    val pipeRDD = dataRDD.pipe(Seq(&quot;sh&quot;, &quot;/Users/shirukai/Desktop/HollySys/Repository/sparkLearn/src/main/resource/echo.sh&quot;),
+      env, printPipeContext, printRDDElement, false)
+
+    pipeRDD.glom().collect()
+
+  &#125;
+&#125;
+</code></pre>
+<h3 id="RDD基本操作-action"><a href="#RDD基本操作-action" class="headerlink" title="RDD基本操作-action"></a>RDD基本操作-action</h3><p>foreach、foreachPartition、collect、take、first、top、max、min</p>
+<p><img src="https://shirukai.gitee.io/images/5f36509b23712374ed4d5f60d97061d5.jpg"></p>
+<pre><code class="scala">package com.hollysys.spark
+
+import org.apache.spark.SparkContext
+
+/**
+  * Created by shirukai on 2018/6/27
+  */
+object BaseActionApiTest &#123;
+  def main(args: Array[String]): Unit = &#123;
+    val sc = new SparkContext(&quot;local&quot;, this.getClass.getSimpleName)
+
+    val listRDD = sc.parallelize[Int](Seq(1, 2, 4, 3, 3, 6), 2)
+
+    listRDD.collect()
+    //res6: Array[Int] = Array(1, 2, 4, 3, 3, 6)
+
+    listRDD.take(2)
+    //res7: Array[Int] = Array(1, 2)
+
+    listRDD.top(2)
+    //res8: Array[Int] = Array(6, 4)
+
+    listRDD.first()
+    //res9: Int = 1
+
+    listRDD.min()
+    //res10: Int = 1
+
+    listRDD.max()
+    //res11: Int = 6
+
+    listRDD.takeOrdered(2)
+    //res12: Array[Int] = Array(1, 2)
+
+
+    listRDD.reduce((x, y) =&gt; x + y)
+    //res13: Int = 19
+
+
+    listRDD.treeReduce((x, y) =&gt; x + y)
+    //res14: Int = 19
+
+    listRDD.fold(0)((x, y) =&gt; x + y)
+    //res15: Int = 19
+
+
+  &#125;
+&#125;
+
+class MyOrdering extends Ordering[Int] &#123;
+  override def compare(x: Int, y: Int): Int = &#123;
+    x - y
+  &#125;
+&#125;
+</code></pre>
+<h2 id="key-value类型RDD操作API"><a href="#key-value类型RDD操作API" class="headerlink" title="key-value类型RDD操作API"></a>key-value类型RDD操作API</h2><pre><code class="scala">package com.hollysys.spark
+
+import org.apache.spark.SparkContext
+
+/**
+  * Created by shirukai on 2018/6/28
+  */
+object KeyValueCreationTest &#123;
+  def main(args: Array[String]): Unit = &#123;
+    val sc = new SparkContext(&quot;local&quot;, this.getClass.getSimpleName)
+
+    val kvPairRDD = sc.parallelize(Seq(
+      (&quot;key1&quot;, &quot;value1&quot;),
+      (&quot;key2&quot;, &quot;value2&quot;),
+      (&quot;key3&quot;, &quot;value3&quot;)
+    ))
+    kvPairRDD.collect()
+    //res0: Array[(String, String)] = Array((key1,value1), (key2,value2), (key3,value3))
+
+
+    val personSeqRDD = sc.parallelize(Seq(
+      User(&quot;jeffy&quot;, 30),
+      User(&quot;kkk&quot;, 20),
+      User(&quot;jeffy&quot;, 30),
+      User(&quot;kkk&quot;, 30)
+    ))
+
+    //将RDD变成二元组类型的RDD
+    val keyByRDD = personSeqRDD.keyBy(_.userId)
+    keyByRDD.collect()
+    //res1: Array[(String, User)] = Array((jeffy,User(jeffy,30)), (kkk,User(kkk,20)), (jeffy,User(jeffy,30)), (kkk,User(kkk,30)))
+
+    //等价于
+    val keyRDD2 = personSeqRDD.map(user =&gt; (user.userId, user))
+    keyRDD2.collect()
+
+    val groupByRDD = personSeqRDD.groupBy(_.userId)
+    groupByRDD.collect()
+    //res3: Array[(String, Iterable[User])] = Array((jeffy,CompactBuffer(User(jeffy,30), User(jeffy,30))), (kkk,CompactBuffer(User(kkk,20), User(kkk,30))))
+
+    
+  &#125;
+&#125;
+
+case class User(userId: String, amount: Int)
+</code></pre>
+<h3 id="combineByKey"><a href="#combineByKey" class="headerlink" title="combineByKey"></a>combineByKey</h3><p>前三个参数：</p>
+<p><img src="https://shirukai.gitee.io/images/30196730509fd3fc3c441f8b7256085a.jpg"></p>
+<pre><code class="scala">package com.hollysys.spark
+
+import org.apache.spark.SparkContext
+
+import scala.reflect.ClassTag
+
+/**
+  * Created by shirukai on 2018/6/28
+  */
+object CombineByKeyApiTest &#123;
+  def test[C: ClassTag]() = &#123;
+    println(reflect.classTag[C].runtimeClass.getName)
+  &#125;
+
+  def main(args: Array[String]): Unit = &#123;
+    test[String]()
+    val sc = new SparkContext(&quot;local&quot;, this.getClass.getSimpleName)
+
+    val pairStrRDD = sc.parallelize[(String, Int)](Seq(
+      (&quot;coffee&quot;, 1),
+      (&quot;coffee&quot;, 2),
+      (&quot;panda&quot;, 3),
+      (&quot;coffee&quot;, 9)
+    ))
+
+    /**
+      *
+      * 功能：对pairStrRDD这个RDD统计每一个相同key对用的所有value值的累加值以及这个key出现的次数
+      * 需要的三个参数
+      *
+      * createCombiner：V=&gt;C, ==&gt;Int -&gt; (Int,Int)
+      * mergeValue:(C,V)=&gt;C, ==&gt;((Int,Int),Int) -&gt; (Int,Int)
+      * mergeCombiners:(C,C) =&gt;C ==&gt; ((Int,Int),(Int,Int)) -&gt;(Int,Int)
+      *
+      */
+    def createCombiner = (value: Int) =&gt; (value, 1)
+
+    def mergeValue = (acc: (Int, Int), value: Int) =&gt; (acc._1 + value, acc._2 + 1)
+
+    def mergeCombiners = (acc1: (Int, Int), acc2: (Int, Int)) =&gt; (acc1._1 + acc2._1, acc1._2 + acc2._2)
+
+
+    val testCombineByKeyRDD =
+      pairStrRDD.combineByKey(createCombiner, mergeValue, mergeCombiners)
+
+    testCombineByKeyRDD.collect()
+
+  &#125;
+&#125;
+</code></pre>
+<h4 id="参数：partitioner"><a href="#参数：partitioner" class="headerlink" title="参数：partitioner"></a>参数：partitioner</h4><p><img src="https://shirukai.gitee.io/images/ef88defa9389a1d0e4e7ff4124c85129.jpg"></p>
+<h4 id="参数：mapSideCombine"><a href="#参数：mapSideCombine" class="headerlink" title="参数：mapSideCombine"></a>参数：mapSideCombine</h4><p><img src="https://shirukai.gitee.io/images/159e52e42fdcedf115b348df0acbda73.jpg"></p>
+<h4 id="参数：serializer"><a href="#参数：serializer" class="headerlink" title="参数：serializer"></a>参数：serializer</h4><p><img src="https://shirukai.gitee.io/images/d3f0587d725d62219a32322b7bb07a9a.jpg"></p>
+<h3 id="基于conmbineByKey实现的api详解"><a href="#基于conmbineByKey实现的api详解" class="headerlink" title="基于conmbineByKey实现的api详解"></a>基于conmbineByKey实现的api详解</h3><p>aggregateByKey、reduceByKey(distinct是利用reduceByKey实现的)、foldByKey、groupByKey（groupBy是利用groupByKey实现的）</p>
+<p>以上api都是基于combineByKey实现的，只是参数不同而已。</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#RDD%E7%9A%84%E4%BA%94%E4%B8%AA%E4%B8%BB%E8%A6%81%E7%89%B9%E6%80%A7"><span class="toc-number">1.</span> <span class="toc-text">RDD的五个主要特性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B7%B1%E5%85%A5%E6%9F%A5%E7%9C%8BRDD%E7%9A%84%E4%BA%94%E4%B8%AA%E6%8A%BD%E8%B1%A1API"><span class="toc-number">2.</span> <span class="toc-text">深入查看RDD的五个抽象API</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RDD%E7%9A%84%E5%88%9B%E5%BB%BA%E6%96%B9%E5%BC%8F"><span class="toc-number">3.</span> <span class="toc-text">RDD的创建方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Parallelize"><span class="toc-number">4.</span> <span class="toc-text">Parallelize</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RDD-Dependency"><span class="toc-number">5.</span> <span class="toc-text">RDD Dependency</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RDD%E5%88%86%E5%8C%BA"><span class="toc-number">6.</span> <span class="toc-text">RDD分区</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#HashPartitioner"><span class="toc-number">6.1.</span> <span class="toc-text">HashPartitioner</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#HashPartitioner%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96"><span class="toc-number">6.2.</span> <span class="toc-text">HashPartitioner性能优化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RangePartitioner%E5%8E%9F%E7%90%86"><span class="toc-number">6.3.</span> <span class="toc-text">RangePartitioner原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89Partitioner"><span class="toc-number">6.4.</span> <span class="toc-text">自定义Partitioner</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Hash-%E4%B8%8ERange%E4%B8%A4%E7%A7%8DPartitioner%E5%AF%B9%E6%AF%94"><span class="toc-number">6.5.</span> <span class="toc-text">Hash 与Range两种Partitioner对比</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#coalesce%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">6.6.</span> <span class="toc-text">coalesce使用场景</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%95%E7%B1%BB%E5%9E%8BRDD%E6%93%8D%E4%BD%9CAPI"><span class="toc-number">7.</span> <span class="toc-text">单类型RDD操作API</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#RDD%E5%9F%BA%E6%9C%ACtransformation-api-%E4%BB%8B%E7%BB%8D"><span class="toc-number">7.1.</span> <span class="toc-text">RDD基本transformation api 介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%87%87%E6%A0%B7API%E4%BB%8B%E7%BB%8D"><span class="toc-number">7.2.</span> <span class="toc-text">采样API介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E5%B1%82%E9%87%87%E6%A0%B7API"><span class="toc-number">7.3.</span> <span class="toc-text">分层采样API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pipe%E7%9A%84%E4%BD%BF%E7%94%A8%E6%96%B9%E5%BC%8F%E5%8F%8A%E5%85%B6%E7%89%B9%E7%82%B9"><span class="toc-number">7.4.</span> <span class="toc-text">pipe的使用方式及其特点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RDD%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C-action"><span class="toc-number">7.5.</span> <span class="toc-text">RDD基本操作-action</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#key-value%E7%B1%BB%E5%9E%8BRDD%E6%93%8D%E4%BD%9CAPI"><span class="toc-number">8.</span> <span class="toc-text">key-value类型RDD操作API</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#combineByKey"><span class="toc-number">8.1.</span> <span class="toc-text">combineByKey</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8EconmbineByKey%E5%AE%9E%E7%8E%B0%E7%9A%84api%E8%AF%A6%E8%A7%A3"><span class="toc-number">8.2.</span> <span class="toc-text">基于conmbineByKey实现的api详解</span></a></li></ol></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

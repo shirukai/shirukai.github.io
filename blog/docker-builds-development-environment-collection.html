@@ -1,0 +1,581 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Docker搭建开发环境合集 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="
+自从接触Docker，便对它产生了浓厚兴趣，平时需要的开发环境也尝试使用Docker来搭建，相比较虚拟机确实方便了不少，这里主要记录一下平时在开发中使用Docker搭建过得开发环境。这里所有使用d,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">Docker搭建开发环境合集</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/8.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/环境搭建"><b>「
+                    </b>环境搭建<b> 」</b></a>
+                
+                March 13, 2020
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/docker-builds-development-environment-collection.html" title="Docker搭建开发环境合集" class="">Docker搭建开发环境合集</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    5.9k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    5 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" rel="tag">环境搭建</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <blockquote>
+<p>自从接触Docker，便对它产生了浓厚兴趣，平时需要的开发环境也尝试使用Docker来搭建，相比较虚拟机确实方便了不少，这里主要记录一下平时在开发中使用Docker搭建过得开发环境。这里所有使用docker创建的应用都放在了dockerapps目录下。</p>
+</blockquote>
+<h1 id="1-ZooKeeper"><a href="#1-ZooKeeper" class="headerlink" title="1 ZooKeeper"></a>1 ZooKeeper</h1><blockquote>
+<p>版本：3.5</p>
+</blockquote>
+<h2 id="1-1-单节点部署"><a href="#1-1-单节点部署" class="headerlink" title="1.1 单节点部署"></a>1.1 单节点部署</h2><p>在dockerapps下创建zookeeper目录。此目录包含data目录用来持久化zookeeper应用数据，包含一个zoo.cfg配置文件用来配置zookeeper应用，包含一个start.sh用来启动单节点的zk。目录结构如下所示：</p>
+<pre><code>zookeeper/
+├── data
+├── start.sh
+└── zoo.cfg
+</code></pre>
+<h3 id="1-1-1-创建持久化数据目录data"><a href="#1-1-1-创建持久化数据目录data" class="headerlink" title="1.1.1 创建持久化数据目录data"></a>1.1.1 创建持久化数据目录data</h3><p>在zookeeper目录下创建zk的数据持久化目录</p>
+<pre><code class="shell">mkdir data
+</code></pre>
+<h3 id="1-1-2-创建zoo-cfg-配置文件"><a href="#1-1-2-创建zoo-cfg-配置文件" class="headerlink" title="1.1.2 创建zoo.cfg 配置文件"></a>1.1.2 创建zoo.cfg 配置文件</h3><p>在zookeeper目录下创建zk的配置文件zoo.cfg，内容如下：</p>
+<pre><code>clientPort=2181
+dataDir=/data
+dataLogDir=/data/log
+</code></pre>
+<h3 id="1-1-3-创建启动脚本start-sh"><a href="#1-1-3-创建启动脚本start-sh" class="headerlink" title="1.1.3 创建启动脚本start.sh"></a>1.1.3 创建启动脚本start.sh</h3><p>在zookeeper目录先创建zk的启动脚本start.sh，内容如下：</p>
+<pre><code class="shell">docker stop zookeeper
+docker rm zookeeper
+docker run -itd -p 2181:2181 -v `pwd`/data:/data --name zookeeper -v `pwd`/zoo.cfg:/conf/zoo.cfg zookeeper:3.5
+</code></pre>
+<h3 id="1-1-4-启动服务"><a href="#1-1-4-启动服务" class="headerlink" title="1.1.4 启动服务"></a>1.1.4 启动服务</h3><p>完成上述步骤之后就可以启动单节点的zk了。执行start.sh</p>
+<pre><code class="shell">sh start.sh
+</code></pre>
+<p>查看docker进程</p>
+<pre><code class="shell">docker ps
+</code></pre>
+<pre><code class="shell">
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                                                  NAMES
+39a6cf356e1a        zookeeper:3.5       &quot;/docker-entrypoint.…&quot;   11 seconds ago      Up 10 seconds       2888/tcp, 3888/tcp, 0.0.0.0:2181-&gt;2181/tcp, 8080/tcp   zookeeper
+</code></pre>
+<p>进入zk客户端zkCli</p>
+<pre><code class="shell">docker exec -it 39a6cf356e1a bin/zkCli.sh
+</code></pre>
+<h2 id="1-2-集群部署"><a href="#1-2-集群部署" class="headerlink" title="1.2 集群部署"></a>1.2 集群部署</h2><p>对于zk集群部署，我们可以使用docker-compose进行编排。在zookeeper目录下创建一个zk-cluster目录用来存放集群相关的文件。这里以3台节点为例。</p>
+<pre><code class="shell">mkdir zk-cluster
+</code></pre>
+<h3 id="1-2-1-创建持久化数据文件夹"><a href="#1-2-1-创建持久化数据文件夹" class="headerlink" title="1.2.1 创建持久化数据文件夹"></a>1.2.1 创建持久化数据文件夹</h3><p>这里分别创建data1、data2、data3来持久化三个节点的数据。</p>
+<pre><code class="shell">mkdir data1 data2 data3
+</code></pre>
+<p>并在每个data目录下创建myid文件，内容分别为1，2，3</p>
+<h3 id="1-2-2-创建zk配置文件zoo-cfg"><a href="#1-2-2-创建zk配置文件zoo-cfg" class="headerlink" title="1.2.2 创建zk配置文件zoo.cfg"></a>1.2.2 创建zk配置文件zoo.cfg</h3><p>这个配置文件可以用同一个文件，也可以与data类似，分别创建，这里为了简单，使用同一个配置文件，内容如下：</p>
+<pre><code class="shell"># The number of milliseconds of each tick
+tickTime=2000
+# The number of ticks that the initial
+# synchronization phase can take
+initLimit=10
+# The number of ticks that can pass between
+# sending a request and getting an acknowledgement
+syncLimit=5
+# the directory where the snapshot is stored.
+# do not use /tmp for storage, /tmp here is just
+# example sakes.
+dataDir=/data
+dataLogDir=/data/log
+# the port at which the clients will connect
+clientPort=2181
+# the maximum number of client connections.
+# increase this if you need to handle more clients
+#maxClientCnxns=60
+#
+# Be sure to read the maintenance section of the
+# administrator guide before turning on autopurge.
+#
+# http://zookeeper.apache.org/doc/current/zookeeperAdmin.html#sc_maintenance
+#
+# The number of snapshots to retain in dataDir
+#autopurge.snapRetainCount=3
+# Purge task interval in hours
+# Set to &quot;0&quot; to disable auto purge feature
+#autopurge.purgeInterval=1
+server.1=localhost:2881:3881
+server.1=zookeeper1:2888:3888
+server.2=zookeeper2:2888:3888
+server.3=zookeeper3:2888:3888
+4lw.commands.whitelist=*
+</code></pre>
+<h3 id="1-2-3-创建编排文件docker-compose-yml"><a href="#1-2-3-创建编排文件docker-compose-yml" class="headerlink" title="1.2.3 创建编排文件docker-compose.yml"></a>1.2.3 创建编排文件docker-compose.yml</h3><p>在zk-cluster目录下从创建编排文件，内容如下：</p>
+<pre><code>version: &#39;2&#39;
+services:
+    zoo1:
+        image: zookeeper:3.5
+        restart: always
+        container_name: zookeeper1
+        volumes:
+            - ./data1:/data
+            - ./zoo.cfg:/conf/zoo.cfg
+        ports:
+            - &quot;2181:2181&quot;
+ 
+    zoo2:
+        image: zookeeper:3.5
+        restart: always
+        container_name: zookeeper2
+        volumes:
+            - ./data2:/data
+            - ./zoo.cfg:/conf/zoo.cfg
+        ports:
+            - &quot;2182:2181&quot;
+ 
+    zoo3:
+        image: zookeeper:3.5
+        restart: always
+        container_name: zookeeper3
+        volumes:
+            - ./data3:/data
+            - ./zoo.cfg:/conf/zoo.cfg
+        ports:
+            - &quot;2183:2181&quot;
+</code></pre>
+<h3 id="1-2-4-创建集群启动文件start-sh"><a href="#1-2-4-创建集群启动文件start-sh" class="headerlink" title="1.2.4 创建集群启动文件start.sh"></a>1.2.4 创建集群启动文件start.sh</h3><p>内容如下：</p>
+<pre><code class="shell">docker-compose stop
+docker-compose -p zk-cluster up -d
+</code></pre>
+<h3 id="1-2-5-启动集群"><a href="#1-2-5-启动集群" class="headerlink" title="1.2.5 启动集群"></a>1.2.5 启动集群</h3><pre><code class="shell">sh start.sh
+</code></pre>
+<pre><code class="shell">Starting zookeeper1 ... done
+Starting zookeeper3 ... done
+Starting zookeeper2 ... done
+</code></pre>
+<p>使用四字命令查看集群状态</p>
+<pre><code class="shell">echo stat |nc localhost 2181
+</code></pre>
+<pre><code class="shell">Zookeeper version: 3.5.5-390fe37ea45dee01bf87dc1c042b5e3dcce88653, built on 05/03/2019 12:07 GMT
+Clients:
+ /172.18.0.1:41462[0](queued=0,recved=1,sent=0)
+
+Latency min/avg/max: 0/0/0
+Received: 1
+Sent: 0
+Connections: 1
+Outstanding: 0
+Zxid: 0x0
+Mode: standalone
+Node count: 5
+</code></pre>
+<p>2 RabbitMQ</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-ZooKeeper"><span class="toc-number">1.</span> <span class="toc-text">1 ZooKeeper</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-%E5%8D%95%E8%8A%82%E7%82%B9%E9%83%A8%E7%BD%B2"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 单节点部署</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-1-%E5%88%9B%E5%BB%BA%E6%8C%81%E4%B9%85%E5%8C%96%E6%95%B0%E6%8D%AE%E7%9B%AE%E5%BD%95data"><span class="toc-number">1.1.1.</span> <span class="toc-text">1.1.1 创建持久化数据目录data</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-2-%E5%88%9B%E5%BB%BAzoo-cfg-%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">1.1.2.</span> <span class="toc-text">1.1.2 创建zoo.cfg 配置文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-3-%E5%88%9B%E5%BB%BA%E5%90%AF%E5%8A%A8%E8%84%9A%E6%9C%ACstart-sh"><span class="toc-number">1.1.3.</span> <span class="toc-text">1.1.3 创建启动脚本start.sh</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-4-%E5%90%AF%E5%8A%A8%E6%9C%8D%E5%8A%A1"><span class="toc-number">1.1.4.</span> <span class="toc-text">1.1.4 启动服务</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 集群部署</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-1-%E5%88%9B%E5%BB%BA%E6%8C%81%E4%B9%85%E5%8C%96%E6%95%B0%E6%8D%AE%E6%96%87%E4%BB%B6%E5%A4%B9"><span class="toc-number">1.2.1.</span> <span class="toc-text">1.2.1 创建持久化数据文件夹</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-2-%E5%88%9B%E5%BB%BAzk%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6zoo-cfg"><span class="toc-number">1.2.2.</span> <span class="toc-text">1.2.2 创建zk配置文件zoo.cfg</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-3-%E5%88%9B%E5%BB%BA%E7%BC%96%E6%8E%92%E6%96%87%E4%BB%B6docker-compose-yml"><span class="toc-number">1.2.3.</span> <span class="toc-text">1.2.3 创建编排文件docker-compose.yml</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-4-%E5%88%9B%E5%BB%BA%E9%9B%86%E7%BE%A4%E5%90%AF%E5%8A%A8%E6%96%87%E4%BB%B6start-sh"><span class="toc-number">1.2.4.</span> <span class="toc-text">1.2.4 创建集群启动文件start.sh</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-5-%E5%90%AF%E5%8A%A8%E9%9B%86%E7%BE%A4"><span class="toc-number">1.2.5.</span> <span class="toc-text">1.2.5 启动集群</span></a></li></ol></li></ol></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

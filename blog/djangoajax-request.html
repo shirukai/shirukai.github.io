@@ -1,0 +1,550 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>djangoAjax请求 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="
+Django 中自带了防止CSRF攻击的功能，所以在表单或者Ajax发送POST的请求的时候，如果没有带有csrf_token ，请求会被拒绝
+
+设置django表单提交GET请求不需要csrf认,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">djangoAjax请求</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/7.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/Python"><b>「
+                    </b>PYTHON<b> 」</b></a>
+                
+                August 20, 2018
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/djangoajax-request.html" title="djangoAjax请求" class="">djangoAjax请求</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    6k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    5 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/django/" rel="tag">django</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <blockquote>
+<p>Django 中自带了防止CSRF攻击的功能，所以在表单或者Ajax发送POST的请求的时候，如果没有带有<code>csrf_token</code> ，请求会被拒绝</p>
+</blockquote>
+<h2 id="设置django表单提交"><a href="#设置django表单提交" class="headerlink" title="设置django表单提交"></a>设置django表单提交</h2><p>GET请求不需要csrf认证，POST请求需要认证才能得到正确的结果。一般在POST表单中加入</p>
+<pre><code>&#123;% csrf_token%&#125;
+</code></pre>
+<pre><code>&lt;form method=&quot;POST&quot; action=&quot;/post-url/&quot;&gt;
+    &#123;% csrf_token %&#125;
+    &lt;input name=&#39;zqxt&#39; value=&quot;&quot;&gt;
+    &lt;button type=&#39;submit&#39;&gt;提交&lt;/button&gt;
+&lt;/form&gt;
+</code></pre>
+<h2 id="设置Ajax-POST-提交"><a href="#设置Ajax-POST-提交" class="headerlink" title="设置Ajax POST 提交"></a>设置Ajax POST 提交</h2><h3 id="模板中-lt-script-gt-标签写法"><a href="#模板中-lt-script-gt-标签写法" class="headerlink" title="模板中&lt;script&gt;标签写法"></a>模板中<code>&lt;script&gt;</code>标签写法</h3><pre><code>&lt;script type=&quot;text/javascript&quot;&gt;
+$.ajaxSetup(&#123;
+    data: &#123;csrfmiddlewaretoken: &#39;&#123;&#123; csrf_token &#125;&#125;&#39; &#125;
+&#125;);
+&lt;/script&gt;
+</code></pre>
+<p>在模板里的<code>&lt;script&gt;</code>标签中直接加上如上的代码，然后ajax post请求就跟之前一样使用即可</p>
+<h3 id="引入js写法，引入csrf-js"><a href="#引入js写法，引入csrf-js" class="headerlink" title="引入js写法，引入csrf.js"></a>引入js写法，引入csrf.js</h3><p>js代码如下</p>
+<pre><code>/*====================django ajax ======*/
+jQuery(document).ajaxSend(function(event, xhr, settings) &#123;
+    function getCookie(name) &#123;
+        var cookieValue = null;
+        if (document.cookie &amp;&amp; document.cookie != &#39;&#39;) &#123;
+            var cookies = document.cookie.split(&#39;;&#39;);
+            for (var i = 0; i &lt; cookies.length; i++) &#123;
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) == (name + &#39;=&#39;)) &#123;
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                &#125;
+            &#125;
+        &#125;
+        return cookieValue;
+    &#125;
+    function sameOrigin(url) &#123;
+        // url could be relative or scheme relative or absolute
+        var host = document.location.host; // host + port
+        var protocol = document.location.protocol;
+        var sr_origin = &#39;//&#39; + host;
+        var origin = protocol + sr_origin;
+        // Allow absolute or scheme relative URLs to same origin
+        return (url == origin || url.slice(0, origin.length + 1) == origin + &#39;/&#39;) ||
+            (url == sr_origin || url.slice(0, sr_origin.length + 1) == sr_origin + &#39;/&#39;) ||
+            // or any other URL that isn&#39;t scheme relative or absolute i.e relative.
+            !(/^(\/\/|http:|https:).*/.test(url));
+    &#125;
+    function safeMethod(method) &#123;
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    &#125;
+
+    if (!safeMethod(settings.type) &amp;&amp; sameOrigin(settings.url)) &#123;
+        xhr.setRequestHeader(&quot;X-CSRFToken&quot;, getCookie(&#39;csrftoken&#39;));
+    &#125;
+&#125;);
+/*===============================django ajax end===*/
+</code></pre>
+<h4 id="也可以"><a href="#也可以" class="headerlink" title="也可以"></a>也可以</h4><p>在views.py里面添加from django.views.decorators.csrf import csrf_exempt<br>在你ajax要用到的方法前面加一个<code>@csrf_exempt</code></p>
+<h4 id="项目案例："><a href="#项目案例：" class="headerlink" title="项目案例："></a>项目案例：</h4><h5 id="模板HTML"><a href="#模板HTML" class="headerlink" title="模板HTML"></a>模板HTML</h5><pre><code>&lt;h1&gt;Django ajax POST 方法测试&lt;/h1&gt;
+&lt;input id=&quot;ajaxTest&quot; value=&quot;&quot;&gt;&lt;button id=&quot;send&quot;&gt;ajax测试POST&lt;/button&gt;&lt;br&gt;
+测试结果：&lt;h4 style=&quot;color: red&quot; id=&quot;result&quot;&gt;&lt;/h4&gt;
+csrf_token:&#123;&#123; csrf_token &#125;&#125;
+</code></pre>
+<h5 id="模板js"><a href="#模板js" class="headerlink" title="模板js"></a>模板js</h5><p>需要引入jquery</p>
+<pre><code>&lt;script type=&quot;text/javascript&quot;&gt;
+$.ajaxSetup(&#123;
+    data: &#123;csrfmiddlewaretoken: &#39;&#123;&#123; csrf_token &#125;&#125;&#39; &#125;
+&#125;);
+$(&#39;#send&#39;).click(function () &#123;
+    $.ajax(&#123;
+    type:&#39;POST&#39;,
+    url:&#39;/testAjax&#39;,
+    data: &#123;&#39;test&#39;:$(&#39;#ajaxTest&#39;).val()&#125;,
+    success: function (data) &#123;
+        if(data.state = 1)&#123;
+             $(&#39;#result&#39;).text(&quot;POST请求成功！返回值为：&quot;+data.info);
+        &#125;
+        console.log(data)
+    &#125;
+&#125;)
+&#125;);
+&lt;/script&gt;
+</code></pre>
+<h5 id="url-py"><a href="#url-py" class="headerlink" title="url.py"></a>url.py</h5><pre><code>from language import views as language_views
+url(r&#39;^testAjax&#39;, language_views.test_ajax)
+</code></pre>
+<h5 id="views-py"><a href="#views-py" class="headerlink" title="views.py"></a>views.py</h5><pre><code>from django.http import JsonResponse
+def test_ajax(request):
+    result = &#123;&#125;
+    if request.POST:
+        result[&#39;state&#39;] = 1
+        result[&#39;info&#39;] = request.POST.get(&#39;test&#39;)
+    return JsonResponse(result)
+</code></pre>
+<h3 id="或者注释掉settings里的一个中间件："><a href="#或者注释掉settings里的一个中间件：" class="headerlink" title="或者注释掉settings里的一个中间件："></a>或者注释掉settings里的一个中间件：</h3><pre><code>MIDDLEWARE = [
+    &#39;django.middleware.security.SecurityMiddleware&#39;,
+    &#39;django.contrib.sessions.middleware.SessionMiddleware&#39;,
+    &#39;corsheaders.middleware.CorsMiddleware&#39;,
+    &#39;django.middleware.common.CommonMiddleware&#39;,
+    # &#39;django.middleware.csrf.CsrfViewMiddleware&#39;, # 这个中间件注释掉
+    &#39;django.contrib.auth.middleware.AuthenticationMiddleware&#39;,
+    &#39;django.contrib.messages.middleware.MessageMiddleware&#39;,
+    &#39;django.middleware.clickjacking.XFrameOptionsMiddleware&#39;,
+]
+</code></pre>
+<h5 id="效果："><a href="#效果：" class="headerlink" title="效果："></a>效果：</h5><p><img src="https://shirukai.gitee.io/images/djangoAjaxPost.gif" alt="https://shirukai.gitee.io/images/djangoAjaxPost.gif"></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AEdjango%E8%A1%A8%E5%8D%95%E6%8F%90%E4%BA%A4"><span class="toc-number">1.</span> <span class="toc-text">设置django表单提交</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AEAjax-POST-%E6%8F%90%E4%BA%A4"><span class="toc-number">2.</span> <span class="toc-text">设置Ajax POST 提交</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E6%9D%BF%E4%B8%AD-lt-script-gt-%E6%A0%87%E7%AD%BE%E5%86%99%E6%B3%95"><span class="toc-number">2.1.</span> <span class="toc-text">模板中&lt;script&gt;标签写法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%95%E5%85%A5js%E5%86%99%E6%B3%95%EF%BC%8C%E5%BC%95%E5%85%A5csrf-js"><span class="toc-number">2.2.</span> <span class="toc-text">引入js写法，引入csrf.js</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%88%96%E8%80%85%E6%B3%A8%E9%87%8A%E6%8E%89settings%E9%87%8C%E7%9A%84%E4%B8%80%E4%B8%AA%E4%B8%AD%E9%97%B4%E4%BB%B6%EF%BC%9A"><span class="toc-number">2.3.</span> <span class="toc-text">或者注释掉settings里的一个中间件：</span></a></li></ol></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

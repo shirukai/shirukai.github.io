@@ -1,0 +1,472 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>vim程序编辑器-练习 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="1. 在 /tmp 这个目录下建立一个名为 vitest 目录；mkdir -p /tmp/vitest
+//-p意思是如果父目录不存在，自动创建
+
+2. 进入 vitest 目录；cd /tmp/,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">vim程序编辑器-练习</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/8.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/Linux"><b>「
+                    </b>LINUX<b> 」</b></a>
+                
+                August 19, 2018
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/vim-program-editor---exercise.html" title="vim程序编辑器-练习" class="">vim程序编辑器-练习</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    3.6k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    3 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Linux/" rel="tag">Linux</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <h3 id="1-在-tmp-这个目录下建立一个名为-vitest-目录；"><a href="#1-在-tmp-这个目录下建立一个名为-vitest-目录；" class="headerlink" title="1. 在 /tmp 这个目录下建立一个名为 vitest 目录；"></a>1. 在 /tmp 这个目录下建立一个名为 vitest 目录；</h3><pre><code>mkdir -p /tmp/vitest
+//-p意思是如果父目录不存在，自动创建
+</code></pre>
+<h3 id="2-进入-vitest-目录；"><a href="#2-进入-vitest-目录；" class="headerlink" title="2. 进入 vitest 目录；"></a>2. 进入 vitest 目录；</h3><pre><code>cd /tmp/vitest
+</code></pre>
+<h3 id="3-将-man-config-复制到本目录底下；"><a href="#3-将-man-config-复制到本目录底下；" class="headerlink" title="3. 将 man.config 复制到本目录底下；"></a>3. 将 man.config 复制到本目录底下；</h3><p>用文件传输工具</p>
+<h3 id="4-使用-vi-开启本目录下的-man-config-这个文件；"><a href="#4-使用-vi-开启本目录下的-man-config-这个文件；" class="headerlink" title="4. 使用 vi 开启本目录下的 man.config 这个文件；"></a>4. 使用 vi 开启本目录下的 man.config 这个文件；</h3><pre><code>vi man.config
+</code></pre>
+<h3 id="5-在-vi-中设定一下行号；"><a href="#5-在-vi-中设定一下行号；" class="headerlink" title="5. 在 vi 中设定一下行号；"></a>5. 在 vi 中设定一下行号；</h3><pre><code>：set nu
+</code></pre>
+<h3 id="6-移动到第-58-行，向右移动-40-个字符，请问你看到双引号内是什么目录？"><a href="#6-移动到第-58-行，向右移动-40-个字符，请问你看到双引号内是什么目录？" class="headerlink" title="6. 移动到第 58 行，向右移动 40 个字符，请问你看到双引号内是什么目录？"></a>6. 移动到第 58 行，向右移动 40 个字符，请问你看到双引号内是什么目录？</h3><p>:58 然后【回车】</p>
+<p>40然后【空格】</p>
+<h3 id="7-移动到第一行，并且向下搜寻一下”bzip2“这个字符串，请问他在第几行？"><a href="#7-移动到第一行，并且向下搜寻一下”bzip2“这个字符串，请问他在第几行？" class="headerlink" title="7. 移动到第一行，并且向下搜寻一下”bzip2“这个字符串，请问他在第几行？"></a>7. 移动到第一行，并且向下搜寻一下”bzip2“这个字符串，请问他在第几行？</h3><p>gg 移动到第一行</p>
+<p>:/bzip2 搜索</p>
+<p>继续查找n或者N</p>
+<h3 id="8-接着下来，我要将-50-到-100-行之间的-”man“-改为-”MAN“，并且一个一个挑选是否需要修改，如何执行命令？如果在挑选过程中一直按-”y“，-结果会在最后一行出现改变了几个-man-呢？"><a href="#8-接着下来，我要将-50-到-100-行之间的-”man“-改为-”MAN“，并且一个一个挑选是否需要修改，如何执行命令？如果在挑选过程中一直按-”y“，-结果会在最后一行出现改变了几个-man-呢？" class="headerlink" title="8. 接着下来，我要将 50 到 100 行之间的 ”man“ 改为 ”MAN“，并且一个一个挑选是否需要修改，如何执行命令？如果在挑选过程中一直按 ”y“， 结果会在最后一行出现改变了几个 man 呢？"></a>8. 接着下来，我要将 50 到 100 行之间的 ”man“ 改为 ”MAN“，并且一个一个挑选是否需要修改，如何执行命令？如果在挑选过程中一直按 ”y“， 结果会在最后一行出现改变了几个 man 呢？</h3><p>: 50,100s/man/MAN/gc</p>
+<h3 id="9-修改完之后，突然反悔了，要全部复原，有哪些方法？"><a href="#9-修改完之后，突然反悔了，要全部复原，有哪些方法？" class="headerlink" title="9. 修改完之后，突然反悔了，要全部复原，有哪些方法？"></a>9. 修改完之后，突然反悔了，要全部复原，有哪些方法？</h3><p>u</p>
+<h3 id="10-复制-65-到-73-这九行的内容-含有MANPATH-MAP-，并且粘贴到最后一行之后；"><a href="#10-复制-65-到-73-这九行的内容-含有MANPATH-MAP-，并且粘贴到最后一行之后；" class="headerlink" title="10. 复制 65 到 73 这九行的内容(含有MANPATH_MAP)，并且粘贴到最后一行之后；"></a>10. 复制 65 到 73 这九行的内容(含有MANPATH_MAP)，并且粘贴到最后一行之后；</h3><p>:65行  切换到65行 </p>
+<p>9yy    复制9行 </p>
+<p>G      切换到最后一行 </p>
+<p>p      粘贴</p>
+<h3 id="11-21-到-42-行之间的开头为-”-“-符号的批注数据我不要了，要如何删除？"><a href="#11-21-到-42-行之间的开头为-”-“-符号的批注数据我不要了，要如何删除？" class="headerlink" title="11. 21 到 42 行之间的开头为 ”#“ 符号的批注数据我不要了，要如何删除？"></a>11. 21 到 42 行之间的开头为 ”#“ 符号的批注数据我不要了，要如何删除？</h3><p>:21    切换到21行 </p>
+<p>22dd   从21行开始删除22行</p>
+<h3 id="12-将这个档案另存成一个-man-test-config-的文件名；"><a href="#12-将这个档案另存成一个-man-test-config-的文件名；" class="headerlink" title="12. 将这个档案另存成一个 man.test.config 的文件名；"></a>12. 将这个档案另存成一个 man.test.config 的文件名；</h3><p>：w man.test.config</p>
+<h3 id="13-去到第-27-行，并且删除-15-个字符，结果出现癿第一个单字是什么？"><a href="#13-去到第-27-行，并且删除-15-个字符，结果出现癿第一个单字是什么？" class="headerlink" title="13. 去到第 27 行，并且删除 15 个字符，结果出现癿第一个单字是什么？"></a>13. 去到第 27 行，并且删除 15 个字符，结果出现癿第一个单字是什么？</h3><p>切换到27行：27</p>
+<p>删除15个字符 15x</p>
+<h3 id="14-在第一行新增一行，该行内容输入-”I-am-a-student…“；"><a href="#14-在第一行新增一行，该行内容输入-”I-am-a-student…“；" class="headerlink" title="14. 在第一行新增一行，该行内容输入 ”I am a student…“；"></a>14. 在第一行新增一行，该行内容输入 ”I am a student…“；</h3><p>切换到第一行：gg</p>
+<p>新增一行：O</p>
+<p>输入I am a student…</p>
+<h3 id="15-保存后离开"><a href="#15-保存后离开" class="headerlink" title="15. 保存后离开"></a>15. 保存后离开</h3><p>：wq</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%9C%A8-tmp-%E8%BF%99%E4%B8%AA%E7%9B%AE%E5%BD%95%E4%B8%8B%E5%BB%BA%E7%AB%8B%E4%B8%80%E4%B8%AA%E5%90%8D%E4%B8%BA-vitest-%E7%9B%AE%E5%BD%95%EF%BC%9B"><span class="toc-number">1.</span> <span class="toc-text">1. 在 &#x2F;tmp 这个目录下建立一个名为 vitest 目录；</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E8%BF%9B%E5%85%A5-vitest-%E7%9B%AE%E5%BD%95%EF%BC%9B"><span class="toc-number">2.</span> <span class="toc-text">2. 进入 vitest 目录；</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%B0%86-man-config-%E5%A4%8D%E5%88%B6%E5%88%B0%E6%9C%AC%E7%9B%AE%E5%BD%95%E5%BA%95%E4%B8%8B%EF%BC%9B"><span class="toc-number">3.</span> <span class="toc-text">3. 将 man.config 复制到本目录底下；</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E4%BD%BF%E7%94%A8-vi-%E5%BC%80%E5%90%AF%E6%9C%AC%E7%9B%AE%E5%BD%95%E4%B8%8B%E7%9A%84-man-config-%E8%BF%99%E4%B8%AA%E6%96%87%E4%BB%B6%EF%BC%9B"><span class="toc-number">4.</span> <span class="toc-text">4. 使用 vi 开启本目录下的 man.config 这个文件；</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E5%9C%A8-vi-%E4%B8%AD%E8%AE%BE%E5%AE%9A%E4%B8%80%E4%B8%8B%E8%A1%8C%E5%8F%B7%EF%BC%9B"><span class="toc-number">5.</span> <span class="toc-text">5. 在 vi 中设定一下行号；</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E7%A7%BB%E5%8A%A8%E5%88%B0%E7%AC%AC-58-%E8%A1%8C%EF%BC%8C%E5%90%91%E5%8F%B3%E7%A7%BB%E5%8A%A8-40-%E4%B8%AA%E5%AD%97%E7%AC%A6%EF%BC%8C%E8%AF%B7%E9%97%AE%E4%BD%A0%E7%9C%8B%E5%88%B0%E5%8F%8C%E5%BC%95%E5%8F%B7%E5%86%85%E6%98%AF%E4%BB%80%E4%B9%88%E7%9B%AE%E5%BD%95%EF%BC%9F"><span class="toc-number">6.</span> <span class="toc-text">6. 移动到第 58 行，向右移动 40 个字符，请问你看到双引号内是什么目录？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-%E7%A7%BB%E5%8A%A8%E5%88%B0%E7%AC%AC%E4%B8%80%E8%A1%8C%EF%BC%8C%E5%B9%B6%E4%B8%94%E5%90%91%E4%B8%8B%E6%90%9C%E5%AF%BB%E4%B8%80%E4%B8%8B%E2%80%9Dbzip2%E2%80%9C%E8%BF%99%E4%B8%AA%E5%AD%97%E7%AC%A6%E4%B8%B2%EF%BC%8C%E8%AF%B7%E9%97%AE%E4%BB%96%E5%9C%A8%E7%AC%AC%E5%87%A0%E8%A1%8C%EF%BC%9F"><span class="toc-number">7.</span> <span class="toc-text">7. 移动到第一行，并且向下搜寻一下”bzip2“这个字符串，请问他在第几行？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-%E6%8E%A5%E7%9D%80%E4%B8%8B%E6%9D%A5%EF%BC%8C%E6%88%91%E8%A6%81%E5%B0%86-50-%E5%88%B0-100-%E8%A1%8C%E4%B9%8B%E9%97%B4%E7%9A%84-%E2%80%9Dman%E2%80%9C-%E6%94%B9%E4%B8%BA-%E2%80%9DMAN%E2%80%9C%EF%BC%8C%E5%B9%B6%E4%B8%94%E4%B8%80%E4%B8%AA%E4%B8%80%E4%B8%AA%E6%8C%91%E9%80%89%E6%98%AF%E5%90%A6%E9%9C%80%E8%A6%81%E4%BF%AE%E6%94%B9%EF%BC%8C%E5%A6%82%E4%BD%95%E6%89%A7%E8%A1%8C%E5%91%BD%E4%BB%A4%EF%BC%9F%E5%A6%82%E6%9E%9C%E5%9C%A8%E6%8C%91%E9%80%89%E8%BF%87%E7%A8%8B%E4%B8%AD%E4%B8%80%E7%9B%B4%E6%8C%89-%E2%80%9Dy%E2%80%9C%EF%BC%8C-%E7%BB%93%E6%9E%9C%E4%BC%9A%E5%9C%A8%E6%9C%80%E5%90%8E%E4%B8%80%E8%A1%8C%E5%87%BA%E7%8E%B0%E6%94%B9%E5%8F%98%E4%BA%86%E5%87%A0%E4%B8%AA-man-%E5%91%A2%EF%BC%9F"><span class="toc-number">8.</span> <span class="toc-text">8. 接着下来，我要将 50 到 100 行之间的 ”man“ 改为 ”MAN“，并且一个一个挑选是否需要修改，如何执行命令？如果在挑选过程中一直按 ”y“， 结果会在最后一行出现改变了几个 man 呢？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-%E4%BF%AE%E6%94%B9%E5%AE%8C%E4%B9%8B%E5%90%8E%EF%BC%8C%E7%AA%81%E7%84%B6%E5%8F%8D%E6%82%94%E4%BA%86%EF%BC%8C%E8%A6%81%E5%85%A8%E9%83%A8%E5%A4%8D%E5%8E%9F%EF%BC%8C%E6%9C%89%E5%93%AA%E4%BA%9B%E6%96%B9%E6%B3%95%EF%BC%9F"><span class="toc-number">9.</span> <span class="toc-text">9. 修改完之后，突然反悔了，要全部复原，有哪些方法？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10-%E5%A4%8D%E5%88%B6-65-%E5%88%B0-73-%E8%BF%99%E4%B9%9D%E8%A1%8C%E7%9A%84%E5%86%85%E5%AE%B9-%E5%90%AB%E6%9C%89MANPATH-MAP-%EF%BC%8C%E5%B9%B6%E4%B8%94%E7%B2%98%E8%B4%B4%E5%88%B0%E6%9C%80%E5%90%8E%E4%B8%80%E8%A1%8C%E4%B9%8B%E5%90%8E%EF%BC%9B"><span class="toc-number">10.</span> <span class="toc-text">10. 复制 65 到 73 这九行的内容(含有MANPATH_MAP)，并且粘贴到最后一行之后；</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#11-21-%E5%88%B0-42-%E8%A1%8C%E4%B9%8B%E9%97%B4%E7%9A%84%E5%BC%80%E5%A4%B4%E4%B8%BA-%E2%80%9D-%E2%80%9C-%E7%AC%A6%E5%8F%B7%E7%9A%84%E6%89%B9%E6%B3%A8%E6%95%B0%E6%8D%AE%E6%88%91%E4%B8%8D%E8%A6%81%E4%BA%86%EF%BC%8C%E8%A6%81%E5%A6%82%E4%BD%95%E5%88%A0%E9%99%A4%EF%BC%9F"><span class="toc-number">11.</span> <span class="toc-text">11. 21 到 42 行之间的开头为 ”#“ 符号的批注数据我不要了，要如何删除？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#12-%E5%B0%86%E8%BF%99%E4%B8%AA%E6%A1%A3%E6%A1%88%E5%8F%A6%E5%AD%98%E6%88%90%E4%B8%80%E4%B8%AA-man-test-config-%E7%9A%84%E6%96%87%E4%BB%B6%E5%90%8D%EF%BC%9B"><span class="toc-number">12.</span> <span class="toc-text">12. 将这个档案另存成一个 man.test.config 的文件名；</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#13-%E5%8E%BB%E5%88%B0%E7%AC%AC-27-%E8%A1%8C%EF%BC%8C%E5%B9%B6%E4%B8%94%E5%88%A0%E9%99%A4-15-%E4%B8%AA%E5%AD%97%E7%AC%A6%EF%BC%8C%E7%BB%93%E6%9E%9C%E5%87%BA%E7%8E%B0%E7%99%BF%E7%AC%AC%E4%B8%80%E4%B8%AA%E5%8D%95%E5%AD%97%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">13.</span> <span class="toc-text">13. 去到第 27 行，并且删除 15 个字符，结果出现癿第一个单字是什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#14-%E5%9C%A8%E7%AC%AC%E4%B8%80%E8%A1%8C%E6%96%B0%E5%A2%9E%E4%B8%80%E8%A1%8C%EF%BC%8C%E8%AF%A5%E8%A1%8C%E5%86%85%E5%AE%B9%E8%BE%93%E5%85%A5-%E2%80%9DI-am-a-student%E2%80%A6%E2%80%9C%EF%BC%9B"><span class="toc-number">14.</span> <span class="toc-text">14. 在第一行新增一行，该行内容输入 ”I am a student…“；</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#15-%E4%BF%9D%E5%AD%98%E5%90%8E%E7%A6%BB%E5%BC%80"><span class="toc-number">15.</span> <span class="toc-text">15. 保存后离开</span></a></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

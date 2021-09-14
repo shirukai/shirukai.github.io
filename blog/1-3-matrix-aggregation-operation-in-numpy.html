@@ -1,0 +1,712 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>1-3 numpy中的矩阵聚合操作 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="import numpy as np
+
+L = np.random.random(100)
+L
+
+array([0.25119175, 0.92977429, 0.99646455, 0.01350,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">1-3 numpy中的矩阵聚合操作</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/8.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/机器学习"><b>「
+                    </b>机器学习<b> 」</b></a>
+                
+                August 19, 2018
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/1-3-matrix-aggregation-operation-in-numpy.html" title="1-3 numpy中的矩阵聚合操作" class="">1-3 numpy中的矩阵聚合操作</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    8k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    7 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/python3%E5%85%A5%E9%97%A8%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">python3入门机器学习</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <pre><code class="python">import numpy as np
+</code></pre>
+<pre><code class="python">L = np.random.random(100)
+L
+</code></pre>
+<pre><code>array([0.25119175, 0.92977429, 0.99646455, 0.01350068, 0.10785383,
+       0.13216408, 0.53743682, 0.2362282 , 0.43276904, 0.88723033,
+       0.32363798, 0.7736106 , 0.30140572, 0.70171898, 0.23628926,
+       0.11465989, 0.57768914, 0.90286834, 0.44965853, 0.17556582,
+       0.32730562, 0.95484208, 0.5746498 , 0.96157915, 0.0786129 ,
+       0.84205856, 0.06806985, 0.54740028, 0.51743019, 0.65094052,
+       0.78537948, 0.31981498, 0.2084024 , 0.83275363, 0.73754856,
+       0.40333091, 0.10272513, 0.71517294, 0.8921517 , 0.46988545,
+       0.4046783 , 0.51339148, 0.05850318, 0.16110959, 0.21776947,
+       0.44930324, 0.88457981, 0.05811443, 0.10390823, 0.22241806,
+       0.55889435, 0.84595252, 0.6193869 , 0.00144356, 0.46580483,
+       0.60804701, 0.42649072, 0.51240559, 0.60706584, 0.21786643,
+       0.06466162, 0.57357243, 0.79564165, 0.91033563, 0.85622919,
+       0.3801982 , 0.83295689, 0.19339375, 0.71351958, 0.74930296,
+       0.3444482 , 0.23071657, 0.99059839, 0.02886684, 0.72539377,
+       0.56155781, 0.31669104, 0.36856242, 0.88366868, 0.17844751,
+       0.86080859, 0.67557473, 0.71354475, 0.23548466, 0.35971581,
+       0.70263272, 0.11505366, 0.18399087, 0.68843181, 0.69321406,
+       0.80155443, 0.03234361, 0.80893791, 0.24386097, 0.47227101,
+       0.88669931, 0.08692295, 0.45551693, 0.6882757 , 0.2721928 ])
+</code></pre>
+<pre><code class="python">sum(L)
+</code></pre>
+<pre><code>48.68469591211663
+</code></pre>
+<pre><code class="python">np.sum(L)
+</code></pre>
+<pre><code>48.68469591211662
+</code></pre>
+<pre><code class="python">big_array = np.random.rand(1000000)
+%timeit sum(big_array)
+%timeit np.sum(big_array)
+</code></pre>
+<pre><code>93 ms ± 2.17 ms per loop (mean ± std. dev. of 7 runs, 10 loops each)
+644 µs ± 50.8 µs per loop (mean ± std. dev. of 7 runs, 1000 loops each)
+</code></pre>
+<pre><code class="python">np.min(big_array)
+</code></pre>
+<pre><code>5.496309696262358e-08
+</code></pre>
+<pre><code class="python">np.max(big_array)
+</code></pre>
+<pre><code>0.9999996218965496
+</code></pre>
+<pre><code class="python">big_array.max()
+</code></pre>
+<pre><code>0.9999996218965496
+</code></pre>
+<pre><code class="python">big_array.min()
+</code></pre>
+<pre><code>5.496309696262358e-08
+</code></pre>
+<pre><code class="python">X = np.arange(16).reshape(4,-1)
+</code></pre>
+<pre><code class="python">X
+</code></pre>
+<pre><code>array([[ 0,  1,  2,  3],
+       [ 4,  5,  6,  7],
+       [ 8,  9, 10, 11],
+       [12, 13, 14, 15]])
+</code></pre>
+<pre><code class="python">np.sum(X)
+</code></pre>
+<pre><code>120
+</code></pre>
+<pre><code class="python"># axis = 0 按照行的方向进行运算，就是每一列相加
+np.sum(X,axis =0)
+</code></pre>
+<pre><code>array([24, 28, 32, 36])
+</code></pre>
+<pre><code class="python"># axis = 1 按照列的方向进行运算，就是每一行相加
+np.sum(X,axis =1)
+</code></pre>
+<pre><code>array([ 6, 22, 38, 54])
+</code></pre>
+<pre><code class="python"># 乘积
+np.prod(X)
+</code></pre>
+<pre><code>0
+</code></pre>
+<pre><code class="python">np.prod(X + 1)
+</code></pre>
+<pre><code>20922789888000
+</code></pre>
+<pre><code class="python"># mean 平均值
+np.mean(X)
+</code></pre>
+<pre><code>7.5
+</code></pre>
+<pre><code class="python"># 中位数
+np.median(X)
+</code></pre>
+<pre><code>7.5
+</code></pre>
+<pre><code class="python">v = np.array([1,1,2,2,10])
+np.mean(v)
+</code></pre>
+<pre><code>3.2
+</code></pre>
+<pre><code class="python">np.median(v)
+</code></pre>
+<pre><code>2.0
+</code></pre>
+<pre><code class="python"># 百分位
+np.percentile(big_array,q = 50)
+</code></pre>
+<pre><code>0.49954378380757225
+</code></pre>
+<pre><code class="python">np.median(big_array)
+</code></pre>
+<pre><code>0.49954378380757225
+</code></pre>
+<pre><code class="python">for percent in [0,25,50,75,100]:
+    print(np.percentile(big_array,q = percent))
+</code></pre>
+<pre><code>5.496309696262358e-08
+0.250017903329254
+0.49954378380757225
+0.749635503268846
+0.9999996218965496
+</code></pre>
+<pre><code class="python"># 方差
+np.var(big_array)
+</code></pre>
+<pre><code>0.08327182928486565
+</code></pre>
+<pre><code class="python"># 标准差
+np.std(big_array)
+</code></pre>
+<pre><code>0.2885685867950038
+</code></pre>
+<pre><code class="python">x = np.random.normal(0,1,size=1000000)
+</code></pre>
+<pre><code class="python">np.mean(x)
+</code></pre>
+<pre><code>6.617905019805358e-05
+</code></pre>
+<pre><code class="python">np.std(x)
+</code></pre>
+<pre><code>1.0004066392846953
+</code></pre>
+<pre><code class="python">x
+</code></pre>
+<pre><code>array([ 1.35701725, -0.10555276,  0.16454334, ..., -0.52624124,
+        1.1788963 , -0.53829805])
+</code></pre>
+<h3 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h3><pre><code class="python">np.min(x)
+</code></pre>
+<pre><code>-4.997660514468604
+</code></pre>
+<pre><code class="python"># 获取最小值索引位置
+np.argmin(x)
+</code></pre>
+<pre><code>230204
+</code></pre>
+<pre><code class="python">np.argmax(x)
+</code></pre>
+<pre><code>727824
+</code></pre>
+<pre><code class="python">x[727824]
+</code></pre>
+<pre><code>4.606518805643649
+</code></pre>
+<h3 id="排序和使用索引"><a href="#排序和使用索引" class="headerlink" title="排序和使用索引"></a>排序和使用索引</h3><pre><code class="python">x = np.arange(16)
+</code></pre>
+<pre><code class="python">x
+</code></pre>
+<pre><code>array([ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15])
+</code></pre>
+<pre><code class="python">np.random.shuffle(x)
+x
+</code></pre>
+<pre><code>array([11,  3,  6,  0, 10, 15, 13,  2,  5,  8, 14,  4,  1, 12,  9,  7])
+</code></pre>
+<pre><code class="python">np.sort(x)
+</code></pre>
+<pre><code>array([ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15])
+</code></pre>
+<pre><code class="python">x.sort()
+</code></pre>
+<pre><code class="python">x
+</code></pre>
+<pre><code>array([ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15])
+</code></pre>
+<pre><code class="python">X = np.random.randint(10,size=(4,4))
+X
+</code></pre>
+<pre><code>array([[2, 1, 2, 3],
+       [8, 2, 0, 7],
+       [7, 6, 1, 9],
+       [6, 3, 9, 8]])
+</code></pre>
+<pre><code class="python"># 默认是将每一行进行排序 axis 默认值是1
+np.sort(X)
+</code></pre>
+<pre><code>array([[1, 2, 2, 3],
+       [0, 2, 7, 8],
+       [1, 6, 7, 9],
+       [3, 6, 8, 9]])
+</code></pre>
+<pre><code class="python">np.sort(X,axis = 1)
+</code></pre>
+<pre><code>array([[1, 2, 2, 3],
+       [0, 2, 7, 8],
+       [1, 6, 7, 9],
+       [3, 6, 8, 9]])
+</code></pre>
+<pre><code class="python">np.sort(X,axis = 0)
+</code></pre>
+<pre><code>array([[2, 1, 0, 3],
+       [6, 2, 1, 7],
+       [7, 3, 2, 8],
+       [8, 6, 9, 9]])
+</code></pre>
+<pre><code class="python">x
+</code></pre>
+<pre><code>array([ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15])
+</code></pre>
+<pre><code class="python">np.random.shuffle(x)
+</code></pre>
+<pre><code class="python"># 索引数组
+np.argsort(x)
+</code></pre>
+<pre><code>array([ 3,  8,  6,  9, 14,  4, 10,  2, 12,  7, 11,  5,  0,  1, 13, 15])
+</code></pre>
+<pre><code class="python"># 寻找标定点，小于标定点放在左侧，大于标定点放在右侧
+np.partition(x,3)
+</code></pre>
+<pre><code>array([ 0,  1,  2,  3,  4,  5,  9,  8,  7,  6, 10, 11, 12, 14, 13, 15])
+</code></pre>
+<pre><code class="python"># 获取标定点的索引
+np.argpartition(x,3)
+</code></pre>
+<pre><code>array([ 3,  8,  6,  9, 14,  4,  7, 12,  2, 10, 11,  5,  0, 13,  1, 15])
+</code></pre>
+<pre><code class="python">X
+</code></pre>
+<pre><code>array([[2, 1, 2, 3],
+       [8, 2, 0, 7],
+       [7, 6, 1, 9],
+       [6, 3, 9, 8]])
+</code></pre>
+<pre><code class="python">np.argsort(X,axis=1)
+</code></pre>
+<pre><code>array([[1, 0, 2, 3],
+       [2, 1, 3, 0],
+       [2, 1, 0, 3],
+       [1, 0, 3, 2]])
+</code></pre>
+<pre><code class="python">np.argsort(X,axis=0)
+</code></pre>
+<pre><code>array([[0, 0, 1, 0],
+       [3, 1, 2, 1],
+       [2, 3, 0, 3],
+       [1, 2, 3, 2]])
+</code></pre>
+<pre><code class="python">np.argpartition(X,2,axis = 1)
+</code></pre>
+<pre><code>array([[1, 0, 2, 3],
+       [2, 1, 3, 0],
+       [2, 1, 0, 3],
+       [1, 0, 3, 2]])
+</code></pre>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B4%A2%E5%BC%95"><span class="toc-number">1.</span> <span class="toc-text">索引</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%92%E5%BA%8F%E5%92%8C%E4%BD%BF%E7%94%A8%E7%B4%A2%E5%BC%95"><span class="toc-number">2.</span> <span class="toc-text">排序和使用索引</span></a></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

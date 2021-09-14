@@ -1,0 +1,618 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ambari2.6源码编译之ambari-admin - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="ambari-admin 使用的是angularjs + bower + gulp 
+1.准备1.1下载源码安装wgetyum -y install wget
+
+下载源码将源码下载到/opt目录下
+,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">Ambari2.6源码编译之ambari-admin</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/7.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/Ambari二次开发"><b>「
+                    </b>AMBARI二次开发<b> 」</b></a>
+                
+                August 19, 2018
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/ambari2.6-source-code-compilation-ambari-admin.html" title="Ambari2.6源码编译之ambari-admin" class="">Ambari2.6源码编译之ambari-admin</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    9k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    8 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Ambari%E4%BA%8C%E6%AC%A1%E5%BC%80%E5%8F%91/" rel="tag">Ambari二次开发</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <p>ambari-admin 使用的是angularjs + bower + gulp </p>
+<h2 id="1-准备"><a href="#1-准备" class="headerlink" title="1.准备"></a>1.准备</h2><h3 id="1-1下载源码"><a href="#1-1下载源码" class="headerlink" title="1.1下载源码"></a>1.1下载源码</h3><h4 id="安装wget"><a href="#安装wget" class="headerlink" title="安装wget"></a>安装wget</h4><pre><code>yum -y install wget
+</code></pre>
+<h4 id="下载源码"><a href="#下载源码" class="headerlink" title="下载源码"></a>下载源码</h4><p>将源码下载到/opt目录下</p>
+<pre><code>wget http://www.apache.org/dist/ambari/ambari-2.6.0/apache-ambari-2.6.0-src.tar.gz -O /opt/apache-ambari-2.6.0-src.tar.gz
+</code></pre>
+<h3 id="1-2配置编译环境"><a href="#1-2配置编译环境" class="headerlink" title="1.2配置编译环境"></a>1.2配置编译环境</h3><h4 id="1-2-1安装node-js"><a href="#1-2-1安装node-js" class="headerlink" title="1.2.1安装node.js"></a>1.2.1安装node.js</h4><p>下载</p>
+<pre><code>wget https://nodejs.org/dist/v8.5.0/node-v8.5.0-linux-x64.tar.gz /usr/lib/node-v8.5.0-linux-x64.tar.gz
+</code></pre>
+<p>解压</p>
+<pre><code>tar zxvf node-v8.5.0-linux-x64.tar.gz
+</code></pre>
+<p>配置环境变量</p>
+<pre><code>export NODE_HOME=&quot;/usr/lib/node-v8.5.0-linux-x64&quot;
+export PATH=$PATH:$NODE_HOME/bin
+</code></pre>
+<p>使修改后的文件生效</p>
+<pre><code>source /etc/profile 或者 . /etc/profile
+</code></pre>
+<p>查看安装情况</p>
+<pre><code>node -v
+npm -v
+</code></pre>
+<h4 id="1-2-2安装bzip2"><a href="#1-2-2安装bzip2" class="headerlink" title="1.2.2安装bzip2"></a>1.2.2安装bzip2</h4><pre><code>yum install bzip2
+</code></pre>
+<h4 id="1-2-3安装git"><a href="#1-2-3安装git" class="headerlink" title="1.2.3安装git"></a>1.2.3安装git</h4><pre><code>yum -y install git
+</code></pre>
+<h2 id="2-编译"><a href="#2-编译" class="headerlink" title="2.编译"></a>2.编译</h2><p>ambari-admin使用的是angularjs + bower +gulp</p>
+<h3 id="2-1修改-bowerrc配置"><a href="#2-1修改-bowerrc配置" class="headerlink" title="2.1修改 .bowerrc配置"></a>2.1修改 .bowerrc配置</h3><h4 id="2-1-1切换目录"><a href="#2-1-1切换目录" class="headerlink" title="2.1.1切换目录"></a>2.1.1切换目录</h4><pre><code>cd /opt/ambari-admin/src/main/resources/ui/admin-web
+</code></pre>
+<h4 id="2-1-2修改-bowerrc"><a href="#2-1-2修改-bowerrc" class="headerlink" title="2.1.2修改 .bowerrc"></a>2.1.2修改 .bowerrc</h4><pre><code>vim .bowerrc
+</code></pre>
+<h4 id="2-1-3内容"><a href="#2-1-3内容" class="headerlink" title="2.1.3内容"></a>2.1.3内容</h4><pre><code>&#123;
+    &quot;directory&quot;: &quot;app/bower_components&quot;,
+    &quot;allow_root&quot;: true
+&#125;
+</code></pre>
+<p>说明：添加一行<code>  &quot;allow_root&quot;: true</code> 允许以root用户执行bower命令。也可以在执行命令的时候通过参数设定 如：bower install –allow-root    </p>
+<h3 id="2-2安装npm依赖包"><a href="#2-2安装npm依赖包" class="headerlink" title="2.2安装npm依赖包"></a>2.2安装npm依赖包</h3><pre><code>npm install
+</code></pre>
+<h3 id="2-3安装全局gulp"><a href="#2-3安装全局gulp" class="headerlink" title="2.3安装全局gulp"></a>2.3安装全局gulp</h3><pre><code>npm install -g gulp
+</code></pre>
+<h3 id="2-4-安装全局bower"><a href="#2-4-安装全局bower" class="headerlink" title="2.4 安装全局bower"></a>2.4 安装全局bower</h3><pre><code>npm install -g bower
+</code></pre>
+<h3 id="2-5-安装bower的依赖包"><a href="#2-5-安装bower的依赖包" class="headerlink" title="2.5 安装bower的依赖包"></a>2.5 安装bower的依赖包</h3><pre><code>bower install
+</code></pre>
+<h3 id="2-6-安装gulp-webserver"><a href="#2-6-安装gulp-webserver" class="headerlink" title="2.6 安装gulp-webserver"></a>2.6 安装gulp-webserver</h3><pre><code>npm install gulp-webserver --save-dev
+</code></pre>
+<h3 id="2-7-修改gulpfile-js文件"><a href="#2-7-修改gulpfile-js文件" class="headerlink" title="2.7 修改gulpfile.js文件"></a>2.7 修改gulpfile.js文件</h3><p>注释//+的地方是需要新增或者修改的地方</p>
+<pre><code>&#39;use strict&#39;;
+
+var gulp = require(&#39;gulp&#39;);
+var $ = require(&#39;gulp-load-plugins&#39;)();
+var webserver = require(&#39;gulp-webserver&#39;);//+
+
+//+ 这个地方current如果为test就以webserver的方式启动，如果为build直接构建
+var current = &quot;test&quot;;
+var config = &#123;
+    start_task:&#123;
+        test:&quot;webserver&quot;,
+        build:&quot;build&quot;
+    &#125;
+&#125;;
+
+//+
+gulp.task(&#39;webserver&#39;, function()&#123;
+    gulp.src(&#39;app&#39;).pipe(webserver(&#123;
+        port: 8000,//端口
+        host: &#39;192.168.162.127&#39;,//域名
+        livereload: true,//实时刷新代码。不用f5刷新
+        directoryListing: true,
+        //fallback:&#39;index.html&#39;,
+        open:true
+    &#125;))
+&#125;);
+
+
+gulp.task(&#39;styles&#39;, function () &#123;
+  return gulp.src(&#39;app/styles/*.css&#39;)
+    .pipe($.order([
+      &#39;app/styles/main.css&#39;,
+      &#39;app/styles/custom-admin-ui.css&#39;   // This should always be the last stylesheet. So it can be dropped and be effective on build time
+    ], &#123; base: &#39;./&#39; &#125;))
+    .pipe($.concat(&#39;main.css&#39;))
+    .pipe($.autoprefixer(&#39;last 1 version&#39;))
+    .pipe(gulp.dest(&#39;.tmp/styles&#39;))
+    .pipe($.size());
+&#125;);
+
+gulp.task(&#39;html&#39;, [&#39;styles&#39;], function () &#123;
+  var jsFilter = $.filter(&#39;**/*.js&#39;);
+  var cssFilter = $.filter(&#39;**/*.css&#39;);
+
+  return gulp.src(&#39;app/*.html&#39;)
+    .pipe($.plumber())
+    .pipe($.useref.assets(&#123;searchPath: &#39;&#123;.tmp,app&#125;&#39;&#125;))
+    .pipe(jsFilter)
+    .pipe(jsFilter.restore())
+    .pipe(cssFilter)
+    .pipe(cssFilter.restore())
+    .pipe($.useref.restore())
+    .pipe($.useref())
+    .pipe(gulp.dest(&#39;dist&#39;))
+    .pipe($.size());
+&#125;);
+
+gulp.task(&#39;views&#39;, function () &#123;
+  return gulp.src(&#39;app/views/**/*.html&#39;)
+    .pipe(gulp.dest(&#39;dist/views&#39;));
+&#125;);
+
+//+
+gulp.task(&#39;xml&#39;,function()&#123;
+  return gulp.src(&#39;app/view.xml&#39;)
+  .pipe(gulp.dest(&#39;dist&#39;))
+&#125;);
+
+gulp.task(&#39;images&#39;, function () &#123;
+  return gulp.src(&#39;app/img/**/*&#39;)
+    .pipe(gulp.dest(&#39;dist/img&#39;))
+    .pipe($.size());
+&#125;);
+
+gulp.task(&#39;fonts&#39;, function () &#123;
+  return $.bowerFiles()
+    .pipe($.filter(&#39;**/*.&#123;eot,svg,ttf,woff&#125;&#39;))
+    .pipe($.flatten())
+    .pipe(gulp.dest(&#39;dist/fonts&#39;))
+    .pipe($.size());
+&#125;);
+
+gulp.task(&#39;extras&#39;, function () &#123;
+  return gulp.src([&#39;app/*.*&#39;, &#39;!app/*.html&#39;], &#123;dot: true&#125;)
+    .pipe(gulp.dest(&#39;dist&#39;));
+&#125;);
+
+gulp.task(&#39;clean&#39;, function () &#123;
+  return gulp.src([&#39;.tmp&#39;, &#39;dist&#39;], &#123;read: false&#125;).pipe($.clean());
+&#125;);
+//+
+gulp.task(&#39;build&#39;, [&#39;html&#39;, &#39;views&#39;, &#39;images&#39;, &#39;fonts&#39;,&#39;xml&#39;, &#39;extras&#39;]);
+
+//+
+gulp.task(&#39;default&#39;, [&#39;clean&#39;], function () &#123;
+  gulp.start(config.start_task[current]);
+&#125;);
+</code></pre>
+<h2 id="3-编译"><a href="#3-编译" class="headerlink" title="3.编译"></a>3.编译</h2><p>gulp提供两种方式编译，一种是webserver的方式，单独启动一个web服务，来测试修改后的ambari-Admin。另一种是直接编译后软链接到ambari-server以真实环境来测试。</p>
+<h3 id="3-1以webserver方式启动"><a href="#3-1以webserver方式启动" class="headerlink" title="3.1以webserver方式启动"></a>3.1以webserver方式启动</h3><h4 id="3-1-1修改gulpfile-js文件"><a href="#3-1-1修改gulpfile-js文件" class="headerlink" title="3.1.1修改gulpfile.js文件"></a>3.1.1修改gulpfile.js文件</h4><pre><code>var current = &quot;test&quot;;
+</code></pre>
+<h4 id="3-1-2启动gulp"><a href="#3-1-2启动gulp" class="headerlink" title="3.1.2启动gulp"></a>3.1.2启动gulp</h4><pre><code>gulp
+</code></pre>
+<h4 id="3-1-3测试"><a href="#3-1-3测试" class="headerlink" title="3.1.3测试"></a>3.1.3测试</h4><p>访问<a target="_blank" rel="noopener" href="http://192.168.162.127:8000/index.html#/">http://192.168.162.127:8000/index.html#/</a> 即可查看效果。</p>
+<h3 id="3-2-以ambari-server服务真实环境启动"><a href="#3-2-以ambari-server服务真实环境启动" class="headerlink" title="3.2 以ambari-server服务真实环境启动"></a>3.2 以ambari-server服务真实环境启动</h3><h4 id="3-2-1-修改gulpfile-js文件"><a href="#3-2-1-修改gulpfile-js文件" class="headerlink" title="3.2.1 修改gulpfile.js文件"></a>3.2.1 修改gulpfile.js文件</h4><pre><code>var current = &quot;test&quot;;
+</code></pre>
+<h4 id="3-2-2启动gulp"><a href="#3-2-2启动gulp" class="headerlink" title="3.2.2启动gulp"></a>3.2.2启动gulp</h4><pre><code>gulp
+</code></pre>
+<h4 id="3-2-3建立软链接"><a href="#3-2-3建立软链接" class="headerlink" title="3.2.3建立软链接"></a>3.2.3建立软链接</h4><p>切换到ambari-server对应admin页面的目录下</p>
+<pre><code>cd /var/lib/ambari-server/resources/views/work
+</code></pre>
+<p>备份 ADMIN_VIEW{2.6.0.0} </p>
+<pre><code>mv ADMIN_VIEW\&#123;2.6.0.0\&#125; ADMIN_VIEW\&#123;2.6.0.0\&#125;.bak
+</code></pre>
+<p>建立软链接</p>
+<pre><code>ln -s /opt/apache-ambari-2.6.0-src/ambari-admin/src/main/resources/ui/admin-web/dist ADMIN_VIEW\&#123;2.6.0.0\&#125;
+</code></pre>
+<p>复制ADMIN_VIEW{2.6.0.0}.bak里的view.xml文件到ADMIN_VIEW{2.6.0.0}</p>
+<pre><code>cp view.xml ../ADMIN_VIEW\&#123;2.6.0.0\&#125;
+</code></pre>
+<p>复制ADMIN_VIEW{2.6.0.0}.bak里的view.xml文件到/opt/apache-ambari-2.6.0-src/ambari-admin/src/main/resources/ui/admin-web/app</p>
+<pre><code>cp view.xml /opt/apache-ambari-2.6.0-src/ambari-admin/src/main/resources/ui/admin-web/app
+</code></pre>
+<h4 id="3-2-4重启ambari-server"><a href="#3-2-4重启ambari-server" class="headerlink" title="3.2.4重启ambari-server"></a>3.2.4重启ambari-server</h4><pre><code>ambari-server restart
+</code></pre>
+<h4 id="3-2-5-测试"><a href="#3-2-5-测试" class="headerlink" title="3.2.5  测试"></a>3.2.5  测试</h4><p>访问<a target="_blank" rel="noopener" href="http://192.168.162.127:8080/">http://192.168.162.127:8080</a> 查看效果</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%87%86%E5%A4%87"><span class="toc-number">1.</span> <span class="toc-text">1.准备</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1%E4%B8%8B%E8%BD%BD%E6%BA%90%E7%A0%81"><span class="toc-number">1.1.</span> <span class="toc-text">1.1下载源码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2%E9%85%8D%E7%BD%AE%E7%BC%96%E8%AF%91%E7%8E%AF%E5%A2%83"><span class="toc-number">1.2.</span> <span class="toc-text">1.2配置编译环境</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E7%BC%96%E8%AF%91"><span class="toc-number">2.</span> <span class="toc-text">2.编译</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1%E4%BF%AE%E6%94%B9-bowerrc%E9%85%8D%E7%BD%AE"><span class="toc-number">2.1.</span> <span class="toc-text">2.1修改 .bowerrc配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2%E5%AE%89%E8%A3%85npm%E4%BE%9D%E8%B5%96%E5%8C%85"><span class="toc-number">2.2.</span> <span class="toc-text">2.2安装npm依赖包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3%E5%AE%89%E8%A3%85%E5%85%A8%E5%B1%80gulp"><span class="toc-number">2.3.</span> <span class="toc-text">2.3安装全局gulp</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-%E5%AE%89%E8%A3%85%E5%85%A8%E5%B1%80bower"><span class="toc-number">2.4.</span> <span class="toc-text">2.4 安装全局bower</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-%E5%AE%89%E8%A3%85bower%E7%9A%84%E4%BE%9D%E8%B5%96%E5%8C%85"><span class="toc-number">2.5.</span> <span class="toc-text">2.5 安装bower的依赖包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-6-%E5%AE%89%E8%A3%85gulp-webserver"><span class="toc-number">2.6.</span> <span class="toc-text">2.6 安装gulp-webserver</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-7-%E4%BF%AE%E6%94%B9gulpfile-js%E6%96%87%E4%BB%B6"><span class="toc-number">2.7.</span> <span class="toc-text">2.7 修改gulpfile.js文件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E7%BC%96%E8%AF%91"><span class="toc-number">3.</span> <span class="toc-text">3.编译</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1%E4%BB%A5webserver%E6%96%B9%E5%BC%8F%E5%90%AF%E5%8A%A8"><span class="toc-number">3.1.</span> <span class="toc-text">3.1以webserver方式启动</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E4%BB%A5ambari-server%E6%9C%8D%E5%8A%A1%E7%9C%9F%E5%AE%9E%E7%8E%AF%E5%A2%83%E5%90%AF%E5%8A%A8"><span class="toc-number">3.2.</span> <span class="toc-text">3.2 以ambari-server服务真实环境启动</span></a></li></ol></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

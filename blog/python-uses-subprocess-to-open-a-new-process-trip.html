@@ -1,0 +1,628 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Python使用subprocess开启新进程之旅 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="
+版本说明：Python2.7
+
+感觉好久没有写博客了，最近接连两项工作，忙的不亦乐乎，难得空档期，做一下笔记总结。同样是工作中遇到的问题，简单描述一下：有这样一段脚本，它执行时间比较长，而且不断地,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">Python使用subprocess开启新进程之旅</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/6.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/Python"><b>「
+                    </b>PYTHON<b> 」</b></a>
+                
+                August 24, 2020
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/python-uses-subprocess-to-open-a-new-process-trip.html" title="Python使用subprocess开启新进程之旅" class="">Python使用subprocess开启新进程之旅</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    7.6k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    7 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Python/" rel="tag">Python</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <blockquote>
+<p>版本说明：Python2.7</p>
+</blockquote>
+<p>感觉好久没有写博客了，最近接连两项工作，忙的不亦乐乎，难得空档期，做一下笔记总结。同样是工作中遇到的问题，简单描述一下：有这样一段脚本，它执行时间比较长，而且不断地有标准输出，需要Flask提供REST服务去异步执行这段脚本，并且实时捕获标准输出，通过WebSocket推送给前台。关键点：异步调用，实时获取标准输出，并且可能涉及到实时交互。当时解决这个问题，一开始使用的是Python的输出重定向sys.stdout，然后重写write方法，将输出写到Queue里，然后起一个线程轮询Queue,但是发现输出不全，而且对于输出的控制不理想。重要的是无法进行交互。后来发现使用Python的subprocess能够很好的解决问题。</p>
+<h1 id="1-关于subprocess"><a href="#1-关于subprocess" class="headerlink" title="1 关于subprocess"></a>1 关于subprocess</h1><p>官网：<a target="_blank" rel="noopener" href="https://docs.python.org/2/library/subprocess.html">https://docs.python.org/2/library/subprocess.html</a></p>
+<p>subprocess模块允许我们生成一个新进程，连接到新进程的输出、输出、错误管道，并获取它们的返回码。该模块旨在替换几个比较旧的模块和功能</p>
+<pre><code class="python">os.system
+os.spawn*
+os.popen*
+popen2.*
+commands.*
+</code></pre>
+<p>那么我们到底可以使用subprocess来做什么呢？执行一个程序，执行一个shell命令，调用一个脚本等。</p>
+<h1 id="2-使用subprocess"><a href="#2-使用subprocess" class="headerlink" title="2 使用subprocess"></a>2 使用subprocess</h1><h2 id="2-1-call"><a href="#2-1-call" class="headerlink" title="2.1 call()"></a>2.1 call()</h2><p>call()方法能便捷的调用一个程序，并得到执行的返回码。该方法是同步执行，需要等待命令执行完成，并且stdout不能指向PIPE，默认继承父进程的输出。</p>
+<pre><code class="python">subprocess.call(args, *, stdin=None, stdout=None, stderr=None, shell=False)
+</code></pre>
+<p>args可以是字符串，也可以是列表，如果是字符串的话，会被当做shell命令，必须指定shell=True。args为列表的话，列表第一个元素会认为是程序路径，后面元素为参数。如我要执行”ls .”这个命令，可以使用call(“ls .”,shell=True)，它相当于call([‘/bin/sh’,’-c’,’ls .’])。我们也可以直接使用call([‘ls’,’.’])该方法返回值是一个返回码，表示该进行执行的状态，如果返回0表示正常，返回其它状态码表示异常。</p>
+<p>如：我们使用call方法，执行命令ls .查看当前路径所有的文件</p>
+<pre><code class="python">&quot;&quot;&quot;
+使用call()方法执行一个命令
+返回值为0说明执行成功，此命令不能将输出定向到PIPE
+非异步
+&quot;&quot;&quot;
+return_code = subprocess.call(&#39;ls .&#39;, shell=True)
+print return_code
+</code></pre>
+<h2 id="2-2-check-call"><a href="#2-2-check-call" class="headerlink" title="2.2 check_call()"></a>2.2 check_call()</h2><p>check_call()方法与call类似，不同点在于，该方法会检查返回状态，如果返回码不等于0将抛出<a target="_blank" rel="noopener" href="https://docs.python.org/2/library/subprocess.html#subprocess.CalledProcessError"><code>CalledProcessError</code></a>异常。</p>
+<pre><code class="python">subprocess.check_call(args, *, stdin=None, stdout=None, stderr=None, shell=False)
+</code></pre>
+<p>该方法的参数与call()相同，返回值也是返回码。</p>
+<pre><code class="python">&quot;&quot;&quot;
+使用check_all()方法执行一个命令
+返回码不为0，将会抛出CalledProcessError异常
+非异步
+&quot;&quot;&quot;
+subprocess.check_call([&#39;ls&#39;, &#39;.&#39;], shell=False)
+subprocess.check_call(&#39;exit 1&#39;, shell=True)
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/42c92e611a9b574ad6800d091f352bee.jpg"></p>
+<h2 id="2-3-check-output"><a href="#2-3-check-output" class="headerlink" title="2.3 check_output()"></a>2.3 check_output()</h2><p>上述的两个方法，返回值都是一个状态码，表示该进程的结果状态，而输出信息都是定向到父进程的标准输出里了，有时候我们需要拿到执行某条命令的结果，我们可以使用check_output()方法。它可以返回执行的结果，如果执行失败同样会抛出<a target="_blank" rel="noopener" href="https://docs.python.org/2/library/subprocess.html#subprocess.CalledProcessError"><code>CalledProcessError</code></a>异常，此方法也是同步的。</p>
+<pre><code class="python">subprocess.check_output(args, *, stdin=None, stderr=None, shell=False, universal_newlines=False)
+</code></pre>
+<p>该方法前面几个参数与上述几个方法相同，universal_newlines方法表示是否换行，默认为False，如果为True会在返回的输出后面添加”\n”进行换行。</p>
+<pre><code class="python">&quot;&quot;&quot;
+使用check_output()方法执行一个命令
+返回码不为0，将会抛出CalledProcessError异常
+运行正常，将会把标准输出结果返回,
+要想将标准错误返回，可以使用stderr=subprocess.STDOUT
+非异步
+&quot;&quot;&quot;
+output = subprocess.check_output([&#39;echo&#39;, &#39;hello world&#39;], universal_newlines=True)
+print output
+</code></pre>
+<h2 id="2-4-Popen-构造器"><a href="#2-4-Popen-构造器" class="headerlink" title="2.4 Popen 构造器"></a>2.4 Popen 构造器</h2><p>subprocess可以使用Popen构造，功能更强大，使用更灵活，可以做到异步调用，实时交互等。</p>
+<pre><code class="python">subprocess.Popen(args, bufsize=0, executable=None, stdin=None, stdout=None, stderr=None, preexec_fn=None, close_fds=False, shell=False, cwd=None, env=None, universal_newlines=False, startupinfo=None, creationflags=0)
+</code></pre>
+<h3 id="2-4-1-参数说明"><a href="#2-4-1-参数说明" class="headerlink" title="2.4.1 参数说明"></a>2.4.1 参数说明</h3><p>Popen构造器所需要的参数列表如下所示：</p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>args</td>
+<td>字符串或者是列表，表示被调用程序的路径和参数</td>
+</tr>
+<tr>
+<td>bufsize</td>
+<td>0 表示无缓存<br />1 表示行缓冲 <br />其它正值 表示缓冲区大小<br />负值 采用系统默认缓冲(全缓冲)</td>
+</tr>
+<tr>
+<td>executable</td>
+<td>可执行程序，如果为None取args列表的第一个值</td>
+</tr>
+<tr>
+<td>stdin<br/>stdout<br/>stderr</td>
+<td>None 没有任何重定向，继承父进程<br />PIPE 创建管道<br/>文件对象<br/>文件描述符(整数)<br/>stderr 还可以设置为STDOUT</td>
+</tr>
+<tr>
+<td>preexec_fn</td>
+<td>钩子函数，在fork和exec之前执行(unix)</td>
+</tr>
+<tr>
+<td>close_fds</td>
+<td>unix下执行新进程之前是否关闭0/1/2之外的文件<br/>windows下不继承是继承父进程的文件描述符</td>
+</tr>
+<tr>
+<td>shell</td>
+<td>unix下相当于在args前面添加了”/bin/sh” “-c”<br/>window下相当于添加”cmd.exe /c”</td>
+</tr>
+<tr>
+<td>cwd</td>
+<td>设置工作目录</td>
+</tr>
+<tr>
+<td>env</td>
+<td>设置环境变量</td>
+</tr>
+<tr>
+<td>universal_newlines</td>
+<td>添加换行符”\n”</td>
+</tr>
+<tr>
+<td>startupinfo</td>
+<td>window下传递给CreateProcess的结构体</td>
+</tr>
+<tr>
+<td>creationflags</td>
+<td>window下，传递CREATE_NEW_CONSOLE创建自己的控制台窗口</td>
+</tr>
+</tbody></table>
+<h3 id="2-4-2-方法说明"><a href="#2-4-2-方法说明" class="headerlink" title="2.4.2 方法说明"></a>2.4.2 方法说明</h3><p>使用Popen构造器产生的对象具有以下方法。</p>
+<table>
+<thead>
+<tr>
+<th>方法名称</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>poll()</td>
+<td>检查子进程是否已经结束，设置并返回returncode属性，非结束返回None</td>
+</tr>
+<tr>
+<td>wait()</td>
+<td>阻塞主进程等待子线程完成，返回returncode，注意：如果子进程输出了大量数据到stdout或者stderr的管道，并达到了系统pipe的缓存大小的话，子进程会等待父进程读取管道，而父进程此时正wait着的话，将会产生传说中的死锁，后果是非常严重滴。建议使用communicate() 来避免这种情况的发生。</td>
+</tr>
+<tr>
+<td>communicate(input=None)</td>
+<td>和子进程交互，发送数据到stdin，并从stdout和stderr读数据，直到收到EOF，阻塞，一直等待子进程结束。input输出要为字符串。该方法返回一个元组(stdoutdata,stderrdata)。注意：要给子进程的stdin发送数据，则Popen的时候，stdin要为PIPE；同理，要可以接收数据的话，stdout或者stderr也要为PIPE。</td>
+</tr>
+<tr>
+<td>send_signal(signal)</td>
+<td>在子进程发送signal信号，注意：window下目前只支持发送SIGTERM，等效于小面的terminate()</td>
+</tr>
+<tr>
+<td>terminate()</td>
+<td>停止子进程。Posix下是发送SIGTERM信号。windows下是调用TerminateProcess()这个API。</td>
+</tr>
+<tr>
+<td>kill()</td>
+<td>杀死子进程。Posix下是发送SIGKILL信号。windows下和terminate() 无异。</td>
+</tr>
+<tr>
+<td>stdin</td>
+<td>如果stdin 参数是PIPE，此属性就是一个文件对象，否则为None 。</td>
+</tr>
+<tr>
+<td>stdout</td>
+<td>如果stdout参数是PIPE，此属性就是一个文件对象，否则为None。</td>
+</tr>
+<tr>
+<td>stderr</td>
+<td>如果stderr参数是PIP，此属性就是一个文件对象，否则为None。</td>
+</tr>
+<tr>
+<td>pid</td>
+<td>子进程的进程号。注意，如果shell 参数为True，这属性指的是子shell的进程号。</td>
+</tr>
+<tr>
+<td>returncode</td>
+<td>子程序的返回值，由poll()或者wait()设置，间接地也由communicate()设置。<br/>如果为None，表示子进程还没终止。<br/>如果为负数-N的话，表示子进程被N号信号终止。（仅限unix）</td>
+</tr>
+</tbody></table>
+<h1 id="3-应用Demo"><a href="#3-应用Demo" class="headerlink" title="3 应用Demo"></a>3 应用Demo</h1><h2 id="3-1-调用脚本并获取实时输出"><a href="#3-1-调用脚本并获取实时输出" class="headerlink" title="3.1 调用脚本并获取实时输出"></a>3.1 调用脚本并获取实时输出</h2><p>假如我有如下名为callme.py的脚本，我想使用subprocess实时调用，该怎么写？</p>
+<pre><code class="python"># encoding: utf-8
+&quot;&quot;&quot;
+@author : shirukai
+@date : 2019-05-16 10:03
+用来测试subprocess脚本调用
+&quot;&quot;&quot;
+import time
+
+if __name__ == &#39;__main__&#39;:
+    for i in range(10):
+        print &quot;I was called &#123;0&#125; times.&quot;.format(str(i + 1))
+        time.sleep(5)
+</code></pre>
+<p>可以这样写：</p>
+<pre><code class="python">    process = subprocess.Popen([&#39;python&#39;, &#39;callme.py&#39;], stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+    while process.poll() is None:
+        print process.stdout.readline()
+</code></pre>
+<p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/874815/how-do-i-get-real-time-information-back-from-a-subprocess-popen-in-python-2-5">https://stackoverflow.com/questions/874815/how-do-i-get-real-time-information-back-from-a-subprocess-popen-in-python-2-5</a></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E5%85%B3%E4%BA%8Esubprocess"><span class="toc-number">1.</span> <span class="toc-text">1 关于subprocess</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E4%BD%BF%E7%94%A8subprocess"><span class="toc-number">2.</span> <span class="toc-text">2 使用subprocess</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-call"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 call()</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-check-call"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 check_call()</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-check-output"><span class="toc-number">2.3.</span> <span class="toc-text">2.3 check_output()</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4-Popen-%E6%9E%84%E9%80%A0%E5%99%A8"><span class="toc-number">2.4.</span> <span class="toc-text">2.4 Popen 构造器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-1-%E5%8F%82%E6%95%B0%E8%AF%B4%E6%98%8E"><span class="toc-number">2.4.1.</span> <span class="toc-text">2.4.1 参数说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-2-%E6%96%B9%E6%B3%95%E8%AF%B4%E6%98%8E"><span class="toc-number">2.4.2.</span> <span class="toc-text">2.4.2 方法说明</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E5%BA%94%E7%94%A8Demo"><span class="toc-number">3.</span> <span class="toc-text">3 应用Demo</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-%E8%B0%83%E7%94%A8%E8%84%9A%E6%9C%AC%E5%B9%B6%E8%8E%B7%E5%8F%96%E5%AE%9E%E6%97%B6%E8%BE%93%E5%87%BA"><span class="toc-number">3.1.</span> <span class="toc-text">3.1 调用脚本并获取实时输出</span></a></li></ol></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

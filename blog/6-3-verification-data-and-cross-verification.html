@@ -1,0 +1,564 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>6-3 验证数据与交叉验证 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="
+问题：针对特定测试数据集过拟合？解决方法是将数据分成三份，训练数据、验证数据、测试数据
+交叉验证 Cross Validation
+import numpy as np
+from sklearn ,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">6-3 验证数据与交叉验证</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/8.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/机器学习"><b>「
+                    </b>机器学习<b> 」</b></a>
+                
+                August 20, 2018
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/6-3-verification-data-and-cross-verification.html" title="6-3 验证数据与交叉验证" class="">6-3 验证数据与交叉验证</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    5.4k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    5 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/python3%E5%85%A5%E9%97%A8%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">python3入门机器学习</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <p><img src="https://shirukai.gitee.io/images/669e51e1a7fc122d7cb7a2a882bbebcc.jpg"></p>
+<h2 id="问题：针对特定测试数据集过拟合？"><a href="#问题：针对特定测试数据集过拟合？" class="headerlink" title="问题：针对特定测试数据集过拟合？"></a>问题：针对特定测试数据集过拟合？</h2><p>解决方法是将数据分成三份，训练数据、验证数据、测试数据<br><img src="https://shirukai.gitee.io/images/84fcb563a92d49d1a2cf11ad2e072ac2.jpg"></p>
+<h2 id="交叉验证-Cross-Validation"><a href="#交叉验证-Cross-Validation" class="headerlink" title="交叉验证 Cross Validation"></a>交叉验证 Cross Validation</h2><p><img src="https://shirukai.gitee.io/images/64689adf6fbf3b0ecbf060365be1e618.jpg"></p>
+<pre><code class="python">import numpy as np
+from sklearn import datasets
+</code></pre>
+<pre><code>/Users/shirukai/anaconda3/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+  return f(*args, **kwds)
+</code></pre>
+<pre><code class="python">digits = datasets.load_digits()
+X = digits.data
+y = digits.target
+</code></pre>
+<h2 id="测试trian-test-split"><a href="#测试trian-test-split" class="headerlink" title="测试trian_test_split"></a>测试trian_test_split</h2><pre><code class="python">from sklearn.model_selection import train_test_split
+</code></pre>
+<pre><code class="python">X_train,X_test,y_train,y_test = train_test_split(X,y,test_size=0.4)
+</code></pre>
+<pre><code class="python">from sklearn.neighbors import KNeighborsClassifier
+
+best_score,best_p,best_k = 0,0,0
+for k in range(2,11):
+    for p in range(1,6):
+        knn_clf = KNeighborsClassifier(weights=&quot;distance&quot;,n_neighbors=k,p=p)
+        knn_clf.fit(X_train,y_train)
+        score = knn_clf.score(X_test,y_test)
+        if score &gt; best_score:
+            best_score,best_p,best_k = score,p,k
+print(&quot;Best K = &quot;,best_k)
+print(&quot;Best P = &quot;,best_p)
+print(&quot;Best Score = &quot;,best_score)
+</code></pre>
+<pre><code>Best K =  6
+Best P =  3
+Best Score =  0.9888734353268428
+</code></pre>
+<h2 id="使用交叉验证"><a href="#使用交叉验证" class="headerlink" title="使用交叉验证"></a>使用交叉验证</h2><pre><code class="python">from sklearn.model_selection import cross_val_score
+</code></pre>
+<pre><code class="python">knn_clf  = KNeighborsClassifier()
+cross_val_score(knn_clf,X_train,y_train)
+</code></pre>
+<pre><code>array([0.97520661, 0.98055556, 0.98591549])
+</code></pre>
+<pre><code class="python">from sklearn.neighbors import KNeighborsClassifier
+
+best_score,best_p,best_k = 0,0,0
+for k in range(2,11):
+    for p in range(1,6):
+        knn_clf = KNeighborsClassifier(weights=&quot;distance&quot;,n_neighbors=k,p=p)
+        # 使用交叉验证
+        scores = cross_val_score(knn_clf,X_train,y_train)
+        score = np.mean(scores)
+        if score &gt; best_score:
+            best_score,best_p,best_k = score,p,k
+print(&quot;Best K = &quot;,best_k)
+print(&quot;Best P = &quot;,best_p)
+print(&quot;Best Score = &quot;,best_score)
+</code></pre>
+<pre><code>Best K =  2
+Best P =  3
+Best Score =  0.9833216932448687
+</code></pre>
+<pre><code class="python">best_knn_clf = KNeighborsClassifier(weights=&#39;distance&#39;,n_neighbors=2,p=3)
+best_knn_clf.fit(X_train,y_train)
+best_knn_clf.score(X_test,y_test)
+</code></pre>
+<pre><code>0.9860917941585535
+</code></pre>
+<h2 id="回顾网格搜索"><a href="#回顾网格搜索" class="headerlink" title="回顾网格搜索"></a>回顾网格搜索</h2><pre><code class="python">from sklearn.model_selection import GridSearchCV
+# CV就是交叉验证
+
+param_grid = [
+    &#123;
+        &#39;weights&#39;:[&#39;distance&#39;],
+        &#39;n_neighbors&#39;:[i for i in range(2,11)],
+        &#39;p&#39;:[i for i in range(1,6)]
+    &#125;
+]
+grid_search = GridSearchCV(knn_clf,param_grid,verbose=1)
+grid_search.fit(X_train,y_train)
+</code></pre>
+<pre><code>Fitting 3 folds for each of 45 candidates, totalling 135 fits
+
+
+[Parallel(n_jobs=1)]: Done 135 out of 135 | elapsed:  1.4min finished
+
+
+
+
+
+GridSearchCV(cv=None, error_score=&#39;raise&#39;,
+       estimator=KNeighborsClassifier(algorithm=&#39;auto&#39;, leaf_size=30, metric=&#39;minkowski&#39;,
+           metric_params=None, n_jobs=1, n_neighbors=10, p=5,
+           weights=&#39;distance&#39;),
+       fit_params=None, iid=True, n_jobs=1,
+       param_grid=[&#123;&#39;weights&#39;: [&#39;distance&#39;], &#39;n_neighbors&#39;: [2, 3, 4, 5, 6, 7, 8, 9, 10], &#39;p&#39;: [1, 2, 3, 4, 5]&#125;],
+       pre_dispatch=&#39;2*n_jobs&#39;, refit=True, return_train_score=&#39;warn&#39;,
+       scoring=None, verbose=1)
+</code></pre>
+<pre><code class="python">grid_search.best_score_
+</code></pre>
+<pre><code>0.9833024118738405
+</code></pre>
+<pre><code class="python">grid_search.best_params_
+</code></pre>
+<pre><code>&#123;&#39;n_neighbors&#39;: 2, &#39;p&#39;: 3, &#39;weights&#39;: &#39;distance&#39;&#125;
+</code></pre>
+<pre><code class="python">best_knn_clf = grid_search.best_estimator_
+best_knn_clf.score(X_test,y_test)
+</code></pre>
+<pre><code>0.9860917941585535
+</code></pre>
+<pre><code class="python"># 交叉验证默认是训练3个模型，可以通过cv参数来指定模型数量
+cross_val_score(knn_clf,X_train,y_train,cv=5)
+</code></pre>
+<pre><code>array([0.97727273, 0.97247706, 0.97209302, 0.98130841, 0.97630332])
+</code></pre>
+<h2 id="k-folds-交叉验证"><a href="#k-folds-交叉验证" class="headerlink" title="k-folds 交叉验证"></a>k-folds 交叉验证</h2><p>把训练数据集分成k份，称为k-folds cross validation</p>
+<p>缺点：每次训练k个模型，相当于整体性能慢了k倍</p>
+<h2 id="留一法-LOO-CV"><a href="#留一法-LOO-CV" class="headerlink" title="留一法 LOO-CV"></a>留一法 LOO-CV</h2><p>把训练数据集分成m份，称为留一法 Leave-One-Out Cross Validation</p>
+<p>完全不受随机的影响，最接近模型真正的性能指标</p>
+<p>缺点：计算量巨大</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%EF%BC%9A%E9%92%88%E5%AF%B9%E7%89%B9%E5%AE%9A%E6%B5%8B%E8%AF%95%E6%95%B0%E6%8D%AE%E9%9B%86%E8%BF%87%E6%8B%9F%E5%90%88%EF%BC%9F"><span class="toc-number">1.</span> <span class="toc-text">问题：针对特定测试数据集过拟合？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%A4%E5%8F%89%E9%AA%8C%E8%AF%81-Cross-Validation"><span class="toc-number">2.</span> <span class="toc-text">交叉验证 Cross Validation</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95trian-test-split"><span class="toc-number">3.</span> <span class="toc-text">测试trian_test_split</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E4%BA%A4%E5%8F%89%E9%AA%8C%E8%AF%81"><span class="toc-number">4.</span> <span class="toc-text">使用交叉验证</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9E%E9%A1%BE%E7%BD%91%E6%A0%BC%E6%90%9C%E7%B4%A2"><span class="toc-number">5.</span> <span class="toc-text">回顾网格搜索</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#k-folds-%E4%BA%A4%E5%8F%89%E9%AA%8C%E8%AF%81"><span class="toc-number">6.</span> <span class="toc-text">k-folds 交叉验证</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%95%99%E4%B8%80%E6%B3%95-LOO-CV"><span class="toc-number">7.</span> <span class="toc-text">留一法 LOO-CV</span></a></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

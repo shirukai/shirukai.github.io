@@ -1,0 +1,1030 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>RPC框架初体验之Dubbo - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="
+版本描述：dubbo 2.7.2
+
+Dubbo是阿里开源的一款RPC框架，最近在学习微服务的时候有提及到。因此对Dubbo进行了入门级体验，这里主要体验体验Dubbo的几种配置方式，如XML配置、,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">RPC框架初体验之Dubbo</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/3.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/RPC"><b>「
+                    </b>RPC<b> 」</b></a>
+                
+                June 26, 2019
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/rpc-framework-first-experience-dubbo.html" title="RPC框架初体验之Dubbo" class="">RPC框架初体验之Dubbo</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    30k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    27 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/RPC/" rel="tag">RPC</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <blockquote>
+<p>版本描述：dubbo 2.7.2</p>
+</blockquote>
+<p>Dubbo是阿里开源的一款RPC框架，最近在学习微服务的时候有提及到。因此对Dubbo进行了入门级体验，这里主要体验体验Dubbo的几种配置方式，如XML配置、API配置、注解配置，以及Springboot里整合Dubbo，同时体验几种注册中心，如simple、zk、redis、multicast。</p>
+<p>Dubbo官网内容还是很丰富的，支持中文。地址：<a target="_blank" rel="noopener" href="http://dubbo.apache.org/zh-cn/docs/user/quick-start.html">http://dubbo.apache.org/zh-cn/docs/user/quick-start.html</a></p>
+<h1 id="1-Dubbo配置使用"><a href="#1-Dubbo配置使用" class="headerlink" title="1 Dubbo配置使用"></a>1 Dubbo配置使用</h1><h2 id="1-1-基于原生API的配置"><a href="#1-1-基于原生API的配置" class="headerlink" title="1.1 基于原生API的配置"></a>1.1 基于原生API的配置</h2><p>官网文档：<a target="_blank" rel="noopener" href="http://dubbo.apache.org/zh-cn/docs/user/configuration/api.html">http://dubbo.apache.org/zh-cn/docs/user/configuration/api.html</a></p>
+<p>怎么说呢，参考官网这个文档实现时踩了不少坑，因为官网提供的注册中心没法使用，又是初次接触，走了不少弯路，而自己又是直肠子一根，非要自己实现一个注册中心，然后参考官网给的Simple注册中心的例子，有两点逼得我强迫症犯了，首先使用的是XML配置的方式创建注册中心服务，而我这里只想通过原生API实现，另一个</p>
+<pre><code class="xml">    &lt;!-- 简单注册中心实现，可自行扩展实现集群和状态同步 --&gt;
+    &lt;bean id=&quot;registryService&quot; class=&quot;org.apache.dubbo.registry.simple.SimpleRegistryService&quot; /&gt;
+</code></pre>
+<p>这里面提到的org.apache.dubbo.registry.simple.SimpleRegistryService这个类，我死活找不到。就这俩问题纠结了一天。后来终于解决了，在github上dubbo源码的测试文件里找到了。心里一万匹cnm在奔腾。回归正题，使用原生API的方式配置其实就是自己创建实例，传入配置参数，启动服务。下面将一步步讲解。</p>
+<h3 id="1-1-1-项目准备"><a href="#1-1-1-项目准备" class="headerlink" title="1.1.1 项目准备"></a>1.1.1 项目准备</h3><p>首先创建一个名为dubbo-demo-api的模块，然后再该模块下创建三个子模块</p>
+<pre><code>dubbo-demo-api/
+├── dubbo-demo-api-api
+├── dubbo-demo-api-consumer
+├── dubbo-demo-api-provider
+└── pom.xml
+</code></pre>
+<ul>
+<li>dubbo-demo-api-api：提供演示接口</li>
+<li>dubbo-demo-api-consumer：服务消费者</li>
+<li>dubbo-demo-api-provider：服务提供者</li>
+</ul>
+<h3 id="1-1-2-dubbo-demo-api-api-模块"><a href="#1-1-2-dubbo-demo-api-api-模块" class="headerlink" title="1.1.2 dubbo-demo-api-api 模块"></a>1.1.2 dubbo-demo-api-api 模块</h3><p>该模块主要提供用来演示的接口，在learn.demo.dubbo.api.api包下创建DemoService接口，如下所示</p>
+<pre><code class="java">package learn.demo.dubbo.api.api;
+
+/**
+ * Created by shirukai on 2019-06-20 09:23
+ * DemoService 接口
+ */
+public interface DemoService &#123;
+    String sayHello(String name);
+&#125;
+</code></pre>
+<h3 id="1-1-3-dubbo-demo-api-provider模块"><a href="#1-1-3-dubbo-demo-api-provider模块" class="headerlink" title="1.1.3 dubbo-demo-api-provider模块"></a>1.1.3 dubbo-demo-api-provider模块</h3><p>该模块是创建dubbo提供者服务。首先要引入dubbo相关依赖</p>
+<pre><code class="xml">        &lt;!-- dubbo --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.apache.dubbo&lt;/groupId&gt;
+            &lt;artifactId&gt;dubbo&lt;/artifactId&gt;
+            &lt;version&gt;2.7.2&lt;/version&gt;
+        &lt;/dependency&gt;
+</code></pre>
+<p>然后引入api模块</p>
+<pre><code class="xml">        &lt;dependency&gt;
+            &lt;groupId&gt;learn.demo&lt;/groupId&gt;
+            &lt;artifactId&gt;dubbo-demo-api-api&lt;/artifactId&gt;
+            &lt;version&gt;1.0&lt;/version&gt;
+            &lt;scope&gt;compile&lt;/scope&gt;
+        &lt;/dependency&gt;
+</code></pre>
+<h4 id="1-1-3-1-实现DemoService接口"><a href="#1-1-3-1-实现DemoService接口" class="headerlink" title="1.1.3.1 实现DemoService接口"></a>1.1.3.1 实现DemoService接口</h4><p>上面我们在api模块中定义的DemoService接口，这里我们在learn.demo.dubbo.api.provider这个包下实现该接口。创建名为DemoServiceImpl的类，内容如下：</p>
+<pre><code class="java">package learn.demo.dubbo.api.provider;
+
+import learn.demo.dubbo.api.api.DemoService;
+
+/**
+ * Created by shirukai on 2019-06-20 09:25
+ * DemoService接口实现
+ */
+public class DemoServiceImpl implements DemoService &#123;
+    @Override
+    public String sayHello(String name) &#123;
+        return &quot;This service base in API.\nHello &quot; + name;
+    &#125;
+&#125;
+</code></pre>
+<h4 id="1-1-3-2-实现Simple注册中心"><a href="#1-1-3-2-实现Simple注册中心" class="headerlink" title="1.1.3.2 实现Simple注册中心"></a>1.1.3.2 实现Simple注册中心</h4><p>这里在实现Provider之前，先实现以下Simple注册中心，之前也有讲到官网在讲Simple注册中心的时候，是使用Spring的XML配置去生成Bean然后创建服务的，而且里面的提到的SimpleRegistryService类也找不到，经过九九八十一难这里使用API去实现一个Simple注册中心。这里需要几个类：AbstractRegistryService，SimpleRegistryExporter，SimpleRegistryService。这几个类可以从dubbo的github上找到，<a target="_blank" rel="noopener" href="https://github.com/apache/dubbo/tree/master/dubbo-registry/dubbo-registry-default/src/test/java/org/apache/dubbo/registry/dubbo%E3%80%82">https://github.com/apache/dubbo/tree/master/dubbo-registry/dubbo-registry-default/src/test/java/org/apache/dubbo/registry/dubbo。</a></p>
+<p>我们可以在自己的项目里，创建 org.apache.dubbo.registry包，然后将这三个类复制进去。</p>
+<p>在learn.demo.dubbo.api.provider包下创建SimpleRegistryServiceProvider类用来提供注册中心服务，代码如下：</p>
+<pre><code class="java">package learn.demo.dubbo.api.provider;
+
+import org.apache.dubbo.registry.SimpleRegistryExporter;
+
+/**
+ * Created by shirukai on 2019-06-20 09:32
+ * &lt;p&gt;
+ * 简单注册中心服务提供者
+ * 基于RegistryService接口实现的简单注册中心
+ * 代码位置：
+ * https://github.com/apache/dubbo/tree/master/dubbo-registry/dubbo-registry-default/src/test/java/org/apache/dubbo/registry/dubbo
+ */
+public class SimpleRegistryServiceProvider &#123;
+    public static void main(String[] args) throws Exception &#123;
+
+        // 暴露注册中心服务，端口为9090
+        SimpleRegistryExporter.export(9090);
+
+        // 任意输入退出
+        System.in.read();
+    &#125;
+&#125;
+</code></pre>
+<h4 id="1-1-3-3-实现DemoServiceProvider"><a href="#1-1-3-3-实现DemoServiceProvider" class="headerlink" title="1.1.3.3 实现DemoServiceProvider"></a>1.1.3.3 实现DemoServiceProvider</h4><p>使用Dubbo的原生API实现生产者，大体流程：</p>
+<ol>
+<li>创建应用配置ApplicationConfig，我们可以设置应用名称、设置qos端口等等。</li>
+<li>创建注册中心配置RegistryConfig，可以设置注册中心类型，地址，端口，用户名，密码等。</li>
+<li>创建服务配置ServiceConfig，此实例很重要，有与注册中心的连接</li>
+<li>暴露服务export</li>
+</ol>
+<p>内容如下：</p>
+<pre><code class="java">package learn.demo.dubbo.api.provider;
+
+import learn.demo.dubbo.api.api.DemoService;
+import org.apache.dubbo.config.ApplicationConfig;
+import org.apache.dubbo.config.RegistryConfig;
+import org.apache.dubbo.config.ServiceConfig;
+
+/**
+ * Created by shirukai on 2019-06-20 09:30
+ * &lt;p&gt;
+ * DemoService 生产者
+ * 该Demo注册中心使用自定义注册中心，SimpleRegistryService
+ * 所以在启动该服务之前，需要先启动注册中心
+ */
+public class DemoServiceProvider &#123;
+    public static void main(String[] args) throws Exception &#123;
+        // 应用配置
+        ApplicationConfig applicationConfig = new ApplicationConfig(&quot;api-demo-service-provider&quot;);
+
+        // qos 默认端口22222在本地同时启动多个服务时，需要手动修改
+        applicationConfig.setQosPort(22222);
+
+        // 注册中心配置
+        RegistryConfig registryConfig = new RegistryConfig(&quot;127.0.0.0:9090&quot;);
+
+        // 服务配置，此实例很重，封装了与注册中心的连接，请自行缓存，否则可能造成内存和连接泄漏
+        ServiceConfig&lt;DemoService&gt; service = new ServiceConfig&lt;&gt;();
+        service.setApplication(applicationConfig);
+        service.setRegistry(registryConfig);
+        service.setInterface(DemoService.class);
+        service.setRef(new DemoServiceImpl());
+
+        // 暴露服务
+        service.export();
+
+        // 输入任意退出
+        System.in.read();
+
+    &#125;
+&#125;
+</code></pre>
+<h3 id="1-1-4-dubbo-demo-api-consumer模块"><a href="#1-1-4-dubbo-demo-api-consumer模块" class="headerlink" title="1.1.4 dubbo-demo-api-consumer模块"></a>1.1.4 dubbo-demo-api-consumer模块</h3><p>该模块dubbo服务消费者，依然需要引入dubbo和自定义api的jar包。</p>
+<pre><code class="xml">&lt;!-- dubbo --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.apache.dubbo&lt;/groupId&gt;
+            &lt;artifactId&gt;dubbo&lt;/artifactId&gt;
+            &lt;version&gt;2.7.2&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;learn.demo&lt;/groupId&gt;
+            &lt;artifactId&gt;dubbo-demo-api-api&lt;/artifactId&gt;
+            &lt;version&gt;1.0&lt;/version&gt;
+            &lt;scope&gt;compile&lt;/scope&gt;
+        &lt;/dependency&gt;
+</code></pre>
+<p>consumer的实现与provider步骤类似</p>
+<ol>
+<li>创建应用配置ApplicationConfig</li>
+<li>创建配置中心配置RegistryConfig</li>
+<li>创建服务ReferenceConfig</li>
+<li>获取接口实例</li>
+</ol>
+<p>代码如下：</p>
+<pre><code class="java">package learn.demo.api.consumer;
+
+import learn.demo.dubbo.api.api.DemoService;
+import org.apache.dubbo.config.ApplicationConfig;
+import org.apache.dubbo.config.ReferenceConfig;
+import org.apache.dubbo.config.RegistryConfig;
+
+/**
+ * Created by shirukai on 2019-06-20 09:53
+ * DemoService 消费者
+ */
+public class DemoServiceConsumer &#123;
+    public static void main(String[] args) &#123;
+        // 应用配置
+        ApplicationConfig applicationConfig = new ApplicationConfig(&quot;dubbo-demo-api-consumer&quot;);
+        applicationConfig.setQosPort(22223);
+
+        // 配置注册中心
+        RegistryConfig registryConfig = new RegistryConfig(&quot;127.0.0.1:9090&quot;);
+        ReferenceConfig&lt;DemoService&gt; reference = new ReferenceConfig&lt;&gt;();
+        reference.setApplication(applicationConfig);
+        reference.setRegistry(registryConfig);
+        reference.setInterface(DemoService.class);
+        // 获取服务
+        DemoService service = reference.get();
+        // 服务调用
+        String message = service.sayHello(&quot;dubbo !&quot;);
+        System.out.println(message);
+    &#125;
+&#125;
+</code></pre>
+<h2 id="1-2-基于XML的配置"><a href="#1-2-基于XML的配置" class="headerlink" title="1.2 基于XML的配置"></a>1.2 基于XML的配置</h2><p>上面我们介绍了使用API进行Dubbo的配置，该中方式方便集成其它系统，但是实现繁琐。所以官方提供了Spring基于XML的配置方式，该配置方式依赖于Spring，是加载Bean的方式创建服务。官网文档：<a target="_blank" rel="noopener" href="http://dubbo.apache.org/zh-cn/docs/user/configuration/xml.html">http://dubbo.apache.org/zh-cn/docs/user/configuration/xml.html</a></p>
+<h3 id="1-2-1-项目准备"><a href="#1-2-1-项目准备" class="headerlink" title="1.2.1 项目准备"></a>1.2.1 项目准备</h3><p>首先创建一个名为dubbo-demo-xml的模块，然后再该模块下创建三个子模块</p>
+<pre><code>dubbo-demo-xml/
+├── dubbo-demo-xml-api
+├── dubbo-demo-xml-consumer
+├── dubbo-demo-xml-provider
+└── pom.xml
+</code></pre>
+<ul>
+<li>dubbo-demo-xml-api：提供演示接口</li>
+<li>dubbo-demo-xml-consumer：服务消费者</li>
+<li>dubbo-demo-xml-provider：服务提供者</li>
+</ul>
+<h3 id="1-2-2-dubbo-demo-xml-api模块"><a href="#1-2-2-dubbo-demo-xml-api模块" class="headerlink" title="1.2.2 dubbo-demo-xml-api模块"></a>1.2.2 dubbo-demo-xml-api模块</h3><p>与dubbo-demo-api-api相同。</p>
+<h3 id="1-2-3-dubbo-demo-xml-provider模块"><a href="#1-2-3-dubbo-demo-xml-provider模块" class="headerlink" title="1.2.3 dubbo-demo-xml-provider模块"></a>1.2.3 dubbo-demo-xml-provider模块</h3><p>同上引入api以及dubbo依赖。</p>
+<h4 id="1-2-3-1-DemoServiceImpl"><a href="#1-2-3-1-DemoServiceImpl" class="headerlink" title="1.2.3.1 DemoServiceImpl"></a>1.2.3.1 DemoServiceImpl</h4><p>实现定义的api接口。</p>
+<pre><code class="java">package learn.demo.dubbo.xml.provider;
+
+import learn.demo.dubbo.xml.api.DemoService;
+
+/**
+ * Created by shirukai on 2019-06-20 10:19
+ * 实验DemoService接口
+ */
+public class DemoServiceImpl implements DemoService &#123;
+    @Override
+    public String sayHello(String name) &#123;
+        return &quot;This service base in XML.\nHello &quot; + name;
+    &#125;
+&#125;
+</code></pre>
+<h4 id="1-2-3-2-dubbo-provider-xml"><a href="#1-2-3-2-dubbo-provider-xml" class="headerlink" title="1.2.3.2 dubbo-provider.xml"></a>1.2.3.2 dubbo-provider.xml</h4><p>在resource/spring下创建dubbo-provider.xml配置文件，用来配置dubbo的provider服务。具体参数参考官网。</p>
+<pre><code class="xml">&lt;beans xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+       xmlns:dubbo=&quot;http://dubbo.apache.org/schema/dubbo&quot;
+       xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+       xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+       http://dubbo.apache.org/schema/dubbo http://dubbo.apache.org/schema/dubbo/dubbo.xsd&quot;&gt;
+
+    &lt;!-- provider&#39;s application name, used for tracing dependency relationship --&gt;
+    &lt;dubbo:application name=&quot;demo-xml-provider&quot;&gt;
+        &lt;!-- 指定qos端口，配置优先级低于dubbo.properties--&gt;
+        &lt;dubbo:parameter key=&quot;qos.port&quot; value=&quot;22222&quot;/&gt;
+    &lt;/dubbo:application&gt;
+
+    &lt;!-- 基于广播的注册中心 --&gt;
+    &lt;dubbo:registry address=&quot;multicast://224.5.6.7:1234&quot;/&gt;
+
+    &lt;!-- use dubbo protocol to export service on port 20880 --&gt;
+    &lt;dubbo:protocol name=&quot;dubbo&quot;/&gt;
+
+    &lt;!-- service implementation, as same as regular local bean --&gt;
+    &lt;bean id=&quot;demoService&quot; class=&quot;learn.demo.dubbo.xml.provider.DemoServiceImpl&quot;/&gt;
+
+    &lt;!-- declare the service interface to be exported --&gt;
+    &lt;dubbo:service interface=&quot;learn.demo.dubbo.xml.api.DemoService&quot; ref=&quot;demoService&quot;/&gt;
+
+&lt;/beans&gt;
+</code></pre>
+<h4 id="1-2-3-3-DemoServiceProvider"><a href="#1-2-3-3-DemoServiceProvider" class="headerlink" title="1.2.3.3 DemoServiceProvider"></a>1.2.3.3 DemoServiceProvider</h4><p>Provider实现比较简单，使用ClassPathXmlApplicationContext从xml获取应用上下文，然后启动。</p>
+<pre><code class="java">package learn.demo.dubbo.xml.provider;
+
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+/**
+ * Created by shirukai on 2019-06-20 10:18
+ * 基于XML的Dubbo服务提供者
+ */
+public class DemoServiceProvider &#123;
+    public static void main(String[] args) throws Exception &#123;
+        // 从XML配置文件中获取应用上下文
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(&quot;spring/dubbo-provider.xml&quot;);
+        context.start();
+        System.in.read();
+    &#125;
+&#125;
+</code></pre>
+<h3 id="1-2-4-dubbo-demo-xml-consumer模块"><a href="#1-2-4-dubbo-demo-xml-consumer模块" class="headerlink" title="1.2.4 dubbo-demo-xml-consumer模块"></a>1.2.4 dubbo-demo-xml-consumer模块</h3><p>同上需在pom中引入api和dubbo依赖。</p>
+<h4 id="1-2-4-1-dubbo-consumer-xml"><a href="#1-2-4-1-dubbo-consumer-xml" class="headerlink" title="1.2.4.1 dubbo-consumer.xml"></a>1.2.4.1 dubbo-consumer.xml</h4><p>使用xml配置consumer服务。在resource/spring下创建dubbo-consumer.xml，内容如下</p>
+<pre><code class="xml">&lt;beans xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+       xmlns:dubbo=&quot;http://dubbo.apache.org/schema/dubbo&quot;
+       xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+       xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+       http://dubbo.apache.org/schema/dubbo http://dubbo.apache.org/schema/dubbo/dubbo.xsd&quot;&gt;
+
+    &lt;dubbo:application name=&quot;demo-xml-consumer&quot;/&gt;
+
+    &lt;!-- 使用广播注册中心 --&gt;
+    &lt;dubbo:registry address=&quot;multicast://224.5.6.7:1234&quot;/&gt;
+
+    &lt;!-- generate proxy for the remote service, then demoService can be used in the same way as the
+    local regular interface --&gt;
+    &lt;dubbo:reference id=&quot;demoService&quot; check=&quot;false&quot; interface=&quot;learn.demo.dubbo.xml.api.DemoService&quot;/&gt;
+
+&lt;/beans&gt;
+</code></pre>
+<h4 id="1-2-4-2-DemoServiceConsumer"><a href="#1-2-4-2-DemoServiceConsumer" class="headerlink" title="1.2.4.2 DemoServiceConsumer"></a>1.2.4.2 DemoServiceConsumer</h4><p>使用ClassPathXmlApplicationContext获取应用上下文，并在上下文中获取DemoService接口对应的Bean，然后调用接口方法。</p>
+<pre><code class="java">package learn.demo.dubbo.xml.consumer;
+
+import learn.demo.dubbo.xml.api.DemoService;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+/**
+ * Created by shirukai on 2019-06-20 11:07
+ * 基于XML的Dubbo服务消费之
+ */
+public class DemoServiceConsumer &#123;
+    public static void main(String[] args)&#123;
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(&quot;spring/dubbo-consumer.xml&quot;);
+        context.start();
+        DemoService demoService = context.getBean(&quot;demoService&quot;, DemoService.class);
+        String message = demoService.sayHello(&quot;world&quot;);
+        System.out.println(message);
+    &#125;
+&#125;
+</code></pre>
+<h4 id="1-2-4-3-补充，关于dubbo的配置"><a href="#1-2-4-3-补充，关于dubbo的配置" class="headerlink" title="1.2.4.3 补充，关于dubbo的配置"></a>1.2.4.3 补充，关于dubbo的配置</h4><p>dubbo的配置，我们可以通过dubbo.properties文件来配置，如我要修改qos端口，可以只创建dubbo.properites文件，然后添加如下配置：</p>
+<pre><code class="properties"># dubbo相关配置文件
+dubbo.application.qos.port=22223
+</code></pre>
+<h2 id="1-3-基于注解的配置"><a href="#1-3-基于注解的配置" class="headerlink" title="1.3 基于注解的配置"></a>1.3 基于注解的配置</h2><p>官网：<a target="_blank" rel="noopener" href="http://dubbo.apache.org/zh-cn/docs/user/configuration/annotation.html">http://dubbo.apache.org/zh-cn/docs/user/configuration/annotation.html</a></p>
+<p>dubbo关于注解的配置，与xml如出一辙，只不过我们不需要配置xml了，在需要暴露的接口实现类上添加@Service注解，然后通过@Configuration将相关配置注入到Spring里。</p>
+<h3 id="1-3-1-项目准备"><a href="#1-3-1-项目准备" class="headerlink" title="1.3.1 项目准备"></a>1.3.1 项目准备</h3><p>首先创建一个名为dubbo-demo-xml的模块，然后再该模块下创建三个子模块</p>
+<pre><code>dubbo-demo-annotation/
+├── dubbo-demo-annotation-api
+├── dubbo-demo-annotation-consumer
+├── dubbo-demo-annotation-provider
+└── pom.xml
+</code></pre>
+<ul>
+<li>dubbo-demo-annotation-api：提供演示接口</li>
+<li>dubbo-demo-annotation-consumer：服务消费者</li>
+<li>dubbo-demo-annotation-provider：服务提供者</li>
+</ul>
+<h3 id="1-3-2-dubbo-demo-annotation-api模块"><a href="#1-3-2-dubbo-demo-annotation-api模块" class="headerlink" title="1.3.2 dubbo-demo-annotation-api模块"></a>1.3.2 dubbo-demo-annotation-api模块</h3><p>跟dubbo-demo-api-api模块相同。</p>
+<h3 id="1-3-3-dubbo-demo-annotation-provider模块"><a href="#1-3-3-dubbo-demo-annotation-provider模块" class="headerlink" title="1.3.3 dubbo-demo-annotation-provider模块"></a>1.3.3 dubbo-demo-annotation-provider模块</h3><h4 id="1-3-3-1-DemoServiceImpl"><a href="#1-3-3-1-DemoServiceImpl" class="headerlink" title="1.3.3.1 DemoServiceImpl"></a>1.3.3.1 DemoServiceImpl</h4><p>同上，实现DemoService接口，但是需要使用@Service来标记该实现类要通过Provider暴露服务。</p>
+<pre><code class="java">package learn.demo.dubbo.annotation.provider;
+
+import lear.demo.dubbo.annotation.api.DemoService;
+import org.apache.dubbo.config.annotation.Service;
+
+/**
+ * Created by shirukai on 2019-06-20 14:04
+ * DemoService实现类
+ */
+@Service
+public class DemoServiceImpl implements DemoService &#123;
+    @Override
+    public String sayHello(String name) &#123;
+        return &quot;The service base in Annotation.\nHello&quot; + name;
+    &#125;
+&#125;
+</code></pre>
+<h4 id="1-3-3-2-dubbo-provider-properties"><a href="#1-3-3-2-dubbo-provider-properties" class="headerlink" title="1.3.3.2 dubbo-provider.properties"></a>1.3.3.2 dubbo-provider.properties</h4><p>通过dubbo-provider.properties来对dubbo的provider进行相应的配置。在resource/spring下创建dubbo-provider.properties文件，内容如下</p>
+<pre><code class="properties">dubbo.application.name=dubbo-demo-annotation-provider
+dubbo.application.qos.port=22222
+dubbo.protocol.name=dubbo
+dubbo.protocol.port=20880
+</code></pre>
+<h4 id="1-3-3-3-DemoServiceProvider"><a href="#1-3-3-3-DemoServiceProvider" class="headerlink" title="1.3.3.3 DemoServiceProvider"></a>1.3.3.3 DemoServiceProvider</h4><p>与xml配置相同，需要获取应用上下文，只不过使用AnnotationConfigApplicationContext来获取，并且需要将dubbo的配置通过@Configuration形式注入到Spring，并制定需要扫面的包路径，以及配置文件所在路径。内容如下：</p>
+<pre><code class="java">package learn.demo.dubbo.annotation.provider;
+
+import org.apache.dubbo.config.RegistryConfig;
+import org.apache.dubbo.config.spring.context.annotation.EnableDubbo;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+
+/**
+ * Created by shirukai on 2019-06-20 14:06
+ * DemoService提供者
+ */
+public class DemoServiceProvider &#123;
+    public static void main(String[] args) throws Exception &#123;
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(ProviderConfiguration.class);
+        context.start();
+        System.in.read();
+    &#125;
+
+    @Configuration
+    @EnableDubbo(scanBasePackages = &quot;learn.demo.dubbo.annotation.provider&quot;)
+    @PropertySource(&quot;classpath:/spring/dubbo-provider.properties&quot;)
+    static class ProviderConfiguration &#123;
+        @Bean
+        public RegistryConfig registryConfig() &#123;
+            RegistryConfig registryConfig = new RegistryConfig();
+            registryConfig.setAddress(&quot;multicast://224.5.6.7:1234&quot;);
+            return registryConfig;
+        &#125;
+    &#125;
+
+&#125;
+</code></pre>
+<h3 id="1-3-4-dubbo-demo-annotation-consumer模块"><a href="#1-3-4-dubbo-demo-annotation-consumer模块" class="headerlink" title="1.3.4 dubbo-demo-annotation-consumer模块"></a>1.3.4 dubbo-demo-annotation-consumer模块</h3><h4 id="1-3-4-1-dubbo-consumer-properties"><a href="#1-3-4-1-dubbo-consumer-properties" class="headerlink" title="1.3.4.1 dubbo-consumer.properties"></a>1.3.4.1 dubbo-consumer.properties</h4><p>通过dubbo-consumer.properties来配置dubbo的consumer的相关配置，如服务名称、注册中心地址等</p>
+<pre><code class="java">dubbo.application.name=dubbo-demo-annotation-consumer
+dubbo.registry.address=multicast://224.5.6.7:1234
+</code></pre>
+<h4 id="1-3-4-2-DemoServiceComponent"><a href="#1-3-4-2-DemoServiceComponent" class="headerlink" title="1.3.4.2 DemoServiceComponent"></a>1.3.4.2 DemoServiceComponent</h4><p>通过@Component创建DemoService组件，并通过@Reference注入远程Dubbo提供的接口实例。</p>
+<pre><code class="java">package learn.demo.dubbo.annotation.consumer.comp;
+
+import lear.demo.dubbo.annotation.api.DemoService;
+import org.apache.dubbo.config.annotation.Reference;
+import org.springframework.stereotype.Component;
+
+/**
+ * Created by shirukai on 2019-06-20 14:22
+ * DemoService 组件
+ */
+@Component(&quot;demoServiceComponent&quot;)
+public class DemoServiceComponent implements DemoService &#123;
+    @Reference
+    private DemoService demoService;
+
+    @Override
+    public String sayHello(String name) &#123;
+        return demoService.sayHello(name);
+    &#125;
+&#125;
+</code></pre>
+<h4 id="1-3-4-3-DemoServiceConsumer"><a href="#1-3-4-3-DemoServiceConsumer" class="headerlink" title="1.3.4.3 DemoServiceConsumer"></a>1.3.4.3 DemoServiceConsumer</h4><p>通过@Configuration注入dubbo相关配置，并通过AnnotationConfigApplicationContext获取应用上下文。</p>
+<pre><code class="java">package learn.demo.dubbo.annotation.consumer;
+
+import lear.demo.dubbo.annotation.api.DemoService;
+import learn.demo.dubbo.annotation.consumer.comp.DemoServiceComponent;
+import org.apache.dubbo.config.spring.context.annotation.EnableDubbo;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+
+/**
+ * Created by shirukai on 2019-06-20 14:10
+ * DemoService消费者
+ */
+public class DemoServiceConsumer &#123;
+    public static void main(String[] args) &#123;
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(ConsumerConfiguration.class);
+        context.start();
+        DemoService service = context.getBean(&quot;demoServiceComponent&quot;, DemoServiceComponent.class);
+        String message = service.sayHello(&quot;world&quot;);
+        System.out.println(message);
+    &#125;
+
+    @Configuration
+    @EnableDubbo(scanBasePackages = &quot;learn.demo.dubbo.annotation.consumer.comp&quot;)
+    @PropertySource(&quot;classpath:/spring/dubbo-consumer.properties&quot;)
+    @ComponentScan(value = &#123;&quot;learn.demo.dubbo.annotation.consumer.comp&quot;&#125;)
+    static class ConsumerConfiguration &#123;
+
+    &#125;
+&#125;
+</code></pre>
+<h1 id="2-SpringBoot整合Dubbo"><a href="#2-SpringBoot整合Dubbo" class="headerlink" title="2 SpringBoot整合Dubbo"></a>2 SpringBoot整合Dubbo</h1><p>SpringBoot整合Dubbo简洁的不能再简洁，不需要额外的配置，只需要引入几个依赖包即可。</p>
+<h2 id="2-1-项目准备"><a href="#2-1-项目准备" class="headerlink" title="2.1 项目准备"></a>2.1 项目准备</h2><p>首先创建一个名为dubbo-demo-springboot的模块，然后再该模块下创建三个子模块</p>
+<pre><code>dubbo-demo-springboot/
+├── dubbo-demo-springboot-api
+├── dubbo-demo-springboot-consumer
+├── dubbo-demo-springboot-provider
+└── pom.xml
+</code></pre>
+<ul>
+<li>dubbo-demo-springboot-api：提供演示接口</li>
+<li>dubbo-demo-springboot-consumer：服务消费者</li>
+<li>dubbo-demo-springboot-provider：服务提供者</li>
+</ul>
+<h2 id="2-2-dubbo-demo-springboot-api模块"><a href="#2-2-dubbo-demo-springboot-api模块" class="headerlink" title="2.2 dubbo-demo-springboot-api模块"></a>2.2 dubbo-demo-springboot-api模块</h2><p>与之前api模块一样，定义DemoService接口。</p>
+<h2 id="2-3-dubbo-demo-springboot-provide模块"><a href="#2-3-dubbo-demo-springboot-provide模块" class="headerlink" title="2.3 dubbo-demo-springboot-provide模块"></a>2.3 dubbo-demo-springboot-provide模块</h2><h3 id="2-3-1-引入依赖"><a href="#2-3-1-引入依赖" class="headerlink" title="2.3.1 引入依赖"></a>2.3.1 引入依赖</h3><p>因为此项目是springboot项目，这里将springboot模块添加到parent</p>
+<pre><code class="xml">    &lt;parent&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+        &lt;version&gt;2.0.0.RELEASE&lt;/version&gt;
+        &lt;relativePath/&gt; &lt;!-- lookup parent from repository --&gt;
+    &lt;/parent&gt;
+</code></pre>
+<p>引入springboot starter</p>
+<pre><code class="xml">       &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+</code></pre>
+<p>引入dubbo springboot starter</p>
+<pre><code class="xml">        &lt;!-- Dubbo Spring Boot Starter --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.apache.dubbo&lt;/groupId&gt;
+            &lt;artifactId&gt;dubbo-spring-boot-starter&lt;/artifactId&gt;
+            &lt;version&gt;2.7.1&lt;/version&gt;
+        &lt;/dependency&gt;
+</code></pre>
+<p>引入dubbo依赖</p>
+<pre><code class="xml">        &lt;dependency&gt;
+            &lt;groupId&gt;org.apache.dubbo&lt;/groupId&gt;
+            &lt;artifactId&gt;dubbo&lt;/artifactId&gt;
+            &lt;version&gt;2.7.2&lt;/version&gt;
+        &lt;/dependency&gt;
+</code></pre>
+<p>引入api依赖</p>
+<pre><code>        &lt;dependency&gt;
+            &lt;groupId&gt;org.apache.dubbo&lt;/groupId&gt;
+            &lt;artifactId&gt;dubbo&lt;/artifactId&gt;
+            &lt;version&gt;2.7.2&lt;/version&gt;
+        &lt;/dependency&gt;
+</code></pre>
+<h3 id="2-3-2-application-properties"><a href="#2-3-2-application-properties" class="headerlink" title="2.3.2 application.properties"></a>2.3.2 application.properties</h3><p>在resource创建application.properties配置文件，里面添加dubbo相应配置</p>
+<pre><code class="properties">spring.application.name=dubbo-spring-boot-provider
+# dubbo
+dubbo.scan.base-packages=learn.demo.dubbo.springboot.provider
+dubbo.protocol.name=dubbo
+dubbo.protocol.port=12345
+dubbo.registry.address=multicast://224.5.6.7:1234
+</code></pre>
+<h3 id="2-3-3-DemoServiceImpl"><a href="#2-3-3-DemoServiceImpl" class="headerlink" title="2.3.3 DemoServiceImpl"></a>2.3.3 DemoServiceImpl</h3><p>实现DemoService接口，并使用dubbo的@Service注解标记此类为dubbo暴露的服务实例</p>
+<pre><code class="java">package learn.demo.dubbo.springboot.provider;
+
+import learn.demo.dubbo.springboot.api.DemoService;
+import org.apache.dubbo.config.annotation.Service;
+
+/**
+ * Created by shirukai on 2019-06-20 15:08
+ */
+@Service(version = &quot;1.0.0&quot;)
+public class DemoServiceImpl implements DemoService &#123;
+    @Override
+    public String sayHello(String name) &#123;
+        return &quot;The service of dubbo from springboot.\nHello &quot; + name;
+    &#125;
+&#125;
+</code></pre>
+<h3 id="2-3-4-DemoServiceProvider"><a href="#2-3-4-DemoServiceProvider" class="headerlink" title="2.3.4 DemoServiceProvider"></a>2.3.4 DemoServiceProvider</h3><p>Dubbo 服务提供实现，主要启动SpringBoot即可。</p>
+<pre><code class="java">package learn.demo.dubbo.springboot.provider;
+
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+/**
+ * Created by shirukai on 2019-06-20 15:08
+ */
+@SpringBootApplication
+public class DemoServiceProvider &#123;
+    public static void main(String[] args) &#123;
+        SpringApplication.run(DemoServiceProvider.class, args);
+    &#125;
+&#125;
+</code></pre>
+<h2 id="2-4-dubbo-demo-springboot-consumer模块"><a href="#2-4-dubbo-demo-springboot-consumer模块" class="headerlink" title="2.4 dubbo-demo-springboot-consumer模块"></a>2.4 dubbo-demo-springboot-consumer模块</h2><h3 id="2-3-1-引入依赖-1"><a href="#2-3-1-引入依赖-1" class="headerlink" title="2.3.1 引入依赖"></a>2.3.1 引入依赖</h3><p>与provider一样，引入springboot-starter、dubbo-spring-boot-starter、dubbo、api依赖。另外这里提供了一个REST接口，所以需要引入web服务相关的依赖</p>
+<pre><code class="xml">        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+</code></pre>
+<h3 id="2-3-2-application-properties-1"><a href="#2-3-2-application-properties-1" class="headerlink" title="2.3.2 application.properties"></a>2.3.2 application.properties</h3><pre><code class="properties">spring.application.name=dubbo-spring-boot-consumer
+# dubbo
+dubbo.scan.base-packages=learn.demo.dubbo.springboot.consumer
+dubbo.registry.address=multicast://224.5.6.7:1234
+</code></pre>
+<h3 id="2-3-4-DemoController"><a href="#2-3-4-DemoController" class="headerlink" title="2.3.4 DemoController"></a>2.3.4 DemoController</h3><p>提供一个REST接口，并调用RPC服务</p>
+<pre><code class="java">package learn.demo.dubbo.springboot.consumer.controller;
+
+import learn.demo.dubbo.springboot.api.DemoService;
+import org.apache.dubbo.config.annotation.Reference;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+/**
+ * Created by shirukai on 2019-06-20 16:03
+ */
+@RestController
+public class DemoController &#123;
+    @Reference(version = &quot;1.0.0&quot;)
+    private DemoService demoService;
+
+    @GetMapping(value = &quot;/sayHello&quot;)
+    public String sayHello(@RequestParam(&quot;name&quot;) String name) &#123;
+        return demoService.sayHello(name);
+    &#125;
+&#125;
+</code></pre>
+<h3 id="2-3-5-DemoServiceConsumer"><a href="#2-3-5-DemoServiceConsumer" class="headerlink" title="2.3.5 DemoServiceConsumer"></a>2.3.5 DemoServiceConsumer</h3><p>Dubbo Consumser服务启动,，正常启动SpringBoot即可。</p>
+<pre><code class="java">package learn.demo.dubbo.springboot.consumer;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+/**
+ * Created by shirukai on 2019-06-20 16:00
+ */
+@SpringBootApplication
+public class DemoServiceConsumer &#123;
+    public static void main(String[] args) &#123;
+        SpringApplication.run(DemoServiceConsumer.class, args);
+    &#125;
+&#125;
+</code></pre>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-Dubbo%E9%85%8D%E7%BD%AE%E4%BD%BF%E7%94%A8"><span class="toc-number">1.</span> <span class="toc-text">1 Dubbo配置使用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-%E5%9F%BA%E4%BA%8E%E5%8E%9F%E7%94%9FAPI%E7%9A%84%E9%85%8D%E7%BD%AE"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 基于原生API的配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-1-%E9%A1%B9%E7%9B%AE%E5%87%86%E5%A4%87"><span class="toc-number">1.1.1.</span> <span class="toc-text">1.1.1 项目准备</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-2-dubbo-demo-api-api-%E6%A8%A1%E5%9D%97"><span class="toc-number">1.1.2.</span> <span class="toc-text">1.1.2 dubbo-demo-api-api 模块</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-3-dubbo-demo-api-provider%E6%A8%A1%E5%9D%97"><span class="toc-number">1.1.3.</span> <span class="toc-text">1.1.3 dubbo-demo-api-provider模块</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-4-dubbo-demo-api-consumer%E6%A8%A1%E5%9D%97"><span class="toc-number">1.1.4.</span> <span class="toc-text">1.1.4 dubbo-demo-api-consumer模块</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-%E5%9F%BA%E4%BA%8EXML%E7%9A%84%E9%85%8D%E7%BD%AE"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 基于XML的配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-1-%E9%A1%B9%E7%9B%AE%E5%87%86%E5%A4%87"><span class="toc-number">1.2.1.</span> <span class="toc-text">1.2.1 项目准备</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-2-dubbo-demo-xml-api%E6%A8%A1%E5%9D%97"><span class="toc-number">1.2.2.</span> <span class="toc-text">1.2.2 dubbo-demo-xml-api模块</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-3-dubbo-demo-xml-provider%E6%A8%A1%E5%9D%97"><span class="toc-number">1.2.3.</span> <span class="toc-text">1.2.3 dubbo-demo-xml-provider模块</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-4-dubbo-demo-xml-consumer%E6%A8%A1%E5%9D%97"><span class="toc-number">1.2.4.</span> <span class="toc-text">1.2.4 dubbo-demo-xml-consumer模块</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3-%E5%9F%BA%E4%BA%8E%E6%B3%A8%E8%A7%A3%E7%9A%84%E9%85%8D%E7%BD%AE"><span class="toc-number">1.3.</span> <span class="toc-text">1.3 基于注解的配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-1-%E9%A1%B9%E7%9B%AE%E5%87%86%E5%A4%87"><span class="toc-number">1.3.1.</span> <span class="toc-text">1.3.1 项目准备</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-2-dubbo-demo-annotation-api%E6%A8%A1%E5%9D%97"><span class="toc-number">1.3.2.</span> <span class="toc-text">1.3.2 dubbo-demo-annotation-api模块</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-3-dubbo-demo-annotation-provider%E6%A8%A1%E5%9D%97"><span class="toc-number">1.3.3.</span> <span class="toc-text">1.3.3 dubbo-demo-annotation-provider模块</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-4-dubbo-demo-annotation-consumer%E6%A8%A1%E5%9D%97"><span class="toc-number">1.3.4.</span> <span class="toc-text">1.3.4 dubbo-demo-annotation-consumer模块</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-SpringBoot%E6%95%B4%E5%90%88Dubbo"><span class="toc-number">2.</span> <span class="toc-text">2 SpringBoot整合Dubbo</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-%E9%A1%B9%E7%9B%AE%E5%87%86%E5%A4%87"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 项目准备</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-dubbo-demo-springboot-api%E6%A8%A1%E5%9D%97"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 dubbo-demo-springboot-api模块</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-dubbo-demo-springboot-provide%E6%A8%A1%E5%9D%97"><span class="toc-number">2.3.</span> <span class="toc-text">2.3 dubbo-demo-springboot-provide模块</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-1-%E5%BC%95%E5%85%A5%E4%BE%9D%E8%B5%96"><span class="toc-number">2.3.1.</span> <span class="toc-text">2.3.1 引入依赖</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-2-application-properties"><span class="toc-number">2.3.2.</span> <span class="toc-text">2.3.2 application.properties</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-3-DemoServiceImpl"><span class="toc-number">2.3.3.</span> <span class="toc-text">2.3.3 DemoServiceImpl</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-4-DemoServiceProvider"><span class="toc-number">2.3.4.</span> <span class="toc-text">2.3.4 DemoServiceProvider</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4-dubbo-demo-springboot-consumer%E6%A8%A1%E5%9D%97"><span class="toc-number">2.4.</span> <span class="toc-text">2.4 dubbo-demo-springboot-consumer模块</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-1-%E5%BC%95%E5%85%A5%E4%BE%9D%E8%B5%96-1"><span class="toc-number">2.4.1.</span> <span class="toc-text">2.3.1 引入依赖</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-2-application-properties-1"><span class="toc-number">2.4.2.</span> <span class="toc-text">2.3.2 application.properties</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-4-DemoController"><span class="toc-number">2.4.3.</span> <span class="toc-text">2.3.4 DemoController</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-5-DemoServiceConsumer"><span class="toc-number">2.4.4.</span> <span class="toc-text">2.3.5 DemoServiceConsumer</span></a></li></ol></li></ol></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

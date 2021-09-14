@@ -1,0 +1,534 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>GC和GC Tuning - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="GC的基础知识1. 什么是垃圾
+C语言中申请内存： malloc free
+C++: new delete
+Java: new ?
+自动内存回收，编程上简单，系统不容易出错
+手动释放内存，容易出现两,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">GC和GC Tuning</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/3.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/Java"><b>「
+                    </b>JAVA<b> 」</b></a>
+                
+                August 24, 2020
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/gc-and-gc-tuning.html" title="GC和GC Tuning" class="">GC和GC Tuning</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    3.8k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    3 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E9%A9%AC%E5%A3%AB%E5%85%B5JVM%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="tag">马士兵JVM学习笔记</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <h1 id="GC的基础知识"><a href="#GC的基础知识" class="headerlink" title="GC的基础知识"></a>GC的基础知识</h1><h2 id="1-什么是垃圾"><a href="#1-什么是垃圾" class="headerlink" title="1. 什么是垃圾"></a>1. 什么是垃圾</h2><blockquote>
+<p>C语言中申请内存： malloc free</p>
+<p>C++: new delete</p>
+<p>Java: new ?</p>
+<p>自动内存回收，编程上简单，系统不容易出错</p>
+<p>手动释放内存，容易出现两种类型的问题</p>
+<ol>
+<li>忘记回收</li>
+<li>多次回收</li>
+</ol>
+</blockquote>
+<p>没有任何引用执行的一个对象或者多个对象（循环引用）</p>
+<h2 id="2-如何定位垃圾"><a href="#2-如何定位垃圾" class="headerlink" title="2. 如何定位垃圾"></a>2. 如何定位垃圾</h2><p>引用计数</p>
+<p>根可达</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200824140704.png" alt="image-20200824140704499"></p>
+<h2 id="3-常见的垃圾回收算法"><a href="#3-常见的垃圾回收算法" class="headerlink" title="3 常见的垃圾回收算法"></a>3 常见的垃圾回收算法</h2><h3 id="Mark-Sweep-标记清除"><a href="#Mark-Sweep-标记清除" class="headerlink" title="Mark-Sweep 标记清除"></a>Mark-Sweep 标记清除</h3><p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200824141725.png" alt="image-20200824141242052"></p>
+<p>位置不连续，产生碎片</p>
+<h3 id="Copying-拷贝"><a href="#Copying-拷贝" class="headerlink" title="Copying 拷贝"></a>Copying 拷贝</h3><p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200824141717.png" alt="image-20200824141435132"></p>
+<p>没有碎片，浪费空间</p>
+<h3 id="Mark-Compact-标记压缩"><a href="#Mark-Compact-标记压缩" class="headerlink" title="Mark Compact 标记压缩"></a>Mark Compact 标记压缩</h3><p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200824141706.png" alt="image-20200824141706246"></p>
+<p>没有碎片，效率偏低</p>
+<h2 id="4-JVM的分代模型"><a href="#4-JVM的分代模型" class="headerlink" title="4 JVM的分代模型"></a>4 JVM的分代模型</h2><ol>
+<li><p>部分垃圾回收器使用的模型</p>
+</li>
+<li><p>新生代+老年代+永久代（1.7）/ 元数据区（1.8） Metaspace</p>
+<p>永久代 元数据 -Class</p>
+<p>永久代必须指定大小限制，元数据可以设置，可以不设置，无上限（受限于物理内存）</p>
+<p>字符串常量1.7-永久代  1.8-堆内存</p>
+<p>MethodArea逻辑概念-永久代、元数据</p>
+</li>
+<li><p>新生代=1个eden+2个survivor区，</p>
+<ol>
+<li> YGC回收之后，大多数的对象回被回收，或者对象会进入s0</li>
+<li>再次YGC回收之后，活着的对象eden+s0-&gt;s1</li>
+<li>再次YGC，eden+s1-&gt;s0</li>
+<li>年龄足够-&gt;老年代(15 CMS 6)</li>
+<li>s区装不下-&gt; 老年代</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200824142839.png" alt="image-20200824142839360"></p>
+</li>
+<li><p>老年代</p>
+<ol>
+<li>顽固分子</li>
+<li>老年代满了FGC Full GC</li>
+</ol>
+</li>
+<li><p>GC Tuning</p>
+<ol>
+<li>尽量减少FGC</li>
+<li>MinorGC=YGC</li>
+<li>MajorGC=FGC</li>
+</ol>
+</li>
+</ol>
+<h2 id="5-常见的垃圾回收器"><a href="#5-常见的垃圾回收器" class="headerlink" title="5 常见的垃圾回收器"></a>5 常见的垃圾回收器</h2><p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200824193040.png" alt="image-20200824192701355"></p>
+<ol>
+<li> Serial 年轻代 串行回收</li>
+</ol>
+<p>   <img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200824193030.png" alt="image-20200824193030185"></p>
+<ol start="2">
+<li><p>Parallel Scavenge 年轻代 并行回收</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200824193143.png" alt="image-20200824193143792"></p>
+</li>
+<li><p>ParNew 年轻代 配合CMS的并行回收</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200824193232.png" alt="image-20200824193231987"></p>
+</li>
+<li><p>SerialOld</p>
+</li>
+<li><p>ParallelOld</p>
+</li>
+<li><p>Concurrent Mark Sweep 老年代 并发 垃圾回收和应用程序同时运行，降低STW的时间（200ms）</p>
+</li>
+<li><p>G1（10ms停顿）</p>
+</li>
+<li><p>ZGC（1ms）PK C++</p>
+</li>
+<li><p>Shenandoah</p>
+</li>
+<li><p>Eplison</p>
+</li>
+</ol>
+<p>JDK1.8默认的垃圾回收：PS+ParallelOld</p>
+<h2 id="6-JVM调用第一步，了解生产环境下的垃圾回收器组合"><a href="#6-JVM调用第一步，了解生产环境下的垃圾回收器组合" class="headerlink" title="6 JVM调用第一步，了解生产环境下的垃圾回收器组合"></a>6 JVM调用第一步，了解生产环境下的垃圾回收器组合</h2><p>JVM的命令行参数参考：<a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/8/docs/technotes/tools/unix/java.html">https://docs.oracle.com/javase/8/docs/technotes/tools/unix/java.html</a></p>
+<p>JVM命令参数分类：</p>
+<p>标准：-开头，所有的HotSpot都支持</p>
+<p>非标准 -X开头，特定版本HostSport支持特定命令</p>
+<p>不稳定：-XX开头，下个版本可能取消</p>
+<p>java -XX:+PrintFlagsFinal 最终参数值</p>
+<p>java -XX:+PrintFlagsInitial 默认参数值</p>
+<p>java -XX:+PrintCommandLineFlags</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#GC%E7%9A%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86"><span class="toc-number">1.</span> <span class="toc-text">GC的基础知识</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E4%BB%80%E4%B9%88%E6%98%AF%E5%9E%83%E5%9C%BE"><span class="toc-number">1.1.</span> <span class="toc-text">1. 什么是垃圾</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%A6%82%E4%BD%95%E5%AE%9A%E4%BD%8D%E5%9E%83%E5%9C%BE"><span class="toc-number">1.2.</span> <span class="toc-text">2. 如何定位垃圾</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%B8%B8%E8%A7%81%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%AE%97%E6%B3%95"><span class="toc-number">1.3.</span> <span class="toc-text">3 常见的垃圾回收算法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Mark-Sweep-%E6%A0%87%E8%AE%B0%E6%B8%85%E9%99%A4"><span class="toc-number">1.3.1.</span> <span class="toc-text">Mark-Sweep 标记清除</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Copying-%E6%8B%B7%E8%B4%9D"><span class="toc-number">1.3.2.</span> <span class="toc-text">Copying 拷贝</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Mark-Compact-%E6%A0%87%E8%AE%B0%E5%8E%8B%E7%BC%A9"><span class="toc-number">1.3.3.</span> <span class="toc-text">Mark Compact 标记压缩</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-JVM%E7%9A%84%E5%88%86%E4%BB%A3%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.4.</span> <span class="toc-text">4 JVM的分代模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E5%B8%B8%E8%A7%81%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8"><span class="toc-number">1.5.</span> <span class="toc-text">5 常见的垃圾回收器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-JVM%E8%B0%83%E7%94%A8%E7%AC%AC%E4%B8%80%E6%AD%A5%EF%BC%8C%E4%BA%86%E8%A7%A3%E7%94%9F%E4%BA%A7%E7%8E%AF%E5%A2%83%E4%B8%8B%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8%E7%BB%84%E5%90%88"><span class="toc-number">1.6.</span> <span class="toc-text">6 JVM调用第一步，了解生产环境下的垃圾回收器组合</span></a></li></ol></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

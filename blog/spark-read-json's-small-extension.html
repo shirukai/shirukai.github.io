@@ -1,0 +1,622 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Spark读取JSON的小扩展 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="
+版本说明：
+spark 2.3
+
+前言前几天在群里摸鱼的时候，碰都一位同学问了一个比较有趣的问题，他提问：Spark如何读取原生JSON？看到这个问题，心里有些疑惑，Spark不是有JSON数据源,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">Spark读取JSON的小扩展</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/2.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/Spark"><b>「
+                    </b>SPARK<b> 」</b></a>
+                
+                August 24, 2020
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/spark-read-json's-small-extension.html" title="Spark读取JSON的小扩展" class="">Spark读取JSON的小扩展</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    8.2k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    7 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Spark/" rel="tag">Spark</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <blockquote>
+<p>版本说明：</p>
+<p>spark 2.3</p>
+</blockquote>
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>前几天在群里摸鱼的时候，碰都一位同学问了一个比较有趣的问题，他提问：Spark如何读取原生JSON？看到这个问题，心里有些疑惑，Spark不是有JSON数据源支持吗，怎么这里还要问如何读取原生JSON，这原生JSON又是什么鬼？经过交流才明白，原来他所说的原生JSON是类似如下这种格式：</p>
+<pre><code class="json">&#123;
+  &quot;昌平区东小&quot;: [
+    116.4021289,
+    40.05688698
+  ],
+  &quot;昌平区回龙&quot;: [
+    116.3412241,
+    40.07942604
+  ],
+  &quot;昌平区北七&quot;: [
+    116.4179459,
+    40.11644403
+  ],
+  &quot;昌平区阳坊&quot;: [
+    116.1332611,
+    40.13701398
+  ]
+&#125;
+</code></pre>
+<p>而我们平时使用Spark读取的JSON是如下格式</p>
+<pre><code class="json">&#123;&quot;address&quot;:&quot;昌平区东小&quot;,&quot;location&quot;:[116.4021289,40.05688698]&#125;
+&#123;&quot;address&quot;:&quot;昌平区回龙&quot;,&quot;location&quot;:[116.3412241, 40.07942604]&#125;
+&#123;&quot;address&quot;:&quot;昌平区北七&quot;,&quot;location&quot;:[116.4179459,40.11644403]&#125;
+&#123;&quot;address&quot;:&quot;昌平区阳坊&quot;,&quot;location&quot;:[116.1332611,40.13701398]&#125;
+</code></pre>
+<p>如果使用spark.read.json直接读取他所说的”原生JSON”格式的文件，将会报如下错误：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/d949c1b0f467eb236c51d432c7b55dd4.jpg"></p>
+<p>感觉这个问题还是比较有趣的，所以自己就亲自试试了，找了种解决方案。</p>
+<h1 id="1-需求说明"><a href="#1-需求说明" class="headerlink" title="1 需求说明"></a>1 需求说明</h1><p>上文中，我们已经可以看出问题所在。其实就是将所谓的”原生JSON”格式的文件读取出来转成如下格式的DataFrame。</p>
+<pre><code class="shell">+-------+-------------------------+
+|address|location                 |
++-------+-------------------------+
+|昌平区北七  |[116.4179459,40.11644403]|
+|昌平区回龙  |[116.3412241,40.07942604]|
+|昌平区阳坊  |[116.1332611,40.13701398]|
+|昌平区东小  |[116.4021289,40.05688698]|
++-------+-------------------------+
+</code></pre>
+<p>上文也提到如果我们的JSON文件时如下格式的</p>
+<pre><code class="json">&#123;&quot;address&quot;:&quot;昌平区东小&quot;,&quot;location&quot;:[116.4021289,40.05688698]&#125;
+&#123;&quot;address&quot;:&quot;昌平区回龙&quot;,&quot;location&quot;:[116.3412241, 40.07942604]&#125;
+&#123;&quot;address&quot;:&quot;昌平区北七&quot;,&quot;location&quot;:[116.4179459,40.11644403]&#125;
+&#123;&quot;address&quot;:&quot;昌平区阳坊&quot;,&quot;location&quot;:[116.1332611,40.13701398]&#125;
+</code></pre>
+<p>那么使用Spark很容易读出来，并转成DataFrame</p>
+<pre><code class="scala">spark.read.json(&quot;/Users/shirukai/hollysys/repository/learn-demo-spark/data/location.json&quot;).show(false)
+</code></pre>
+<p>那么”原生JSON”格式的该如何处理呢，我带着这个需求，进行了一些尝试。</p>
+<h2 id="2-方案一：手动解析JSON"><a href="#2-方案一：手动解析JSON" class="headerlink" title="2 方案一：手动解析JSON"></a>2 方案一：手动解析JSON</h2><p>这个方案的大体思路是：读取文本内容，手动解析JSON，然后使用flatmap算子转换，最后生成DataFrame。这个方案也是最先想到的，感觉也是最容易实现的，但是在实现的时候却遇到了一个小问题，导致我花费了几个小时的时间才解决，其实主要是因为基本功不扎实，走了不少弯路。先说一下遇到的问题吧，这里也做一个小记录，读取文本的时候，直接使用了read.text()，结果默认按照行分隔符生成了多条记录，拿不到一条完整的JSON。其实我的目的就是将整个文本当做一条记录来处理，一开始想着指定别的行分隔符就能拿到一条记录了，百度、google了好多方法没有结果。傻逼了半天，看了看源码，发现：</p>
+<pre><code class="scala">  /**
+   * Loads text files and returns a `DataFrame` whose schema starts with a string column named
+   * &quot;value&quot;, and followed by partitioned columns if there are any.
+   *
+   * By default, each line in the text files is a new row in the resulting DataFrame. For example:
+   * &#123;&#123;&#123;
+   *   // Scala:
+   *   spark.read.text("/path/to/spark/README.md")
+   *
+   *   // Java:
+   *   spark.read().text("/path/to/spark/README.md")
+   * &#125;&#125;&#125;
+   *
+   * You can set the following text-specific option(s) for reading text files:
+   * &lt;ul&gt;
+   * &lt;li&gt;`wholetext` (default `false`): If true, read a file as a single row and not split by &quot;\n&quot;.
+   * &lt;/li&gt;
+   * &lt;li&gt;`lineSep` (default covers all `\r`, `\r\n` and `\n`): defines the line separator
+   * that should be used for parsing.&lt;/li&gt;
+   * &lt;/ul&gt;
+   *
+   * @param paths input paths
+   * @since 1.6.0
+   */
+  @scala.annotation.varargs
+  def text(paths: String*): DataFrame = format(&quot;text&quot;).load(paths : _*)
+</code></pre>
+<p>wholetext这个参数不就是我想要嘛，疏忽了疏忽了竟然忘了这一茬，早在之前整理过Spark的各种数据源，但是只是简单的读取和写入，对于需要的参数没有研究，所以这几天又参照源码，重新整理了《SparkSQL数据源操作》这个笔记，将每个数据源支持的Option参数都完整的整理了出来。</p>
+<p>解决了上述读取文件的问题之后，也事半功倍了，后面只需要使用FastJSON加载数据，按key分行即可。如下代码所示：</p>
+<pre><code class="scala">    import spark.implicits._
+    import scala.collection.JavaConverters._
+    val text = spark.read
+      .option(&quot;wholetext&quot;, value = true)
+      .text(&quot;/Users/shirukai/hollysys/repository/learn-demo-spark/data/location.json&quot;).as[String]
+
+    val jsonDF = text.flatMap(line =&gt; &#123;
+      val json = JSON.parseObject(line)
+      val keys = json.keySet()
+      keys.asScala.map(key =&gt; &#123;
+        (key, json.getString(key))
+      &#125;)
+    &#125;)
+    jsonDF.toDF(&quot;address&quot;, &quot;location&quot;).show(false)
+</code></pre>
+<h1 id="2-方案二：自定义数据源"><a href="#2-方案二：自定义数据源" class="headerlink" title="2 方案二：自定义数据源"></a>2 方案二：自定义数据源</h1><p>思路：继承DataSourceV2接口自定义数据源。</p>
+<p>针对这一类型的数据单独写一个数据源，其实这类型的就是K，V格式的，k做成一列、v做成一列，如果需要经常用到处理这种数据，可以自己写一个数据源。这里只是简单写一下步骤，真正读取数据的时候比较复杂。</p>
+<h2 id="2-1-创建一个名为KVJSONDataSource的数据源"><a href="#2-1-创建一个名为KVJSONDataSource的数据源" class="headerlink" title="2.1 创建一个名为KVJSONDataSource的数据源"></a>2.1 创建一个名为KVJSONDataSource的数据源</h2><p>代码如下所示，读取文件实际上会复杂，涉及到读本地文件和HDFS文件等等。这里只是简单的读取了一下本地文件。</p>
+<pre><code class="scala">package com.hollysys.spark.sql.datasource.kvjson
+
+import java.util
+
+import com.alibaba.fastjson.JSON
+import org.apache.spark.sql.Row
+import org.apache.spark.sql.sources.v2.reader.&#123;DataReader, DataReaderFactory, DataSourceReader&#125;
+import org.apache.spark.sql.sources.v2.&#123;DataSourceOptions, DataSourceV2, ReadSupport&#125;
+import org.apache.spark.sql.types.StructType
+
+import scala.io.Source
+
+/**
+  * Created by shirukai on 2019-06-15 10:50
+  * K、V格式JSON数据源
+  */
+class KVJSONDataSource extends DataSourceV2 with ReadSupport &#123;
+  override def createReader(options: DataSourceOptions): DataSourceReader = new KVJSONDataSourceReader(options)
+&#125;
+
+class KVJSONDataSourceReader(options: DataSourceOptions) extends DataSourceReader &#123;
+  var requiredSchema: StructType = StructType.fromDDL(options.get(&quot;schema&quot;).get())
+
+  override def readSchema(): StructType = requiredSchema
+
+  override def createDataReaderFactories(): util.List[DataReaderFactory[Row]] = &#123;
+    import collection.JavaConverters._
+    Seq(
+      new KVJSONDataSourceReaderFactory(options.get(&quot;path&quot;).get()).asInstanceOf[DataReaderFactory[Row]]
+    ).asJava
+  &#125;
+&#125;
+
+class KVJSONDataSourceReaderFactory(path: String) extends DataReaderFactory[Row] &#123;
+  override def createDataReader(): DataReader[Row] = new KVJSONDataReader(path)
+&#125;
+
+class KVJSONDataReader(path: String) extends DataReader[Row] &#123;
+
+  val data: Iterator[Seq[AnyRef]] = readData
+
+  override def next(): Boolean = data.hasNext
+
+  override def get(): Row = &#123;
+    val line = data.next()
+    Row(line: _*)
+  &#125;
+
+  override def close(): Unit = &#123;&#125;
+  def readData: Iterator[Seq[AnyRef]] = &#123;
+    import scala.collection.JavaConverters._
+    val source = Source.fromFile(path)
+    val jsonStr = source.mkString
+    val json = JSON.parseObject(jsonStr)
+    val keys = json.keySet()
+    keys.asScala.map(key =&gt; &#123;
+      Seq(key, json.getString(key))
+    &#125;).toIterator
+  &#125;
+&#125;
+</code></pre>
+<h2 id="2-2-使用自定义数据源"><a href="#2-2-使用自定义数据源" class="headerlink" title="2.2 使用自定义数据源"></a>2.2 使用自定义数据源</h2><p>数据源自定义完成后，我们就可以使用了，使用方式很简单，如下代码：</p>
+<pre><code class="scala">    spark.read.format(&quot;com.hollysys.spark.sql.datasource.kvjson.KVJSONDataSource&quot;)
+      .option(&quot;schema&quot;,&quot;`address` STRING,`location` STRING&quot;)
+      .option(&quot;path&quot;,&quot;/Users/shirukai/hollysys/repository/learn-demo-spark/data/location.json&quot;)
+      .load().show(false)
+</code></pre>
+<p>输出</p>
+<pre><code class="shell">+-------+-------------------------+
+|address|location                 |
++-------+-------------------------+
+|昌平区北七  |[116.4179459,40.11644403]|
+|昌平区东小  |[116.4021289,40.05688698]|
+|昌平区回龙  |[116.3412241,40.07942604]|
+|昌平区阳坊  |[116.1332611,40.13701398]|
++-------+-------------------------+
+</code></pre>
+<h1 id="3-总结"><a href="#3-总结" class="headerlink" title="3 总结"></a>3 总结</h1><p>目前只想到两种方案，其实第二种方案有点大材小用了，如果大家有更好的方案，欢迎交流。</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E9%9C%80%E6%B1%82%E8%AF%B4%E6%98%8E"><span class="toc-number">2.</span> <span class="toc-text">1 需求说明</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E6%96%B9%E6%A1%88%E4%B8%80%EF%BC%9A%E6%89%8B%E5%8A%A8%E8%A7%A3%E6%9E%90JSON"><span class="toc-number">2.1.</span> <span class="toc-text">2 方案一：手动解析JSON</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E6%96%B9%E6%A1%88%E4%BA%8C%EF%BC%9A%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE%E6%BA%90"><span class="toc-number">3.</span> <span class="toc-text">2 方案二：自定义数据源</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E5%90%8D%E4%B8%BAKVJSONDataSource%E7%9A%84%E6%95%B0%E6%8D%AE%E6%BA%90"><span class="toc-number">3.1.</span> <span class="toc-text">2.1 创建一个名为KVJSONDataSource的数据源</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-%E4%BD%BF%E7%94%A8%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE%E6%BA%90"><span class="toc-number">3.2.</span> <span class="toc-text">2.2 使用自定义数据源</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E6%80%BB%E7%BB%93"><span class="toc-number">4.</span> <span class="toc-text">3 总结</span></a></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

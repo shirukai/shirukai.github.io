@@ -1,0 +1,768 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ambari二次开发-实时编译-部署 集成环境搭建 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="总体思路：对ambari-web、ambari-admin进行单独编译，利用brunch watch功能，对文件源码进行实时监控编译。ambari-web/public 里存放编译完成的文件，（这里,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">Ambari二次开发-实时编译-部署 集成环境搭建</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/5.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/Ambari二次开发"><b>「
+                    </b>AMBARI二次开发<b> 」</b></a>
+                
+                August 20, 2018
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/ambari-secondary-development---real-time-compile---deploying-integrated-environment.html" title="Ambari二次开发-实时编译-部署 集成环境搭建" class="">Ambari二次开发-实时编译-部署 集成环境搭建</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    12k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    11 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Ambari%E4%BA%8C%E6%AC%A1%E5%BC%80%E5%8F%91/" rel="tag">Ambari二次开发</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <p>总体思路：对ambari-web、ambari-admin进行单独编译，利用brunch watch功能，对文件源码进行实时监控编译。ambari-web/public 里存放编译完成的文件，（这里的文件目录与部署ambari后  /usr/lib/ambari-server/web 里的相同），对/usr/lib/ambari-server/web 建立软链接到public，就能实现 开发-编译-web可视化 的功能。</p>
+<h4 id="开发人员只需走的流程："><a href="#开发人员只需走的流程：" class="headerlink" title="开发人员只需走的流程："></a>开发人员只需走的流程：</h4><pre><code>1. 本地访问samba共享目录里的源码进行二次开发
+2. 访问虚拟机地址:8080 查看效果
+3. 刷新页面
+</code></pre>
+<h2 id="第一步：安装虚拟机"><a href="#第一步：安装虚拟机" class="headerlink" title="第一步：安装虚拟机"></a>第一步：安装虚拟机</h2><ol>
+<li>安装虚拟机</li>
+</ol>
+<ul>
+<li>进行傻瓜式安装。注意：安装过程中 虚拟机安装目录可以在非C盘，硬盘大小调到120G，确保有足够大的空间。</li>
+</ul>
+<ol start="2">
+<li>编辑虚拟机设置</li>
+</ol>
+<ul>
+<li>点击第四行CD/DVD（IDE）,点击右侧的使用ISO映像文件，选择CentOS-7-x86-DVD-1611.iso，点击确定。<strong>开启此虚拟机</strong></li>
+</ul>
+<ol start="3">
+<li>配置虚拟机</li>
+</ol>
+<ul>
+<li>选择语言，简体中文。</li>
+<li>点击网络和主机名：<blockquote>
+<ol>
+<li>开启以太网连接</li>
+<li>点击配置，IPv4设置，方法：手动；Add:填写信息：点击编辑–&gt;虚拟网络编辑器–&gt;点击第二栏–&gt;NAT设置–&gt;子网IP，前三位保持一致，最后一位自己取，子网掩码和网关都有了。DNS搜索器和网关一致。</li>
+</ol>
+</blockquote>
+</li>
+<li>禁用KDUMP</li>
+</ul>
+<ol start="4">
+<li>点击安装，并点击左上角设置一下用户密码。</li>
+</ol>
+<h2 id="第二步：复制相关文件"><a href="#第二步：复制相关文件" class="headerlink" title="第二步：复制相关文件"></a>第二步：复制相关文件</h2><p>说明：这里需要复制ambari源码文件、ambari部署文件以及一些配置环境中用到的软件包</p>
+<ol>
+<li>利用xshell连接虚拟机<br>文件——新建——输入主机地址——确定——用户名——密码——成功连接</li>
+<li> 打开 新建文件传输</li>
+<li>访问/opt目录，将相关文件复制到虚拟机<br>ambari源码文件：apache-ambari-2.4.1-src<br>ambari部署文件：deployer-inspur<br>maven软件包：apache-maven-3.0.5-bin.tar.gz</li>
+<li> 解压文件</li>
+</ol>
+<pre><code>tar zxvf deployer-inspur.tar //解压部署文件
+tar zxvf apache-ambari-2.4.1-src.tar //解压源码文件
+</code></pre>
+<blockquote>
+<p>注意：czvf 是压缩命令，zxvf是解压命令。</p>
+</blockquote>
+<blockquote>
+<p>知识点：linux对文件的解压缩操作</p>
+</blockquote>
+<pre><code>tar命令
+　　解包：tar zxvf FileName.tar
+　　打包：tar czvf FileName.tar DirName
+　
+gz命令
+　　解压1：gunzip FileName.gz
+　　解压2：gzip -d FileName.gz
+　　压缩：gzip FileName
+　　.tar.gz 和 .tgz
+　　解压：tar zxvf FileName.tar.gz
+　　压缩：tar zcvf FileName.tar.gz DirName
+   压缩多个文件：tar zcvf FileName.tar.gz DirName1 DirName2 DirName3 ...
+
+bz2命令
+　　解压1：bzip2 -d FileName.bz2
+　　解压2：bunzip2 FileName.bz2
+　　压缩： bzip2 -z FileName
+　　.tar.bz2
+　　解压：tar jxvf FileName.tar.bz2
+　　压缩：tar jcvf FileName.tar.bz2 DirName
+
+bz命令
+　　解压1：bzip2 -d FileName.bz
+　　解压2：bunzip2 FileName.bz
+　　压缩：未知
+　　.tar.bz
+　　解压：tar jxvf FileName.tar.bz
+
+Z命令
+　　解压：uncompress FileName.Z
+　　压缩：compress FileName
+　　.tar.Z
+　　解压：tar Zxvf FileName.tar.Z
+　　压缩：tar Zcvf FileName.tar.Z DirName
+　　
+zip命令
+　　解压：unzip FileName.zip
+　　压缩：zip FileName.zip DirName
+</code></pre>
+<h2 id="第三步：利用samba建立共享连接"><a href="#第三步：利用samba建立共享连接" class="headerlink" title="第三步：利用samba建立共享连接"></a>第三步：利用samba建立共享连接</h2><h3 id="一、-yum-安装samba"><a href="#一、-yum-安装samba" class="headerlink" title="一、 yum 安装samba"></a>一、 yum 安装samba</h3><ol>
+<li>检查是否安装<pre><code>#rpm -qa | grep samba
+</code></pre>
+</li>
+<li>未安装的话，执行安装命令</li>
+</ol>
+<pre><code>yum install samba
+</code></pre>
+<ol start="3">
+<li>重启smb服务</li>
+</ol>
+<pre><code>service smb restart
+</code></pre>
+<ol start="4">
+<li>在Linux上建立samba用户</li>
+</ol>
+<pre><code>useradd samba
+</code></pre>
+<ol start="5">
+<li>创建Smb用户，此用户必须是Linux上已经建立的，输入密码，完成即可<pre><code>smbpasswd -a root
+</code></pre>
+<blockquote>
+<p>注意：smbpasswd  -a 是添加用户的意思 后面跟的是用户名，此用户名一定要跟linux登录用户名一样。smbpasswd -x 用户名 ：是删除用户的意思</p>
+</blockquote>
+</li>
+</ol>
+<h3 id="二、关闭防火墙"><a href="#二、关闭防火墙" class="headerlink" title="二、关闭防火墙"></a>二、关闭防火墙</h3><p>a.  查看防火墙状态</p>
+<pre><code>systemctl status firewalld
+</code></pre>
+<p>b.  查看开机是否启动防火墙服务</p>
+<pre><code> systemctl is-enabled firewalld
+</code></pre>
+<p>c.  关闭防火墙</p>
+<pre><code>systemctl stop firewalld
+systemctl status firewalld
+</code></pre>
+<p>d. 警用防火墙（系统启动时不启动防火墙）</p>
+<pre><code>systemctl disable firewalld
+systemctl is-enabled firewalld
+</code></pre>
+<p>e. 确保setlinux关闭</p>
+<pre><code>setenforce 0
+</code></pre>
+<h3 id="三、修改-etc-samba-smb-conf，在最后加入想要共享的文件夹："><a href="#三、修改-etc-samba-smb-conf，在最后加入想要共享的文件夹：" class="headerlink" title="三、修改/etc/samba/smb.conf，在最后加入想要共享的文件夹："></a>三、修改/etc/samba/smb.conf，在最后加入想要共享的文件夹：</h3><pre><code>[samba home]
+    path = /home/samba
+    writeable = yes
+    guest ok = yes
+    read only = no
+
+[MyShare]
+        path=/opt/apache-ambari-2.4.1-src
+ls
+</code></pre>
+<h3 id="四、修改文件权限"><a href="#四、修改文件权限" class="headerlink" title="四、修改文件权限"></a>四、修改文件权限</h3><p>chown -R root. /opt/apache-ambari-2.4.1-src  //设置共享目录归属为root<br>chmod -R 777  /opt/apache-ambari-2.4.1-src //属性为所有用户都可以读写删</p>
+<h3 id="五、本地访问共享文件"><a href="#五、本地访问共享文件" class="headerlink" title="五、本地访问共享文件"></a>五、本地访问共享文件</h3><ol>
+<li> 在本地电脑文件浏览器中输入 \ \自己的IP地址 访问samba目录</li>
+<li> 测试是否有增删改查的权限</li>
+<li> 右击samba目录，选择映射网络驱动器</li>
+<li> 在编辑器里打开网络驱动器里的项目进行编辑</li>
+</ol>
+<h2 id="第三步：-配置编译环境"><a href="#第三步：-配置编译环境" class="headerlink" title="第三步： 配置编译环境"></a>第三步： 配置编译环境</h2><p>在/opt下创建software文件夹用来存放安装包<br>切换到software执行下列命令</p>
+<h3 id="1-yum安装jdk"><a href="#1-yum安装jdk" class="headerlink" title="1. yum安装jdk"></a>1. yum安装jdk</h3><p>a. 查看jdk版本</p>
+<pre><code>yum search java|grep jdk
+</code></pre>
+<p>b. 选择版本进行安装</p>
+<pre><code>yum install java-1.7.0-openjdk
+</code></pre>
+<h3 id="2-yum安装maven"><a href="#2-yum安装maven" class="headerlink" title="2. yum安装maven"></a>2. yum安装maven</h3><p>a.  安装wget用来下载工具</p>
+<pre><code>yum install wget
+</code></pre>
+<p>b. 下载maven</p>
+<pre><code>wget http://repos.fedorapeople.org/repos/dchen/apache-maven/epel-apache-maven.repo -O /etc/yum.repos.d/epel-apache-maven.repo
+</code></pre>
+<p>c. 安装maven</p>
+<pre><code>yum -y install apache-maven
+</code></pre>
+<h3 id="3-安装Python2-6"><a href="#3-安装Python2-6" class="headerlink" title="3. 安装Python2.6"></a>3. 安装Python2.6</h3><p>1.下载安装包</p>
+<pre><code>wget http://pypi.python.org/packages/2.6/s/setuptools/setuptools-0.6c11-py2.6.egg#md5=bfa92100bd772d5a213eedd356d64086
+</code></pre>
+<p>2.安装</p>
+<pre><code> sh setuptools-0.6c11-py2.6.egg
+</code></pre>
+<blockquote>
+<p>这里好像就出现了问题，不过咱新建的虚拟机有自带的Python，在命令行里输入：Python,检查一下是否有，检查是有，然后怎么退出呢，用Ctrl+d强制退出。</p>
+</blockquote>
+<blockquote>
+<p>补充：Ctrl+c,Ctrl+d,Ctrl+z在Linux中意义</p>
+</blockquote>
+<ul>
+<li>Ctrl+c和ctrl+z都是中断命令,但是他们的作用却不一样</li>
+<li>Ctrl+c是强制中断程序的执行。</li>
+<li>Ctrl+z的是将任务中断,但是此任务并没有结束,他仍然在进程中他只是维持挂起的状态。</li>
+<li>Ctrl+d 不是发送信号，而是表示一个特殊的二进制值，表示 EOF。<h3 id="4-安装rpmbuild"><a href="#4-安装rpmbuild" class="headerlink" title="4.安装rpmbuild"></a>4.安装rpmbuild</h3></li>
+</ul>
+<pre><code>yum install rpm-build
+</code></pre>
+<h3 id="5-安装g"><a href="#5-安装g" class="headerlink" title="5.安装g++"></a>5.安装g++</h3><pre><code>yum install gcc-c++
+</code></pre>
+<h3 id="6-安装nodejs"><a href="#6-安装nodejs" class="headerlink" title="6.安装nodejs"></a>6.安装nodejs</h3><ol>
+<li>下载安装包 <a target="_blank" rel="noopener" href="https://nodejs.org/dist/">版本地址</a></li>
+<li>​</li>
+</ol>
+<pre><code>wget http://nodejs.org/dist/v0.10.33/node-v0.10.33-linux-x64.tar.gz
+</code></pre>
+<p>3.解压</p>
+<pre><code>tar –zxvf node-v0.10.33-linux-x64.tar.gz
+</code></pre>
+<blockquote>
+<p>注意：此时经常会因为本国的特殊网络环境，有些时候npm下载时特别慢，所以建议访问以上网址，知道相应版本，下载到本地，然后传到虚拟机里。<br>4. 配置环境变量/etc/profile</p>
+</blockquote>
+<pre><code>export NODE_HOME=&quot;/opt/software/node-v0.10.33-linux-x64&quot;
+export PATH=$PATH:$NODE_HOME/bin
+</code></pre>
+<ol start="5">
+<li>使修改后的文件生效<pre><code>source /etc/profile
+</code></pre>
+</li>
+<li>查看安装情况</li>
+</ol>
+<pre><code>node -v
+npm -v
+</code></pre>
+<h2 id="7-安装Brunch"><a href="#7-安装Brunch" class="headerlink" title="7.安装Brunch"></a>7.安装Brunch</h2><pre><code>npm i -g brunch@1
+</code></pre>
+<blockquote>
+<p>由于npm下载依赖包特别慢，而且容易出问题。所以我把之前下载好的包，打包本地，如果需要的话，可以传到ambari-web目录下，然后解压。</p>
+</blockquote>
+<blockquote>
+<p>注意打包好的源码里已经下载好了npm依赖包</p>
+</blockquote>
+<h2 id="第四步：测试编译"><a href="#第四步：测试编译" class="headerlink" title="第四步：测试编译"></a>第四步：测试编译</h2><h3 id="一、ambari-web编译："><a href="#一、ambari-web编译：" class="headerlink" title="一、ambari-web编译："></a>一、ambari-web编译：</h3><p>a. 切换到ambari-web目录下</p>
+<pre><code>cd /opt/apache-ambari-2.4.1-src/ambari-web
+</code></pre>
+<p>b. 删除public文件目录</p>
+<pre><code>rm -rf public
+</code></pre>
+<p>c. 执行编译</p>
+<pre><code>brunch build
+</code></pre>
+<p>d. 查看ambai-web/public目录，如果生成新的文件，则说明编译成功（编译效果会在后面提到）</p>
+<h3 id="二、ambari-admin编译："><a href="#二、ambari-admin编译：" class="headerlink" title="二、ambari-admin编译："></a>二、ambari-admin编译：</h3><p>ambari-admin 使用的是angularjs + bower + gulp。</p>
+<p>bower与npm的使用方式基本一样，angularjs也与emberjs风格类似。</p>
+<p>a. 切换到admin-web目录下</p>
+<pre><code>cd 到 /源码目录/ambari-admin/src/main/resources/ui/admin-web
+</code></pre>
+<p>b. 编辑 .bowerrc </p>
+<pre><code>&#123;
+    &quot;directory&quot;: &quot;app/bower_components&quot;,
+    &quot;allow_root&quot;: true //允许以root用户执行bower命令。也可以在执行命令的时候通过参数设定 如：bower install --allow-root    不要复制这段注释
+&#125;
+</code></pre>
+<p>c. 安装npm依赖包，全局安装gulp、bower</p>
+<pre><code>检查一下是否有npm  npm -v 
+如果没有 npm install
+继续安装bower和gulp
+npm install -g bower
+npm install -g gulp
+</code></pre>
+<p>d. 安装bower的依赖包</p>
+<pre><code>bower install
+</code></pre>
+<p>e. 安装 gulp-webserver</p>
+<pre><code>npm install gulp-webserver --save-dev
+</code></pre>
+<p>f. 开始构建</p>
+<pre><code>gulp
+</code></pre>
+<h2 id="第五步：部署ambari"><a href="#第五步：部署ambari" class="headerlink" title="第五步：部署ambari"></a>第五步：部署ambari</h2><ol>
+<li>切换到/opt目录下<pre><code>cd /opt
+</code></pre>
+</li>
+<li>解压 deployer-inspur.tar<br>之前解压过，此步可以跳过</li>
+<li>切换到 deployer-inspur目录下<pre><code>cd /opt/deployer-inspur
+</code></pre>
+</li>
+<li>执行部署安装</li>
+</ol>
+<pre><code>bash env.sh
+</code></pre>
+<ol start="5">
+<li>输入虚拟机ip地址/重复输入</li>
+<li>安装成功后，访问 虚拟机ip地址:8000/index.html</li>
+<li>增加manager填写信息</li>
+<li>等待部署完成</li>
+<li>服务安装部署<br>访问虚拟机ip:8080 进行服务部署（详情参考大数据平台管理指南）</li>
+<li>测试服务<h2 id="第六步：建立软链接"><a href="#第六步：建立软链接" class="headerlink" title="第六步：建立软链接"></a>第六步：建立软链接</h2></li>
+</ol>
+<h3 id="一、建立ambari-web软链接"><a href="#一、建立ambari-web软链接" class="headerlink" title="一、建立ambari-web软链接"></a>一、建立ambari-web软链接</h3><ol>
+<li><p>切换到/usr/lib/ambari-server目录下</p>
+<pre><code>cd /usr/lib/ambari-server
+</code></pre>
+</li>
+<li><p>备份web目录</p>
+<pre><code>mv web web-orig 
+</code></pre>
+</li>
+<li><p>建立软链接 使ambari-server可以访问到我们修改编译后的代码</p>
+<pre><code>ln -s /opt/apache-ambari-2.4.1-src/ambari-web/public web 
+</code></pre>
+</li>
+<li><p>重启服务</p>
+</li>
+</ol>
+<pre><code>ambari-server restart
+</code></pre>
+<ol start="5">
+<li>刷新查看效果<h3 id="二、建立ambari-admin软链接"><a href="#二、建立ambari-admin软链接" class="headerlink" title="二、建立ambari-admin软链接"></a>二、建立ambari-admin软链接</h3></li>
+<li>切换目录</li>
+</ol>
+<pre><code>cd /var/lib/ambari-server/resources/views/work
+</code></pre>
+<blockquote>
+<p><strong>注意</strong>下面的version是版本号的意思，根据上面的指令就可以知道版本号是多少。</p>
+</blockquote>
+<blockquote>
+<p>然后将ADMIN_VIEW{version}文件备份一下。</p>
+</blockquote>
+<pre><code>mv ADMIN_VIEW&#123;version&#125; /tmp
+ln -s /sourcepath/ambari/ambari-admin/src/main/resources/ui/admin-web/dist ADMIN_VIEW&#123;version&#125;
+ambari-server restart
+</code></pre>
+<blockquote>
+<p>这时候貌似页面内容不全，实际上是创建的软连接ADMIN_VIEW{version}缺少东西，将之前备份的ADMIN_VIEW{version}文件内容替换进去，然后再执行ambari-server restart，重启完后，刷新页面IP:8080/index.html应该就成功了。</p>
+</blockquote>
+<blockquote>
+<p>现在，我们更改源码的时候，再执行一下gulp，就可以看到效果了。修改完一次，手动执行一次gulp</p>
+</blockquote>
+<h2 id="第七步：安装开发者工具"><a href="#第七步：安装开发者工具" class="headerlink" title="第七步：安装开发者工具"></a>第七步：安装开发者工具</h2><ol>
+<li>对于ambari-web二次开发，可以选用轻量级编辑器sublime 3，<br>也可以使用功能强大的 webstrom。<br>使用编辑器打开网络映射的磁盘里的ambari-web目录，即可对源码进行开发。</li>
+<li>浏览器插件 （因为ambari缓存很厉害，为了达到实时显示效果，需要及时清理缓存，利用插件，可以很方便的达到清理缓存-刷新页面的目的）<br>在谷歌浏览器里搜索“clear Cache，clean cache, 清理缓存”插件，并安装</li>
+</ol>
+<h2 id="第八步：开启新征程"><a href="#第八步：开启新征程" class="headerlink" title="第八步：开启新征程"></a>第八步：开启新征程</h2><h3 id="一、虚拟机操作："><a href="#一、虚拟机操作：" class="headerlink" title="一、虚拟机操作："></a>一、虚拟机操作：</h3><ol>
+<li>打开虚拟机</li>
+<li>切换到 ambari-web目录下</li>
+<li>启动实时编译<br>全写是 brunch watch ，这就是对源码进行实时监视，只要发生改变，就对其进行实时编译。编译后的文件放在public里<pre><code>brunch w
+</code></pre>
+<h3 id="二、浏览器操作："><a href="#二、浏览器操作：" class="headerlink" title="二、浏览器操作："></a>二、浏览器操作：</h3>在浏览器输入 虚拟机ip:8080查看效果<h3 id="三、客户端编辑"><a href="#三、客户端编辑" class="headerlink" title="三、客户端编辑"></a>三、客户端编辑</h3>使用编辑器对源码进行修改。</li>
+</ol>
+<h3 id="接下来只需进行"><a href="#接下来只需进行" class="headerlink" title="接下来只需进行"></a>接下来只需进行</h3><p>修改源码-刷新页面 -查看效果</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>（遇到问题再做总结，此时已经能够正常工作）</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E6%AD%A5%EF%BC%9A%E5%AE%89%E8%A3%85%E8%99%9A%E6%8B%9F%E6%9C%BA"><span class="toc-number">1.</span> <span class="toc-text">第一步：安装虚拟机</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E6%AD%A5%EF%BC%9A%E5%A4%8D%E5%88%B6%E7%9B%B8%E5%85%B3%E6%96%87%E4%BB%B6"><span class="toc-number">2.</span> <span class="toc-text">第二步：复制相关文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E6%AD%A5%EF%BC%9A%E5%88%A9%E7%94%A8samba%E5%BB%BA%E7%AB%8B%E5%85%B1%E4%BA%AB%E8%BF%9E%E6%8E%A5"><span class="toc-number">3.</span> <span class="toc-text">第三步：利用samba建立共享连接</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E3%80%81-yum-%E5%AE%89%E8%A3%85samba"><span class="toc-number">3.1.</span> <span class="toc-text">一、 yum 安装samba</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%85%B3%E9%97%AD%E9%98%B2%E7%81%AB%E5%A2%99"><span class="toc-number">3.2.</span> <span class="toc-text">二、关闭防火墙</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E4%BF%AE%E6%94%B9-etc-samba-smb-conf%EF%BC%8C%E5%9C%A8%E6%9C%80%E5%90%8E%E5%8A%A0%E5%85%A5%E6%83%B3%E8%A6%81%E5%85%B1%E4%BA%AB%E7%9A%84%E6%96%87%E4%BB%B6%E5%A4%B9%EF%BC%9A"><span class="toc-number">3.3.</span> <span class="toc-text">三、修改&#x2F;etc&#x2F;samba&#x2F;smb.conf，在最后加入想要共享的文件夹：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6%E6%9D%83%E9%99%90"><span class="toc-number">3.4.</span> <span class="toc-text">四、修改文件权限</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E6%9C%AC%E5%9C%B0%E8%AE%BF%E9%97%AE%E5%85%B1%E4%BA%AB%E6%96%87%E4%BB%B6"><span class="toc-number">3.5.</span> <span class="toc-text">五、本地访问共享文件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E6%AD%A5%EF%BC%9A-%E9%85%8D%E7%BD%AE%E7%BC%96%E8%AF%91%E7%8E%AF%E5%A2%83"><span class="toc-number">4.</span> <span class="toc-text">第三步： 配置编译环境</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-yum%E5%AE%89%E8%A3%85jdk"><span class="toc-number">4.1.</span> <span class="toc-text">1. yum安装jdk</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-yum%E5%AE%89%E8%A3%85maven"><span class="toc-number">4.2.</span> <span class="toc-text">2. yum安装maven</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%AE%89%E8%A3%85Python2-6"><span class="toc-number">4.3.</span> <span class="toc-text">3. 安装Python2.6</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E5%AE%89%E8%A3%85rpmbuild"><span class="toc-number">4.4.</span> <span class="toc-text">4.安装rpmbuild</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E5%AE%89%E8%A3%85g"><span class="toc-number">4.5.</span> <span class="toc-text">5.安装g++</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E5%AE%89%E8%A3%85nodejs"><span class="toc-number">4.6.</span> <span class="toc-text">6.安装nodejs</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E5%AE%89%E8%A3%85Brunch"><span class="toc-number">5.</span> <span class="toc-text">7.安装Brunch</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%9B%9B%E6%AD%A5%EF%BC%9A%E6%B5%8B%E8%AF%95%E7%BC%96%E8%AF%91"><span class="toc-number">6.</span> <span class="toc-text">第四步：测试编译</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E3%80%81ambari-web%E7%BC%96%E8%AF%91%EF%BC%9A"><span class="toc-number">6.1.</span> <span class="toc-text">一、ambari-web编译：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E3%80%81ambari-admin%E7%BC%96%E8%AF%91%EF%BC%9A"><span class="toc-number">6.2.</span> <span class="toc-text">二、ambari-admin编译：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%94%E6%AD%A5%EF%BC%9A%E9%83%A8%E7%BD%B2ambari"><span class="toc-number">7.</span> <span class="toc-text">第五步：部署ambari</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%85%AD%E6%AD%A5%EF%BC%9A%E5%BB%BA%E7%AB%8B%E8%BD%AF%E9%93%BE%E6%8E%A5"><span class="toc-number">8.</span> <span class="toc-text">第六步：建立软链接</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%BB%BA%E7%AB%8Bambari-web%E8%BD%AF%E9%93%BE%E6%8E%A5"><span class="toc-number">8.1.</span> <span class="toc-text">一、建立ambari-web软链接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%BB%BA%E7%AB%8Bambari-admin%E8%BD%AF%E9%93%BE%E6%8E%A5"><span class="toc-number">8.2.</span> <span class="toc-text">二、建立ambari-admin软链接</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%83%E6%AD%A5%EF%BC%9A%E5%AE%89%E8%A3%85%E5%BC%80%E5%8F%91%E8%80%85%E5%B7%A5%E5%85%B7"><span class="toc-number">9.</span> <span class="toc-text">第七步：安装开发者工具</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%85%AB%E6%AD%A5%EF%BC%9A%E5%BC%80%E5%90%AF%E6%96%B0%E5%BE%81%E7%A8%8B"><span class="toc-number">10.</span> <span class="toc-text">第八步：开启新征程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%93%8D%E4%BD%9C%EF%BC%9A"><span class="toc-number">10.1.</span> <span class="toc-text">一、虚拟机操作：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E6%B5%8F%E8%A7%88%E5%99%A8%E6%93%8D%E4%BD%9C%EF%BC%9A"><span class="toc-number">10.2.</span> <span class="toc-text">二、浏览器操作：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%AE%A2%E6%88%B7%E7%AB%AF%E7%BC%96%E8%BE%91"><span class="toc-number">10.3.</span> <span class="toc-text">三、客户端编辑</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%A5%E4%B8%8B%E6%9D%A5%E5%8F%AA%E9%9C%80%E8%BF%9B%E8%A1%8C"><span class="toc-number">10.4.</span> <span class="toc-text">接下来只需进行</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">11.</span> <span class="toc-text">总结</span></a></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

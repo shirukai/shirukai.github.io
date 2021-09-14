@@ -1,0 +1,646 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Flask中SQLAlchemy自动更新表结构 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="
+Python: 2.7
+Flask: 1.0.3Flask-SQLAlchemy: 2.3.2
+SQLAlchemy: 1.3.12 
+Flask-SQLAlchemy是Flask中比较好用的OR,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">Flask中SQLAlchemy自动更新表结构</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/5.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/Python"><b>「
+                    </b>PYTHON<b> 」</b></a>
+                
+                July 31, 2021
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/sqlalchemy-automatically-updates-the-table-structure-in-flask.html" title="Flask中SQLAlchemy自动更新表结构" class="">Flask中SQLAlchemy自动更新表结构</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    7.9k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    7 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/flask/" rel="tag">flask</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <blockquote>
+<p>Python: 2.7</p>
+<p>Flask: 1.0.3<br>Flask-SQLAlchemy: 2.3.2</p>
+<p>SQLAlchemy: 1.3.12 </p>
+<p>Flask-SQLAlchemy是Flask中比较好用的ORM框架，说起ORM框架，熟悉SpringBoot开发的同学肯定对JPA比较了解，它们都是通过实体对象映射关系库中的表，操作实体对象，进行增删改查，减少了SQL的编写，非常方便。在JPA中，当我们修改了一个实体类之后（添加字段），对应的表结构可以自动发生更新，通常不需要人为干预。在Flask-SQLAlchemy中，并没有提供自动更新表结构的功能，网上也有不少方式去增强实现这个功能，比如表迁移新建、执行SQL等等。笔者经过一系列的搜索之后，没有找到一个自己比较满意的解决方案，所以总结了一个相对比较方便的方法，能够自动根据实体对象，自动更新表结构。</p>
+<p>项目Github地址：<a target="_blank" rel="noopener" href="https://github.com/shirukai/flask-examples-auto-alter-tables.git">https://github.com/shirukai/flask-examples-auto-alter-tables.git</a></p>
+</blockquote>
+<h1 id="1-思路"><a href="#1-思路" class="headerlink" title="1 思路"></a>1 思路</h1><p>思路非常的简单：</p>
+<pre><code>1. 拿到数据库所有表及字段信息
+ 2. 拿到继承db.Model的所有子类
+ 3. 分析实体类字段与表字段是否一致
+ 4. 不一致，将进行更新操，目前只进行字段新增的判断
+</code></pre>
+<h1 id="2-实现"><a href="#2-实现" class="headerlink" title="2 实现"></a>2 实现</h1><h2 id="2-1-技术点讲解"><a href="#2-1-技术点讲解" class="headerlink" title="2.1 技术点讲解"></a>2.1 技术点讲解</h2><p>结合上面的实现思路，在进行实现之前，先简单列一下几个技术点：</p>
+<ol>
+<li><p><strong>如何拿到数据库所有表及字段信息？</strong></p>
+<p>通过<code>db.engin.table_names()</code>可以拿到所有的表名</p>
+<p>通过<code>sqlalchemy.Table()</code>可以拿到具体的表元数据</p>
+</li>
+<li><p><strong>如何拿到db.Model所有子类</strong></p>
+<p>直接通过<code>db.Model.__subclasses__()</code></p>
+</li>
+<li><p><strong>如何修改表</strong></p>
+<p><code>db.engine.execute()</code>可以执行对应的修改表结构的语句</p>
+</li>
+</ol>
+<h2 id="2-2-代码实现"><a href="#2-2-代码实现" class="headerlink" title="2.2 代码实现"></a>2.2 代码实现</h2><h3 id="2-2-1-创建项目"><a href="#2-2-1-创建项目" class="headerlink" title="2.2.1 创建项目"></a>2.2.1 创建项目</h3><p>PyCharm创建一个名为flask-examples-auto-alter-tables的项目，Python选2.7，其它版本也可以。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20210731112332.png" alt="image-20210731112327625"></p>
+<h3 id="2-2-2-安装依赖"><a href="#2-2-2-安装依赖" class="headerlink" title="2.2.2 安装依赖"></a>2.2.2 安装依赖</h3><p>在项目下创建名为requirements.txt的文件，添加如下内容：</p>
+<pre><code>SQLAlchemy==1.3.12
+Flask==1.0.3
+Flask_SQLAlchemy==2.3.2
+</code></pre>
+<p>pip安装依赖</p>
+<pre><code>pip install -r requirements.txt
+</code></pre>
+<h3 id="2-2-3-编写实体类以及自动更新表的方法"><a href="#2-2-3-编写实体类以及自动更新表的方法" class="headerlink" title="2.2.3 编写实体类以及自动更新表的方法"></a>2.2.3 编写实体类以及自动更新表的方法</h3><p>在项目下创建一个models.py的文件，内容如下:</p>
+<pre><code class="python"># encoding: utf-8
+&quot;&quot;&quot;
+@author : shirukai
+@date : 2021/7/22
+
+&quot;&quot;&quot;
+import uuid
+
+import sqlalchemy
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.orm.attributes import InstrumentedAttribute
+
+db = SQLAlchemy()
+
+
+def auto_alter_tables(flask_app):
+    &quot;&quot;&quot;
+    自动修改表结构
+    :param flask_app:
+    :return:
+    &quot;&quot;&quot;
+    with flask_app.app_context():
+        metadata = sqlalchemy.MetaData()
+        tables = &#123;table_name: &#123;column.name: column for column in
+                               sqlalchemy.Table(table_name, metadata, autoload=True, autoload_with=db.engine).c&#125;
+                  for table_name in db.engine.table_names()&#125;
+        models = db.Model.__subclasses__()
+        for model_class in models:
+            table_name = model_class.__table__.name
+            if table_name in tables:
+                table = tables[table_name]
+                for attr_name in dir(model_class):
+                    attr = getattr(model_class, attr_name)
+                    if isinstance(attr, InstrumentedAttribute) \
+                            and hasattr(attr, &#39;type&#39;) \
+                            and hasattr(attr, &#39;compile&#39;):
+                        attr_name = attr.name
+                        # 添加新字段
+                        if attr_name not in table:
+                            column_type = attr.type.compile(dialect=db.engine.dialect)
+                            db.engine.execute(
+                                &#39;ALTER TABLE %s ADD COLUMN %s %s&#39; % (table_name, attr_name, column_type))
+
+
+class User(db.Model):
+    &quot;&quot;&quot;
+    用户表
+    &quot;&quot;&quot;
+    __tablename__ = &#39;user&#39;
+    id = db.Column(db.String(32), primary_key=True, default=uuid.uuid1().hex, comment=&#39;用户ID&#39;)
+    name = db.Column(db.String(32), nullable=False, comment=&#39;用户名称&#39;)
+
+    def to_dict(self):
+        return &#123;attr: getattr(self, attr) for attr in self.__mapper__.attrs.keys()&#125;
+</code></pre>
+<h3 id="2-2-4-编写Flask应用"><a href="#2-2-4-编写Flask应用" class="headerlink" title="2.2.4 编写Flask应用"></a>2.2.4 编写Flask应用</h3><p>在项目下创建一个名为main.py的文件，内容如下：</p>
+<pre><code class="python"># encoding: utf-8
+&quot;&quot;&quot;
+@author : shirukai
+@date : 2021/7/22
+
+&quot;&quot;&quot;
+import os
+
+from flask import Flask, jsonify, request
+
+from models import db, User, auto_alter_tables
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+app = Flask(__name__)
+# 使用本地的sqlite数据库
+app.config.from_mapping(**&#123;
+    &#39;SQLALCHEMY_DATABASE_URI&#39;: &#39;sqlite:///%s/application.db?check_same_thread=False&#39; % BASE_DIR,
+    &#39;SQLALCHEMY_TRACK_MODIFICATIONS&#39;: False
+&#125;)
+db.init_app(app)
+with app.app_context():
+    db.create_all()
+
+
+@app.route(&#39;/users&#39;, methods=[&#39;POST&#39;])
+def add_users():
+    &quot;&quot;&quot;
+    添加用户接口
+    :return: 
+    &quot;&quot;&quot;
+    res = request.json
+    user = User()
+    for attr in User.__mapper__.attrs.keys():
+        if attr in res:
+            value = res[attr]
+            setattr(user, attr, value)
+    db.session.add(user)
+    db.session.commit()
+    return &#39;success&#39;
+
+
+@app.route(&#39;/users&#39;, methods=[&#39;GET&#39;])
+def get_users():
+    &quot;&quot;&quot;
+    查询用户接口
+    :return: 
+    &quot;&quot;&quot;
+    users = User.query.all()
+    return jsonify([u.to_dict() for u in users])
+
+
+# 更新表结构
+auto_alter_tables(app)
+
+app.run(&#39;localhost&#39;, 18111)
+</code></pre>
+<h2 id="2-3-效果演示"><a href="#2-3-效果演示" class="headerlink" title="2.3 效果演示"></a>2.3 效果演示</h2><ol>
+<li><p>执行main.py启动Flask应用，右击直接运行即可：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20210731113508.png" alt="image-20210731113508582"></p>
+</li>
+<li><p>调用创建用户的接口：</p>
+<p>POST请求，请求参数为</p>
+<pre><code class="json">&#123;
+    &quot;name&quot;:&quot;小明&quot;
+&#125;
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20210731113644.png" alt="image-20210731113644399"></p>
+</li>
+<li><p>调用查询用户的接口：</p>
+<p>GET请求，请求结果为</p>
+<pre><code class="json">[
+    &#123;
+        &quot;id&quot;: &quot;3af2b9b5f1b011eb8315acde48001122&quot;,
+        &quot;name&quot;: &quot;小明&quot;
+    &#125;
+]
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20210731113814.png" alt="image-20210731113814319"></p>
+</li>
+<li><p>修改models.py里的User实体类，添加一个age字段</p>
+<pre><code class="python">class User(db.Model):
+    &quot;&quot;&quot;
+    用户表
+    &quot;&quot;&quot;
+    __tablename__ = &#39;user&#39;
+    id = db.Column(db.String(32), primary_key=True, default=uuid.uuid1().hex, comment=&#39;用户ID&#39;)
+    name = db.Column(db.String(32), nullable=False, comment=&#39;用户名称&#39;)
+    # 新增字段
+    age = db.Column(db.Integer, nullable=True, comment=&#39;年龄&#39;)
+
+    def to_dict(self):
+        return &#123;attr: getattr(self, attr) for attr in self.__mapper__.attrs.keys()&#125;
+</code></pre>
+</li>
+<li><p>完成上述修改之后重新启动应用</p>
+</li>
+<li><p>调用创建用户的接口</p>
+<p>POST请求，请求参数为</p>
+<pre><code class="json">&#123;
+    &quot;name&quot;:&quot;小明&quot;,
+    &quot;age&quot;:19
+&#125;
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20210731114305.png" alt="image-20210731114304998"></p>
+</li>
+<li><p>调用查询用户的接口</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20210731114334.png" alt="image-20210731114334431"></p>
+</li>
+</ol>
+<h1 id="3-总结"><a href="#3-总结" class="headerlink" title="3 总结"></a>3 总结</h1><p>目前当前项目只实现了表的新增字段，对于其它需求，如字段类型变更、字段删除等操作，可以参考这个思路实现，但是要注意对表中原有数据产生的影响。目前代码已经上传至Github，地址：<a target="_blank" rel="noopener" href="https://github.com/shirukai/flask-examples-auto-alter-tables.git%E3%80%82">https://github.com/shirukai/flask-examples-auto-alter-tables.git。</a></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E6%80%9D%E8%B7%AF"><span class="toc-number">1.</span> <span class="toc-text">1 思路</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E5%AE%9E%E7%8E%B0"><span class="toc-number">2.</span> <span class="toc-text">2 实现</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-%E6%8A%80%E6%9C%AF%E7%82%B9%E8%AE%B2%E8%A7%A3"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 技术点讲解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 代码实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-1-%E5%88%9B%E5%BB%BA%E9%A1%B9%E7%9B%AE"><span class="toc-number">2.2.1.</span> <span class="toc-text">2.2.1 创建项目</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-2-%E5%AE%89%E8%A3%85%E4%BE%9D%E8%B5%96"><span class="toc-number">2.2.2.</span> <span class="toc-text">2.2.2 安装依赖</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-3-%E7%BC%96%E5%86%99%E5%AE%9E%E4%BD%93%E7%B1%BB%E4%BB%A5%E5%8F%8A%E8%87%AA%E5%8A%A8%E6%9B%B4%E6%96%B0%E8%A1%A8%E7%9A%84%E6%96%B9%E6%B3%95"><span class="toc-number">2.2.3.</span> <span class="toc-text">2.2.3 编写实体类以及自动更新表的方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-4-%E7%BC%96%E5%86%99Flask%E5%BA%94%E7%94%A8"><span class="toc-number">2.2.4.</span> <span class="toc-text">2.2.4 编写Flask应用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-%E6%95%88%E6%9E%9C%E6%BC%94%E7%A4%BA"><span class="toc-number">2.3.</span> <span class="toc-text">2.3 效果演示</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E6%80%BB%E7%BB%93"><span class="toc-number">3.</span> <span class="toc-text">3 总结</span></a></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

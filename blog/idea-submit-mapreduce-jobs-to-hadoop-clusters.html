@@ -1,0 +1,944 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>IDEA向hadoop集群提交MapReduce作业 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="windows环境：IntelliJ IDEA 2017.2.3、JRE: 1.8.0_152-release-915-b11 、hadoop-2.7.4.tar.gz、hadoop-common-,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">IDEA向hadoop集群提交MapReduce作业</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/3.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/Hadoop"><b>「
+                    </b>HADOOP<b> 」</b></a>
+                
+                August 20, 2018
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/idea-submit-mapreduce-jobs-to-hadoop-clusters.html" title="IDEA向hadoop集群提交MapReduce作业" class="">IDEA向hadoop集群提交MapReduce作业</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    20k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    19 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Hadoop/" rel="tag">Hadoop</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <p>windows环境：IntelliJ IDEA 2017.2.3、JRE: 1.8.0_152-release-915-b11 、hadoop-2.7.4.tar.gz、hadoop-common-2.2.0-bin-master.rar</p>
+<h2 id="一、windows下配置hadoop环境"><a href="#一、windows下配置hadoop环境" class="headerlink" title="一、windows下配置hadoop环境"></a>一、windows下配置hadoop环境</h2><h3 id="1-解压hadoop-2-7-4-tar-gz到c盘-或者任意目录"><a href="#1-解压hadoop-2-7-4-tar-gz到c盘-或者任意目录" class="headerlink" title="1.解压hadoop-2.7.4.tar.gz到c盘(或者任意目录)"></a>1.解压hadoop-2.7.4.tar.gz到c盘(或者任意目录)</h3><p>解压hadoop-2.7.4.tar.gz到C盘，路径为：C:\hadoop-2.7.4</p>
+<p>解压 hadoop-common-2.2.0-bin-master.rar 并复制bin目录下所有的文件到 C:\hadoop-2.7.4\bin目录下</p>
+<p>hadoop-common-2.2.0-bin-master.rar的下载链接：<a target="_blank" rel="noopener" href="http://pan.baidu.com/s/1jHHPElg">http://pan.baidu.com/s/1jHHPElg</a> 密码：aufd</p>
+<h3 id="2-配置hadoop的环境变量"><a href="#2-配置hadoop的环境变量" class="headerlink" title="2.配置hadoop的环境变量"></a>2.配置hadoop的环境变量</h3><p><img src="https://shirukai.gitee.io/images/1510112190836ZTGONK2UJN_2~_~GXQFXBOB.png" alt="https://shirukai.gitee.io/images/1510112190836ZTGONK2UJN_2~_~GXQFXBOB.png"></p>
+<pre><code>变量名：HADOOP_HOME          路径：C:\hadoop-2.7.4
+变量名：HADOOP_BIN_PATH      路径：%HADOOP_HOME%\bin
+变量名：HADOOP_PREFIX        路径：C:\hadoop-2.7.4
+变量名：HADOOP_USER_NAME     路径：root  
+变量名：Path                 添加 %HADOOP_HOME%\bin
+                                 %HADOOP_HOME%\sbin
+</code></pre>
+<p>注意 HADOOP_USER_NAME 是集群中HADOOP用户的名字</p>
+<h3 id="3-配置内网映射"><a href="#3-配置内网映射" class="headerlink" title="3.配置内网映射"></a>3.配置内网映射</h3><p>修改C:\Windows\System32\drivers\etc\hosts文件，添加集群里/etc/hosts相同的主机映射</p>
+<pre><code>192.168.162.177 Master.Hadoop
+192.168.162.155 Slave1.Hadoop
+192.168.162.166 Slave2.Hadoop
+</code></pre>
+<h2 id="二、搭建项目"><a href="#二、搭建项目" class="headerlink" title="二、搭建项目"></a>二、搭建项目</h2><h3 id="1-IDEA创建Maven项目"><a href="#1-IDEA创建Maven项目" class="headerlink" title="1.IDEA创建Maven项目"></a>1.IDEA创建Maven项目</h3><p><img src="https://shirukai.gitee.io/images/1510112985864createmavenproject.gif" alt="https://shirukai.gitee.io/images/1510112985864createmavenproject.gif"></p>
+<h3 id="2-在pom-xml中加入依赖"><a href="#2-在pom-xml中加入依赖" class="headerlink" title="2.在pom.xml中加入依赖"></a>2.在pom.xml中加入依赖</h3><p>加入依赖后需要点击右侧工具栏的maven然后点击刷新。</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot;
+         xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+         xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;groupId&gt;testHadoop&lt;/groupId&gt;
+    &lt;artifactId&gt;testHadoop&lt;/artifactId&gt;
+    &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;junit&lt;/groupId&gt;
+            &lt;artifactId&gt;junit&lt;/artifactId&gt;
+            &lt;version&gt;4.12&lt;/version&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.apache.hadoop&lt;/groupId&gt;
+            &lt;artifactId&gt;hadoop-client&lt;/artifactId&gt;
+            &lt;version&gt;2.7.4&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.apache.hadoop&lt;/groupId&gt;
+            &lt;artifactId&gt;hadoop-common&lt;/artifactId&gt;
+            &lt;version&gt;2.7.4&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.apache.hadoop&lt;/groupId&gt;
+            &lt;artifactId&gt;hadoop-hdfs&lt;/artifactId&gt;
+            &lt;version&gt;2.7.4&lt;/version&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+
+&lt;/project&gt;
+</code></pre>
+<h3 id="3-配置项目"><a href="#3-配置项目" class="headerlink" title="3.配置项目"></a>3.配置项目</h3><p>将hadoop集群中的配置文件：core-site.xml、mapred-site.xml、yarn-site.xml、log4j.properties复制到resource目录下。</p>
+<h4 id="core-site-xml"><a href="#core-site-xml" class="headerlink" title="core-site.xml"></a>core-site.xml</h4><pre><code>&lt;configuration&gt;
+ &lt;property&gt;
+    &lt;name&gt;fs.default.name&lt;/name&gt;
+    &lt;value&gt;hdfs://Master.Hadoop:9000&lt;/value&gt;
+    &lt;description&gt;HDFS的URI，文件系统://namenode标识:端口号&lt;/description&gt;
+&lt;/property&gt;
+
+&lt;property&gt;
+    &lt;name&gt;hadoop.tmp.dir&lt;/name&gt;
+    &lt;value&gt;/usr/hadoop/tmp&lt;/value&gt;
+    &lt;description&gt;namenode上本地的hadoop临时文件夹&lt;/description&gt;
+&lt;/property&gt;
+&lt;property&gt;
+   &lt;name&gt;io.file.buffer.size&lt;/name&gt;
+   &lt;value&gt;131073&lt;/value&gt;
+&lt;/property&gt;
+&lt;/configuration&gt;
+</code></pre>
+<h4 id="mapred-site-xml"><a href="#mapred-site-xml" class="headerlink" title="mapred-site.xml"></a>mapred-site.xml</h4><pre><code>&lt;configuration&gt;
+&lt;property&gt;
+        &lt;name&gt;mapreduce.framework.name&lt;/name&gt;
+        &lt;value&gt;yarn&lt;/value&gt;
+          &lt;property&gt;
+                  &lt;name&gt;mapreduce.jobhistory.address&lt;/name&gt;
+                  &lt;value&gt;Master.Hadoop:10020&lt;/value&gt;
+          &lt;/property&gt;
+          &lt;property&gt;
+                &lt;name&gt;mapreduce.jobhistory.webapp.address&lt;/name&gt;
+                &lt;value&gt;Master.Hadoop:19888&lt;/value&gt;
+       &lt;/property&gt;
+&lt;/property&gt;
+&lt;/configuration&gt;
+</code></pre>
+<h4 id="yarn-site-xml"><a href="#yarn-site-xml" class="headerlink" title="yarn-site.xml"></a>yarn-site.xml</h4><pre><code>&lt;configuration&gt;
+
+&lt;!-- Site specific YARN configuration properties --&gt;
+&lt;property&gt;
+  &lt;name&gt;yarn.resourcemanager.address&lt;/name&gt;
+  &lt;value&gt;Master.Hadoop:18040&lt;/value&gt;
+&lt;/property&gt;
+&lt;property&gt;
+  &lt;name&gt;yarn.resourcemanager.scheduler.address&lt;/name&gt;
+  &lt;value&gt;Master.Hadoop:18030&lt;/value&gt;
+&lt;/property&gt;
+&lt;property&gt;
+  &lt;name&gt;yarn.resourcemanager.webapp.address&lt;/name&gt;
+  &lt;value&gt;Master.Hadoop:18088&lt;/value&gt;
+&lt;/property&gt;
+&lt;property&gt;
+  &lt;name&gt;yarn.resourcemanager.resource-tracker.address&lt;/name&gt;
+  &lt;value&gt;Master.Hadoop:18025&lt;/value&gt;
+&lt;/property&gt;
+&lt;property&gt;
+  &lt;name&gt;yarn.resourcemanager.admin.address&lt;/name&gt;
+  &lt;value&gt;Master.Hadoop:18141&lt;/value&gt;
+&lt;/property&gt;
+&lt;property&gt;
+  &lt;name&gt;yarn.nodemanager.aux-services&lt;/name&gt;
+  &lt;value&gt;mapreduce_shuffle&lt;/value&gt;
+&lt;/property&gt;
+&lt;property&gt;
+  &lt;name&gt;yarn.nodemanager.aux-services.mapreduce.shuffle.class&lt;/name&gt;
+  &lt;value&gt;org.apache.hadoop.mapred.ShuffleHandler&lt;/value&gt;
+&lt;/property&gt;
+</code></pre>
+<h4 id="log4j-properties"><a href="#log4j-properties" class="headerlink" title="log4j.properties"></a>log4j.properties</h4><pre><code>log4j.rootLogger=INFO, stdout
+log4j.appender.stdout=org.apache.log4j.ConsoleAppender
+log4j.appender.stdout.layout=org.apache.log4j.PatternLayout
+log4j.appender.stdout.layout.ConversionPattern=%d&#123;ABSOLUTE&#125; | %-5.5p | %-16.16t | %-32.32c&#123;1&#125; | %-32.32C %4L | %m%n
+</code></pre>
+<h3 id="4-补全目录"><a href="#4-补全目录" class="headerlink" title="4.补全目录"></a>4.补全目录</h3><p>在java下创建org.hadoop.mrs包用来存放Mapper、Reducer、MR类</p>
+<p>在java下创建org.hadoop.run包用来存放Main方法</p>
+<p><img src="https://shirukai.gitee.io/images/1510119968249directory2017118134506.png" alt="https://shirukai.gitee.io/images/1510119968249directory2017118134506.png"></p>
+<h3 id="5-创建静态方法"><a href="#5-创建静态方法" class="headerlink" title="5.创建静态方法"></a>5.创建静态方法</h3><p>在run目录下创建一个RunHadoop类，然后创建一个静态方法</p>
+<pre><code>package org.hadoop.run;
+
+
+public class RunHadoop &#123;
+    public static void main(String[] args)&#123;
+        //TODO 这里写运行mapperReduce的方法
+
+    &#125;
+&#125; 
+</code></pre>
+<h3 id="6-导出jar"><a href="#6-导出jar" class="headerlink" title="6.导出jar"></a>6.导出jar</h3><p>配置jar位置，并复制路径。如下图所示</p>
+<p><img src="https://shirukai.gitee.io/images/1510120931849exportjar.gif" alt="https://shirukai.gitee.io/images/1510120931849exportjar.gif"></p>
+<p>最终的生成的jar路径为：D:\Repository\testHadoop\out\artifacts\testHadoop_jar\testHadoop.jar</p>
+<h3 id="7-连接配置"><a href="#7-连接配置" class="headerlink" title="7.连接配置"></a>7.连接配置</h3><h5 id="连接类-用于配置与hadoop的连接"><a href="#连接类-用于配置与hadoop的连接" class="headerlink" title="连接类 (用于配置与hadoop的连接)"></a>连接类 (用于配置与hadoop的连接)</h5><p>在org.hadoop包下创建conf包用来编写连接类</p>
+<p>然后在org.hadoop.conf包下创建Conf.java类</p>
+<pre><code>package org.hadoop.conf;
+
+import org.apache.hadoop.conf.Configuration;
+
+/**
+ * 获得hadoop连接配置
+ * Created by shirukai on 2017/11/8.
+ */
+public class Conf &#123;
+    public static Configuration get ()&#123;
+        //hdfs的链接地址
+        String hdfsUrl = &quot;hdfs://Master.Hadoop:9000&quot;;
+        //hdfs的名字
+        String hdfsName = &quot;fs.defaultFS&quot;;
+        //jar包文位置(上一个步骤获得的jar路径)
+        String jarPath = &quot; D:\\Repository\\testHadoop\\out\\artifacts\\testHadoop_jar\\testHadoop.jar&quot;;
+
+        Configuration conf = new Configuration();
+        conf.set(hdfsName,hdfsUrl);
+        conf.set(&quot;mapreduce.app-submission.cross-platform&quot;, &quot;true&quot;);
+        conf.set(&quot;mapreduce.job.jar&quot;,jarPath);
+        return conf;
+    &#125;
+&#125;
+</code></pre>
+<h4 id="文件类-对HDFS文件进行操作"><a href="#文件类-对HDFS文件进行操作" class="headerlink" title="文件类(对HDFS文件进行操作)"></a>文件类(对HDFS文件进行操作)</h4><p>在org.hadoop包下创建files包用来编写文件类</p>
+<p>然后在org.hadoop.files包下创建Files.java类</p>
+<pre><code>package org.hadoop.files;
+
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.IOUtils;
+import org.apache.log4j.Logger;
+import org.hadoop.conf.Conf;
+
+import java.io.*;
+
+/**
+ * 对HDFS文件操作
+ * Created by shirukai on 2017/11/8.
+ */
+public class Files &#123;
+    private static Logger logger = Logger.getLogger(&quot;this.class&quot;);
+    public static  FileSystem getFiles() &#123;
+        //获得连接配置
+        Configuration conf = Conf.get();
+        FileSystem fs = null;
+        try &#123;
+            fs = FileSystem.get(conf);
+        &#125; catch (IOException e) &#123;
+            logger.error(&quot;配置连接失败&quot;+e.getMessage());
+        &#125;
+        return fs;
+    &#125;
+
+    /**
+     * 创建文件夹
+     */
+    public static void mkdirFolder(String folderPath) &#123;
+        try &#123;
+            FileSystem fs = getFiles();
+            fs.mkdirs(new Path(folderPath));
+            logger.info(&quot;创建文件夹成功：&quot;+folderPath);
+        &#125; catch (Exception e) &#123;
+            logger.error(&quot;创建失败&quot;+e.getMessage());
+        &#125;
+
+    &#125;
+
+
+    /**
+     * 上传文件到hdfs
+     *
+     * @param localFolderPath 本地目录
+     * @param fileName        文件名
+     * @param hdfsFolderPath  上传到hdfs的目录
+     */
+    public static void uploadFile(String localFolderPath, String fileName, String hdfsFolderPath) &#123;
+        FileSystem fs = getFiles();
+        try &#123;
+            InputStream in = new FileInputStream(localFolderPath + fileName);
+            OutputStream out = fs.create(new Path(hdfsFolderPath + fileName));
+            IOUtils.copyBytes(in, out, 4096, true);
+            logger.info(&quot;上传文件成功：&quot;+fileName);
+        &#125; catch (Exception e) &#123;
+            logger.error(&quot;上传文件失败&quot;+e.getMessage());
+        &#125;
+    &#125;
+
+
+    /**
+     * 从hdfs获取文件
+     *
+     * @param downloadPath     hdfs的路径
+     * @param downloadFileName hdfs文件名
+     * @param savePath         保存的本地路径
+     */
+    public static void getFileFromHadoop(String downloadPath, String downloadFileName, String savePath) &#123;
+        FileSystem fs = getFiles();
+        try &#123;
+            InputStream in = fs.open(new Path(downloadPath + downloadFileName));
+            OutputStream out = new FileOutputStream(savePath + downloadFileName);
+            IOUtils.copyBytes(in, out, 4096, true);
+        &#125;  catch (Exception e) &#123;
+            logger.error(&quot;获取文件失败&quot;+e.getMessage());
+        &#125;
+    &#125;
+
+    /**
+     * 删除文件
+     * delete(path,boolean)
+     * boolean如果为true，将进行递归删除，子目录及文件都会删除
+     * false 只删除当前
+
+     */
+    public static void deleteFile(String deleteFilePath) &#123;
+        FileSystem fs = getFiles();
+        //要删除的文件路径
+        try &#123;
+            Boolean deleteResult = fs.delete(new Path(deleteFilePath), true);
+
+        &#125; catch (Exception e) &#123;
+            logger.error(&quot;删除文件失败&quot;+e.getMessage());
+        &#125;
+    &#125;
+
+    /**
+     * 日志打印文件内容
+     * @param filePath 文件路径
+     */
+    public static void readOutFile(String filePath) &#123;
+        try &#123;
+            InputStream inputStream = getFiles().open(new Path(filePath));
+            BufferedReader bf = new BufferedReader(new InputStreamReader(inputStream, &quot;GB2312&quot;));//防止中文乱码
+            String line = null;
+            while ((line = bf.readLine()) != null) &#123;
+                logger.info(line);
+            &#125;
+
+        &#125; catch (Exception e) &#123;
+            logger.error(e.getMessage(), e);
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<h4 id="8-测试"><a href="#8-测试" class="headerlink" title="8.测试"></a>8.测试</h4><p>在RunHadoop的main方法里添加方法：</p>
+<pre><code>public class RunHadoop &#123;
+    public static void main(String[] args)&#123;
+        //创建目录 
+        String folderName = &quot;/test&quot;;
+        Files.mkdirFolder(folderName);
+    &#125;
+&#125;
+</code></pre>
+<p>运行main方法，然后<a target="_blank" rel="noopener" href="http://192.168.162.177:50070/explorer.html#/%E6%9F%A5%E7%9C%8B%E6%98%AF%E5%90%A6%E5%88%9B%E5%BB%BA%E7%9B%AE%E5%BD%95">http://192.168.162.177:50070/explorer.html#/查看是否创建目录</a></p>
+<p>至此一个远程执行Hadoop作业的程序已经完成，下面将一个具体的MapReduce例子来运行这个项目</p>
+<h2 id="三、测试运行wordCount"><a href="#三、测试运行wordCount" class="headerlink" title="三、测试运行wordCount"></a>三、测试运行wordCount</h2><p>接下来我们做一个MapReduce基础案例wordCount。利用MapReduce来统计words.txt文件里，每个单词出现的个数。</p>
+<h3 id="1-准备"><a href="#1-准备" class="headerlink" title="1.准备"></a>1.准备</h3><p>在org.hadoop.mrs下创建一个wordcount的目录</p>
+<p>在D:\Hadoop\upload创建一个名字为words.txt文本文档，保存格式为utf-8内容如下</p>
+<pre><code>this is a tests
+this is a tests
+this is a tests
+this is a tests
+this is a tests
+this is a tests
+this is a tests
+this is a tests
+this is a tests
+</code></pre>
+<h3 id="2-编写mapper类"><a href="#2-编写mapper类" class="headerlink" title="2.编写mapper类"></a>2.编写mapper类</h3><p>在org.hadoop.mrs.wordcount目录下出创建WordCountMapper类</p>
+<pre><code>package org.hadoop.mrs.wordcount;
+
+import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Mapper;
+
+import java.io.IOException;
+
+/**
+ * LongWritable 行号 类型
+ * Text 输入的value 类型
+ * Text 输出的key 类型
+ * IntWritable 输出的vale类型
+ * Created by shirukai on 2017/11/8.
+ */
+public class WordCountMapper extends Mapper&lt;LongWritable,Text,Text,IntWritable&gt; &#123;
+    /**
+     *
+     * @param key 行号
+     * @param value 第一行的内容 如  this is a tests
+     * @param context 输出
+     * @throws IOException 异常
+     * @throws InterruptedException 异常
+     */
+    @Override
+    protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException &#123;
+        String line = value.toString();
+        //以空格分割获取字符串数组
+        String[] words = line.split(&quot; &quot;);
+        for (String word : words) &#123;
+            context.write(new Text(word),new IntWritable(1));
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<h3 id="3-编写Reducer类"><a href="#3-编写Reducer类" class="headerlink" title="3.编写Reducer类"></a>3.编写Reducer类</h3><p>在org.hadoop.mrs.wordcount目录下创建WordCountReucer类</p>
+<pre><code>package org.hadoop.mrs.wordcount;
+
+import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Reducer;
+
+import java.io.IOException;
+
+/**
+ * Text 输入的key的类型
+ * IntWritable 输入的value的类型
+ * Text 输出的key类型
+ * IntWritable 输出的value类型
+ * Created by shirukai on 2017/11/8.
+ */
+public class WordCountReducer extends Reducer&lt;Text, IntWritable, Text, IntWritable&gt; &#123;
+
+    /**
+     *
+     * @param key 输入map的key
+     * @param values 输入map的value
+     * @param context 输出
+     * @throws IOException 异常
+     * @throws InterruptedException 异常
+     */
+    @Override
+    protected void reduce(Text key, Iterable&lt;IntWritable&gt; values, Context context) throws IOException, InterruptedException &#123;
+        int count = 0;
+        for (IntWritable value : values) &#123;
+            count += value.get();
+        &#125;
+        context.write(key, new IntWritable((count)));
+    &#125;
+&#125;
+</code></pre>
+<h3 id="4-编写-WordCountMR类"><a href="#4-编写-WordCountMR类" class="headerlink" title="4.编写 WordCountMR类"></a>4.编写 WordCountMR类</h3><p>在org.hadoop.mrs.wordcount目录下出创建WordCountMR类</p>
+<pre><code>package org.hadoop.mrs.wordcount;
+
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Job;
+import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.hadoop.conf.Conf;
+import org.hadoop.files.Files;
+
+
+/**
+ *
+ * Created by shirukai on 2017/11/8.
+ */
+public class WordCountMR &#123;
+    //输入文件路径
+    private static String inPath = &quot;/word_input/words.txt&quot;;
+    //输出文件目录
+    private static String outPath = &quot;/word_output/words_result.txt&quot;;
+    public  int MR() throws Exception&#123;
+            //获取连接配置
+            Configuration conf = Conf.get();
+            //创建一个job实例
+            Job job = Job.getInstance(conf,&quot;wordCount&quot;);
+
+            //设置job的主类
+            job.setJarByClass(WordCountMR.class);
+            //设置job的mapper类和reducer类
+            job.setMapperClass(WordCountMapper.class);
+            job.setReducerClass(WordCountReducer.class);
+
+            //设置Mapper的输出类型
+            job.setMapOutputKeyClass(Text.class);
+            job.setMapOutputValueClass(IntWritable.class);
+            //设置Reduce的输出类型
+            job.setOutputKeyClass(Text.class);
+            job.setOutputValueClass(IntWritable.class);
+            //设置输入和输出路径
+            FileSystem fs = Files.getFiles();
+            Path inputPath = new Path(inPath);
+            FileInputFormat.addInputPath(job,inputPath);
+            Path outputPath = new Path(outPath);
+            fs.delete(outputPath,true);
+
+            FileOutputFormat.setOutputPath(job,outputPath);
+            return job.waitForCompletion(true)?1:-1;
+
+    &#125;
+&#125;
+</code></pre>
+<h3 id="5-编写WordCountRun方法"><a href="#5-编写WordCountRun方法" class="headerlink" title="5.编写WordCountRun方法"></a>5.编写WordCountRun方法</h3><p>org.hadoop.wordcount下创建WordCountRun类</p>
+<pre><code>package org.hadoop.mrs.wordcount;
+
+import org.apache.log4j.Logger;
+import org.hadoop.files.Files;
+
+/**
+ * 执行WordCount
+ * Created by shirukai on 2017/11/8.
+ */
+public class WordCountRun &#123;
+    private static Logger logger = Logger.getLogger(&quot;this.class&quot;);
+
+    public static void Run() &#123;
+        //创建word_input目录
+        String folderName = &quot;/word_input&quot;;
+        Files.mkdirFolder(folderName);
+        //创建word_input目录
+        folderName = &quot;/word_output&quot;;
+        Files.mkdirFolder(folderName);
+        //上传文件
+        String localPath = &quot;D:\\Hadoop\\upload\\&quot;;
+        String fileName = &quot;words.txt&quot;;
+        String hdfsPath = &quot;/word_input/&quot;;
+        Files.uploadFile(localPath, fileName, hdfsPath);
+        //执行wordcount
+
+        try &#123;
+            new WordCountMR().MR();
+            //成功后下载文件到本地
+            String downPath = &quot;/word_output/&quot;;
+            String downName = &quot;part-r-00000&quot;;
+            String savePath = &quot;D:\\Hadoop\\download\\&quot;;
+            Files.getFileFromHadoop(downPath, downName, savePath);
+        &#125; catch (Exception e) &#123;
+            logger.error(e.getMessage());
+        &#125;
+
+    &#125;
+&#125;
+</code></pre>
+<h3 id="5-编写主方法"><a href="#5-编写主方法" class="headerlink" title="5.编写主方法"></a>5.编写主方法</h3><p>org.hadoop.run先编写RunHadoop的主方法</p>
+<pre><code>package org.hadoop.run;
+
+import org.hadoop.files.Files;
+import org.hadoop.mrs.wordcount.WordCountMR;
+
+/**
+ *
+ * Created by shirukai on 2017/11/8.
+ */
+public class RunHadoop &#123;
+    public static void main(String[] args) &#123;
+           WordCountRun.Run();
+    &#125;
+&#125;
+</code></pre>
+<h3 id="6-运行主方法"><a href="#6-运行主方法" class="headerlink" title="6.运行主方法"></a>6.运行主方法</h3><p>运行结果：</p>
+<pre><code>a    9
+is    9
+tests    9
+this    9
+</code></pre>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81windows%E4%B8%8B%E9%85%8D%E7%BD%AEhadoop%E7%8E%AF%E5%A2%83"><span class="toc-number">1.</span> <span class="toc-text">一、windows下配置hadoop环境</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E8%A7%A3%E5%8E%8Bhadoop-2-7-4-tar-gz%E5%88%B0c%E7%9B%98-%E6%88%96%E8%80%85%E4%BB%BB%E6%84%8F%E7%9B%AE%E5%BD%95"><span class="toc-number">1.1.</span> <span class="toc-text">1.解压hadoop-2.7.4.tar.gz到c盘(或者任意目录)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E9%85%8D%E7%BD%AEhadoop%E7%9A%84%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="toc-number">1.2.</span> <span class="toc-text">2.配置hadoop的环境变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E9%85%8D%E7%BD%AE%E5%86%85%E7%BD%91%E6%98%A0%E5%B0%84"><span class="toc-number">1.3.</span> <span class="toc-text">3.配置内网映射</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E6%90%AD%E5%BB%BA%E9%A1%B9%E7%9B%AE"><span class="toc-number">2.</span> <span class="toc-text">二、搭建项目</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-IDEA%E5%88%9B%E5%BB%BAMaven%E9%A1%B9%E7%9B%AE"><span class="toc-number">2.1.</span> <span class="toc-text">1.IDEA创建Maven项目</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%9C%A8pom-xml%E4%B8%AD%E5%8A%A0%E5%85%A5%E4%BE%9D%E8%B5%96"><span class="toc-number">2.2.</span> <span class="toc-text">2.在pom.xml中加入依赖</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E9%85%8D%E7%BD%AE%E9%A1%B9%E7%9B%AE"><span class="toc-number">2.3.</span> <span class="toc-text">3.配置项目</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E8%A1%A5%E5%85%A8%E7%9B%AE%E5%BD%95"><span class="toc-number">2.4.</span> <span class="toc-text">4.补全目录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E5%88%9B%E5%BB%BA%E9%9D%99%E6%80%81%E6%96%B9%E6%B3%95"><span class="toc-number">2.5.</span> <span class="toc-text">5.创建静态方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E5%AF%BC%E5%87%BAjar"><span class="toc-number">2.6.</span> <span class="toc-text">6.导出jar</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-%E8%BF%9E%E6%8E%A5%E9%85%8D%E7%BD%AE"><span class="toc-number">2.7.</span> <span class="toc-text">7.连接配置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E6%B5%8B%E8%AF%95%E8%BF%90%E8%A1%8CwordCount"><span class="toc-number">3.</span> <span class="toc-text">三、测试运行wordCount</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%87%86%E5%A4%87"><span class="toc-number">3.1.</span> <span class="toc-text">1.准备</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E7%BC%96%E5%86%99mapper%E7%B1%BB"><span class="toc-number">3.2.</span> <span class="toc-text">2.编写mapper类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E7%BC%96%E5%86%99Reducer%E7%B1%BB"><span class="toc-number">3.3.</span> <span class="toc-text">3.编写Reducer类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E7%BC%96%E5%86%99-WordCountMR%E7%B1%BB"><span class="toc-number">3.4.</span> <span class="toc-text">4.编写 WordCountMR类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E7%BC%96%E5%86%99WordCountRun%E6%96%B9%E6%B3%95"><span class="toc-number">3.5.</span> <span class="toc-text">5.编写WordCountRun方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E7%BC%96%E5%86%99%E4%B8%BB%E6%96%B9%E6%B3%95"><span class="toc-number">3.6.</span> <span class="toc-text">5.编写主方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E8%BF%90%E8%A1%8C%E4%B8%BB%E6%96%B9%E6%B3%95"><span class="toc-number">3.7.</span> <span class="toc-text">6.运行主方法</span></a></li></ol></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

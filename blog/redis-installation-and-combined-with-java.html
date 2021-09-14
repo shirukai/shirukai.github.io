@@ -1,0 +1,810 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Redis的安装以及与java结合使用 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="Redis简介：Redis本质上是一个Key-Value类型的内存数据库，很像memcached，整个数据库统统加载在内存当中进行操作，定期通过异步操作把数据库数据flush到硬盘上进行保存。因为是,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">Redis的安装以及与java结合使用</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/5.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/Spring"><b>「
+                    </b>SPRING<b> 」</b></a>
+                
+                August 19, 2018
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/redis-installation-and-combined-with-java.html" title="Redis的安装以及与java结合使用" class="">Redis的安装以及与java结合使用</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    19k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    17 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Spring/" rel="tag">Spring</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <h2 id="Redis简介："><a href="#Redis简介：" class="headerlink" title="Redis简介："></a>Redis简介：</h2><p>Redis本质上是一个Key-Value类型的内存数据库，很像memcached，整个数据库统统加载在内存当中进行操作，定期通过异步操作把数据库数据flush到硬盘上进行保存。因为是纯内存操作，Redis的性能非常出色，Redis最大的魅力是支持保存List链表和Set集合的数据结构，而且还支持对List进行各种操作，例如从List两端push和pop数据，取 List区间，排序等等，对Set支持各种集合的并集交集操作，此外单个value的最大限制是1GB，不像memcached只能保存1MB的数据，Redis可以用来实现很多有用的功能，比方说用他的List来做FIFO双向链表，实现一个轻量级的高性能消息队列服务，用他的Set可以做高性能的tag系统等等。另外Redis也可以对存入的Key-Value设置expire时间，因此也可以被当作一个功能加强版的memcached来用。 </p>
+<h2 id="Redis在windos下安装："><a href="#Redis在windos下安装：" class="headerlink" title="Redis在windos下安装："></a>Redis在windos下安装：</h2><h3 id="1-下载-（官网不支持windos下载，所以这里提供百度云）"><a href="#1-下载-（官网不支持windos下载，所以这里提供百度云）" class="headerlink" title="1.下载 （官网不支持windos下载，所以这里提供百度云）"></a>1.下载 （官网不支持windos下载，所以这里提供百度云）</h3><p>百度云分享地址：链接：<a target="_blank" rel="noopener" href="http://pan.baidu.com/s/1dFq4ETb">http://pan.baidu.com/s/1dFq4ETb</a> 密码：8y5g</p>
+<p>下载后解压到指定目录，我解压到了：C:\Program Files\Redis-x64-3.2.100</p>
+<h3 id="2-配置环境变量"><a href="#2-配置环境变量" class="headerlink" title="2.配置环境变量"></a>2.配置环境变量</h3><p>将C:\Program Files\Redis-x64-3.2.100添加到环境变量里即可。</p>
+<h3 id="3-配置文件"><a href="#3-配置文件" class="headerlink" title="3.配置文件"></a>3.配置文件</h3><p>配置参考：<a target="_blank" rel="noopener" href="http://www.runoob.com/redis/redis-conf.html">http://www.runoob.com/redis/redis-conf.html</a></p>
+<p>配置参考博客：<a target="_blank" rel="noopener" href="http://cardyn.iteye.com/blog/794194">http://cardyn.iteye.com/blog/794194</a></p>
+<h3 id="4-运行"><a href="#4-运行" class="headerlink" title="4.运行"></a>4.运行</h3><p>在cmd命令行运行 redis-server.exe即可运行服务</p>
+<h2 id="Redis在linux下安装："><a href="#Redis在linux下安装：" class="headerlink" title="Redis在linux下安装："></a>Redis在linux下安装：</h2><h3 id="1-下载-官网直接下载即可"><a href="#1-下载-官网直接下载即可" class="headerlink" title="1.下载(官网直接下载即可)"></a>1.下载(官网直接下载即可)</h3><p>官网地址：<a target="_blank" rel="noopener" href="https://redis.io/download">https://redis.io/download</a></p>
+<p>下载后利用shell文件管理工具将下载后的文件复制到linux里</p>
+<h3 id="2-解压："><a href="#2-解压：" class="headerlink" title="2.解压："></a>2.解压：</h3><pre><code>tar -xzvf redis-4.0.2.tar.gz 
+</code></pre>
+<h3 id="3-编译安装"><a href="#3-编译安装" class="headerlink" title="3.编译安装"></a>3.编译安装</h3><p>进入解压后的目录</p>
+<pre><code>cd redis-4.0.2
+</code></pre>
+<p>编译安装</p>
+<pre><code>make
+</code></pre>
+<p>make完后 redis-4.0.2目录下会出现编译后的redis服务程序redis-server,还有用于测试的客户端程序redis-cli,两个程序位于安装目录 src 目录下。</p>
+<p>配置环境变量</p>
+<pre><code>vi  /etc/profile
+</code></pre>
+<p>添加如下内容：</p>
+<pre><code>export PATH=$PATH:/root/redis-4.0.2/src
+</code></pre>
+<p>修改配置文件 redis.conf</p>
+<p>修改绑定ip以及将protected-mode yes设置为no才可以远程访问，启动的时候带着配置文件一起启动即可。</p>
+<p>如：</p>
+<p>./redis-server ../ redis.conf</p>
+<h3 id="4-运行-1"><a href="#4-运行-1" class="headerlink" title="4.运行"></a>4.运行</h3><p>输入redis-server.exe即可运行</p>
+<h2 id="mave项目中配置相关依赖"><a href="#mave项目中配置相关依赖" class="headerlink" title="mave项目中配置相关依赖"></a>mave项目中配置相关依赖</h2><p>在pom.xml文件中添加相关依赖</p>
+<pre><code>&lt;!--redis客户端 jedis--&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;redis.clients&lt;/groupId&gt;
+    &lt;artifactId&gt;jedis&lt;/artifactId&gt;
+    &lt;version&gt;2.7.3&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;!--protostuff序列化依赖--&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;com.dyuproject.protostuff&lt;/groupId&gt;
+    &lt;artifactId&gt;protostuff-core&lt;/artifactId&gt;
+    &lt;version&gt;1.1.2&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;com.dyuproject.protostuff&lt;/groupId&gt;
+    &lt;artifactId&gt;protostuff-runtime&lt;/artifactId&gt;
+    &lt;version&gt;1.1.2&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;commons-collections&lt;/groupId&gt;
+    &lt;artifactId&gt;commons-collections&lt;/artifactId&gt;
+    &lt;version&gt;3.2.1&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+<h2 id="Redis与Springmvc项目整合"><a href="#Redis与Springmvc项目整合" class="headerlink" title="Redis与Springmvc项目整合"></a>Redis与Springmvc项目整合</h2><h3 id="利用spring-data-redisr进行整合"><a href="#利用spring-data-redisr进行整合" class="headerlink" title="利用spring-data-redisr进行整合"></a>利用spring-data-redisr进行整合</h3><h4 id="配置依赖："><a href="#配置依赖：" class="headerlink" title="配置依赖："></a>配置依赖：</h4><pre><code>&lt;dependency&gt;
+  &lt;groupId&gt;org.springframework.data&lt;/groupId&gt;
+  &lt;artifactId&gt;spring-data-commons&lt;/artifactId&gt;
+  &lt;version&gt;1.8.4.RELEASE&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;!--spring-data-redisr--&gt;
+&lt;dependency&gt;
+  &lt;groupId&gt;org.springframework.data&lt;/groupId&gt;
+  &lt;artifactId&gt;spring-data-redis&lt;/artifactId&gt;
+  &lt;version&gt;1.8.4.RELEASE&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+&lt;!--redis客户端 jedis--&gt;
+  &lt;groupId&gt;redis.clients&lt;/groupId&gt;
+  &lt;artifactId&gt;jedis&lt;/artifactId&gt;
+  &lt;version&gt;2.9.0&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+<p>在resources/spring下新建spring-redis.xml</p>
+<pre><code>&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+       xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+       xmlns:context=&quot;http://www.springframework.org/schema/context&quot; xmlns:p=&quot;http://www.springframework.org/schema/p&quot;
+       xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+                    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd&quot;&gt;
+    &lt;!--redis配置--&gt;
+    &lt;context:property-placeholder location=&quot;classpath:redis.properties&quot; ignore-unresolvable=&quot;true&quot;/&gt;
+    &lt;!-- 1:pool的配置 --&gt;
+    &lt;bean id=&quot;poolConfig&quot; class=&quot;redis.clients.jedis.JedisPoolConfig&quot;&gt;
+        &lt;property name=&quot;maxIdle&quot; value=&quot; $&#123;redis.maxIdle&#125;&quot;/&gt;
+        &lt;property name=&quot;maxTotal&quot; value=&quot;$&#123;redis.maxTotal&#125;&quot;/&gt;
+        &lt;property name=&quot;maxWaitMillis&quot; value=&quot;$&#123;redis.maxWaitMillis&#125;&quot;/&gt;
+        &lt;property name=&quot;testOnBorrow&quot; value=&quot;$&#123;redis.testOnBorrow&#125;&quot;/&gt;
+    &lt;/bean&gt;
+    &lt;!--2:创建连接工厂--&gt;
+    &lt;bean id=&quot;jedisConnectionFactory&quot; class=&quot;org.springframework.data.redis.connection.jedis.JedisConnectionFactory&quot;
+          p:host-name=&quot;$&#123;redis.host&#125;&quot;
+          p:port=&quot;$&#123;redis.port&#125;&quot;
+          p:password=&quot;$&#123;redis.pass&#125;&quot;
+          p:pool-config-ref=&quot;poolConfig&quot;/&gt;
+    &lt;!--3:连接实例--&gt;
+    &lt;bean id=&quot;redisTemplate&quot; class=&quot;org.springframework.data.redis.core.RedisTemplate&quot;
+          p:connection-factory-ref=&quot;jedisConnectionFactory&quot;&gt;
+        &lt;!-- 序列化方式 建议key/hashKey采用StringRedisSerializer。 --&gt;
+        &lt;property name=&quot;keySerializer&quot;&gt;
+            &lt;bean class=&quot;org.springframework.data.redis.serializer.StringRedisSerializer&quot;/&gt;
+        &lt;/property&gt;
+        &lt;property name=&quot;hashKeySerializer&quot;&gt;
+            &lt;bean class=&quot;org.springframework.data.redis.serializer.StringRedisSerializer&quot;/&gt;
+        &lt;/property&gt;
+        &lt;property name=&quot;valueSerializer&quot;&gt;
+            &lt;bean class=&quot;org.springframework.data.redis.serializer.JdkSerializationRedisSerializer&quot;/&gt;
+        &lt;/property&gt;
+        &lt;property name=&quot;hashValueSerializer&quot;&gt;
+            &lt;bean class=&quot;org.springframework.data.redis.serializer.JdkSerializationRedisSerializer&quot;/&gt;
+        &lt;/property&gt;
+    &lt;/bean&gt;
+    &lt;!-- 对string操作的封装 --&gt;
+    &lt;bean id=&quot;stringRedisTemplate&quot; class=&quot;org.springframework.data.redis.core.StringRedisTemplate&quot;
+          p:connection-factory-ref=&quot;jedisConnectionFactory&quot;/&gt;
+    &lt;bean id=&quot;redisDao&quot; class=&quot;com.mavenssmlr.dao.redis.RedisDao&quot;/&gt;
+&lt;/beans&gt;
+</code></pre>
+<p>在resources下新建redis.properties配置文件</p>
+<pre><code>redis.host=127.0.0.1
+redis.port=6379
+redis.pass=
+
+redis.maxIdle=300
+redis.maxTotal=600
+redis.maxWaitMillis=1000
+redis.testOnBorrow=true
+</code></pre>
+<p>注意：    &lt;context:property-placeholder location=”classpath:redis.properties” ignore-unresolvable=”true”/&gt;当配置文件中有多个这样的配置时，应该在每一个后面都加上 ignore-unresolvable=”true”否则会报错。</p>
+<p>在dao层新新建redis包，然后新建RedisDao类</p>
+<pre><code>package com.mavenssmlr.dao.redis;
+
+import com.mavenssmlr.entity.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
+
+public class RedisDao&#123;
+    @Autowired
+    private RedisTemplate&lt;String,User&gt; redisTemplate;
+    public void save(User user)&#123;
+        ValueOperations&lt;String,User&gt; valueOperations = redisTemplate.opsForValue();
+        valueOperations.set(String.valueOf(user.getId()),user);
+    &#125;
+    public User get(String id)&#123;
+        ValueOperations&lt;String,User&gt; valueOperations = redisTemplate.opsForValue();
+        return valueOperations.get(id);
+    &#125;
+&#125;
+</code></pre>
+<p>测试：</p>
+<pre><code>package com.mavenssmlr.dao;
+
+import com.mavenssmlr.dao.redis.RedisDao;
+import com.mavenssmlr.entity.User;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+//告诉junit spring配置文件
+@ContextConfiguration(&#123;&quot;classpath:spring/spring-dao.xml&quot;,&quot;classpath:spring/spring-redis.xml&quot;&#125;)
+public class RedisDaoTest &#123;
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
+    @Autowired
+    private UserDao userDao;
+    @Autowired
+    private RedisDao redisDao;
+    @Test
+    public void save() throws Exception &#123;
+        User user = userDao.queryById(2);
+        redisDao.save(user);
+    &#125;
+    @Test
+    public void get() throws Exception &#123;
+        User user = redisDao.get(&quot;2&quot;);
+        logger.info(&quot;_______________________________user=&#123;&#125;&quot;,user);
+    &#125;
+
+&#125;
+</code></pre>
+<p>RedisTemplate主要支持String，List，Hash，Set，ZSet这几种方式的参数，其对应的方法分别是opsForValue()、opsForList()、opsForHash()、opsForSet()、opsForZSet()。</p>
+<h3 id="opsForValue-方法的使用："><a href="#opsForValue-方法的使用：" class="headerlink" title="opsForValue()方法的使用："></a>opsForValue()方法的使用：</h3><pre><code>    ValueOperations&lt;String,String&gt; valueOperations = redisTemplate.opsForValue();
+    //1.set(key,value)
+    //新增一个字符串类型的值
+    valueOperations.set(&quot;string&quot;,&quot;这是一个字符串&quot;);
+    //2.get(key)
+    //根据key获取值
+    String string = valueOperations.get(&quot;string&quot;);
+    logger.info(&quot;string_____________________________=&#123;&#125;&quot;,string);
+    //3.append(key,value)
+    //在原有的值基础上新增字符串到末尾
+    valueOperations.append(&quot;string&quot;,&quot;哈哈我是新增的字符串&quot;);
+    logger.info(&quot;__________________stringAppend=&#123;&#125;&quot;,valueOperations.get(&quot;string&quot;));
+    //4.get(key,long start,long end)
+    //截取key键对应值得字符串，从开始下标位置开始到结束下标的位置(包含结束下标)的字符串。
+    String cutString = valueOperations.get(&quot;string&quot;,0,10);
+    logger.info(&quot;__________________cutString=&#123;&#125;&quot;,cutString);
+    //5.getAndSet(key,value)
+    //获取原来的值然后重新复制
+    String oldValueAndNewSet = valueOperations.getAndSet(&quot;string&quot;,&quot;哼，你被我重新赋值啦！&quot;);
+    logger.info(&quot;__________________oldValueAndNewSet=&#123;&#125;&quot;,oldValueAndNewSet);
+    logger.info(&quot;__________________newValue=&#123;&#125;&quot;,valueOperations.get(&quot;string&quot;));
+    //6.size(key)
+    //获取长度
+    logger.info(&quot;__________________length=&#123;&#125;&quot;,valueOperations.size(&quot;string&quot;));
+    //7.setIfAbsent(key,value)
+    //如果键不存在则新增，存在则不改变已经有的值
+    //返回false说明已经存在
+    logger.info(&quot;___________________setIfAbsentResult=&#123;&#125;&quot;,valueOperations.setIfAbsent(&quot;string&quot;,&quot;1111&quot;));
+    //8.set(K key, V value, long timeout, TimeUnit unit)
+    //设置变量过期时间
+    valueOperations.set(&quot;stringTime&quot;,&quot;timeOut&quot;,5, TimeUnit.SECONDS);
+    logger.info(&quot;_________________getTimeValue__获取没有过期的值=&#123;&#125;&quot;,valueOperations.get(&quot;stringTime&quot;));
+    Thread.sleep(5*1000);
+    logger.info(&quot;_________________getTimeOutValue__获取过期后的值=&#123;&#125;&quot;,valueOperations.get(&quot;stringTime&quot;));
+    //9.multiSet(Map&lt;? extends K,? extends V&gt; map)
+    //设置map集合到redis
+    Map&lt;String,String&gt; valueMap = new HashMap&lt;String, String&gt;();
+    valueMap.put(&quot;mapKey1&quot;,&quot;mapValue1&quot;);
+    valueMap.put(&quot;mapKey2&quot;,&quot;mapKey2&quot;);
+    valueMap.put(&quot;mapKey3&quot;,&quot;mapKey3&quot;);
+    valueOperations.multiSet(valueMap);
+    //10.multiGet(Collection&lt;K&gt; keys)
+    List&lt;String&gt; list = new ArrayList&lt;String&gt;();
+    for (String key: valueMap.keySet()
+         ) &#123;
+        list.add(key);
+    &#125;
+    List&lt;String&gt; valueList = valueOperations.multiGet(list);
+    logger.info(&quot;_____________valueList=&#123;&#125;&quot;,valueList);
+&#125;
+</code></pre>
+<p>关于 redisTemplate集合的使用 参考：</p>
+<p>简介：<a target="_blank" rel="noopener" href="http://www.bijishequ.com/detail/442744?p=">http://www.bijishequ.com/detail/442744?p=</a></p>
+<p>opsForValue()：<a target="_blank" rel="noopener" href="http://www.bijishequ.com/detail/443107?p=">http://www.bijishequ.com/detail/443107?p=</a></p>
+<p>opsForList(): <a target="_blank" rel="noopener" href="http://www.bijishequ.com/detail/443086?p=">http://www.bijishequ.com/detail/443086?p=</a></p>
+<p>opsForHash(): <a target="_blank" rel="noopener" href="http://www.bijishequ.com/detail/443483?p=">http://www.bijishequ.com/detail/443483?p=</a></p>
+<p>opsForSet(): <a target="_blank" rel="noopener" href="http://www.bijishequ.com/detail/443818?p=">http://www.bijishequ.com/detail/443818?p=</a></p>
+<p>opsForZSet(): <a target="_blank" rel="noopener" href="http://www.bijishequ.com/detail/444106?p=">http://www.bijishequ.com/detail/444106?p=</a></p>
+<h3 id="利用jedis原生客户端进行整合"><a href="#利用jedis原生客户端进行整合" class="headerlink" title="利用jedis原生客户端进行整合"></a>利用jedis原生客户端进行整合</h3><p>依赖：</p>
+<pre><code>&lt;dependency&gt;
+  &lt;groupId&gt;redis.clients&lt;/groupId&gt;
+  &lt;artifactId&gt;jedis&lt;/artifactId&gt;
+  &lt;version&gt;2.9.0&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+<p>在spring-redis.xml文件中配置：</p>
+<pre><code>    &lt;!--原生RedisDao--&gt;
+    &lt;bean id=&quot;redisDao1&quot; class=&quot;com.mavenssmlr.dao.cache.RedisDao&quot;&gt;
+        &lt;constructor-arg index=&quot;0&quot; value=&quot;localhost&quot;/&gt;
+        &lt;constructor-arg index=&quot;1&quot; value=&quot;6379&quot;/&gt;
+    &lt;/bean&gt;
+</code></pre>
+<p>在 com.mavenssmlr.entirty.cache下创建RedisDao类</p>
+<pre><code>package com.mavenssmlr.dao.cache;
+
+import com.dyuproject.protostuff.LinkedBuffer;
+import com.dyuproject.protostuff.ProtostuffIOUtil;
+import com.dyuproject.protostuff.runtime.RuntimeSchema;
+import com.mavenssmlr.entity.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
+
+
+public class RedisDao &#123;
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private JedisPool jedisPool;
+
+    public RedisDao(String ip, int port) &#123;
+        jedisPool = new JedisPool(ip, port);
+    &#125;
+
+    private RuntimeSchema&lt;User&gt; schema = RuntimeSchema.createFrom(User.class);
+    public User getUser(long userId) &#123;
+        //redis操作逻辑
+        try &#123;
+            Jedis jedis = jedisPool.getResource();
+            try &#123;
+                String key = &quot;user&quot; + userId;
+                //并没有实现内部序列化操作
+                //get -&gt; byte[] --&gt;反序列化 -&gt; Object(User)
+                //采用自定义序列化
+                //protostuff:pojo.(标准的具有get、set方法的对象)
+                byte[] bytes = jedis.get(key.getBytes());
+                //缓存获取到
+                if (bytes != null) &#123;
+                    //空对象
+                    User user = schema.newMessage();
+                    ProtostuffIOUtil.mergeFrom(bytes, user, schema);
+                    //user 被反序列化
+                    return user;
+                &#125;
+            &#125; finally &#123;
+                jedis.close();
+            &#125;
+
+        &#125; catch (Exception e) &#123;
+            logger.error(e.getMessage(), e);
+        &#125;
+        return null;
+    &#125;
+
+    public String setUser(User seckill) &#123;
+        //set Object（seckill）-&gt;序列化-&gt; byte[]
+        try &#123;
+            Jedis jedis = jedisPool.getResource();
+            try &#123;
+                String key = &quot;user&quot; + seckill.getId();
+                byte[] bytes = ProtostuffIOUtil.toByteArray(seckill, schema,
+                        LinkedBuffer.allocate(LinkedBuffer.DEFAULT_BUFFER_SIZE));
+                //超时缓存
+                int timeout = 60 * 60; //一小时
+                String result = jedis.setex(key.getBytes(),timeout,bytes);
+                return result;
+            &#125; finally &#123;
+                jedis.close();
+            &#125;
+        &#125; catch (Exception e) &#123;
+            logger.error(e.getMessage(), e);
+        &#125;
+        return null;
+    &#125;
+
+&#125;
+</code></pre>
+<p>测试：</p>
+<pre><code>package org.seckill.dao.cache;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.seckill.dao.SeckillDao;
+import org.seckill.entity.Seckill;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import static org.junit.Assert.*;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+//告诉junit spring配置文件
+@ContextConfiguration(&#123;&quot;classpath:spring/spring-dao.xml&quot;&#125;)
+public class RedisDaoTest &#123;
+    private  long id = 1001;
+    @Autowired
+    private RedisDao redisDao;
+    @Autowired
+    private SeckillDao seckillDao;
+    @Test
+    public void testRedisDao()throws Exception&#123;
+        //get and put
+        Seckill seckill = redisDao.getSeckill(id);
+        if (seckill == null)&#123;
+            seckill = seckillDao.queryById(id);
+            if (seckill != null)&#123;
+               String result = redisDao.putSeckill(seckill);
+               System.out.println(result);
+               seckill = redisDao.getSeckill(id);
+               System.out.println(seckill);
+            &#125;
+        &#125;
+        System.out.println(seckill);
+    &#125;
+&#125;
+</code></pre>
+<p>java对redis的基本操作</p>
+<p>参考文献：<a target="_blank" rel="noopener" href="http://www.cnblogs.com/edisonfeng/p/3571870.html">http://www.cnblogs.com/edisonfeng/p/3571870.html</a></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Redis%E7%AE%80%E4%BB%8B%EF%BC%9A"><span class="toc-number">1.</span> <span class="toc-text">Redis简介：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Redis%E5%9C%A8windos%E4%B8%8B%E5%AE%89%E8%A3%85%EF%BC%9A"><span class="toc-number">2.</span> <span class="toc-text">Redis在windos下安装：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E4%B8%8B%E8%BD%BD-%EF%BC%88%E5%AE%98%E7%BD%91%E4%B8%8D%E6%94%AF%E6%8C%81windos%E4%B8%8B%E8%BD%BD%EF%BC%8C%E6%89%80%E4%BB%A5%E8%BF%99%E9%87%8C%E6%8F%90%E4%BE%9B%E7%99%BE%E5%BA%A6%E4%BA%91%EF%BC%89"><span class="toc-number">2.1.</span> <span class="toc-text">1.下载 （官网不支持windos下载，所以这里提供百度云）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E9%85%8D%E7%BD%AE%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="toc-number">2.2.</span> <span class="toc-text">2.配置环境变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">2.3.</span> <span class="toc-text">3.配置文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E8%BF%90%E8%A1%8C"><span class="toc-number">2.4.</span> <span class="toc-text">4.运行</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Redis%E5%9C%A8linux%E4%B8%8B%E5%AE%89%E8%A3%85%EF%BC%9A"><span class="toc-number">3.</span> <span class="toc-text">Redis在linux下安装：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E4%B8%8B%E8%BD%BD-%E5%AE%98%E7%BD%91%E7%9B%B4%E6%8E%A5%E4%B8%8B%E8%BD%BD%E5%8D%B3%E5%8F%AF"><span class="toc-number">3.1.</span> <span class="toc-text">1.下载(官网直接下载即可)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E8%A7%A3%E5%8E%8B%EF%BC%9A"><span class="toc-number">3.2.</span> <span class="toc-text">2.解压：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85"><span class="toc-number">3.3.</span> <span class="toc-text">3.编译安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E8%BF%90%E8%A1%8C-1"><span class="toc-number">3.4.</span> <span class="toc-text">4.运行</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#mave%E9%A1%B9%E7%9B%AE%E4%B8%AD%E9%85%8D%E7%BD%AE%E7%9B%B8%E5%85%B3%E4%BE%9D%E8%B5%96"><span class="toc-number">4.</span> <span class="toc-text">mave项目中配置相关依赖</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Redis%E4%B8%8ESpringmvc%E9%A1%B9%E7%9B%AE%E6%95%B4%E5%90%88"><span class="toc-number">5.</span> <span class="toc-text">Redis与Springmvc项目整合</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A9%E7%94%A8spring-data-redisr%E8%BF%9B%E8%A1%8C%E6%95%B4%E5%90%88"><span class="toc-number">5.1.</span> <span class="toc-text">利用spring-data-redisr进行整合</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#opsForValue-%E6%96%B9%E6%B3%95%E7%9A%84%E4%BD%BF%E7%94%A8%EF%BC%9A"><span class="toc-number">5.2.</span> <span class="toc-text">opsForValue()方法的使用：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A9%E7%94%A8jedis%E5%8E%9F%E7%94%9F%E5%AE%A2%E6%88%B7%E7%AB%AF%E8%BF%9B%E8%A1%8C%E6%95%B4%E5%90%88"><span class="toc-number">5.3.</span> <span class="toc-text">利用jedis原生客户端进行整合</span></a></li></ol></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

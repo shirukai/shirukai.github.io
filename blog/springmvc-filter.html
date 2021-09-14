@@ -1,0 +1,603 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Springmvc过滤器 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="过滤源–过滤规则–过滤结果
+过滤器是否能改变用户请求的web资源呢?也就是能否改变用户请求的路径?可以
+过滤器能否直接返回数据，能不能直接处理用户请求？不能
+多个过滤器详解假如有两个过滤器，Test,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">Springmvc过滤器</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/8.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/Spring"><b>「
+                    </b>SPRING<b> 」</b></a>
+                
+                August 19, 2018
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/springmvc-filter.html" title="Springmvc过滤器" class="">Springmvc过滤器</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    8.2k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    7 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Spring/" rel="tag">Spring</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <p>过滤源–过滤规则–过滤结果</p>
+<h3 id="过滤器是否能改变用户请求的web资源呢-也就是能否改变用户请求的路径"><a href="#过滤器是否能改变用户请求的web资源呢-也就是能否改变用户请求的路径" class="headerlink" title="过滤器是否能改变用户请求的web资源呢?也就是能否改变用户请求的路径?"></a>过滤器是否能改变用户请求的web资源呢?也就是能否改变用户请求的路径?</h3><p>可以</p>
+<h3 id="过滤器能否直接返回数据，能不能直接处理用户请求？"><a href="#过滤器能否直接返回数据，能不能直接处理用户请求？" class="headerlink" title="过滤器能否直接返回数据，能不能直接处理用户请求？"></a>过滤器能否直接返回数据，能不能直接处理用户请求？</h3><p>不能</p>
+<h2 id="多个过滤器详解"><a href="#多个过滤器详解" class="headerlink" title="多个过滤器详解"></a>多个过滤器详解</h2><p>假如有两个过滤器，TestFilter、SecondFilter，他们的执行顺序如下：</p>
+<p>start______doFilter_________TestFilter<br>start_________________doFilter____________SecondFilter</p>
+<p>end_________________doFilter________________SecondFilter<br> end______doFilter_________TestFilter</p>
+<h2 id="Springmvc配置过滤器"><a href="#Springmvc配置过滤器" class="headerlink" title="Springmvc配置过滤器"></a>Springmvc配置过滤器</h2><h3 id="编写TestFilter类"><a href="#编写TestFilter类" class="headerlink" title="编写TestFilter类"></a>编写TestFilter类</h3><pre><code>/**
+ * 过滤器测试
+ * Created by shirukai on 2017/10/31.
+ */
+public class TestFilter implements Filter &#123;
+     private Logger logger = LoggerFactory.getLogger(this.getClass());
+    public void init(FilterConfig filterConfig) throws ServletException &#123;
+        logger.info(&quot;__________________init________________TestFilter&quot;);
+    &#125;
+
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException &#123;
+        logger.info(&quot;start__________doFilter_________TestFilter&quot;);
+        chain.doFilter(request,response);//放行
+        logger.info(&quot;end__________doFilter_________TestFilter&quot;);
+    &#125;
+
+    public void destroy() &#123;
+        logger.info(&quot;__________________destroy________________TestFilter&quot;);
+    &#125;
+&#125;
+</code></pre>
+<h3 id="注册过滤器"><a href="#注册过滤器" class="headerlink" title="注册过滤器"></a>注册过滤器</h3><p>在web.xml注册过滤器</p>
+<pre><code>&lt;!--测试过滤器--&gt;
+&lt;!--  &lt;filter&gt;
+    &lt;filter-name&gt;TestFilter&lt;/filter-name&gt;
+    &lt;filter-class&gt;com.mavenssmlr.filter.TestFilter&lt;/filter-class&gt;
+  &lt;/filter&gt;
+  &lt;filter-mapping&gt;
+    &lt;filter-name&gt;TestFilter&lt;/filter-name&gt;
+    &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+  &lt;/filter-mapping&gt;--&gt;
+</code></pre>
+<h2 id="过滤器在实际项目中的应用场景"><a href="#过滤器在实际项目中的应用场景" class="headerlink" title="过滤器在实际项目中的应用场景"></a>过滤器在实际项目中的应用场景</h2><h3 id="1-对用户请求进行统一认证"><a href="#1-对用户请求进行统一认证" class="headerlink" title="1. 对用户请求进行统一认证"></a>1. 对用户请求进行统一认证</h3><h4 id="编写LoginFilter类"><a href="#编写LoginFilter类" class="headerlink" title="编写LoginFilter类"></a>编写LoginFilter类</h4><pre><code>/**
+ * 登录权限过滤器
+ * Created by shirukai on 2017/10/31.
+ */
+public class LoginFilter implements Filter &#123;
+     private Logger logger = LoggerFactory.getLogger(this.getClass());
+    private FilterConfig config;
+
+    public void init(FilterConfig filterConfig) throws ServletException &#123;
+        config = filterConfig;
+    &#125;
+
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException &#123;
+        HttpServletRequest httpServletRequest =(HttpServletRequest)request;
+        HttpServletResponse httpServletResponse = (HttpServletResponse) response;
+        //将cookie封装到map里
+        Map&lt;String, Cookie&gt; cookieMap = new HashMap&lt;String, Cookie&gt;();
+        Cookie[] cookies = httpServletRequest.getCookies();
+        if (null != cookies) &#123;
+            for (Cookie cookie : cookies) &#123;
+                cookieMap.put(cookie.getName(), cookie);
+            &#125;
+        &#125;
+        Cookie accessToken = cookieMap.get(&quot;accessToken&quot;);
+        //获取配置文件：不需要过滤的url
+        String[] noFilterUrls = config.getInitParameter(&quot;noFilterUrls&quot;).split(&quot;;&quot;);
+        for (int i = 0;i &lt; noFilterUrls.length; i++)&#123;
+            if (httpServletRequest.getRequestURI().contains(noFilterUrls[i]))&#123;
+                chain.doFilter(request,response);
+            &#125;
+        &#125;
+        if (accessToken == null)&#123;
+            httpServletRequest.getRequestDispatcher(&quot;/user/login&quot;).forward(request,response);;
+        &#125;
+        logger.info(httpServletRequest.getRequestURI());
+        String url = ((HttpServletRequest) request).getRequestURI();
+        chain.doFilter(request,response);
+
+    &#125;
+
+    public void destroy() &#123;
+
+    &#125;
+&#125;
+</code></pre>
+<h4 id="注册过滤器-1"><a href="#注册过滤器-1" class="headerlink" title="注册过滤器"></a>注册过滤器</h4><pre><code>&lt;!--登录过滤器--&gt;
+&lt;filter&gt;
+    &lt;filter-name&gt;LoginFilter&lt;/filter-name&gt;
+    &lt;filter-class&gt;com.mavenssmlr.filter.LoginFilter&lt;/filter-class&gt;
+    &lt;init-param&gt;
+        &lt;!--不需要过滤的url、静态资源--&gt;
+        &lt;param-name&gt;noFilterUrls&lt;/param-name&gt;
+        &lt;param-value&gt;/user/;/skins/&lt;/param-value&gt;
+    &lt;/init-param&gt;
+&lt;/filter&gt;
+&lt;filter-mapping&gt;
+    &lt;filter-name&gt;LoginFilter&lt;/filter-name&gt;
+    &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+&lt;/filter-mapping&gt;
+</code></pre>
+<h3 id="2-编码转换"><a href="#2-编码转换" class="headerlink" title="2. 编码转换"></a>2. 编码转换</h3><p>直接在web.xml配置即可</p>
+<pre><code>&lt;!-- Spring字符编码过滤器配置，处理中文乱码，针对post请求 --&gt;
+&lt;filter&gt;
+  &lt;filter-name&gt;characterEncodingFilter&lt;/filter-name&gt;
+  &lt;filter-class&gt;org.springframework.web.filter.CharacterEncodingFilter&lt;/filter-class&gt;
+  &lt;init-param&gt;
+    &lt;param-name&gt;encoding&lt;/param-name&gt;
+    &lt;param-value&gt;UTF-8&lt;/param-value&gt;
+  &lt;/init-param&gt;
+  &lt;init-param&gt;
+    &lt;param-name&gt;forceEncoding&lt;/param-name&gt;
+    &lt;param-value&gt;true&lt;/param-value&gt;
+  &lt;/init-param&gt;
+&lt;/filter&gt;
+&lt;filter-mapping&gt;
+  &lt;filter-name&gt;characterEncodingFilter&lt;/filter-name&gt;
+  &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+&lt;/filter-mapping&gt;
+</code></pre>
+<h3 id="3-利用过滤器允许ajax跨域请求"><a href="#3-利用过滤器允许ajax跨域请求" class="headerlink" title="3.利用过滤器允许ajax跨域请求"></a>3.利用过滤器允许ajax跨域请求</h3><h4 id="编写过滤器类"><a href="#编写过滤器类" class="headerlink" title="编写过滤器类"></a>编写过滤器类</h4><pre><code>/**
+ * 允许跨域请求过滤
+ * Created by shirukai on 2017/11/1.
+ */
+public class CORSFilter implements Filter &#123;
+
+    public void init(FilterConfig filterConfig) throws ServletException &#123;
+
+    &#125;
+
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException &#123;
+        HttpServletResponse response = (HttpServletResponse) servletResponse;
+        String origin = (String) servletRequest.getRemoteHost() + &quot;:&quot; + servletRequest.getRemotePort();
+        response.setHeader(&quot;Access-Control-Allow-Origin&quot;, &quot;*&quot;);
+        response.setHeader(&quot;Access-Control-Allow-Methods&quot;, &quot;POST, GET, OPTIONS, DELETE&quot;);
+        response.setHeader(&quot;Access-Control-Max-Age&quot;, &quot;3600&quot;);
+        response.setHeader(&quot;Access-Control-Allow-Headers&quot;, &quot;x-requested-with,Authorization&quot;);
+        response.setHeader(&quot;Access-Control-Allow-Credentials&quot;, &quot;true&quot;);
+        filterChain.doFilter(servletRequest, servletResponse);
+        
+    &#125;
+
+    public void destroy() &#123;
+
+    &#125;
+&#125;
+</code></pre>
+<h4 id="注册过滤器-2"><a href="#注册过滤器-2" class="headerlink" title="注册过滤器"></a>注册过滤器</h4><pre><code>&lt;!--允许跨域请求过滤--&gt;
+&lt;filter&gt;
+    &lt;filter-name&gt;CORSFilter&lt;/filter-name&gt;
+    &lt;filter-class&gt;com.mavenssmlr.filter.CORSFilter&lt;/filter-class&gt;
+&lt;/filter&gt;
+&lt;filter-mapping&gt;
+    &lt;filter-name&gt;CORSFilter&lt;/filter-name&gt;
+    &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+&lt;/filter-mapping&gt;
+</code></pre>
+<p>参考地址：<a target="_blank" rel="noopener" href="http://www.imooc.com/article/7719">http://www.imooc.com/article/7719</a></p>
+<ol>
+<li><h3 id="对用户发送的数据进行过滤替换"><a href="#对用户发送的数据进行过滤替换" class="headerlink" title="对用户发送的数据进行过滤替换"></a>对用户发送的数据进行过滤替换</h3></li>
+<li><h3 id="转换图片格式"><a href="#转换图片格式" class="headerlink" title="转换图片格式"></a>转换图片格式</h3></li>
+<li><h3 id="对响应的内容进行压缩"><a href="#对响应的内容进行压缩" class="headerlink" title="对响应的内容进行压缩"></a>对响应的内容进行压缩</h3></li>
+</ol>
+<p>​</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%87%E6%BB%A4%E5%99%A8%E6%98%AF%E5%90%A6%E8%83%BD%E6%94%B9%E5%8F%98%E7%94%A8%E6%88%B7%E8%AF%B7%E6%B1%82%E7%9A%84web%E8%B5%84%E6%BA%90%E5%91%A2-%E4%B9%9F%E5%B0%B1%E6%98%AF%E8%83%BD%E5%90%A6%E6%94%B9%E5%8F%98%E7%94%A8%E6%88%B7%E8%AF%B7%E6%B1%82%E7%9A%84%E8%B7%AF%E5%BE%84"><span class="toc-number">1.</span> <span class="toc-text">过滤器是否能改变用户请求的web资源呢?也就是能否改变用户请求的路径?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%87%E6%BB%A4%E5%99%A8%E8%83%BD%E5%90%A6%E7%9B%B4%E6%8E%A5%E8%BF%94%E5%9B%9E%E6%95%B0%E6%8D%AE%EF%BC%8C%E8%83%BD%E4%B8%8D%E8%83%BD%E7%9B%B4%E6%8E%A5%E5%A4%84%E7%90%86%E7%94%A8%E6%88%B7%E8%AF%B7%E6%B1%82%EF%BC%9F"><span class="toc-number">2.</span> <span class="toc-text">过滤器能否直接返回数据，能不能直接处理用户请求？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E4%B8%AA%E8%BF%87%E6%BB%A4%E5%99%A8%E8%AF%A6%E8%A7%A3"><span class="toc-number"></span> <span class="toc-text">多个过滤器详解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Springmvc%E9%85%8D%E7%BD%AE%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="toc-number"></span> <span class="toc-text">Springmvc配置过滤器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E5%86%99TestFilter%E7%B1%BB"><span class="toc-number">1.</span> <span class="toc-text">编写TestFilter类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%A8%E5%86%8C%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="toc-number">2.</span> <span class="toc-text">注册过滤器</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E6%BB%A4%E5%99%A8%E5%9C%A8%E5%AE%9E%E9%99%85%E9%A1%B9%E7%9B%AE%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number"></span> <span class="toc-text">过滤器在实际项目中的应用场景</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%AF%B9%E7%94%A8%E6%88%B7%E8%AF%B7%E6%B1%82%E8%BF%9B%E8%A1%8C%E7%BB%9F%E4%B8%80%E8%AE%A4%E8%AF%81"><span class="toc-number">1.</span> <span class="toc-text">1. 对用户请求进行统一认证</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E7%BC%96%E7%A0%81%E8%BD%AC%E6%8D%A2"><span class="toc-number">2.</span> <span class="toc-text">2. 编码转换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%88%A9%E7%94%A8%E8%BF%87%E6%BB%A4%E5%99%A8%E5%85%81%E8%AE%B8ajax%E8%B7%A8%E5%9F%9F%E8%AF%B7%E6%B1%82"><span class="toc-number">3.</span> <span class="toc-text">3.利用过滤器允许ajax跨域请求</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%B9%E7%94%A8%E6%88%B7%E5%8F%91%E9%80%81%E7%9A%84%E6%95%B0%E6%8D%AE%E8%BF%9B%E8%A1%8C%E8%BF%87%E6%BB%A4%E6%9B%BF%E6%8D%A2"><span class="toc-number">4.</span> <span class="toc-text">对用户发送的数据进行过滤替换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BD%AC%E6%8D%A2%E5%9B%BE%E7%89%87%E6%A0%BC%E5%BC%8F"><span class="toc-number">5.</span> <span class="toc-text">转换图片格式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%B9%E5%93%8D%E5%BA%94%E7%9A%84%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%E5%8E%8B%E7%BC%A9"><span class="toc-number">6.</span> <span class="toc-text">对响应的内容进行压缩</span></a></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

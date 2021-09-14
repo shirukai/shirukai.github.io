@@ -1,0 +1,607 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>django数据models基础 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="例子定义一个Persion模型类，包括first_name、last_name字段
+from django.db import models
+
+class Person(models.Model):,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">django数据models基础</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/4.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/Python"><b>「
+                    </b>PYTHON<b> 」</b></a>
+                
+                August 19, 2018
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/django-data-models-foundation.html" title="django数据models基础" class="">django数据models基础</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    9.2k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    8 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/django/" rel="tag">django</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><p>定义一个Persion模型类，包括first_name、last_name字段</p>
+<pre><code>from django.db import models
+
+class Person(models.Model):
+    first_name = models.CharField(max_length=30)
+    last_name = models.CharField(max_length=30)
+</code></pre>
+<p>first_name 和last_name是模型的领域。每个字段被指定为一个类属性，每个属性映射到一个数据库列，上面的Persion模型将创建一个数据库表，如下所示：</p>
+<pre><code> CREATE TABLE myapp_person (
+    &quot;id&quot; serial NOT NULL PRIMARY KEY,
+    &quot;first_name&quot; varchar(30) NOT NULL,
+    &quot;last_name&quot; varchar(30) NOT NULL
+);
+</code></pre>
+<p>说明：</p>
+<ul>
+<li>表的名称myapp_person,是自动从某些模型元数据生成的，但可以覆盖。</li>
+<li>id为django自动添加的字段，也可以自己定义。</li>
+<li>这个例子的sql是使用了postgersql语法进行格式化的，django会根据settings里配置的数据库自动对sql进行格式化。</li>
+</ul>
+<h2 id="使用模型"><a href="#使用模型" class="headerlink" title="使用模型"></a>使用模型</h2><p>一旦我们定义了数据模型，就要告诉django我们要使用这些模型。这个是通过修改settings里的配置来添加应用模块的名字，让django来执行应用里的models.py。</p>
+<p>如我们在myapp下定义了一个models，我们就需要这样设置：</p>
+<pre><code>INSTALLED_APPS = [
+    #...
+    &#39;myapp&#39;,
+    #...
+]
+</code></pre>
+<blockquote>
+<p>注意：当我们添加新的模型的时候，需要运行 </p>
+</blockquote>
+<pre><code>python manage.py migrate
+</code></pre>
+<h2 id="字段"><a href="#字段" class="headerlink" title="字段"></a>字段</h2><p>数据库中的字段就是有模型中类的竖井来指定的，要注意的是，不要使用字段名称与modelAPI的关键字，如clean，sava，delete等。</p>
+<p>例如：</p>
+<pre><code>from django.db import models
+
+class Musician(models.Model):
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
+    instrument = models.CharField(max_length=100)
+
+class Album(models.Model):
+    artist = models.ForeignKey(Musician, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
+    release_date = models.DateField()
+    num_stars = models.IntegerField()
+</code></pre>
+<h3 id="字段类型"><a href="#字段类型" class="headerlink" title="字段类型"></a>字段类型</h3><p>模型中的每个字段应该是field类的一个实例，Django使用字段类型来确定一些事情：</p>
+<ul>
+<li>列类型，它告诉数据库储存什么类型的数据（如INTEGER，VARCHAR，TEXT）</li>
+<li>在呈现表单字段时使用的默认HTML小部件（例如<code>&lt;input type=&quot;text&quot;&gt;``&lt;select&gt;</code>）</li>
+<li>最小的验证要求，用户Django的管理员和自动生成的表单</li>
+</ul>
+<p>更多字段类型：<a target="_blank" rel="noopener" href="https://docs.djangoproject.com/en/dev/ref/models/fields/#model-field-types">https://docs.djangoproject.com/en/dev/ref/models/fields/#model-field-types</a></p>
+<h3 id="字段选项"><a href="#字段选项" class="headerlink" title="字段选项"></a>字段选项</h3><p>每个字段都需要一组特定于字段的参数（在 <a target="_blank" rel="noopener" href="https://docs.djangoproject.com/en/dev/ref/models/fields/#model-field-types">模型字段引用中记录</a>）。例如， <a target="_blank" rel="noopener" href="https://docs.djangoproject.com/en/dev/ref/models/fields/#django.db.models.CharField"><code>CharField</code></a>（及其子类）需要一个<a target="_blank" rel="noopener" href="https://docs.djangoproject.com/en/dev/ref/models/fields/#django.db.models.CharField.max_length"><code>max_length</code></a>参数，该 参数指定<code>VARCHAR</code>用于存储数据的数据库字段的大小。</p>
+<h4 id="null"><a href="#null" class="headerlink" title="null"></a>null</h4><p>null=True，django将数据库空值储存为null，默认为Talse</p>
+<h4 id="blank"><a href="#blank" class="headerlink" title="blank"></a>blank</h4><p>blank=True，该字段被允许为空白，默认false</p>
+<blockquote>
+<p>注意，blank不同于null，null是纯数据库相关的，而blank是与验证相关的，如果一个字段有blank=True表单验证将允许输入一个空值。如果字段有blank=False，则该字段将被要求。</p>
+</blockquote>
+<h4 id="choices"><a href="#choices" class="headerlink" title="choices"></a>choices</h4><pre><code>from django.db import models
+
+class Person(models.Model):
+    SHIRT_SIZES = (
+        (&#39;S&#39;, &#39;Small&#39;),
+        (&#39;M&#39;, &#39;Medium&#39;),
+        (&#39;L&#39;, &#39;Large&#39;),
+    )
+    name = models.CharField(max_length=60)
+    shirt_size = models.CharField(max_length=1, choices=SHIRT_SIZES)
+</code></pre>
+<pre><code>&gt;&gt;&gt; p = Person(name=&quot;Fred Flintstone&quot;, shirt_size=&quot;L&quot;)
+&gt;&gt;&gt; p.save()
+&gt;&gt;&gt; p.shirt_size
+&#39;L&#39;
+&gt;&gt;&gt; p.get_shirt_size_display()
+&#39;Large&#39;
+</code></pre>
+<p>SHIRT_SIZES第一个参数‘s’是传过来的值，第二个参数’small‘是保存到数据库里的值。</p>
+<h4 id="default"><a href="#default" class="headerlink" title="default"></a>default</h4><p>字段的默认值，这可以是值，也可以调用对象</p>
+<h4 id="help-text"><a href="#help-text" class="headerlink" title="help_text"></a>help_text</h4><p>额外的帮助文本将于窗体小部件一起显示，即使您的子弹在表单上使用，他对文档也很有用。</p>
+<h4 id="primary-key"><a href="#primary-key" class="headerlink" title="primary_key"></a>primary_key</h4><p>primary_key=True,该字段是模型的主键</p>
+<p>如果我们没有在模型中指定任何字段属性为primary_key=True，django将自动添加IntegerField以保存主键。</p>
+<blockquote>
+<p>主键是只读的，如果你要改变主键的值，将会生成一个新的对象。如：</p>
+</blockquote>
+<pre><code>&gt;&gt;&gt; fruit = Fruit.objects.create(name=&#39;Apple&#39;)
+&gt;&gt;&gt; fruit.name = &#39;Pear&#39;
+&gt;&gt;&gt; fruit.save()
+&gt;&gt;&gt; Fruit.objects.values_list(&#39;name&#39;, flat=True)
+&lt;QuerySet [&#39;Apple&#39;, &#39;Pear&#39;]&gt;
+</code></pre>
+<h4 id="unique"><a href="#unique" class="headerlink" title="unique"></a>unique</h4><p>unique = True，在这个表中这个字段必须是唯一的。</p>
+<h3 id="自动主键字段"><a href="#自动主键字段" class="headerlink" title="自动主键字段"></a>自动主键字段</h3><p>默认情况下，Django为每个模型提供以下字段：</p>
+<pre><code>id = models.AutoField(primary_key=True)
+</code></pre>
+<p>这是一个自增的主键</p>
+<p>如果你想要设置一个自己的主键，就在对应的字段属性里添加 primary_key = True,django将不会创建默认的主键。</p>
+<h3 id="详细字段名"><a href="#详细字段名" class="headerlink" title="详细字段名"></a>详细字段名</h3><p>每个字段类型，除了ForeignKey,ManyToManyField和OneToOneField，都可采用可选的第一个位置参数——一个详细名称。如果没有给出详细的名称，django将使用字段的属性名称自动创建它，将下划线转换为空格。</p>
+<p>在这个例子中，详细名为“person’s first name”</p>
+<pre><code>first_name = models.CharField(&quot;person&#39;s first name&quot;, max_length=30)
+</code></pre>
+<p>在这个例子中，详细名称为“first name”</p>
+<pre><code>first_name = models.CharField(max_length=30)
+</code></pre>
+<p><a target="_blank" rel="noopener" href="https://docs.djangoproject.com/en/dev/ref/models/fields/#django.db.models.ForeignKey"><code>ForeignKey</code></a>, <a target="_blank" rel="noopener" href="https://docs.djangoproject.com/en/dev/ref/models/fields/#django.db.models.ManyToManyField"><code>ManyToManyField</code></a> 和<a target="_blank" rel="noopener" href="https://docs.djangoproject.com/en/dev/ref/models/fields/#django.db.models.OneToOneField"><code>OneToOneField</code></a> 要求第一个参数为模型类，所以详细名字由verbose_name关键字来确定</p>
+<pre><code>poll = models.ForeignKey(
+    Poll,
+    on_delete=models.CASCADE,
+    verbose_name=&quot;the related poll&quot;,
+)
+sites = models.ManyToManyField(Site, verbose_name=&quot;list of sites&quot;)
+place = models.OneToOneField(
+    Place,
+    on_delete=models.CASCADE,
+    verbose_name=&quot;related place&quot;,
+)
+</code></pre>
+<h3 id="关系"><a href="#关系" class="headerlink" title="关系"></a>关系</h3><p>显然，关系数据库的力量在于彼此关联表。Django提供了定义三种最常见类型的数据库关系的方式：多对一，多对多和一一对应。</p>
+<h4 id="多对一关系"><a href="#多对一关系" class="headerlink" title="多对一关系"></a>多对一关系</h4><p>通过使用django.db.models.ForeignKey来定义多对一的关系，使用跟其他的Field类型一样。</p>
+<p>ForeignKey需要一个位置参数：模型相关的类</p>
+<p>例如，如果car模型具有Manufacturer，一个Manufacturer制造多个汽车，但每个Car只有个manufacturer,使用一下定义：</p>
+<pre><code>from django.db import models
+
+class Manufacturer(models.Model):
+    # ...
+    pass
+
+class Car(models.Model):
+    manufacturer = models.ForeignKey(Manufacturer, on_delete=models.CASCADE)
+    # ...
+</code></pre>
+<h4 id="多对多关系"><a href="#多对多关系" class="headerlink" title="多对多关系"></a>多对多关系</h4><p>通过使用 ManyToManyField来定义多对多的关系</p>
+<p>ManyToManyField需要一个位置参数：模型相关的类</p>
+<p>例如：一个Pizza有个多个Topping对象，一个Topping也有多个Pizza：</p>
+<pre><code>from django.db import models
+
+class Topping(models.Model):
+    # ...
+    pass
+
+class Pizza(models.Model):
+    # ...
+    toppings = models.ManyToManyField(Topping)
+</code></pre>
+<h4 id="一对一关系"><a href="#一对一关系" class="headerlink" title="一对一关系"></a>一对一关系</h4><p>要定义一对一的关系，请使用 <a target="_blank" rel="noopener" href="https://docs.djangoproject.com/en/dev/ref/models/fields/#django.db.models.OneToOneField"><code>OneToOneField</code></a>。您可以像任何其他<code>Field</code>类型一样使用它 ：将其作为模型的类属性。</p>
+<p>当对象以某种方式“扩展”另一个对象时，这对对象的主键最有用。</p>
+<p><a target="_blank" rel="noopener" href="https://docs.djangoproject.com/en/dev/ref/models/fields/#django.db.models.OneToOneField"><code>OneToOneField</code></a> 需要一个位置参数：模型相关的类。</p>
+<p>例如，如果您正在构建“地方”数据库，则可以在数据库中构建非常标准的地址，电话号码等。然后，如果你想建立的地方顶部的餐馆数据库，而不是重复自己，在复制这些领域<code>Restaurant</code>模型，你可以把<code>Restaurant</code>有<a target="_blank" rel="noopener" href="https://docs.djangoproject.com/en/dev/ref/models/fields/#django.db.models.OneToOneField"><code>OneToOneField</code></a>到<code>Place</code>（因为餐厅“是”的地方;事实上，处理这通常使用 <a target="_blank" rel="noopener" href="https://docs.djangoproject.com/en/dev/topics/db/models/#model-inheritance">继承</a>，涉及隐式的一对一关系）。</p>
+<p>与之一样<a target="_blank" rel="noopener" href="https://docs.djangoproject.com/en/dev/ref/models/fields/#django.db.models.ForeignKey"><code>ForeignKey</code></a>，可以定义<a target="_blank" rel="noopener" href="https://docs.djangoproject.com/en/dev/ref/models/fields/#recursive-relationships">递归关系，</a>并且可以<a target="_blank" rel="noopener" href="https://docs.djangoproject.com/en/dev/ref/models/fields/#lazy-relationships">对尚未定义的模型</a>进行<a target="_blank" rel="noopener" href="https://docs.djangoproject.com/en/dev/ref/models/fields/#lazy-relationships">引用</a>。</p>
+<h2 id="models使用"><a href="#models使用" class="headerlink" title="models使用"></a>models使用</h2><p>models.py</p>
+<pre><code>class Student(models.Model):
+    stu_name = models.CharField(max_length=30)
+    stu_no = models.CharField(max_length=20)
+    stu_sex = models.CharField(max_length=10)
+    stu_age = models.IntegerField()
+    stu_birth = models.DateTimeField(auto_now_add=True)
+
+    def __unicode__(self):
+        return &#39;%s %s %s %s %s&#39; % (self.stu_name, self.stu_name, self.stu_sex, self.stu_age, self.stu_birth)
+</code></pre>
+<pre><code> python manage.py migrate
+ python manage.py makemigrations
+</code></pre>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BE%8B%E5%AD%90"><span class="toc-number">1.</span> <span class="toc-text">例子</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E6%A8%A1%E5%9E%8B"><span class="toc-number">2.</span> <span class="toc-text">使用模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E6%AE%B5"><span class="toc-number">3.</span> <span class="toc-text">字段</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%97%E6%AE%B5%E7%B1%BB%E5%9E%8B"><span class="toc-number">3.1.</span> <span class="toc-text">字段类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%97%E6%AE%B5%E9%80%89%E9%A1%B9"><span class="toc-number">3.2.</span> <span class="toc-text">字段选项</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E5%8A%A8%E4%B8%BB%E9%94%AE%E5%AD%97%E6%AE%B5"><span class="toc-number">3.3.</span> <span class="toc-text">自动主键字段</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%A6%E7%BB%86%E5%AD%97%E6%AE%B5%E5%90%8D"><span class="toc-number">3.4.</span> <span class="toc-text">详细字段名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E7%B3%BB"><span class="toc-number">3.5.</span> <span class="toc-text">关系</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#models%E4%BD%BF%E7%94%A8"><span class="toc-number">4.</span> <span class="toc-text">models使用</span></a></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

@@ -1,0 +1,625 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CentOS下部署zookeeper集群 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="版本：zookeeper-3.4.13
+1 环境准备1.1 准备三台机器机器信息如下：
+
+
+
+hostname
+ip
+端口
+
+
+
+master.hadoop.com
+192.168.162.180
+,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">CentOS下部署zookeeper集群</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/2.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/环境搭建"><b>「
+                    </b>环境搭建<b> 」</b></a>
+                
+                August 30, 2018
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/deploy-zookeeper-cluster-under-centos.html" title="CentOS下部署zookeeper集群" class="">CentOS下部署zookeeper集群</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    8.2k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    7 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" rel="tag">环境搭建</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <p>版本：zookeeper-3.4.13</p>
+<h2 id="1-环境准备"><a href="#1-环境准备" class="headerlink" title="1 环境准备"></a>1 环境准备</h2><h3 id="1-1-准备三台机器"><a href="#1-1-准备三台机器" class="headerlink" title="1.1 准备三台机器"></a>1.1 准备三台机器</h3><p>机器信息如下：</p>
+<table>
+<thead>
+<tr>
+<th>hostname</th>
+<th>ip</th>
+<th>端口</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>master.hadoop.com</td>
+<td>192.168.162.180</td>
+<td>2181/2881/3881</td>
+</tr>
+<tr>
+<td>slave1.hadoop.com</td>
+<td>192.168.162.181</td>
+<td>2181/2881/3881</td>
+</tr>
+<tr>
+<td>slave2.hadoop.com</td>
+<td>192.168.162.182</td>
+<td>2181/2881/3881</td>
+</tr>
+</tbody></table>
+<p>按照上面信息分别修改hostname</p>
+<pre><code>vi /etc/hostname 
+</code></pre>
+<p>并修改hosts</p>
+<pre><code>vi /etc/hosts
+</code></pre>
+<p>内容如下：</p>
+<pre><code>192.168.162.180 master.hadoop.com
+192.168.162.181 slave1.hadoop.com
+192.168.162.182 slave2.hadoop.com
+</code></pre>
+<h3 id="1-2-安装JDK"><a href="#1-2-安装JDK" class="headerlink" title="1.2 安装JDK"></a>1.2 安装JDK</h3><h4 id="1-2-1-官网下载jdk-1-8"><a href="#1-2-1-官网下载jdk-1-8" class="headerlink" title="1.2.1 官网下载jdk 1.8"></a>1.2.1 官网下载jdk 1.8</h4><p><a target="_blank" rel="noopener" href="http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html">http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html</a></p>
+<p>下载jdk-8u151-linux-x64.tar.gz并复制到 /usr/lib目录下</p>
+<h4 id="1-2-2-解压"><a href="#1-2-2-解压" class="headerlink" title="1.2.2 解压"></a>1.2.2 解压</h4><pre><code>tar -zxvf jdk-8u151-linux-x64.tar.gz
+</code></pre>
+<h4 id="1-2-3-配置环境变量"><a href="#1-2-3-配置环境变量" class="headerlink" title="1.2.3 配置环境变量"></a>1.2.3 配置环境变量</h4><pre><code>vim /etc/profile
+</code></pre>
+<p>添加如下内容</p>
+<pre><code>#set java enviroenment
+export JAVA_HOME=/usr/lib/jdk1.8.0_151
+export PATH=$JAVA_HOME/bin:$PATH
+</code></pre>
+<p>使环境变量生效</p>
+<pre><code>. /etc/profile
+</code></pre>
+<p>验证jdk</p>
+<pre><code>[root@shirukai ~]# java -version
+java version &quot;1.8.0_151&quot;
+Java(TM) SE Runtime Environment (build 1.8.0_151-b12)
+Java HotSpot(TM) 64-Bit Server VM (build 25.151-b12, mixed mode)
+</code></pre>
+<h4 id="1-2-4-将jdk目录发送到两台Agent主机"><a href="#1-2-4-将jdk目录发送到两台Agent主机" class="headerlink" title="1.2.4 将jdk目录发送到两台Agent主机"></a>1.2.4 将jdk目录发送到两台Agent主机</h4><pre><code>scp -r /usr/lib/java-1.8.0_151 root@slave1.hadoop.com:/usr/lib/
+scp -r /usr/lib/java-1.8.0_151 root@slave2.hadoop.com:/usr/lib/
+</code></pre>
+<p>配置环境变量就不要统一发送了，每台机子单独配置，方法跟Service主机一样。</p>
+<h3 id="1-3-关闭防火墙"><a href="#1-3-关闭防火墙" class="headerlink" title="1.3 关闭防火墙"></a>1.3 关闭防火墙</h3><h4 id="1-3-1-停止防火墙"><a href="#1-3-1-停止防火墙" class="headerlink" title="1.3.1 停止防火墙"></a>1.3.1 停止防火墙</h4><pre><code>systemctl stop firewalld
+systemctl status firewalld
+</code></pre>
+<h4 id="1-3-2-禁用防火墙（系统启动时不启动防火墙）"><a href="#1-3-2-禁用防火墙（系统启动时不启动防火墙）" class="headerlink" title="1.3.2 禁用防火墙（系统启动时不启动防火墙）"></a>1.3.2 禁用防火墙（系统启动时不启动防火墙）</h4><pre><code>systemctl disable firewalld
+systemctl is-enabled firewalld
+</code></pre>
+<h4 id="1-3-3-确保setlinux关闭"><a href="#1-3-3-确保setlinux关闭" class="headerlink" title="1.3.3 确保setlinux关闭"></a>1.3.3 确保setlinux关闭</h4><p>临时关闭</p>
+<pre><code>setenforce 0
+</code></pre>
+<p>永久关闭</p>
+<p>修改/etc/selinux/config文件中设置SELINUX=disabled ，然后重启服务器</p>
+<h2 id="2-安装zookeeper"><a href="#2-安装zookeeper" class="headerlink" title="2 安装zookeeper"></a>2 安装zookeeper</h2><h3 id="2-1-下载zookeeper"><a href="#2-1-下载zookeeper" class="headerlink" title="2.1 下载zookeeper"></a>2.1 下载zookeeper</h3><p>下载地址：<a target="_blank" rel="noopener" href="http://mirrors.shu.edu.cn/apache/zookeeper/zookeeper-3.4.13/zookeeper-3.4.13.tar.gz">http://mirrors.shu.edu.cn/apache/zookeeper/zookeeper-3.4.13/zookeeper-3.4.13.tar.gz</a></p>
+<pre><code>wget http://mirrors.shu.edu.cn/apache/zookeeper/zookeeper-3.4.13/zookeeper-3.4.13.tar.gz
+</code></pre>
+<p>解压zookeeper</p>
+<pre><code>tar -zxvf zookeeper-3.4.13.tar.gz
+</code></pre>
+<p>移动到/root/apps下重命名为zookeeper</p>
+<pre><code>mv zookeeper-3.4.13 /root/apps/zookeeper
+</code></pre>
+<h3 id="2-2-修改配置文件"><a href="#2-2-修改配置文件" class="headerlink" title="2.2 修改配置文件"></a>2.2 修改配置文件</h3><p>以下操作只在master主机上进行，完成后将zookeeper目录scp到其它两台机子</p>
+<h4 id="2-2-1-创建数据目录和日志目录"><a href="#2-2-1-创建数据目录和日志目录" class="headerlink" title="2.2.1 创建数据目录和日志目录"></a>2.2.1 创建数据目录和日志目录</h4><p>进入zookeeper目录</p>
+<pre><code>cd zookeeper
+</code></pre>
+<p>创建 data和logs目录</p>
+<pre><code>mkdir data logs
+</code></pre>
+<h4 id="2-2-2-修改配置"><a href="#2-2-2-修改配置" class="headerlink" title="2.2.2 修改配置"></a>2.2.2 修改配置</h4><h5 id="2-2-2-1-进入conf目录"><a href="#2-2-2-1-进入conf目录" class="headerlink" title="2.2.2.1 进入conf目录"></a>2.2.2.1 进入conf目录</h5><pre><code>cd conf
+</code></pre>
+<h5 id="2-2-2-2-将zoo-sample-cfg文件重命名为zoo-cfg"><a href="#2-2-2-2-将zoo-sample-cfg文件重命名为zoo-cfg" class="headerlink" title="2.2.2.2 将zoo_sample.cfg文件重命名为zoo.cfg"></a>2.2.2.2 将zoo_sample.cfg文件重命名为zoo.cfg</h5><pre><code>mv zoo_sample.cfg zoo.cfg
+</code></pre>
+<h5 id="2-2-2-3-修改zoo-cfg"><a href="#2-2-2-3-修改zoo-cfg" class="headerlink" title="2.2.2.3 修改zoo.cfg"></a>2.2.2.3 修改zoo.cfg</h5><pre><code>vi zoo.cfg
+</code></pre>
+<h5 id="2-2-2-4-修改内容如下："><a href="#2-2-2-4-修改内容如下：" class="headerlink" title="2.2.2.4 修改内容如下："></a>2.2.2.4 修改内容如下：</h5><pre><code># The number of milliseconds of each tick
+tickTime=2000
+# The number of ticks that the initial
+# synchronization phase can take
+initLimit=10
+# The number of ticks that can pass between
+# sending a request and getting an acknowledgement
+syncLimit=5
+# the directory where the snapshot is stored.
+# do not use /tmp for storage, /tmp here is just
+# example sakes.
+dataDir=/root/apps/zookeeper/data
+dataLogDir=/root/apps/zookeeper/logs
+# the port at which the clients will connect
+clientPort=2181
+# the maximum number of client connections.
+# increase this if you need to handle more clients
+#maxClientCnxns=60
+#
+# Be sure to read the maintenance section of the
+# administrator guide before turning on autopurge.
+#
+# http://zookeeper.apache.org/doc/current/zookeeperAdmin.html#sc_maintenance
+#
+# The number of snapshots to retain in dataDir
+#autopurge.snapRetainCount=3
+# Purge task interval in hours
+# Set to &quot;0&quot; to disable auto purge feature
+#autopurge.purgeInterval=1
+server.1=master.hadoop.com:2881:3881
+server.2=slave1.hadoop.com:2881:3881
+server.3=slave2.hadoop.com:2881:3881
+</code></pre>
+<h5 id="2-2-2-5-参数说明："><a href="#2-2-2-5-参数说明：" class="headerlink" title="2.2.2.5 参数说明："></a>2.2.2.5 参数说明：</h5><p>tickTime=2000</p>
+<blockquote>
+<p>tickTime这个时间是作为Zookeeper服务器之间或客户端之间维持心跳的时间间隔，也就是每个tickTime时间就会发送一次心跳</p>
+</blockquote>
+<p>initLimit=10</p>
+<blockquote>
+<p>initLimit 这个配置项是用来皮质zookeeper接收客户端（Leader 或Follwer）初始化连接时最长能忍受多少个心跳时间间隔数。当已经超过10个心跳时间长度后zookeeper服务器还没有收到客户端的返回信息，那么表名这个客户端连接失败，总的时间长度就是10*2000=20秒</p>
+</blockquote>
+<p>syncLimit=5 </p>
+<blockquote>
+<p>syncLimit这个配置项标识Leader与Follower之间发送消息,请求和应答时间长度,最长不能超过多少个tickTime的时间长度,总的时间长度就是5*2000=10秒 </p>
+</blockquote>
+<p>dataDir=/root/apps/zookeeper/data</p>
+<blockquote>
+<p>dataDir顾名思义就是Zookeeper保存数据的目录,默认情况下Zookeeper将写数据的日志文件也保存在这个目录里。 </p>
+</blockquote>
+<p>clientPort=2181 </p>
+<blockquote>
+<p>clientPort这个端口就是客户端（应用程序）连接Zookeeper服务器的端口,Zookeeper会监听这个端口接受客户端的访问请求。 </p>
+</blockquote>
+<p>server.A=B：C：D </p>
+<blockquote>
+<p>A是一个数字,表示这个是第几号服务器；</p>
+<p>B是这个服务器的IP地址（或者是与IP地址做了映射的主机名）；</p>
+<p>C第一个端口用来集群成员的信息交换,表示这个服务器与集群中的Leader服务器交换信息的端口；</p>
+<p>D是在leader挂掉时专门用来进行选举leader所用的端口。</p>
+</blockquote>
+<h5 id="2-2-2-6-创建myid文件"><a href="#2-2-2-6-创建myid文件" class="headerlink" title="2.2.2.6 创建myid文件"></a>2.2.2.6 创建myid文件</h5><p>在/root/apps/zookeeper/data目录下创建一个myid文件</p>
+<pre><code>cd /root/apps/zookeeper/data
+vi myid
+</code></pre>
+<p>内容为1，其它两台分别为2，3</p>
+<h3 id="2-3-主机分发"><a href="#2-3-主机分发" class="headerlink" title="2.3 主机分发"></a>2.3 主机分发</h3><p>在master主机上将修改后的zookeeper文件夹分发到其它两台主机上</p>
+<pre><code>scp -r /root/apps/zookeeper/ slave1.hadoop.com:/root/apps/
+scp -r /root/apps/zookeeper/ slave2.hadoop.com:/root/apps/
+</code></pre>
+<p>然后只需要修改/root/apps/zookeeper/data/myid文件，分别为2 ，3即可</p>
+<h3 id="2-4-启动zookeeper"><a href="#2-4-启动zookeeper" class="headerlink" title="2.4 启动zookeeper"></a>2.4 启动zookeeper</h3><p>分别在三台主机上执行以下命令：</p>
+<pre><code>sh /root/apps/zookeeper/bin/zkServer.sh start
+</code></pre>
+<p>查看状态</p>
+<pre><code>sh /root/apps/zookeeper/bin/zkServer.sh status
+</code></pre>
+<p>停止服务</p>
+<pre><code>sh /root/apps/zookeeper/bin/zkServer.sh stop
+</code></pre>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87"><span class="toc-number">1.</span> <span class="toc-text">1 环境准备</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E5%87%86%E5%A4%87%E4%B8%89%E5%8F%B0%E6%9C%BA%E5%99%A8"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 准备三台机器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E5%AE%89%E8%A3%85JDK"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 安装JDK</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-%E5%85%B3%E9%97%AD%E9%98%B2%E7%81%AB%E5%A2%99"><span class="toc-number">1.3.</span> <span class="toc-text">1.3 关闭防火墙</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%AE%89%E8%A3%85zookeeper"><span class="toc-number">2.</span> <span class="toc-text">2 安装zookeeper</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E4%B8%8B%E8%BD%BDzookeeper"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 下载zookeeper</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E4%BF%AE%E6%94%B9%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 修改配置文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E4%B8%BB%E6%9C%BA%E5%88%86%E5%8F%91"><span class="toc-number">2.3.</span> <span class="toc-text">2.3 主机分发</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-%E5%90%AF%E5%8A%A8zookeeper"><span class="toc-number">2.4.</span> <span class="toc-text">2.4 启动zookeeper</span></a></li></ol></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

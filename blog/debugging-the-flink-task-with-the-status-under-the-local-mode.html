@@ -1,0 +1,886 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>调试Local模式下带状态的Flink任务 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="
+Flink版本: 1.8.0
+Scala版本: 2.11
+Github地址：https://github.com/shirukai/flink-examples-debug-state.git
+在,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">调试Local模式下带状态的Flink任务</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/7.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/Flink"><b>「
+                    </b>FLINK<b> 」</b></a>
+                
+                June 17, 2020
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/debugging-the-flink-task-with-the-status-under-the-local-mode.html" title="调试Local模式下带状态的Flink任务" class="">调试Local模式下带状态的Flink任务</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    21k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    19 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Flink/" rel="tag">Flink</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <blockquote>
+<p>Flink版本: 1.8.0</p>
+<p>Scala版本: 2.11</p>
+<p>Github地址：<a target="_blank" rel="noopener" href="https://github.com/shirukai/flink-examples-debug-state.git">https://github.com/shirukai/flink-examples-debug-state.git</a></p>
+<p>在本地开发带状态的Flink任务时，经常会遇到这样的问题，需要验证状态是否生效？以及重启应用之后，状态里的数据能否从checkpoint的恢复？首先要明确的是，Flink重启时不会自动加载状态，需要我们手动指定checkpoint路径。笔者从Spark的Structured Streaming转到Flink的时候，就遇到这样的问题。在Spark中，我们使用的状态信息会随着程序再次启动时自动被加载出来。所以当时以为Flink状态也会被自动加载，在开发有状态算子时，测试重启应用之后，并没有继续上一次的状态。一开始以为是checkpoint的设置的问题，调试了好长时间，发现flink需要手动指定checkpoint路径。本篇文章，将从搭建项目到编写带状态的任务，介绍如何在IDEA中调试local模式下带状态的flink任务。</p>
+<p><em>注意：后期git上的项目名称从debug-flink-state-example改为flink-examples-debug-state</em></p>
+</blockquote>
+<h1 id="1-基于官方模板快速创建Flink项目"><a href="#1-基于官方模板快速创建Flink项目" class="headerlink" title="1 基于官方模板快速创建Flink项目"></a>1 基于官方模板快速创建Flink项目</h1><p>Flink提供了Meven模板，能够帮助我们快速创建Maven项目。执行如下命令快速创建一个flink项目：</p>
+<pre><code class="shell">mvn archetype:generate -DarchetypeGroupId=org.apache.flink -DarchetypeArtifactId=flink-quickstart-scala -DarchetypeVersion=1.8.0 -DgroupId=flink.examples -DartifactId=flink-examples-debug-state -Dversion=1.0 -Dpackage=flink.debug.state.example -DinteractiveMode=false
+</code></pre>
+<p>项目创建完成后，使用IDEA打开项目。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/be5260d8835d0652327f1c145dd27ddd.png"></p>
+<p>对pom.xml稍微做一下修改。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/2a0d6b3018493ab4e40529cc71470185.jpg"></p>
+<p>纠正一下上面这个问题，flink的两个包作用域都设置为了provided，在程序执行时汇报类不存在的异常。我们可以注释掉scope作用域，也可以在Maven里勾选带有flink依赖的Profiles。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200617115003.png" alt="image-20200617115003193"></p>
+<h1 id="2-编写一个有状态简单任务"><a href="#2-编写一个有状态简单任务" class="headerlink" title="2 编写一个有状态简单任务"></a>2 编写一个有状态简单任务</h1><p>这里我们编写一个简单的Flink任务，实现功能如下</p>
+<ol>
+<li>从SocketTextStream中实时接收文本内容</li>
+<li>将接收到文本转换为事件样例类，事件样例类包含三个字段id、value、time</li>
+<li>事件按照id进行KeyBy之后，使用process function统计每种事件的个数和value值的总和</li>
+<li>控制台输出统计结果</li>
+</ol>
+<p>逻辑比较简单，直接贴代码吧。</p>
+<pre><code class="scala">package debug.flink.state.example
+
+import org.apache.flink.api.common.state.&#123;ValueState, ValueStateDescriptor&#125;
+import org.apache.flink.streaming.api.scala.&#123;DataStream, StreamExecutionEnvironment&#125;
+import org.apache.flink.api.scala._
+import org.apache.flink.configuration.Configuration
+import org.apache.flink.streaming.api.functions.KeyedProcessFunction
+import org.apache.flink.util.Collector
+
+/**
+ * 实时计算事件总个数，以及value总和
+ *
+ * @author shirukai
+ */
+
+object EventCounterJob &#123;
+
+  def main(args: Array[String]): Unit = &#123;
+    // 获取执行环境
+    val env: StreamExecutionEnvironment = StreamExecutionEnvironment.getExecutionEnvironment
+
+    // 1. 从socket中接收文本数据
+    val streamText: DataStream[String] = env.socketTextStream(&quot;127.0.0.1&quot;, 9000)
+
+    // 2. 将文本内容按照空格分割转换为事件样例类
+    val events = streamText.map(s =&gt; &#123;
+      val tokens = s.split(&quot; &quot;)
+      Event(tokens(0), tokens(1).toDouble, tokens(2).toLong)
+    &#125;)
+    // 3. 按照时间id分区，然后进行聚合统计
+    val counterResult = events.keyBy(_.id).process(new EventCounterProcessFunction)
+
+    // 4. 结果输出到控制台
+    counterResult.print()
+
+    env.execute(&quot;EventCounterJob&quot;)
+  &#125;
+&#125;
+
+/**
+ * 定义事件样例类
+ *
+ * @param id    事件类型id
+ * @param value 事件值
+ * @param time  事件时间
+ */
+case class Event(id: String, value: Double, time: Long)
+
+/**
+ * 定义事件统计器样例类
+ *
+ * @param id    事件类型id
+ * @param sum   事件值总和
+ * @param count 事件个数
+ */
+case class EventCounter(id: String, var sum: Double, var count: Int)
+
+/**
+ * 继承KeyedProcessFunction实现事件统计
+ */
+class EventCounterProcessFunction extends KeyedProcessFunction[String, Event, EventCounter] &#123;
+  private var counterState: ValueState[EventCounter] = _
+
+  override def open(parameters: Configuration): Unit = &#123;
+    super.open(parameters)
+    // 从flink上下文中获取状态
+    counterState = getRuntimeContext.getState(new ValueStateDescriptor[EventCounter](&quot;event-counter&quot;, classOf[EventCounter]))
+  &#125;
+
+  override def processElement(i: Event,
+                              context: KeyedProcessFunction[String, Event, EventCounter]#Context,
+                              collector: Collector[EventCounter]): Unit = &#123;
+
+    // 从状态中获取统计器，如果统计器不存在给定一个初始值
+    val counter = Option(counterState.value()).getOrElse(EventCounter(i.id, 0.0, 0))
+
+    // 统计聚合
+    counter.count += 1
+    counter.sum += i.value
+
+    // 发送结果到下游
+    collector.collect(counter)
+
+    // 保存状态
+    counterState.update(counter)
+
+  &#125;
+&#125;
+</code></pre>
+<p>使用nc命令监听9000端口</p>
+<pre><code class="shell">nl -lk 9000
+</code></pre>
+<p>启动flink任务，并模拟如下数据发送</p>
+<pre><code>event-1 1 1591695864473
+event-1 12 1591695864474
+event-2 8 1591695864475
+event-1 10 1591695864476
+event-2 50 1591695864477
+event-1 6 1591695864478
+</code></pre>
+<p>效果如下动图所示：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200609200418.gif"></p>
+<h1 id="3-配置Checkpoint"><a href="#3-配置Checkpoint" class="headerlink" title="3 配置Checkpoint"></a>3 配置Checkpoint</h1><p>上一步我们已经编写了一个有状态的简单任务，但是状态并没有被持久化，程序重启之后状态会丢失。这时候我们需要给flink任务配置checkpoint。需要简单配置3个地方：</p>
+<ol>
+<li>开启checkpoint，并设置做两个checkpoint的间隔</li>
+<li>设置取消任务时自动保存checkpoint</li>
+<li>设置基于文件的状态后端</li>
+</ol>
+<pre><code class="scala">    // 配置checkpoint
+    // 做两个checkpoint的间隔为1秒
+    env.enableCheckpointing(1000)
+    // 表示下 Cancel 时是否需要保留当前的 Checkpoint，默认 Checkpoint 会在整个作业 Cancel 时被删除。Checkpoint 是作业级别的保存点。
+    env.getCheckpointConfig.enableExternalizedCheckpoints(ExternalizedCheckpointCleanup.RETAIN_ON_CANCELLATION)
+    // 设置状态后端：MemoryStateBackend、FsStateBackend、RocksDBStateBackend，这里设置基于文件的状态后端
+    env.setStateBackend(new FsStateBackend(&quot;file:///tmp/checkpoints/event-counter&quot;))
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200613155314.png" alt="image-20200613155124533"></p>
+<p>启动程序，同样模拟数据发送。</p>
+<p>这次先发送前三条数据</p>
+<pre><code>event-1 1 1591695864473
+event-1 12 1591695864474
+event-2 8 1591695864475
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200613155950.gif" alt="flink-state"></p>
+<p>从以上动图中的日志可以看出，flink每隔一秒都会在做checkpoint。</p>
+<pre><code>15:59:32,989 INFO  org.apache.flink.runtime.checkpoint.CheckpointCoordinator     - Triggering checkpoint 102 @ 1592035172989 for job 0c3d201188fc9953cb65498adb4954f4.
+15:59:32,997 INFO  org.apache.flink.runtime.checkpoint.CheckpointCoordinator     - Completed checkpoint 102 for job 0c3d201188fc9953cb65498adb4954f4 (21340 bytes in 7 ms).
+15:59:33,990 INFO  org.apache.flink.runtime.checkpoint.CheckpointCoordinator     - Triggering checkpoint 103 @ 1592035173989 for job 0c3d201188fc9953cb65498adb4954f4.
+15:59:34,001 INFO  org.apache.flink.runtime.checkpoint.CheckpointCoordinator     - Completed checkpoint 103 for job 0c3d201188fc9953cb65498adb4954f4 (21340 bytes in 11 ms).
+15:59:34,989 INFO  org.apache.flink.runtime.checkpoint.CheckpointCoordinator     - Triggering checkpoint 104 @ 1592035174989 for job 0c3d201188fc9953cb65498adb4954f4.
+15:59:35,006 INFO  org.apache.flink.runtime.checkpoint.CheckpointCoordinator     - Completed checkpoint 104 for job 0c3d201188fc9953cb65498adb4954f4 (21340 bytes in 15 ms).
+</code></pre>
+<p>查看checkpoint 的目录，发现有checkpoint生成。</p>
+<pre><code>ls /tmp/checkpoints/event-counter
+</code></pre>
+<p>这里简单说明一下checkpoint目录，程序每次启动都会在指定的目录下（如/tmp/checkpoints/event-counter）根据id生成一个目录，该目录会包含三个目录chk-*、shared、taskowned，每秒做的状态会报存在chk-*目录下，整体目录结构如下所示：</p>
+<pre><code>/tmp/checkpoints
+└── event-counter
+    └── 0c3d201188fc9953cb65498adb4954f4
+        ├── chk-104
+        │   ├── 01f2561f-ca48-4699-bbea-40fc849b2b0f
+        │   ├── 021a7b75-f034-4da3-ad0c-e9801a8f1141
+        │   ├── 17fcf354-c212-43ec-8e7c-99e37a7653c9
+        │   ├── 33af50a1-e2cb-4364-a723-4c182c5fdb47
+        │   ├── 3fa88dc7-ea81-4735-83ba-3d4630b7b8ac
+        │   ├── 792068d4-2f89-4d21-aa27-88ef61c7fa99
+        │   ├── 793d349b-8029-4cb6-b522-22445ec19bae
+        │   ├── _metadata
+        │   ├── acd28b9b-a0cb-4880-9564-9b9fe3c29200
+        │   ├── c7cbb990-917a-400d-9838-1ac28c92ea10
+        │   ├── e202ca66-5f9e-4858-bf15-02ca17a4e2b1
+        │   ├── e7370373-c4be-4c7c-b6df-d959127b31a3
+        │   └── eb619830-b102-4449-a29c-59d82b6bfbfe
+        ├── shared
+        └── taskowned
+</code></pre>
+<p>重启程序之后再发送后三条数据</p>
+<pre><code>event-1 10 1591695864476
+event-2 50 1591695864477
+event-1 6 1591695864478
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200613161613.gif" alt="flink-state-1"></p>
+<p>按照预期，当我们发送event-1 10 1591695864476这条数据时，我们得到的结果应该是EventCounter(event-1,11.5,3)，但实际上得到的是EventCounter(event-1,10.0,1)，很明显之前的状态丢失了，原因在文章开头已经说过，这是由于flink并不会自动加载之前的状态，需要我们手动指定checkpoint，如果使用命令行提交任务的话，可以使用-s参数指定savepoint的目录，那么如果在IDEA里开发测试时如何指定呢？下一章会介绍通过魔改源码的方式，实现checkpoint的加载。</p>
+<h1 id="4-魔改LocalStreamEnvironment"><a href="#4-魔改LocalStreamEnvironment" class="headerlink" title="4  魔改LocalStreamEnvironment"></a>4  魔改LocalStreamEnvironment</h1><h2 id="4-1-实现思路"><a href="#4-1-实现思路" class="headerlink" title="4.1 实现思路"></a>4.1 实现思路</h2><p>首先讲一下思路，当执行env.execute(“EventCounterJob”)时，程序会根据不同的执行环境选择不同的StreamExecutionEnvironment，flink里有两种执行环境：LocalStreamEnvironment和RemoteStreamEnvironment，当我们在IDEA直接运行时，使用的是LocalStreamEnvironment。通过查看RemoteStreamEnvironment的源码可以发现，它最终在构造JobGraph的时候，会将SavepointRestoreSettings的配置通过JobGraph的setSavepointRestoreSettings方法传入到JobGraph中。而在LocalStreamEnvironment中构造的JobGraph没有传入SavepointRestoreSettings的配置，这里我们需要通过修改源码，给JobGraph添加SavepointRestoreSettings配置。</p>
+<p>RemoteStreamEnvironment的源码位置：org.apache.flink.streaming.api.environment.RemoteStreamEnvironment。LocalStreamEnvironment的源码位置：org.apache.flink.streaming.api.environment.LocalStreamEnvironment，它的execute()实现源码如下：</p>
+<pre><code class="scala">    public JobExecutionResult execute(String jobName) throws Exception &#123;
+        // transform the streaming program into a JobGraph
+        StreamGraph streamGraph = getStreamGraph();
+        streamGraph.setJobName(jobName);
+
+        JobGraph jobGraph = streamGraph.getJobGraph();
+        jobGraph.setAllowQueuedScheduling(true);
+
+        Configuration configuration = new Configuration();
+        configuration.addAll(jobGraph.getJobConfiguration());
+        configuration.setString(TaskManagerOptions.MANAGED_MEMORY_SIZE, &quot;0&quot;);
+
+        // add (and override) the settings with what the user defined
+        configuration.addAll(this.configuration);
+
+        if (!configuration.contains(RestOptions.BIND_PORT)) &#123;
+            configuration.setString(RestOptions.BIND_PORT, &quot;0&quot;);
+        &#125;
+
+        int numSlotsPerTaskManager = configuration.getInteger(TaskManagerOptions.NUM_TASK_SLOTS, jobGraph.getMaximumParallelism());
+
+        MiniClusterConfiguration cfg = new MiniClusterConfiguration.Builder()
+            .setConfiguration(configuration)
+            .setNumSlotsPerTaskManager(numSlotsPerTaskManager)
+            .build();
+
+        if (LOG.isInfoEnabled()) &#123;
+            LOG.info(&quot;Running job on local embedded Flink mini cluster&quot;);
+        &#125;
+
+        MiniCluster miniCluster = new MiniCluster(cfg);
+
+        try &#123;
+            miniCluster.start();
+            configuration.setInteger(RestOptions.PORT, miniCluster.getRestAddress().get().getPort());
+
+            return miniCluster.executeJobBlocking(jobGraph);
+        &#125;
+        finally &#123;
+            transformations.clear();
+            miniCluster.close();
+        &#125;
+    &#125;
+</code></pre>
+<p>这段代码的大体逻辑是这样的：</p>
+<ol>
+<li>获取StreamGraph</li>
+<li>从StreamGraph中获取JobGraph</li>
+<li>构造配置</li>
+<li>创建一个MiniCluster</li>
+<li>将生成的JobGraph提交给MiniCluster</li>
+</ol>
+<p>我们可以在提交JobGraph给MiniCluster之前，将SavepointRestoreSettings动态设置给JobGraph，从而实现加载指定savepoint的目的。</p>
+<h2 id="4-2-重写LocalStreamEnvironment"><a href="#4-2-重写LocalStreamEnvironment" class="headerlink" title="4.2 重写LocalStreamEnvironment"></a>4.2 重写LocalStreamEnvironment</h2><ol>
+<li>在java资源下创建一个名为org.apache.flink.streaming.api.environment包路径</li>
+<li>在org.apache.flink.streaming.api.environment包下创建一个名为LocalStreamEnvironment的类</li>
+<li>LocalStreamEnvironment类内容如下所示：</li>
+</ol>
+<pre><code class="scala">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package org.apache.flink.streaming.api.environment;
+
+import org.apache.flink.annotation.Public;
+import org.apache.flink.api.common.InvalidProgramException;
+import org.apache.flink.api.common.JobExecutionResult;
+import org.apache.flink.api.java.ExecutionEnvironment;
+import org.apache.flink.configuration.Configuration;
+import org.apache.flink.configuration.RestOptions;
+import org.apache.flink.configuration.TaskManagerOptions;
+import org.apache.flink.runtime.jobgraph.JobGraph;
+import org.apache.flink.runtime.jobgraph.SavepointRestoreSettings;
+import org.apache.flink.runtime.minicluster.MiniCluster;
+import org.apache.flink.runtime.minicluster.MiniClusterConfiguration;
+import org.apache.flink.streaming.api.graph.StreamGraph;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.annotation.Nonnull;
+import java.util.Map;
+
+/**
+ * The LocalStreamEnvironment is a StreamExecutionEnvironment that runs the program locally,
+ * multi-threaded, in the JVM where the environment is instantiated. It spawns an embedded
+ * Flink cluster in the background and executes the program on that cluster.
+ *
+ * &lt;p&gt;When this environment is instantiated, it uses a default parallelism of &#123;@code 1&#125;. The default
+ * parallelism can be set via &#123;@link #setParallelism(int)&#125;.
+ */
+@Public
+public class LocalStreamEnvironment extends StreamExecutionEnvironment &#123;
+
+    private static final Logger LOG = LoggerFactory.getLogger(LocalStreamEnvironment.class);
+
+    private final Configuration configuration;
+
+    private static final String LAST_CHECKPOINT = &quot;last-checkpoint&quot;;
+
+    /**
+     * Creates a new mini cluster stream environment that uses the default configuration.
+     */
+    public LocalStreamEnvironment() &#123;
+        this(new Configuration());
+    &#125;
+
+    /**
+     * Creates a new mini cluster stream environment that configures its local executor with the given configuration.
+     *
+     * @param configuration The configuration used to configure the local executor.
+     */
+    public LocalStreamEnvironment(@Nonnull Configuration configuration) &#123;
+        if (!ExecutionEnvironment.areExplicitEnvironmentsAllowed()) &#123;
+            throw new InvalidProgramException(
+                    &quot;The LocalStreamEnvironment cannot be used when submitting a program through a client, &quot; +
+                            &quot;or running in a TestEnvironment context.&quot;);
+        &#125;
+        this.configuration = configuration;
+        setParallelism(1);
+    &#125;
+
+    protected Configuration getConfiguration() &#123;
+        return configuration;
+    &#125;
+
+    /**
+     * Executes the JobGraph of the on a mini cluster of CLusterUtil with a user
+     * specified name.
+     *
+     * @param jobName name of the job
+     * @return The result of the job execution, containing elapsed time and accumulators.
+     */
+    @Override
+    public JobExecutionResult execute(String jobName) throws Exception &#123;
+        // transform the streaming program into a JobGraph
+        StreamGraph streamGraph = getStreamGraph();
+        streamGraph.setJobName(jobName);
+
+        JobGraph jobGraph = streamGraph.getJobGraph();
+        jobGraph.setAllowQueuedScheduling(true);
+
+        // ##############################################################################
+        // 获取全局Job参数
+        Map&lt;String, String&gt; parameters = this.getConfig().getGlobalJobParameters().toMap();
+        if (parameters.containsKey(LAST_CHECKPOINT)) &#123;
+            // 加载checkpoint
+            String checkpointPath = parameters.get(LAST_CHECKPOINT);
+            jobGraph.setSavepointRestoreSettings(SavepointRestoreSettings.forPath(checkpointPath));
+            LOG.info(&quot;Load savepoint from &#123;&#125;.&quot;, checkpointPath);
+        &#125;
+        // ##############################################################################
+
+        Configuration configuration = new Configuration();
+        configuration.addAll(jobGraph.getJobConfiguration());
+        configuration.setString(TaskManagerOptions.MANAGED_MEMORY_SIZE, &quot;0&quot;);
+
+        // add (and override) the settings with what the user defined
+        configuration.addAll(this.configuration);
+
+        if (!configuration.contains(RestOptions.BIND_PORT)) &#123;
+            configuration.setString(RestOptions.BIND_PORT, &quot;0&quot;);
+        &#125;
+
+        int numSlotsPerTaskManager = configuration.getInteger(TaskManagerOptions.NUM_TASK_SLOTS, jobGraph.getMaximumParallelism());
+
+        MiniClusterConfiguration cfg = new MiniClusterConfiguration.Builder()
+                .setConfiguration(configuration)
+                .setNumSlotsPerTaskManager(numSlotsPerTaskManager)
+                .build();
+
+        if (LOG.isInfoEnabled()) &#123;
+            LOG.info(&quot;Running job on local embedded Flink mini cluster&quot;);
+        &#125;
+
+        MiniCluster miniCluster = new MiniCluster(cfg);
+
+        try &#123;
+            miniCluster.start();
+            configuration.setInteger(RestOptions.PORT, miniCluster.getRestAddress().get().getPort());
+
+            return miniCluster.executeJobBlocking(jobGraph);
+        &#125; finally &#123;
+            transformations.clear();
+            miniCluster.close();
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<p>上面魔改的代码部分思路是：从Job的全局参数中拿到最后一个checkpoint的路径，这个路径是我们传入进来的。然后通过jobGraph.setSavepointRestoreSettings(SavepointRestoreSettings.forPath(checkpointPath));设置到JobGraph中。</p>
+<h2 id="4-3-修改主程序"><a href="#4-3-修改主程序" class="headerlink" title="4.3 修改主程序"></a>4.3 修改主程序</h2><p>最后，需要修改主程序，让其自动获取最后一个checkpoint路径，然后传入给Job全局参数，添加代码如下：</p>
+<pre><code class="scala">    var params: ParameterTool = ParameterTool.fromArgs(args)
+    val checkPointDirPath = params.get(&quot;checkpoint-dir&quot;)
+    // 获取最后一个checkpoint文件夹
+    val checkpointDirs = new io.Directory(new File(checkPointDirPath)).list
+    if (checkpointDirs.nonEmpty) &#123;
+      val lastCheckpointDir = checkpointDirs.maxBy(_.lastModified)
+      val checkpoints = new Directory(lastCheckpointDir.jfile).list.filter(_.name.startsWith(&quot;chk-&quot;))
+      if (checkpoints.nonEmpty) &#123;
+        val lastCheckpoint = checkpoints.maxBy(_.lastModified).path
+        val newArgs = Array(&quot;--last-checkpoint&quot;, &quot;file://&quot; + lastCheckpoint)
+        // 重新载入配置
+        params = ParameterTool.fromArgs(args ++ newArgs)
+      &#125;
+    &#125;
+    env.getConfig.setGlobalJobParameters(params)
+
+        // ################################省略代码……
+
+    // 设置状态后端：MemoryStateBackend、FsStateBackend、RocksDBStateBackend，这里设置基于文件的状态后端
+    env.setStateBackend(new FsStateBackend(&quot;file://&quot;+checkPointDirPath))
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200613202430.png"></p>
+<h2 id="4-4-启动程序测试状态持久化"><a href="#4-4-启动程序测试状态持久化" class="headerlink" title="4.4 启动程序测试状态持久化"></a>4.4 启动程序测试状态持久化</h2><ol>
+<li><p>测试之前，先清除已有checkpoint</p>
+<pre><code>rm -rf /tmp/checkpoints/event-counter
+</code></pre>
+</li>
+<li><p>命令行执行nc -lk 9000</p>
+</li>
+<li><p>启动程序，指定参数–checkpoint-dir /tmp/checkpoints/event-counter</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200614123345.png" alt="image-20200614123345380"></p>
+</li>
+<li><p>先发送三条数据</p>
+<pre><code>event-1 1 1591695864473
+event-1 12 1591695864474
+event-2 8 1591695864475
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200614125129.gif" alt="flink-state-debug-1"></p>
+</li>
+<li><p>重启应用</p>
+</li>
+<li><p>再发送三条数据</p>
+<pre><code>event-1 1 1591695864473
+event-1 12 1591695864474
+event-2 8 1591695864475
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/20200614125153.gif" alt="flink-state-debug-2"></p>
+</li>
+</ol>
+<h1 id="5-总结"><a href="#5-总结" class="headerlink" title="5 总结"></a>5 总结</h1><p>经过魔改后的LocalStreamEnvironment，能够在程序启动时，自动的从指定的checkpoint目录获取最近一次的提交任务的最新的checkpoint，然后指定给JobGraph，使我们的程序能够加载到之前的状态。这种方式只是为了在本地验证状态的可用性，方便我们对状态进行调试，有这种需求的同学，不妨试一下，代码已经提交到github上了，另外有更好的方法，可以一起交流。</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E5%9F%BA%E4%BA%8E%E5%AE%98%E6%96%B9%E6%A8%A1%E6%9D%BF%E5%BF%AB%E9%80%9F%E5%88%9B%E5%BB%BAFlink%E9%A1%B9%E7%9B%AE"><span class="toc-number">1.</span> <span class="toc-text">1 基于官方模板快速创建Flink项目</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E7%BC%96%E5%86%99%E4%B8%80%E4%B8%AA%E6%9C%89%E7%8A%B6%E6%80%81%E7%AE%80%E5%8D%95%E4%BB%BB%E5%8A%A1"><span class="toc-number">2.</span> <span class="toc-text">2 编写一个有状态简单任务</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E9%85%8D%E7%BD%AECheckpoint"><span class="toc-number">3.</span> <span class="toc-text">3 配置Checkpoint</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%E9%AD%94%E6%94%B9LocalStreamEnvironment"><span class="toc-number">4.</span> <span class="toc-text">4  魔改LocalStreamEnvironment</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-%E5%AE%9E%E7%8E%B0%E6%80%9D%E8%B7%AF"><span class="toc-number">4.1.</span> <span class="toc-text">4.1 实现思路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-%E9%87%8D%E5%86%99LocalStreamEnvironment"><span class="toc-number">4.2.</span> <span class="toc-text">4.2 重写LocalStreamEnvironment</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-3-%E4%BF%AE%E6%94%B9%E4%B8%BB%E7%A8%8B%E5%BA%8F"><span class="toc-number">4.3.</span> <span class="toc-text">4.3 修改主程序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-4-%E5%90%AF%E5%8A%A8%E7%A8%8B%E5%BA%8F%E6%B5%8B%E8%AF%95%E7%8A%B6%E6%80%81%E6%8C%81%E4%B9%85%E5%8C%96"><span class="toc-number">4.4.</span> <span class="toc-text">4.4 启动程序测试状态持久化</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%E6%80%BB%E7%BB%93"><span class="toc-number">5.</span> <span class="toc-text">5 总结</span></a></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

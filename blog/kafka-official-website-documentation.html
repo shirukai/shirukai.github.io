@@ -1,0 +1,827 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>kafka官网文档学习 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="介绍kafka是一个分布式流式数据平台，具备以下三个特点：
+类似消息系统，提供事件流的发布和订阅，即具备数据注入功能
+存储时间流数据的几点具有故障容错的特点，即具备数据存储功能
+能够对实时的事件流进,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">kafka官网文档学习</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/4.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/Kafka"><b>「
+                    </b>KAFKA<b> 」</b></a>
+                
+                August 20, 2018
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/kafka-official-website-documentation.html" title="kafka官网文档学习" class="">kafka官网文档学习</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    19k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    17 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Kafka/" rel="tag">Kafka</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><h4 id="kafka是一个分布式流式数据平台，具备以下三个特点："><a href="#kafka是一个分布式流式数据平台，具备以下三个特点：" class="headerlink" title="kafka是一个分布式流式数据平台，具备以下三个特点："></a>kafka是一个分布式流式数据平台，具备以下三个特点：</h4><ul>
+<li>类似消息系统，提供事件流的发布和订阅，即具备数据注入功能</li>
+<li>存储时间流数据的几点具有故障容错的特点，即具备数据存储功能</li>
+<li>能够对实时的事件流进行流式地处理和分析，即具备流处理功能</li>
+</ul>
+<h4 id="kafka通常用户两大类应用："><a href="#kafka通常用户两大类应用：" class="headerlink" title="kafka通常用户两大类应用："></a>kafka通常用户两大类应用：</h4><ul>
+<li>构建可在系统或应用程序之间可靠获取数据的实时流数据管道</li>
+<li>构建实时流应用程序，用户转换或相应数据流</li>
+</ul>
+<h4 id="与kafka相关的概念："><a href="#与kafka相关的概念：" class="headerlink" title="与kafka相关的概念："></a>与kafka相关的概念：</h4><ul>
+<li>kafka作为一个集群运行在一台或多台可以跨越多个数据中心的服务器上</li>
+<li>kafka集群在称为主题的类别中存储记录流</li>
+<li>每个记录有一个键，一个值和一个时间戳组成</li>
+</ul>
+<h4 id="kafka有四个核心API："><a href="#kafka有四个核心API：" class="headerlink" title="kafka有四个核心API："></a>kafka有四个核心API：</h4><p><strong>Producer API</strong> 允许应用程序发布记录流到一个或者多个kafka的topic</p>
+<p><strong>Consumer API</strong> 允许应用程序订阅一个或多个topic，并处理所产生的对他们记录的数据流</p>
+<p><strong>Streams API</strong> 允许应用程序充当流处理器，从一个或多个topic消费输入流，并产生一个输出流到一个或多个主题，有效的变换输入流到输出流</p>
+<p><strong>Connector API</strong> 允许构建和运行kafka主题连接到现有的应用程序或数据系统中重用生产者或消费者。例如，连接到关系型数据库的连接器可能会捕获对表的买个更改。</p>
+<p><img src="https://shirukai.gitee.io/images/201803271507_36.png"></p>
+<h2 id="Topics（主题）-和-Logs（日志）"><a href="#Topics（主题）-和-Logs（日志）" class="headerlink" title="Topics（主题） 和 Logs（日志）"></a>Topics（主题） 和 Logs（日志）</h2><blockquote>
+<p>主题是记录发布的类别或提要名称。kafka的主题总是多用户的;也就是说，一个主题可以有零个、一个或多个订阅了写入它的数据的消费者</p>
+</blockquote>
+<p>对于每一个主题，kafka集群都维护一个这样的分区日志：</p>
+<p><img src="https://shirukai.gitee.io/images/201803271512_908.png"></p>
+<p>每个分区都是一个有序的、不可变的记录序列，它被不断地附加到一个结构化的提交日志中。分区中的记录都被分配了一个顺序的id号，称为偏移量，它惟一地标识分区内的每条记录。</p>
+<p>kafka的集群可以持续地保存所有已发布的记录——不管它们是否被消费——使用可配置的保留期。例如，如果保留策略被设置为两天，那么在记录发布后的两天内，它将被用于消费，之后将被丢弃以腾出空间。kafka的性能在数据大小方面是有效的，所以长期存储数据并不是问题。</p>
+<p><img src="https://shirukai.gitee.io/images/201803271514_346.png"></p>
+<p>实际上，在每个消费者的基础上保留的元数据是日志中消费者的偏移量或位置。这个偏移量由使用者控制：一般来说，消费者会在读取记录时线性地增加它的偏移量，但是，事实上，由于这个位置是由使用者控制的，它可以按照它喜欢的任何顺序使用记录。例如，消费者可以重新设置旧的偏移量，以重新处理过去的数据，或者跳过最近的记录，开始从“当前”开始消费。</p>
+<p>这一功能的结合意味着kafka的消费者非常便宜——他们可以在不影响集群或其他消费者的情况下，也可以不受影响。例如，您可以使用我们的命令行工具来“tail”任何主题的内容，而不需要改变任何现有使用者所消耗的内容。</p>
+<p>日志中的分区有几个用途。首先，它们允许日志扩展到可以容纳单个服务器的大小。每个单独的分区必须适合承载它的服务器，但是一个主题可能有多个分区，因此它可以处理任意数量的数据。第二，它们是并行的单元——更多的是关于这一点。</p>
+<h2 id="Distribution（分配）"><a href="#Distribution（分配）" class="headerlink" title="Distribution（分配）"></a>Distribution（分配）</h2><p>日志的分区分布在kafka集群中的服务器上，每个服务器处理数据和请求共享分区。每个分区都在可配置数量的服务器上进行复制，以实现容错。</p>
+<p>每个分区都有一个充当“领导者”的服务器，以及充当“追随者”的零个或多个服务器。领导者处理所有对该分区的读写请求，而关注者被动地复制领导者。如果领导者失败了，他的一个追随者将自动成为新的领导者。每个服务器都充当某些分区的领导者和其他人的关注者，因此负载在集群中很好地平衡。</p>
+<h2 id="Geo-Replication（地域复制）"><a href="#Geo-Replication（地域复制）" class="headerlink" title="Geo-Replication（地域复制）"></a>Geo-Replication（地域复制）</h2><p>Kafka MirrorMaker为您的集群提供了地理复制支持。使用MirrorMaker，消息可以跨多个数据中心或云区域复制。您可以在主动/被动场景中使用它进行备份和恢复;或者在主动/主动方案中，将数据与用户更接近，或者支持数据本地需求。</p>
+<h2 id="Producers"><a href="#Producers" class="headerlink" title="Producers"></a>Producers</h2><p>生产者将数据发布到他们选择的主题。生产者负责选择将哪个记录分配给主题中的哪个分区。这可以以循环方式完成，只是为了平衡负载，或者可以根据某种语义分区功能（例如基于记录中的某个键）完成。更多关于在第二次使用分区！</p>
+<h2 id="Consumers"><a href="#Consumers" class="headerlink" title="Consumers"></a>Consumers</h2><p>消费者用<em>消费者组</em>名称标记自己，并且发布到主题的每个记录都被传送到每个订阅消费者组中的一个消费者实例。消费者实例可以在单独的进程中或在单独的机器上。</p>
+<p>如果所有消费者实例具有相同的消费者组，则记录将有效地在消费者实例上进行负载均衡。</p>
+<p>如果所有消费者实例具有不同的消费者组，则每条记录都将广播给所有消费者进程。</p>
+<p>两个服务器Kafka集群托管四个分区（P0-P3）和两个消费者组。消费者组A有两个消费者实例，而组B有四个消费者实例。</p>
+<p>然而，更常见的是，我们发现话题的消费者群体很少，每个“逻辑用户”都有一个。每个组由许多消费者实例组成，具有可扩展性和容错性。这只不过是发布 - 订阅语义，订阅者是一群消费者而不是一个进程。</p>
+<p>在Kafka中实现消费的方式是将日志中的分区划分为消费者实例，以便每个实例在任何时间点都是“公平分享”分区的独占消费者。这个维护组中成员资格的过程是由Kafka协议动态处理的。如果新实例加入该组，则他们将接管来自该组的其他成员的一些分区; 如果一个实例死亡，其分区将分配给其余实例。</p>
+<p>kafka只提供一个分<em>区内</em>记录的总顺序，而不是主题中不同分区之间的顺序。按分区排序与按键分区数据的能力相结合，足以满足大多数应用程序的需求。但是，如果您需要全部订单而不是记录，则可以通过仅有一个分区的主题来实现，但这意味着每个消费者组只有一个消费者进程。</p>
+<h2 id="Multi-tenancy-多租户"><a href="#Multi-tenancy-多租户" class="headerlink" title="Multi-tenancy(多租户)"></a>Multi-tenancy(多租户)</h2><p>您可以将Kafka部署为多租户解决方案。通过配置哪些主题可以产生或使用数据来启用多租户。还有配额操作支持。管理员可以根据请求定义和执行配额以控制客户端使用的代理资源。有关更多信息，请参阅<a target="_blank" rel="noopener" href="https://kafka.apache.org/documentation/#security">安全性文档</a>。</p>
+<h2 id="Guarantees-担保"><a href="#Guarantees-担保" class="headerlink" title="Guarantees 担保"></a>Guarantees 担保</h2><p>在一个高层次的kafka提供以下保证：</p>
+<ul>
+<li>由制作者发送到特定主题分区的消息将按照它们发送的顺序附加。也就是说，如果记录M1由同一个生产者作为记录M2发送，并且M1被首先发送，则M1将具有比M2更低的偏移并且出现在日志中较早的地方。</li>
+<li>消费者实例按照它们存储在日志中的顺序查看记录。</li>
+<li>对于具有复制因子N的主题，我们将容忍多达N-1个服务器的故障，而不会丢失任何提交给日志的记录。</li>
+</ul>
+<p>有关这些保证的更多详细信息在文档的设计部分给出。</p>
+<h2 id="kafka作为消息系统"><a href="#kafka作为消息系统" class="headerlink" title="kafka作为消息系统"></a>kafka作为消息系统</h2><p>kafka的流概念如何与传统的企业消息传递系统相比较？</p>
+<p>消息传统上有两种模式：<a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Message_queue">排队</a>和<a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Publish%E2%80%93subscribe_pattern">发布 - 订阅</a>。在队列中，消费者池可以从服务器读取，并且每条记录都会转到其中的一个; 在发布 - 订阅记录被广播给所有消费者。这两种模式都有优势和劣势。排队的优势在于它允许您将多个用户实例中的数据处理分开，从而扩展您的处理。不幸的是，队列不是多用户的 - 一旦一个进程读取数据消失了。发布 - 订阅允许您将数据广播到多个进程，但无法进行扩展处理，因为每条消息都发送给每个订阅者。</p>
+<p>kafka的消费群体概念概括了这两个概念。与队列一样，消费者组允许您将一系列流程（消费者组成员）的处理分开。与发布 - 订阅一样，kafka允许您向多个消费者群体广播消息。</p>
+<p>kafka模式的优点是每个主题都有这些属性 - 它可以扩展处理，也可以是多用户 - 不需要选择其中一个。</p>
+<p>Kafka也比传统的消息系统有更强大的订单保证。</p>
+<p>传统队列在服务器上按顺序保留记录，并且如果多个使用者从队列中消耗，则服务器按照它们存储的顺序提交记录。但是，尽管服务器按顺序提交记录，但记录会异步传送给消费者，因此它们可能会针对不同的消费者按顺序到达。这实际上意味着在并行消耗的情况下记录的排序会丢失。消息传递系统通常具有“排他消费者”的概念，只允许一个进程从队列中消费，但这当然意味着处理中没有并行性。</p>
+<p>kafka做得更好。通过在主题内部有一个并行概念 - 分区概念，Kafka能够在消费者流程池中提供订单保证和负载均衡。这是通过将主题中的分区分配给使用者组中的使用者来实现的，以便每个分区仅由组中的一位使用者使用。通过这样做，我们确保消费者是该分区的唯一读者，并按顺序使用数据。由于有很多分区，这仍然可以平衡许多消费者实例的负载。但请注意，消费者组中的消费者实例不能多于分区。</p>
+<h2 id="kafka作为存储系统"><a href="#kafka作为存储系统" class="headerlink" title="kafka作为存储系统"></a>kafka作为存储系统</h2><p>任何允许发布消息与消费消息分离的消息队列都可以充当存储系统的空中消息。kafka的不同之处在于它是一个非常好的存储系统。</p>
+<p>写入Kafka的数据写入磁盘并进行复制以实现容错。Kafka允许生产者等待确认，以便在完全复制之前写入不被认为是完整的，并且即使写入的服务器失败也能保证写入持续。</p>
+<p>Kafka磁盘结构使用的规模很大 - 无论您在服务器上有50 KB还是50 TB的持久性数据，Kafka都会执行相同的操作。</p>
+<p>由于把存储的重视，并允许客户控制自己的读取位置的结果，你能想到kafka作为一种特殊用途的分布式文件系统，致力于高性能，低延迟提交日志存储，复制和传播。</p>
+<h2 id="用于流处理的Kafka"><a href="#用于流处理的Kafka" class="headerlink" title="用于流处理的Kafka"></a>用于流处理的Kafka</h2><p>仅读取，写入和存储数据流是不够的，目的是启用流的实时处理。</p>
+<p>在Kafka中，流处理器是指从输入主题获取连续数据流，对该输入执行一些处理并生成连续数据流以输出主题的任何内容。</p>
+<p>例如，零售应用程序可能会接受销售和装运的输入流，并输出一系列重新排序和对这些数据计算出的价格调整。</p>
+<p>可以直接使用生产者API和消费者API进行简单的处理。然而，对于更复杂的转换，Kafka提供了完全集成的<a target="_blank" rel="noopener" href="http://kafka.apache.org/documentation/streams">Streams API</a>。这允许构建应用程序进行非平凡的处理，从而计算聚合关闭流或将流连接在一起。</p>
+<p>这个工具有助于解决这类应用程序面临的难题：处理无序数据，重新处理代码更改的输入，执行有状态的计算等。</p>
+<p>流API基于Kafka提供的核心原语构建：它使用生产者API和消费者API输入，使用Kafka进行有状态存储，并在流处理器实例之间使用相同的组机制来实现容错。</p>
+<h2 id="把碎片放在一起"><a href="#把碎片放在一起" class="headerlink" title="把碎片放在一起"></a>把碎片放在一起</h2><p>消息传递，存储和流处理的这种组合可能看起来很不寻常，但对于Kafka作为流式传输平台的角色来说，这是非常重要的。</p>
+<p>像HDFS这样的分布式文件系统允许存储用于批处理的静态文件。有效地，这样的系统允许存储和处理过去的<em>历史</em>数据。</p>
+<p>传统的企业消息传递系统允许处理订阅后将来的消息。以这种方式构建的应用程序处理将来的数据。</p>
+<p>Kafka结合了这两种功能，而且这两种组合对于Kafka用作流式传输应用平台和流式数据管道都非常重要。</p>
+<p>通过将存储和低延迟订阅相结合，流式应用可以以相同的方式处理过去和未来的数据。这是一个单一的应用程序可以处理历史的，存储的数据，而不是在它达到最后一个记录时结束，它可以在将来的数据到达时继续处理。这是流处理的一般概念，包括批处理以及消息驱动的应用程序。</p>
+<p>同样，对于流式数据流水线，订阅实时事件的组合使得可以将Kafka用于非常低延迟的流水线; 但可靠地存储数据的能力可以将其用于必须保证数据交付的关键数据，或者与只能定期加载数据的离线系统集成，或者可能在较长时间内停机进行维护。流处理设施可以在数据到达时进行转换。</p>
+<h2 id="在shell-命令行对kafka进行操作"><a href="#在shell-命令行对kafka进行操作" class="headerlink" title="在shell 命令行对kafka进行操作"></a>在shell 命令行对kafka进行操作</h2><h3 id="创建一个topic"><a href="#创建一个topic" class="headerlink" title="创建一个topic"></a>创建一个topic</h3><p>我们用一个分区和一个副本创建一个名为“srktest”的主题</p>
+<pre><code>/usr/lib/kafka/bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic test
+</code></pre>
+<p>查看主题列表</p>
+<pre><code>/usr/lib/kafka/bin/kafka-topics.sh --list --zookeeper localhost:2181
+</code></pre>
+<p>也可以将代理设置为在发布不存在的主题时自动创建主题，而不是手动创建主题。</p>
+<h3 id="发送消息"><a href="#发送消息" class="headerlink" title="发送消息"></a>发送消息</h3><p>Kafka附带一个命令行客户端，它将从文件或标准输入中获取输入，并将其作为消息发送到Kafka集群。默认情况下，每行将作为单独的消息发送。</p>
+<p>运行生产者，然后在控制台中输入几条消息发送到服务器</p>
+<pre><code>[root@localhost ~]# /usr/lib/kafka/bin/kafka-console-producer.sh --broker-list 192.168.1.88:9092 --topic srktest
+&gt;This is my first kafka&#39;s message from shell client
+&gt;haha is ok?
+</code></pre>
+<h3 id="启动消费者"><a href="#启动消费者" class="headerlink" title="启动消费者"></a>启动消费者</h3><p>kafka也有一个命令行消费者，将消息转储到标准输出。</p>
+<pre><code>[root@localhost ~]# /usr/lib/kafka/bin/kafka-console-consumer.sh --bootstrap-server 192.168.1.88:9092 --topic srktest --from-beginning
+This is my first kafka&#39;s message from shell client
+haha is ok?
+</code></pre>
+<p>如果您将上述每个命令都在不同的终端中运行，那么您现在应该能够将消息键入生产者终端，并将它们显示在消费者终端中。</p>
+<p>所有的命令行工具都有其他选项; 在没有参数的情况下运行该命令将显示更详细地记录它们的使用信息。</p>
+<h3 id="设置多代理集群"><a href="#设置多代理集群" class="headerlink" title="设置多代理集群"></a>设置多代理集群</h3><p>在单机环境下扩展kafka的节点，组成集群</p>
+<p>首先我们为每个代理创建一个配置文件</p>
+<pre><code>cp config/server.properties config/server-1.properties
+cp config/server.properties config/server-2.properties
+</code></pre>
+<p>现在编辑这些新文件并设置下列属性：</p>
+<pre><code>config/server-1.properties:
+    broker.id=1
+    listeners=PLAINTEXT://:9093
+    log.dir=/tmp/kafka-logs-1
+ 
+config/server-2.properties:
+    broker.id=2
+    listeners=PLAINTEXT://:9094
+    log.dir=/tmp/kafka-logs-2
+</code></pre>
+<p>该<code>broker.id</code>属性是群集中每个节点的唯一且永久的名称。我们必须覆盖端口和日志目录，因为我们在同一台机器上运行这些端口和日志目录，并且我们希望让所有代理都试图在同一个端口注册或覆盖彼此的数据。</p>
+<p>我们已经有Zookeeper和我们的单个节点，所以我们只需要启动两个新节点：</p>
+<pre><code>&gt; bin/kafka-server-start.sh config/server-1.properties &amp;
+...
+&gt; bin/kafka-server-start.sh config/server-2.properties &amp;
+...
+</code></pre>
+<p>现在创建一个复制因子为三的新主题</p>
+<pre><code>bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 3 --partitions 1 --topic my-replicate-topic
+</code></pre>
+<p>好吧，但现在我们有一个集群，我们怎么知道哪个经纪人在做什么？要查看运行“describe”命令：</p>
+<pre><code>bin/kafka-topics.sh --describe --zookeeper localhost:2181 --topic  my-replicate-topic
+Topic:my-replicate-topic    PartitionCount:1    ReplicationFactor:3    Configs:
+    Topic: my-replicate-topic    Partition: 0    Leader: 0    Replicas: 0,1,3    Isr: 0,1,3
+</code></pre>
+<p>这里是对输出的解释，第一行给出所有分区的摘要，每个附加行提供有关一个分区的信息，由于我们只有一个分区，所以只有一行数据。</p>
+<ul>
+<li>leader 是负责给定分区的所有读写操作的节点，每个节点将成为分区随机选择部分的领导者</li>
+<li>replicas 是复制此分区的日志的节点列表，无论是不是领导者，是不是还存活着</li>
+<li>isr ”是一组“同步”副本。这是复制品列表的子集，目前活着并被引导到领导者身边。</li>
+</ul>
+<h2 id="java客户端操作kafka"><a href="#java客户端操作kafka" class="headerlink" title="java客户端操作kafka"></a>java客户端操作kafka</h2><h3 id="pox依赖"><a href="#pox依赖" class="headerlink" title="pox依赖"></a>pox依赖</h3><pre><code>        &lt;dependency&gt;
+            &lt;groupId&gt;org.apache.kafka&lt;/groupId&gt;
+            &lt;artifactId&gt;kafka-clients&lt;/artifactId&gt;
+            &lt;version&gt;0.11.0.0&lt;/version&gt;
+        &lt;/dependency&gt;
+</code></pre>
+<h3 id="发送消息-1"><a href="#发送消息-1" class="headerlink" title="发送消息"></a>发送消息</h3><pre><code>        Properties props = new Properties();
+        props.put(&quot;bootstrap.servers&quot;, &quot;192.168.1.188:9092&quot;);//kakfa 服务
+        props.put(&quot;acks&quot;, &quot;all&quot;);、//leader 需要等待所有备份都成功写入日志
+        props.put(&quot;retries&quot;, 0);//重试次数
+        props.put(&quot;batch.size&quot;, 16384);
+        props.put(&quot;linger.ms&quot;, 1);
+        props.put(&quot;buffer.memory&quot;, 33554432);
+        props.put(&quot;key.serializer&quot;, &quot;org.apache.kafka.common.serialization.StringSerializer&quot;);//key的序列化方式
+        props.put(&quot;value.serializer&quot;, &quot;org.apache.kafka.common.serialization.StringSerializer&quot;);//value的序列化方式
+        Producer&lt;String, String&gt; producer = new KafkaProducer&lt;String, String&gt;(props);
+        for (int i = 0; i &lt; 100; i++)
+            producer.send(new ProducerRecord&lt;String, String&gt;(&quot;srktest&quot;, &quot;client&quot; + i, &quot;this message from client&quot; + i));
+        producer.close();
+</code></pre>
+<h3 id="接受消息"><a href="#接受消息" class="headerlink" title="接受消息"></a>接受消息</h3><pre><code>        Properties props = new Properties();
+        props.put(&quot;bootstrap.servers&quot;, &quot;192.168.1.188:9092&quot;);
+        props.put(&quot;group.id&quot;, &quot;srk&quot;);
+        props.put(&quot;enable.auto.commit&quot;, &quot;false&quot;);
+        props.put(&quot;auto.offset.reset&quot;, &quot;earliest&quot;);
+        props.put(&quot;auto.commit.interval.ms&quot;, &quot;1000&quot;);
+        props.put(&quot;key.deserializer&quot;, &quot;org.apache.kafka.common.serialization.StringDeserializer&quot;);
+        props.put(&quot;value.deserializer&quot;, &quot;org.apache.kafka.common.serialization.StringDeserializer&quot;);
+        KafkaConsumer&lt;String, String&gt; consumer = new KafkaConsumer&lt;String, String&gt;(props);
+        consumer.subscribe(Arrays.asList(&quot;srktest&quot;));
+        while (true) &#123;
+            ConsumerRecords&lt;String, String&gt; records = consumer.poll(100);
+            for (ConsumerRecord&lt;String, String&gt; record : records)
+                System.out.printf(&quot;offset = %d, key = %s, value = %s%n&quot;, record.offset(), record.key(), record.value());
+        &#125;
+</code></pre>
+<h3 id="Producer配置说明"><a href="#Producer配置说明" class="headerlink" title="Producer配置说明"></a>Producer配置说明</h3><table>
+<thead>
+<tr>
+<th>名称</th>
+<th>说明</th>
+<th>类型</th>
+<th>默认值</th>
+<th>有效值</th>
+<th>重要性</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>bootstrap.servers</td>
+<td>用于建立与kafka集群连接的host/port组。数据将会在所有servers上均衡加载，不管哪些server是指定用于bootstrapping。这个列表仅仅影响初始化的hosts（用于发现全部的servers）。这个列表格式：host1:port1,host2:port2,…因为这些server仅仅是用于初始化的连接，以发现集群所有成员关系（可能会动态的变化），这个列表不需要包含所有的servers（你可能想要不止一个server，尽管这样，可能某个server宕机了）。如果没有server在这个列表出现，则发送数据会一直失败，直到列表可用。</td>
+<td>list</td>
+<td></td>
+<td></td>
+<td>高</td>
+</tr>
+<tr>
+<td>acks</td>
+<td>producer需要server接收到数据之后发出的确认接收的信号，此项配置就是指procuder需要多少个这样的确认信号。此配置实际上代表了数据备份的可用性。以下设置为常用选项：（1）acks=0： 设置为0表示producer不需要等待任何确认收到的信息。副本将立即加到socket buffer并认为已经发送。没有任何保障可以保证此种情况下server已经成功接收数据，同时重试配置不会发生作用（因为客户端不知道是否失败）回馈的offset会总是设置为-1；（2）acks=1： 这意味着至少要等待leader已经成功将数据写入本地log，但是并没有等待所有follower是否成功写入。这种情况下，如果follower没有成功备份数据，而此时leader又挂掉，则消息会丢失。（3）acks=all： 这意味着leader需要等待所有备份都成功写入日志，这种策略会保证只要有一个备份存活就不会丢失数据。这是最强的保证。，</td>
+<td>string</td>
+<td>-1</td>
+<td>[all -1 0 1]</td>
+<td>高</td>
+</tr>
+<tr>
+<td>key.serializer</td>
+<td>key的序列化方式，若是没有设置，同serializer.class</td>
+<td>实现Serializer接口的class</td>
+<td></td>
+<td></td>
+<td>高</td>
+</tr>
+<tr>
+<td>value.serializer</td>
+<td>value序列化类方式</td>
+<td>实现Serializer接口的class</td>
+<td></td>
+<td></td>
+<td>高</td>
+</tr>
+<tr>
+<td>buffer.memory</td>
+<td>producer可以用来缓存数据的内存大小。如果数据产生速度大于向broker发送的速度，producer会阻塞或者抛出异常，以“block.on.buffer.full”来表明。这项设置将和producer能够使用的总内存相关，但并不是一个硬性的限制，因为不是producer使用的所有内存都是用于缓存。一些额外的内存会用于压缩（如果引入压缩机制），同样还有一些用于维护请求。</td>
+<td>long</td>
+<td>33554432</td>
+<td></td>
+<td>高</td>
+</tr>
+<tr>
+<td>compression.type</td>
+<td>producer用于压缩数据的压缩类型。默认是无压缩。正确的选项值是none、gzip、snappy。压缩最好用于批量处理，批量处理消息越多，压缩性能越好</td>
+<td>string</td>
+<td>none</td>
+<td></td>
+<td>高</td>
+</tr>
+<tr>
+<td>retries</td>
+<td>设置大于0的值将使客户端重新发送任何数据，一旦这些数据发送失败。注意，这些重试与客户端接收到发送错误时的重试没有什么不同。允许重试将潜在的改变数据的顺序，如果这两个消息记录都是发送到同一个partition，则第一个消息失败第二个发送成功，则第二条消息会比第一条消息出现要早。</td>
+<td>int</td>
+<td>0</td>
+<td></td>
+<td>高</td>
+</tr>
+<tr>
+<td>batch.size</td>
+<td>producer将试图批处理消息记录，以减少请求次数。这将改善client与server之间的性能。这项配置控制默认的批量处理消息字节数。不会试图处理大于这个字节数的消息字节数。发送到brokers的请求将包含多个批量处理，其中会包含对每个partition的一个请求。较小的批量处理数值比较少用，并且可能降低吞吐量（0则会仅用批量处理）。较大的批量处理数值将会浪费更多内存空间，这样就需要分配特定批量处理数值的内存大小。</td>
+<td>int</td>
+<td>16384</td>
+<td></td>
+<td>高</td>
+</tr>
+<tr>
+<td>client.id</td>
+<td>当向server发出请求时，这个字符串会发送给server。目的是能够追踪请求源头，以此来允许ip/port许可列表之外的一些应用可以发送信息。这项应用可以设置任意字符串，因为没有任何功能性的目的，除了记录和跟踪</td>
+<td>string</td>
+<td>“”</td>
+<td></td>
+<td>中</td>
+</tr>
+<tr>
+<td>connections.max.idle.ms</td>
+<td>关闭连接空闲时间</td>
+<td>long</td>
+<td>540000</td>
+<td></td>
+<td>中</td>
+</tr>
+<tr>
+<td>linger.ms</td>
+<td>producer组将会汇总任何在请求与发送之间到达的消息记录一个单独批量的请求。通常来说，这只有在记录产生速度大于发送速度的时候才能发生。然而，在某些条件下，客户端将希望降低请求的数量，甚至降低到中等负载一下。这项设置将通过增加小的延迟来完成–即，不是立即发送一条记录，producer将会等待给定的延迟时间以允许其他消息记录发送，这些消息记录可以批量处理。这可以认为是TCP种Nagle的算法类似。这项设置设定了批量处理的更高的延迟边界：一旦我们获得某个partition的batch.size，他将会立即发送而不顾这项设置，然而如果我们获得消息字节数比这项设置要小的多，我们需要“linger”特定的时间以获取更多的消息。 这个设置默认为0，即没有延迟。设定linger.ms=5，例如，将会减少请求数目，但是同时会增加5ms的延迟。</td>
+<td>long</td>
+<td>0</td>
+<td></td>
+<td>中</td>
+</tr>
+<tr>
+<td>max.block.ms</td>
+<td>控制block的时长,当buffer空间不够或者metadata丢失时产生block</td>
+<td>long</td>
+<td>60000</td>
+<td></td>
+<td>中</td>
+</tr>
+<tr>
+<td>max.request.size</td>
+<td>请求的最大字节数。这也是对最大记录尺寸的有效覆盖。注意：server具有自己对消息记录尺寸的覆盖，这些尺寸和这个设置不同。此项设置将会限制producer每次批量发送请求的数目，以防发出巨量的请求。</td>
+<td>int</td>
+<td>1048576</td>
+<td></td>
+<td>中</td>
+</tr>
+<tr>
+<td>partitioner.class</td>
+<td>分区类</td>
+<td>实现Partitioner 的class</td>
+<td>class org.apache.kafka.clients.producer.internals.DefaultPartitioner</td>
+<td></td>
+<td>中</td>
+</tr>
+<tr>
+<td>receive.buffer.bytes</td>
+<td>socket的接收缓存空间大小,当阅读数据时使用</td>
+<td>int</td>
+<td>32768</td>
+<td></td>
+<td>中</td>
+</tr>
+<tr>
+<td>request.timeout.ms</td>
+<td>客户端将等待请求的响应的最大时间,如果在这个时间内没有收到响应，客户端将重发请求;超过重试次数将抛异常</td>
+<td>int</td>
+<td>3000</td>
+<td></td>
+<td>中</td>
+</tr>
+<tr>
+<td>send.buffer.bytes</td>
+<td>发送数据时的缓存空间大小</td>
+<td>int</td>
+<td>131072</td>
+<td></td>
+<td>中</td>
+</tr>
+<tr>
+<td>timeout.ms</td>
+<td>此配置选项控制server等待来自followers的确认的最大时间。如果确认的请求数目在此时间内没有实现，则会返回一个错误。这个超时限制是以server端度量的，没有包含请求的网络延迟</td>
+<td>int</td>
+<td>30000</td>
+<td></td>
+<td>中</td>
+</tr>
+<tr>
+<td>max.in.flight.requests.per.connection</td>
+<td>kafka可以在一个connection中发送多个请求，叫作一个flight,这样可以减少开销，但是如果产生错误，可能会造成数据的发送顺序改变,默认是5 (修改）</td>
+<td>int</td>
+<td>5</td>
+<td></td>
+<td>低</td>
+</tr>
+<tr>
+<td>metadata.fetch.timeout.ms</td>
+<td>是指我们所获取的一些元素据的第一个时间数据。元素据包含：topic，host，partitions。此项配置是指当等待元素据fetch成功完成所需要的时间，否则会跑出异常给客户端</td>
+<td>long</td>
+<td>60000</td>
+<td></td>
+<td>低</td>
+</tr>
+<tr>
+<td>metadata.max.age.ms</td>
+<td>以微秒为单位的时间，是在我们强制更新metadata的时间间隔。即使我们没有看到任何partition leadership改变。</td>
+<td>long</td>
+<td>300000</td>
+<td></td>
+<td>低</td>
+</tr>
+<tr>
+<td>metric.reporters</td>
+<td>类的列表，用于衡量指标。实现MetricReporter接口，将允许增加一些类，这些类在新的衡量指标产生时就会改变。JmxReporter总会包含用于注册JMX统计</td>
+<td>list</td>
+<td>none</td>
+<td></td>
+<td>低</td>
+</tr>
+<tr>
+<td>metrics.num.samples</td>
+<td>用于维护metrics的样本数</td>
+<td>int</td>
+<td>2</td>
+<td></td>
+<td>低</td>
+</tr>
+<tr>
+<td>metrics.sample.window.ms</td>
+<td>metrics系统维护可配置的样本数量，在一个可修正的window size。这项配置配置了窗口大小，例如。我们可能在30s的期间维护两个样本。当一个窗口推出后，我们会擦除并重写最老的窗口</td>
+<td>long</td>
+<td>30000</td>
+<td></td>
+<td>低</td>
+</tr>
+<tr>
+<td>reconnect.backoff.ms</td>
+<td>连接失败时，当我们重新连接时的等待时间。这避免了客户端反复重连</td>
+<td>long</td>
+<td>10</td>
+<td></td>
+<td>低</td>
+</tr>
+<tr>
+<td>retry.backoff.ms</td>
+<td>在试图重试失败的produce请求之前的等待时间。避免陷入发送-失败的死循环中</td>
+<td>long</td>
+<td>100</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h3 id=""><a href="#" class="headerlink" title=""></a></h3>
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.</span> <span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Topics%EF%BC%88%E4%B8%BB%E9%A2%98%EF%BC%89-%E5%92%8C-Logs%EF%BC%88%E6%97%A5%E5%BF%97%EF%BC%89"><span class="toc-number">2.</span> <span class="toc-text">Topics（主题） 和 Logs（日志）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Distribution%EF%BC%88%E5%88%86%E9%85%8D%EF%BC%89"><span class="toc-number">3.</span> <span class="toc-text">Distribution（分配）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Geo-Replication%EF%BC%88%E5%9C%B0%E5%9F%9F%E5%A4%8D%E5%88%B6%EF%BC%89"><span class="toc-number">4.</span> <span class="toc-text">Geo-Replication（地域复制）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Producers"><span class="toc-number">5.</span> <span class="toc-text">Producers</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Consumers"><span class="toc-number">6.</span> <span class="toc-text">Consumers</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Multi-tenancy-%E5%A4%9A%E7%A7%9F%E6%88%B7"><span class="toc-number">7.</span> <span class="toc-text">Multi-tenancy(多租户)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Guarantees-%E6%8B%85%E4%BF%9D"><span class="toc-number">8.</span> <span class="toc-text">Guarantees 担保</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#kafka%E4%BD%9C%E4%B8%BA%E6%B6%88%E6%81%AF%E7%B3%BB%E7%BB%9F"><span class="toc-number">9.</span> <span class="toc-text">kafka作为消息系统</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#kafka%E4%BD%9C%E4%B8%BA%E5%AD%98%E5%82%A8%E7%B3%BB%E7%BB%9F"><span class="toc-number">10.</span> <span class="toc-text">kafka作为存储系统</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%A8%E4%BA%8E%E6%B5%81%E5%A4%84%E7%90%86%E7%9A%84Kafka"><span class="toc-number">11.</span> <span class="toc-text">用于流处理的Kafka</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8A%8A%E7%A2%8E%E7%89%87%E6%94%BE%E5%9C%A8%E4%B8%80%E8%B5%B7"><span class="toc-number">12.</span> <span class="toc-text">把碎片放在一起</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9C%A8shell-%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%AF%B9kafka%E8%BF%9B%E8%A1%8C%E6%93%8D%E4%BD%9C"><span class="toc-number">13.</span> <span class="toc-text">在shell 命令行对kafka进行操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AAtopic"><span class="toc-number">13.1.</span> <span class="toc-text">创建一个topic</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%91%E9%80%81%E6%B6%88%E6%81%AF"><span class="toc-number">13.2.</span> <span class="toc-text">发送消息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8%E6%B6%88%E8%B4%B9%E8%80%85"><span class="toc-number">13.3.</span> <span class="toc-text">启动消费者</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AE%E5%A4%9A%E4%BB%A3%E7%90%86%E9%9B%86%E7%BE%A4"><span class="toc-number">13.4.</span> <span class="toc-text">设置多代理集群</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#java%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%93%8D%E4%BD%9Ckafka"><span class="toc-number">14.</span> <span class="toc-text">java客户端操作kafka</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#pox%E4%BE%9D%E8%B5%96"><span class="toc-number">14.1.</span> <span class="toc-text">pox依赖</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%91%E9%80%81%E6%B6%88%E6%81%AF-1"><span class="toc-number">14.2.</span> <span class="toc-text">发送消息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%A5%E5%8F%97%E6%B6%88%E6%81%AF"><span class="toc-number">14.3.</span> <span class="toc-text">接受消息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Producer%E9%85%8D%E7%BD%AE%E8%AF%B4%E6%98%8E"><span class="toc-number">14.4.</span> <span class="toc-text">Producer配置说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">14.5.</span> <span class="toc-text"></span></a></li></ol></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

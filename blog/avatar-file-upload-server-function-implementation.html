@@ -1,0 +1,572 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>头像文件上传服务器的功能实现 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="在此项目中，用户注册时，需要上传头像，这里简单的利用了几个插件，实现了头像上传服务器的功能。前端利用了一个upload的插件，后端引用了Spring 的上传文件的jar包，下面整理贴出了项目中的相关,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">头像文件上传服务器的功能实现</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/6.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/项目开发记录"><b>「
+                    </b>项目开发记录<b> 」</b></a>
+                
+                August 20, 2018
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/avatar-file-upload-server-function-implementation.html" title="头像文件上传服务器的功能实现" class="">头像文件上传服务器的功能实现</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    7.6k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    7 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/notebook%E6%A1%88%E4%BE%8B/" rel="tag">notebook案例</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91%E8%AE%B0%E5%BD%95/" rel="tag">项目开发记录</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <p>在此项目中，用户注册时，需要上传头像，这里简单的利用了几个插件，实现了头像上传服务器的功能。前端利用了一个upload的插件，后端引用了Spring 的上传文件的jar包，下面整理贴出了项目中的相关代码：</p>
+<h2 id="JSP页面"><a href="#JSP页面" class="headerlink" title="JSP页面"></a>JSP页面</h2><p>需要引入js以及css文件：<br>bootstrap.css<br>ui.css<br>form.css<br>font-awesome.css</p>
+<h4 id="引入css"><a href="#引入css" class="headerlink" title="引入css"></a>引入css</h4><pre><code>&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;&lt;%=request.getContextPath()%&gt;/skins/css/bootstrap.css&quot;&gt;
+&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;&lt;%=request.getContextPath()%&gt;/skins/css/ui.css&quot;&gt;
+&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;&lt;%=request.getContextPath()%&gt;/skins/css/form.css&quot;&gt;
+&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;&lt;%=request.getContextPath()%&gt;/skins/css/font-awesome.css&quot;&gt;
+</code></pre>
+<h4 id="引入js"><a href="#引入js" class="headerlink" title="引入js"></a>引入js</h4><p>jquery.js<br>form.js</p>
+<pre><code>&lt;script type=&quot;text/javascript&quot; src=&quot;&lt;%=request.getContextPath()%&gt;/skins/js/jquery.js&quot;&gt;&lt;/script&gt;
+    &lt;script type=&quot;text/javascript&quot; src=&quot;&lt;%=request.getContextPath()%&gt;/skins/js/form.js&quot;&gt;&lt;/script&gt;
+</code></pre>
+<p>提示：所需的js、css文件以及必要的jar包我会在本文的下面贴出连接</p>
+<h4 id="HTML代码"><a href="#HTML代码" class="headerlink" title="HTML代码"></a>HTML代码</h4><pre><code>&lt;div class=&quot;form-group&quot;&gt;
+    &lt;label class=&quot;col-sm-3 control-label&quot;&gt;头像&lt;/label&gt;
+    &lt;div class=&quot;col-sm-8&quot;&gt;
+        &lt;div class=&quot;input-group&quot; style=&quot;width: 60%&quot; &gt;
+            &lt;input type=&quot;text&quot; class=&quot;form-control ue-form&quot; name=&quot;avatar&quot; id=&quot;filelist&quot;  placeholder=&quot;选择上传头像&quot;&gt;
+            &lt;span class=&quot;input-group-addon ue-form-btn &quot; id=&quot;inputfiles&quot;&gt;
+            &lt;i class=&quot;fa  fa-upload&quot;&gt;&lt;/i&gt;&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;progress&quot; style=&quot;display:none;margin-top: 10px;width: 60%&quot;&gt;
+            &lt;div class=&quot;progress-bar&quot; id=&quot;inputpro&quot;&gt;
+                &lt;span&gt;&lt;/span&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+<p>效果图：<br><img src="https://shirukai.gitee.io/images/imga120179117152.png" alt="enter image description here"></p>
+<h4 id="js代码"><a href="#js代码" class="headerlink" title="js代码"></a>js代码</h4><pre><code>$(function() &#123;
+    var uploader = new plupload.Uploader(&#123;
+        //用来指定上传方式,指定多个上传方式请使用逗号隔开,默认即为此,可不写
+        runtimes: &#39;html5,flash,silverlight,html4&#39;,
+        //点击上传html标签的id,可以是a,button等
+        browse_button: &#39;inputfiles&#39;,
+        //服务器端的页面上传地址
+        url : context + &#39;/service/uploadImg&#39;,
+        //文件的最大上传大小,不写该参数则上传文件大小无限制
+        max_file_size: &#39;50mb&#39;,
+        //设置多项选择,默认为true,即可多选文件,功能为单选时需将此设为false
+        multi_selection: false,
+        //上传的文件生成一个唯一的文件名,默认为false,false时上传文件为本身的名字,true时自动生成其他名字
+        unique_names: true,
+        //可以使用该参数来限制上传文件的类型,大小等,该参数以对象的形式传入
+        filters: [
+            &#123;title: &quot;Image files&quot;, extensions: &quot;jpg,gif,png&quot;&#125;,
+            &#123;title: &quot;Zip files&quot;, extensions: &quot;zip&quot;&#125;
+        ],
+        //flash地址,swf文件,当需要使用swf方式进行上传时需要配置该参数
+        flash_swf_url: &#39;../../dist/js/Moxie.swf&#39;,
+        //silverlight文件,当需要使用silverlight方式进行上传时需要配置该参数
+        silverlight_xap_url: &#39;../../dist/js/Moxie.xap&#39;,
+        //当Plupload初始化完成后触发
+        init: &#123;
+            //当文件添加到上传队列后触发(up为当前的plupload实例对象,files为一个数组,里面的元素为本次添加到上传队列里的文件对象)
+            FilesAdded: function(up, files) &#123;
+                plupload.each(files, function(file) &#123;
+                    document.getElementById(&#39;filelist&#39;).value += file.name;
+                &#125;);
+                //开始上传队列中的文件
+                uploader.start();
+            &#125;,
+            //会在文件上传过程中不断触发,可以用此事件来显示上传进度(up当前的plupload实例对象,file为触发此事件的文件对象)
+            UploadProgress: function(up, file) &#123;
+                $(&quot;#inputpro&quot;).parent().show();
+                $(&quot;#inputpro&quot;)[0].style.width = $(&quot;#inputpro&quot;)[0].innerText = file.percent + &quot;%&quot;;
+            &#125;,
+            FileUploaded:function (up,file,responseObject) &#123;
+                //将json字符串转换成json对象
+                console.log(responseObject);
+               var data =  JSON.parse(responseObject.response);
+               $(&quot;#filelist&quot;).val(data.fileName)
+
+            &#125;
+
+        &#125;
+    &#125;);
+//初始化Plupload实例
+    uploader.init();
+&#125;);
+</code></pre>
+<p>注意这个方法FileUploaded，这是一个服务器完成上传后返回的信息，在这里可以调用服务器返回的信息。</p>
+<p>到这里前端的东西就写完了，下面贴一下后端的代码。</p>
+<h2 id="后端"><a href="#后端" class="headerlink" title="后端"></a>后端</h2><h4 id="配置jar包"><a href="#配置jar包" class="headerlink" title="配置jar包"></a>配置jar包</h4><p>这里需要用到两个jar包：<br>commons-fileupload-1.3.3.jar<br>commons-io-1.4.jar<br>我这里使用的idea写的项目，所以这两个jar包复制到lib目录下之后，需要把它引进库里。<br>打开项目结构-在library里将jar添加进去</p>
+<h4 id="配置xml文件添加bean"><a href="#配置xml文件添加bean" class="headerlink" title="配置xml文件添加bean"></a>配置xml文件添加bean</h4><p>在spring-servlet.xml文件中添加bean，如下图所示：</p>
+<pre><code>&lt;bean id=&quot;multipartResolver&quot; class=&quot;org.springframework.web.multipart.commons.CommonsMultipartResolver&quot;&gt;
+    &lt;property name=&quot;maxUploadSize&quot; value=&quot;104857600&quot;/&gt;
+    &lt;property name=&quot;maxInMemorySize&quot; value=&quot;4096&quot;/&gt;
+&lt;/bean&gt;
+</code></pre>
+<h4 id="controller层"><a href="#controller层" class="headerlink" title="controller层"></a>controller层</h4><pre><code>//上传用户头像
+@RequestMapping(&quot;uploadImg&quot;)
+@ResponseBody
+public Map&lt;String,String&gt; uploadImg(HttpServletRequest request,HttpSession httpSession)throws IllegalStateException,IOException
+&#123;
+    Map&lt;String,String&gt; map = new HashMap&lt;String,String&gt;();
+    long  startTime=System.currentTimeMillis();
+    String thisTime = String.valueOf(startTime);
+    //获取当前路径
+    String thisPath = request.getServletContext().getRealPath(&quot;uploadFile&quot;);
+    System.out.println(thisPath);
+    //将当前上下文初始化给  CommonsMutipartResolver （多部分解析器）
+    CommonsMultipartResolver multipartResolver=new CommonsMultipartResolver(
+            request.getSession().getServletContext());
+    //检查form中是否有enctype=&quot;multipart/form-data&quot;
+    if(multipartResolver.isMultipart(request))
+    &#123;
+        //将request变成多部分request
+        MultipartHttpServletRequest multiRequest=(MultipartHttpServletRequest)request;
+        //获取multiRequest 中所有的文件名
+        Iterator iter=multiRequest.getFileNames();
+
+        while(iter.hasNext())
+        &#123;
+            //一次遍历所有文件
+            MultipartFile file=multiRequest.getFile(iter.next().toString());
+            if(file!=null)
+            &#123;
+                String path=thisPath+&quot;\\&quot;+thisTime+file.getOriginalFilename();
+                //上传
+                file.transferTo(new File(path));
+                String fileName =thisTime+file.getOriginalFilename();
+                String fileUrl = &quot;&lt;%=request.getContextPath()%&gt;/uploadFile/&quot;+fileName;
+                map.put(&quot;fileName&quot;,fileName);
+                map.put(&quot;fileUrl&quot;,fileUrl);
+            &#125;
+        &#125;
+
+    &#125;
+    return map;
+&#125;
+</code></pre>
+<p>这里只是做了个简单的上传，上传后得到一个路径还有文件名，然后返回给前端，等用户提交注册之后，将信息一起保存到数据库里。</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#JSP%E9%A1%B5%E9%9D%A2"><span class="toc-number">1.</span> <span class="toc-text">JSP页面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%8E%E7%AB%AF"><span class="toc-number">2.</span> <span class="toc-text">后端</span></a></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

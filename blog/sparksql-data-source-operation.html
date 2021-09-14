@@ -1,0 +1,1223 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SparkSQL数据源操作 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="
+版本说明： spark-2.3.0
+
+SparkSQL支持很多数据源，我们可以使用Spark内置的数据源，目前Spark支持的数据源有：json，parquet，jdbc，orc，libsvm，c,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">SparkSQL数据源操作</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/5.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/Spark"><b>「
+                    </b>SPARK<b> 」</b></a>
+                
+                June 15, 2019
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/sparksql-data-source-operation.html" title="SparkSQL数据源操作" class="">SparkSQL数据源操作</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    27k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    25 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Spark/" rel="tag">Spark</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <blockquote>
+<p>版本说明： spark-2.3.0</p>
+</blockquote>
+<p>SparkSQL支持很多数据源，我们可以使用Spark内置的数据源，目前Spark支持的数据源有：json，parquet，jdbc，orc，libsvm，csv，text。也可以指定自定义的数据源，只需要在读取数据源的时候，指定数据源的全名。在<a target="_blank" rel="noopener" href="https://spark-packages.org/%E8%BF%99%E4%B8%AA%E7%BD%91%E7%AB%99%EF%BC%8C%E6%88%91%E4%BB%AC%E5%8F%AF%E4%BB%A5%E8%8E%B7%E5%8F%96%E5%88%B0%E6%9B%B4%E5%A4%9A%E7%9A%84%E7%AC%AC%E4%B8%89%E6%96%B9%E7%9A%84%E6%95%B0%E6%8D%AE%E6%BA%90%E3%80%82">https://spark-packages.org/这个网站，我们可以获取到更多的第三方的数据源。</a></p>
+<p>官网文档：<a target="_blank" rel="noopener" href="http://spark.apache.org/docs/latest/sql-programming-guide.html#data-sources">http://spark.apache.org/docs/latest/sql-programming-guide.html#data-sources</a></p>
+<p>收藏笔记：<a target="_blank" rel="noopener" href="https://blog.csdn.net/wsdc0521/article/details/50011349">https://blog.csdn.net/wsdc0521/article/details/50011349</a></p>
+<h1 id="1-JSON数据源"><a href="#1-JSON数据源" class="headerlink" title="1 JSON数据源"></a>1 JSON数据源</h1><h2 id="1-1-以json格式写入"><a href="#1-1-以json格式写入" class="headerlink" title="1.1 以json格式写入"></a>1.1 以json格式写入</h2><p>先手动生成一个DataFrame，然后以json格式写入文件</p>
+<pre><code class="scala">import spark.implicits._
+val df = Seq((&quot;Ming&quot;, 20, 15552211521L), (&quot;hong&quot;, 19, 13287994007L), (&quot;zhi&quot;, 21, 15552211523L)).toDF(&quot;name&quot;, &quot;age&quot;, &quot;phone&quot;)
+df.show()
+//以json格式写入文件
+df.write.format(&quot;json&quot;).save(&quot;/Users/shirukai/Desktop/HollySys/Repository/learn-demo-spark/data/json&quot;)
+</code></pre>
+<p>保存数据时，可以指定SaveMode，如:</p>
+<pre><code class="scala">df.write.format(&quot;json&quot;).mode(&quot;errorifexists&quot;).save(&quot;/Users/shirukai/Desktop/HollySys/Repository/learn-demo-spark/data/json&quot;)
+</code></pre>
+<p>这里指定了SaveMode为errorifexists也就是如果文件已经存在，就报错，这种保存模式也是系统默认的。常见的SaveMode有：</p>
+<table>
+<thead>
+<tr>
+<th>SaveMode</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>errorifexists</td>
+<td>默认，如果文件存在报错</td>
+</tr>
+<tr>
+<td>append</td>
+<td>将DataFrame保存到数据源时，如果数据/表已存在，则DataFrame的内容应附加到现有数据。</td>
+</tr>
+<tr>
+<td>overwrite</td>
+<td>覆盖模式意味着在将DataFrame保存到数据源时，如果数据/表已经存在，则预期现有数据将被DataFrame的内容覆盖。</td>
+</tr>
+<tr>
+<td>ignore</td>
+<td>忽略模式意味着在将DataFrame保存到数据源时，如果数据已存在，则预期保存操作不会保存DataFrame的内容并且不会更改现有数据。这与<code>CREATE TABLE IF NOT EXISTS</code>SQL中的类似。</td>
+</tr>
+</tbody></table>
+<p>在写json时，我们也可以通过option传入特定的参数，支持参数如下所示：</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>默认值</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>compression</td>
+<td>null</td>
+<td>保存到文件时使用的压缩编解码器，如（<code>none</code>，<code>bzip2</code>，<code>gzip</code>，<code>lz4</code>，*<code>snappy</code>和<code>deflate</code>），不区分大小写。</td>
+</tr>
+<tr>
+<td>dateFormat</td>
+<td>yyyy-MM-dd</td>
+<td>设置指示日期格式的字符串。 自定义日期格式遵循<code>java.text.SimpleDateFormat</code>中的格式。这适用于日期类型。</td>
+</tr>
+<tr>
+<td>timestampFormat</td>
+<td>yyyy-MM-dd’T’HH:mm:ss.SSSXXX</td>
+<td>设置表示时间戳格式的字符串。自定义日期格式遵循<code>java.text.SimpleDateFormat</code>中的格式。这适用于时间戳类型</td>
+</tr>
+<tr>
+<td>encoding</td>
+<td></td>
+<td>指定已保存的json 文件的编码（charset）。如果未设置，将使用UTF-8字符集。</td>
+</tr>
+<tr>
+<td>lineSep</td>
+<td>\n</td>
+<td>指定行分隔符</td>
+</tr>
+</tbody></table>
+<h2 id="1-2-以json格式读取"><a href="#1-2-以json格式读取" class="headerlink" title="1.2 以json格式读取"></a>1.2 以json格式读取</h2><p>读取上面我们写入的json文件</p>
+<pre><code class="json">  //读取json数据源
+    val jsonDF = spark.read.format(&quot;json&quot;).load(&quot;/Users/shirukai/Desktop/HollySys/Repository/learn-demo-spark/data/json&quot;)
+    jsonDF.show()
+    /**
+      * +---+----+-----------+
+      * |age|name|      phone|
+      * +---+----+-----------+
+      * | 20|Ming|15552211521|
+      * | 19|hong|13287994007|
+      * | 21| zhi|15552211523|
+      * +---+----+-----------+
+      */
+</code></pre>
+<p>当然读取json文件时，我们也可以通过option传入特定的参数，读取json支持的参数如下：</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>默认值</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>primitivesAsString</td>
+<td>false</td>
+<td>将所有原始值推断为String类型</td>
+</tr>
+<tr>
+<td>prefersDecimal</td>
+<td>false</td>
+<td>将所有浮点值推断为十进制类型。如果值不适合十进制，那么它将它们推断为双精度数。</td>
+</tr>
+<tr>
+<td>allowComments</td>
+<td>false</td>
+<td>忽略JSON记录中的Java / C ++样式注释</td>
+</tr>
+<tr>
+<td>allowUnquotedFieldNames</td>
+<td>false</td>
+<td>允许不带引号的JSON字段名称</td>
+</tr>
+<tr>
+<td>allowSingleQuotes</td>
+<td>true</td>
+<td>除了双引号外允许使用单引号</td>
+</tr>
+<tr>
+<td>allowNumericLeadingZeros</td>
+<td>false</td>
+<td>允许数字之前有零，(e.g. 00012)</td>
+</tr>
+<tr>
+<td>allowBackslashEscapingAnyCharacter</td>
+<td>false</td>
+<td>允许使用反斜杠引用机制接受所有字符的引用</td>
+</tr>
+<tr>
+<td>allowUnquotedControlChars</td>
+<td>false</td>
+<td>允许JSON字符串包含不带引号的控制字符（值小于32的ASCII字符，包括制表符和换行符）或不包含。</td>
+</tr>
+<tr>
+<td>mode</td>
+<td>PERMISSIVE</td>
+<td>允许在解析过程中处理损坏记录的模式。共有三种模式：<br><code>PERMISSIVE</code>:当它遇到损坏的记录时，将格式错误的字符串放入由<code>columnNameOfCorruptRecord</code>配置的字段中，并将其他字段设置为“null”。为了保持损坏的记录，用户可以在用户定义的模式中设置名为<code>columnNameOfCorruptRecord</code>的字符串类型字段。如果架构没有<br/>字段，它在解析过程中丢弃损坏的记录。在推断模式时，它会在输出模式中隐式添加<code>columnNameOfCorruptRecord</code>字段。<br/><code>DROPMALFORMED</code>:忽略整个损坏的记录<br/><code>FAILFAST</code>:当遇到损坏记录时抛出异常</td>
+</tr>
+<tr>
+<td>columnNameOfCorruptRecord</td>
+<td><code>spark.sql.columnNameOfCorruptRecord</code>中指定的值</td>
+<td>允许重命名具有由’PERMISSIVE<code>模式创建的格式错误的字符串的新字段。这会覆盖</code>spark.sql.columnNameOfCorruptRecord`</td>
+</tr>
+<tr>
+<td>dateFormat</td>
+<td>yyyy-MM-dd</td>
+<td>设置指示日期格式的字符串。 自定义日期格式遵循<code>java.text.SimpleDateFormat</code>中的格式。这适用于日期类型。</td>
+</tr>
+<tr>
+<td>timestampFormat</td>
+<td>yyyy-MM-dd’T’HH:mm:ss.SSSXXX</td>
+<td>设置表示时间戳格式的字符串。自定义日期格式遵循<code>java.text.SimpleDateFormat</code>中的格式。这适用于时间戳类型。</td>
+</tr>
+<tr>
+<td>multiLine</td>
+<td>false</td>
+<td>解析一个记录，每个文件可能跨越多行</td>
+</tr>
+<tr>
+<td>encoding</td>
+<td></td>
+<td>允许强制为JSON文件设置标准基本或扩展编码之一。例如UTF-16BE，UTF-32LE。如果未指定encoding 并且<code>multiLine</code>设置为<code>true</code>，则会自动检测到它。</td>
+</tr>
+<tr>
+<td>lineSep</td>
+<td><code>\r</code>, <code>\r\n</code> and <code>\n</code></td>
+<td>行分隔符</td>
+</tr>
+<tr>
+<td>samplingRatio</td>
+<td>1.0</td>
+<td>定义用于模式推断的输入JSON对象的分数</td>
+</tr>
+</tbody></table>
+<h1 id="2-CSV数据源"><a href="#2-CSV数据源" class="headerlink" title="2 CSV数据源"></a>2 CSV数据源</h1><h2 id="2-1-以csv格式写入"><a href="#2-1-以csv格式写入" class="headerlink" title="2.1 以csv格式写入"></a>2.1 以csv格式写入</h2><p>手动生成一个DataFrame然后以csv格式写入文件</p>
+<pre><code class="scala">import spark.implicits._
+val df = Seq((&quot;Ming&quot;, 20, 15552211521L), (&quot;hong&quot;, 19, 13287994007L), (&quot;zhi&quot;, 21, 15552211523L)).toDF(&quot;name&quot;, &quot;age&quot;, &quot;phone&quot;)
+df.show()
+//以csv格式写入文件
+df.write.format(&quot;csv&quot;).mode(&quot;overwrite&quot;).save(&quot;/Users/shirukai/Desktop/HollySys/Repository/learn-demo-spark/data/csv&quot;)
+</code></pre>
+<p>支持option列表</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>默认值</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>sep</td>
+<td>,</td>
+<td>列分隔符</td>
+</tr>
+<tr>
+<td>quote</td>
+<td>“</td>
+<td>设置用于转义引用值的单个字符，其中分隔符可以是值的一部分。如果设置了空字符串，则使用<code>u0000</code> （空字符）</td>
+</tr>
+<tr>
+<td>escape</td>
+<td>\</td>
+<td>设置一个用于在已引用的值内转义引号的单个字符。</td>
+</tr>
+<tr>
+<td>charToEscapeQuoteEscaping</td>
+<td><code>escape</code> or <code>\0</code></td>
+<td>设置一个单独的字符，用于转义引号字符的转义。当转义和引号字符不同时，默认值为转义字符，否则为“\ 0”</td>
+</tr>
+<tr>
+<td>escapeQuotes</td>
+<td>true</td>
+<td>一个标志，指示包含引号的值是否应始终用引号括起来。默认是转义包含引号字符的所有值。</td>
+</tr>
+<tr>
+<td>quoteAll</td>
+<td>false</td>
+<td>一个标志，指示是否所有值都应始终用引号括起来。默认是仅转义包含引号字符的值。</td>
+</tr>
+<tr>
+<td>header</td>
+<td>false</td>
+<td>将第一行写为列的名称</td>
+</tr>
+<tr>
+<td>nullValue</td>
+<td>空字符串</td>
+<td>设置空值的字符串表示形式。</td>
+</tr>
+<tr>
+<td>compression</td>
+<td>null</td>
+<td>保存到文件时使用的压缩编解码器，如（<code>none</code>，<code>bzip2</code>，<code>gzip</code>，<code>lz4</code>，<code>snappy</code>和<code>deflate</code>），不区分大小写。</td>
+</tr>
+<tr>
+<td>dateFormat</td>
+<td>yyyy-MM-dd</td>
+<td>设置指示日期格式的字符串。 自定义日期格式遵循<code>java.text.SimpleDateFormat</code>中的格式。这适用于日期类型。</td>
+</tr>
+<tr>
+<td>timestampFormat</td>
+<td>yyyy-MM-dd’T’HH:mm:ss.SSSXXX</td>
+<td>设置表示时间戳格式的字符串。自定义日期格式遵循<code>java.text.SimpleDateFormat</code>中的格式。这适用于时间戳类型。</td>
+</tr>
+<tr>
+<td>ignoreLeadingWhiteSpace</td>
+<td>true</td>
+<td>一个标志，指示是否应该跳过正在写入的值的头部空格。</td>
+</tr>
+<tr>
+<td>ignoreTrailingWhiteSpace</td>
+<td>true</td>
+<td>一个标志，指示是否应该跳过正在写入的值的尾部空格。</td>
+</tr>
+</tbody></table>
+<h2 id="2-2-以csv格式读取"><a href="#2-2-以csv格式读取" class="headerlink" title="2.2 以csv格式读取"></a>2.2 以csv格式读取</h2><p>读取我们上面写入的csv文件</p>
+<pre><code class="scala"> //读取csv数据源
+    val csvDF = spark.read.format(&quot;csv&quot;).options(Map(&quot;sep&quot;-&gt;&quot;,&quot;,&quot;inferSchema&quot;-&gt;&quot;true&quot;,&quot;header&quot;-&gt;&quot;true&quot;)).load(&quot;/Users/shirukai/Desktop/HollySys/Repository/learn-demo-spark/data/csv&quot;)
+    csvDF.show()
+</code></pre>
+<p>在读取csv文件时我们可以指定option参数：</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>默认值</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>sep</td>
+<td>,</td>
+<td>列分隔符</td>
+</tr>
+<tr>
+<td>encoding</td>
+<td>UTF-8</td>
+<td>编码格式</td>
+</tr>
+<tr>
+<td>quote</td>
+<td>“</td>
+<td>设置用于转义引用值的单个字符，其中分隔符可以是值的一部分。如果设置了空字符串，则使用<code>u0000</code> （空字符）</td>
+</tr>
+<tr>
+<td>escape</td>
+<td>\</td>
+<td>设置一个用于在已引用的值内转义引号的单个字符。</td>
+</tr>
+<tr>
+<td>comment</td>
+<td>empty string</td>
+<td>设置一个用于跳过以此字符开头的行的单个字符。默认情况下，它被禁用。</td>
+</tr>
+<tr>
+<td>header</td>
+<td>false</td>
+<td>将第一行写为列的名称</td>
+</tr>
+<tr>
+<td>enforceSchema</td>
+<td>true</td>
+<td>如果将其设置为“true”，则将强制将指定或推断的模式<em>应用于数据源文件，并忽略CSV文件中的标头。 如果该选项设置为“false”，则在<code>header</code>选项设置为“true”的情况下，将针对CSV文件中的所有标头验证模式。模式中的字段名称和CSV标题中的列名称通过考虑<code>spark.sql.caseSensitive</code>的位置进行检查。虽然默认值为true，但建议禁用</em> enforceSchema`选项以避免不正确的结果。</td>
+</tr>
+<tr>
+<td>inferSchema</td>
+<td>true</td>
+<td>从数据中自动推断输入模式。 需要对数据进行一次额外的传递。</td>
+</tr>
+<tr>
+<td>samplingRatio</td>
+<td>1.0</td>
+<td>定义用于模式推断的行的分数。</td>
+</tr>
+<tr>
+<td>dateFormat</td>
+<td>yyyy-MM-dd</td>
+<td>设置指示日期格式的字符串。 自定义日期格式遵循<code>java.text.SimpleDateFormat</code>中的格式。这适用于日期类型。</td>
+</tr>
+<tr>
+<td>timestampFormat</td>
+<td>yyyy-MM-dd’T’HH:mm:ss.SSSXXX</td>
+<td>设置表示时间戳格式的字符串。自定义日期格式遵循<code>java.text.SimpleDateFormat</code>中的格式。这适用于时间戳类型。</td>
+</tr>
+<tr>
+<td>ignoreLeadingWhiteSpace</td>
+<td>false</td>
+<td>忽略开头是空格的值</td>
+</tr>
+<tr>
+<td>ignoreTrailingWhiteSpace</td>
+<td>false</td>
+<td>忽略结尾是空格的值</td>
+</tr>
+<tr>
+<td>nullValue</td>
+<td>empty string</td>
+<td>设置空值的字符串表示形式。从*2.0.1开始，这适用于所有支持的类型，包括字符串类型。</td>
+</tr>
+<tr>
+<td>nanValue</td>
+<td>NaN</td>
+<td>设置非数字值的字符串表示形式。</td>
+</tr>
+<tr>
+<td>positiveInf</td>
+<td>Inf</td>
+<td>设置正无穷大值的字符串表示形式</td>
+</tr>
+<tr>
+<td>negativeInf</td>
+<td>-Inf</td>
+<td>设置负无穷大值的字符串表示形式</td>
+</tr>
+<tr>
+<td>maxColumns</td>
+<td>20480</td>
+<td>定义记录可以有多少列的硬限制。</td>
+</tr>
+<tr>
+<td>maxCharsPerColumn</td>
+<td>-1</td>
+<td>定义允许读取的任何给定值的最大字符数。默认情况下，它为-1表示无限长度</td>
+</tr>
+<tr>
+<td>mode</td>
+<td></td>
+<td>允许在解析过程中处理损坏记录的模式。共有三种模式：<br/><code>PERMISSIVE</code>:当它遇到损坏的记录时，将格式错误的字符串放入由<code>columnNameOfCorruptRecord</code>配置的字段中，并将其他字段设置为“null”。为了保持损坏的记录，用户可以在用户定义的模式中设置名为<code>columnNameOfCorruptRecord</code>的字符串类型字段。如果架构没有<br/>字段，它在解析过程中丢弃损坏的记录。在推断模式时，它会在输出模式中隐式添加<code>columnNameOfCorruptRecord</code>字段。<br/><code>DROPMALFORMED</code>:忽略整个损坏的记录<br/><code>FAILFAST</code>:当遇到损坏记录时抛出异常</td>
+</tr>
+<tr>
+<td>columnNameOfCorruptRecord</td>
+<td><code>spark.sql.columnNameOfCorruptRecord</code>中指定的值</td>
+<td>允许重命名具有由’PERMISSIVE<code>模式创建的格式错误的字符串的新字段。这会覆盖</code>spark.sql.columnNameOfCorruptRecord`</td>
+</tr>
+<tr>
+<td>multiLine</td>
+<td>false</td>
+<td>解析一条记录，可能跨越多行。</td>
+</tr>
+</tbody></table>
+<h1 id="3-Text数据源"><a href="#3-Text数据源" class="headerlink" title="3 Text数据源"></a>3 Text数据源</h1><h2 id="3-1-以Text格式写入"><a href="#3-1-以Text格式写入" class="headerlink" title="3.1 以Text格式写入"></a>3.1 以Text格式写入</h2><p>将手动生成的DataFrame以text格式写入文件</p>
+<pre><code class="scala"> import spark.implicits._
+    val df = Seq((&quot;Ming&quot;, 20, 15552211521L), (&quot;hong&quot;, 19, 13287994007L), (&quot;zhi&quot;, 21, 15552211523L)).toDF(&quot;name&quot;, &quot;age&quot;, &quot;phone&quot;)
+    df.show()
+    val textDF = df.map(_.toSeq.foldLeft(&quot;&quot;)(_+&quot;,&quot;+_).substring(1))
+    //以text格式写入文件
+    textDF.write.format(&quot;text&quot;).mode(&quot;overwrite&quot;).save(&quot;/Users/shirukai/Desktop/HollySys/Repository/learn-demo-spark/data/text&quot;)
+</code></pre>
+<p>写入text格式时，要求我们的DataFrame只有一列，否则会报如下错误：</p>
+<p><img src="http://shirukai.gitee.io/images/8e24c4deef04f2f96954208e6b4652d7.jpg"></p>
+<p>支持的option参数</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>默认值</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>compression</td>
+<td>null</td>
+<td>保存到文件时使用的压缩编解码器，如（<code>none</code>，<code>bzip2</code>，<code>gzip</code>，<code>lz4</code>，<code>snappy</code>和<code>deflate</code>），不区分大小写。</td>
+</tr>
+<tr>
+<td>lineSep</td>
+<td><code>\r</code>, <code>\r\n</code> and <code>\n</code></td>
+<td>行分隔符</td>
+</tr>
+</tbody></table>
+<h2 id="3-2-以Text格式读取，并转为DataFrame"><a href="#3-2-以Text格式读取，并转为DataFrame" class="headerlink" title="3.2 以Text格式读取，并转为DataFrame"></a>3.2 以Text格式读取，并转为DataFrame</h2><p>Spark SQL 读取text文件，只有一列，这是我们可以通过进一步的处理，转化为以“,”分割的多列DataFrame</p>
+<pre><code class="scala">//读取text文件
+val text = spark.read.format(&quot;text&quot;).load(&quot;/Users/shirukai/Desktop/HollySys/Repository/learn-demo-spark/data/text&quot;)
+text.show()
+lazy val first = textDF.first()
+val numAttrs = first.split(&quot;,&quot;).length
+import org.apache.spark.sql.functions._
+var newDF = textDF.withColumn(&quot;splitCols&quot;, split($&quot;value&quot;, &quot;,&quot;))
+0.until(numAttrs).foreach(x =&gt; &#123;
+  newDF = newDF.withColumn(&quot;col&quot; + &quot;_&quot; + x, $&quot;splitCols&quot;.getItem(x))
+&#125;)
+newDF.show()
+
+/**
+  * +-------------------+--------------------+-----+-----+-----------+
+  * |              value|           splitCols|col_0|col_1|      col_2|
+  * +-------------------+--------------------+-----+-----+-----------+
+  * |Ming,20,15552211521|[Ming, 20, 155522...| Ming|   20|15552211521|
+  * |hong,19,13287994007|[hong, 19, 132879...| hong|   19|13287994007|
+  * | zhi,21,15552211523|[zhi, 21, 1555221...|  zhi|   21|15552211523|
+  * +-------------------+--------------------+-----+-----+-----------+
+  */
+</code></pre>
+<p>支持的option参数</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>默认值</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>wholetext</td>
+<td>false</td>
+<td>如果为true，则将文件作为单行读取，而不是按“\ n”拆分</td>
+</tr>
+<tr>
+<td>lineSep</td>
+<td><code>\r</code>, <code>\r\n</code> and <code>\n</code></td>
+<td>行分隔符</td>
+</tr>
+</tbody></table>
+<h1 id="4-Parquet数据源"><a href="#4-Parquet数据源" class="headerlink" title="4 Parquet数据源"></a>4 Parquet数据源</h1><p>Spark 默认的数据源操作为Parquet格式，也就是说，当我们read或者write的时候，不指定数据源类型，Spark默认会使用Parquet格式来处理。</p>
+<h2 id="4-1-以Parquet格式写入"><a href="#4-1-以Parquet格式写入" class="headerlink" title="4.1 以Parquet格式写入"></a>4.1 以Parquet格式写入</h2><pre><code class="scala">import spark.implicits._
+//从内存中创建一个DataFrame
+val df = Seq((&quot;Ming&quot;, 20, 15552211521L), (&quot;hong&quot;, 19, 13287994007L), (&quot;zhi&quot;, 21, 15552211523L)).toDF(&quot;name&quot;, &quot;age&quot;, &quot;phone&quot;)
+df.show()
+//以Parquet的格式写入
+df.write.format(&quot;parquet&quot;).save(&quot;/Users/shirukai/Desktop/HollySys/Repository/learn-demo-spark/data/parquet&quot;)
+</code></pre>
+<p>option支持参数</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>默认值</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>compression</td>
+<td>null</td>
+<td>保存到文件时使用的压缩编解码器，如（<code>none</code>，<code>bzip2</code>，<code>gzip</code>，<code>lz4</code>，<code>snappy</code>和<code>deflate</code>），不区分大小写。</td>
+</tr>
+</tbody></table>
+<h2 id="4-2-以Parquet格式读取"><a href="#4-2-以Parquet格式读取" class="headerlink" title="4.2 以Parquet格式读取"></a>4.2 以Parquet格式读取</h2><pre><code class="scala">//读取Parquet
+val parquetDF = spark.read.format(&quot;parquet&quot;).load(&quot;/Users/shirukai/Desktop/HollySys/Repository/learn-demo-spark/data/parquet&quot;)
+parquetDF.printSchema()
+
+/**
+  * root
+  * |-- name: string (nullable = true)
+  * |-- age: integer (nullable = true)
+  * |-- phone: long (nullable = true)
+  */
+</code></pre>
+<p>option参数</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>默认值</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>mergeSchema</td>
+<td>false</td>
+<td>如果为true，则将文件作为单行读取，而不是按“\ n”拆分</td>
+</tr>
+</tbody></table>
+<h2 id="4-3-模式合并"><a href="#4-3-模式合并" class="headerlink" title="4.3 模式合并"></a>4.3 模式合并</h2><p>官网的例子：</p>
+<pre><code class="scala"> // Create a simple DataFrame, store into a partition directory
+    val squaresDF = spark.sparkContext.makeRDD(1 to 5).map(i =&gt; (i, i * i)).toDF(&quot;value&quot;, &quot;square&quot;)
+    squaresDF.write.parquet(&quot;/Users/shirukai/Desktop/HollySys/Repository/learn-demo-spark/data/parquet/test_table/key=1&quot;)
+
+    // Create another DataFrame in a new partition directory,
+    // adding a new column and dropping an existing column
+    val cubesDF = spark.sparkContext.makeRDD(6 to 10).map(i =&gt; (i, i * i * i)).toDF(&quot;value&quot;, &quot;cube&quot;)
+    cubesDF.write.parquet(&quot;/Users/shirukai/Desktop/HollySys/Repository/learn-demo-spark/data/parquet/test_table/key=2&quot;)
+
+    // Read the partitioned table
+    val mergedDF = spark.read.option(&quot;mergeSchema&quot;, &quot;true&quot;).parquet(&quot;/Users/shirukai/Desktop/HollySys/Repository/learn-demo-spark/data/parquet/test_table&quot;)
+    mergedDF.printSchema()
+
+    /***
+      * root
+      * |-- value: integer (nullable = true)
+      * |-- square: integer (nullable = true)
+      * |-- cube: integer (nullable = true)
+      * |-- key: integer (nullable = true)
+      */
+</code></pre>
+<h1 id="5-JDBC数据源"><a href="#5-JDBC数据源" class="headerlink" title="5 JDBC数据源"></a>5 JDBC数据源</h1><h2 id="5-1-以JDBC数据源写入"><a href="#5-1-以JDBC数据源写入" class="headerlink" title="5.1 以JDBC数据源写入"></a>5.1 以JDBC数据源写入</h2><pre><code class="scala">import spark.implicits._
+//从内存中创建一个DataFrame
+val df = Seq((&quot;Ming&quot;, 20, 15552211521L), (&quot;hong&quot;, 19, 13287994007L), (&quot;zhi&quot;, 21, 15552211523L)).toDF(&quot;name&quot;, &quot;age&quot;, &quot;phone&quot;)
+df.show()
+val connectionProperties = new Properties()
+connectionProperties.put(&quot;user&quot;, &quot;root&quot;)
+connectionProperties.put(&quot;password&quot;, &quot;hollysys&quot;)
+//写入mysql数据库
+df.write.jdbc(&quot;jdbc:mysql://localhost:3306/springboot?useSSL=false&amp;characterEncoding=utf-8&quot;,&quot;spark_people&quot;,connectionProperties)
+</code></pre>
+<p>执行后会在数据库中，自动创建表，并将数据写入到表中：</p>
+<p><img src="http://shirukai.gitee.io/images/d6d171fea218376e624e0d65e2d21e9b.jpg"></p>
+<p>支持参数：</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>默认值</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>url</td>
+<td></td>
+<td><code>jdbc:subprotocol:subname</code>形式的JDBC数据库url</td>
+</tr>
+<tr>
+<td>table</td>
+<td></td>
+<td>外部数据库中表的名称。</td>
+</tr>
+<tr>
+<td>connectionProperties</td>
+<td></td>
+<td>JDBC数据库连接参数，任意字符串标记/值的列表。通常至少应包括“用户”和“密码”属性。 “batchsize”可用于控制每个插入的行数。 “isolationLevel”可以是“NONE”，“READ_COMMITTED”，“READ_UNCOMMITTED”，“REPEATABLE_READ”，或“SERIALIZABLE”之一，对应于JDBC的Connection对象定义的标准事务*隔离级别，默认值为“READ_UNCOMMITTED” 。</td>
+</tr>
+</tbody></table>
+<h2 id="5-2-以JDBC数据源读取"><a href="#5-2-以JDBC数据源读取" class="headerlink" title="5.2 以JDBC数据源读取"></a>5.2 以JDBC数据源读取</h2><p>使用Spark读取我们上面写入数据库表中的数据</p>
+<pre><code class="scala">//读取mysql数据库表数据
+val mysqlDF = spark.read.jdbc(&quot;jdbc:mysql://localhost:3306/springboot?useSSL=false&amp;characterEncoding=utf-8&quot;,&quot;spark_people&quot;,connectionProperties)
+mysqlDF.show()
+
+/**
+  * +----+---+-----------+
+  * |name|age|      phone|
+  * +----+---+-----------+
+  * |Ming| 20|15552211521|
+  * |hong| 19|13287994007|
+  * | zhi| 21|15552211523|
+  * +----+---+-----------+
+  */
+</code></pre>
+<p>参数</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>默认值</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>url</td>
+<td></td>
+<td><code>jdbc:subprotocol:subname</code>形式的JDBC数据库url</td>
+</tr>
+<tr>
+<td>table</td>
+<td></td>
+<td>表名</td>
+</tr>
+<tr>
+<td>columnName</td>
+<td></td>
+<td>将用于分区的整数类型列的名称。</td>
+</tr>
+<tr>
+<td>lowerBound</td>
+<td></td>
+<td><code>columnName</code>的最小值用于决定分区步幅。</td>
+</tr>
+<tr>
+<td>upperBound</td>
+<td></td>
+<td><code>columnName</code>的最大值用于决定分区步幅。</td>
+</tr>
+<tr>
+<td>numPartitions</td>
+<td></td>
+<td>分区数量。这与<code>lowerBound</code>（包含），<code>upperBound</code>（不包括）一起形成分区，用于生成WHERE 子句表达式，用于均匀地分割列<code>columnName</code>。当*输入小于1时，数字设置为1。</td>
+</tr>
+<tr>
+<td>connectionProperties</td>
+<td></td>
+<td>JDBC数据库连接参数，任意字符串标记/值的列表。通常至少应包括“用户”和“密码”属性。 “batchsize”可用于控制每个插入的行数。 “isolationLevel”可以是“NONE”，“READ_COMMITTED”，“READ_UNCOMMITTED”，“REPEATABLE_READ”，或“SERIALIZABLE”之一，对应于JDBC的Connection对象定义的标准事务*隔离级别，默认值为“READ_UNCOMMITTED” 。</td>
+</tr>
+</tbody></table>
+<h1 id="完整代码："><a href="#完整代码：" class="headerlink" title="完整代码："></a>完整代码：</h1><pre><code class="scala">package com.hollysys.spark.sql
+
+import java.util.Properties
+
+import org.apache.spark.sql.SparkSession
+
+/**
+  * Created by shirukai on 2018/9/11
+  * Spark SQL 对数据源操作
+  */
+object DataSourceApp &#123;
+  def main(args: Array[String]): Unit = &#123;
+    val spark = SparkSession.builder().appName(this.getClass.getSimpleName).master(&quot;local&quot;).getOrCreate()
+    jsonExample(spark)
+    //csvExample(spark)
+    //textExample(spark)
+    //parquetExample(spark)
+    //jdbcExample(spark)
+  &#125;
+
+  def jsonExample(spark: SparkSession): Unit = &#123;
+    import spark.implicits._
+    val df = Seq((&quot;Ming&quot;, 20, 15552211521L), (&quot;hong&quot;, 19, 13287994007L), (&quot;zhi&quot;, 21, 15552211523L)).toDF(&quot;name&quot;, &quot;age&quot;, &quot;phone&quot;)
+    df.show()
+    //以json格式写入文件
+    df.write.format(&quot;json&quot;).save(&quot;/Users/shirukai/Desktop/HollySys/Repository/learn-demo-spark/data/json&quot;)
+
+    //读取json数据源
+    val jsonDF = spark.read.format(&quot;json&quot;).load(&quot;/Users/shirukai/Desktop/HollySys/Repository/learn-demo-spark/data/json&quot;)
+    jsonDF.printSchema()
+    jsonDF.show()
+
+    /**
+      * +---+----+-----------+
+      * |age|name|      phone|
+      * +---+----+-----------+
+      * | 20|Ming|15552211521|
+      * | 19|hong|13287994007|
+      * | 21| zhi|15552211523|
+      * +---+----+-----------+
+      */
+  &#125;
+
+  def csvExample(spark: SparkSession): Unit = &#123;
+    import spark.implicits._
+    val df = Seq((&quot;Ming&quot;, 20, 15552211521L), (&quot;hong&quot;, 19, 13287994007L), (&quot;zhi&quot;, 21, 15552211523L)).toDF(&quot;name&quot;, &quot;age&quot;, &quot;phone&quot;)
+    df.show()
+    //以csv格式写入文件
+    df.write.format(&quot;csv&quot;).mode(&quot;overwrite&quot;).save(&quot;/Users/shirukai/Desktop/HollySys/Repository/learn-demo-spark/data/csv&quot;)
+    //读取csv数据源
+    val csvDF = spark.read.format(&quot;csv&quot;).options(Map(&quot;sep&quot; -&gt; &quot;;&quot;, &quot;inferSchema&quot; -&gt; &quot;true&quot;, &quot;header&quot; -&gt; &quot;true&quot;)).load(&quot;/Users/shirukai/Desktop/HollySys/Repository/learn-demo-spark/data/csv&quot;)
+    csvDF.show()
+  &#125;
+
+  def textExample(spark: SparkSession): Unit = &#123;
+    import spark.implicits._
+    val df = Seq((&quot;Ming&quot;, 20, 15552211521L), (&quot;hong&quot;, 19, 13287994007L), (&quot;zhi&quot;, 21, 15552211523L)).toDF(&quot;name&quot;, &quot;age&quot;, &quot;phone&quot;)
+    df.show()
+    val textDF = df.map(_.toSeq.foldLeft(&quot;&quot;)(_ + &quot;,&quot; + _).substring(1))
+    //以text格式写入文件
+    textDF.write.format(&quot;text&quot;).mode(&quot;overwrite&quot;).save(&quot;/Users/shirukai/Desktop/HollySys/Repository/learn-demo-spark/data/text&quot;)
+    //读取text文件
+    val text = spark.read.format(&quot;text&quot;).load(&quot;/Users/shirukai/Desktop/HollySys/Repository/learn-demo-spark/data/text&quot;)
+    text.show()
+    lazy val first = textDF.first()
+    val numAttrs = first.split(&quot;,&quot;).length
+    import org.apache.spark.sql.functions._
+    var newDF = textDF.withColumn(&quot;splitCols&quot;, split($&quot;value&quot;, &quot;,&quot;))
+    0.until(numAttrs).foreach(x =&gt; &#123;
+      newDF = newDF.withColumn(&quot;col&quot; + &quot;_&quot; + x, $&quot;splitCols&quot;.getItem(x))
+    &#125;)
+    newDF.show()
+
+    /**
+      * +-------------------+--------------------+-----+-----+-----------+
+      * |              value|           splitCols|col_0|col_1|      col_2|
+      * +-------------------+--------------------+-----+-----+-----------+
+      * |Ming,20,15552211521|[Ming, 20, 155522...| Ming|   20|15552211521|
+      * |hong,19,13287994007|[hong, 19, 132879...| hong|   19|13287994007|
+      * | zhi,21,15552211523|[zhi, 21, 1555221...|  zhi|   21|15552211523|
+      * +-------------------+--------------------+-----+-----+-----------+
+      */
+  &#125;
+
+  def parquetExample(spark: SparkSession): Unit = &#123;
+    import spark.implicits._
+    //从内存中创建一个DataFrame
+    val df = Seq((&quot;Ming&quot;, 20, 15552211521L), (&quot;hong&quot;, 19, 13287994007L), (&quot;zhi&quot;, 21, 15552211523L)).toDF(&quot;name&quot;, &quot;age&quot;, &quot;phone&quot;)
+    df.show()
+    //以Parquet的格式写入
+    df.write.format(&quot;parquet&quot;).mode(&quot;overwrite&quot;).save(&quot;/Users/shirukai/Desktop/HollySys/Repository/learn-demo-spark/data/parquet&quot;)
+
+    //读取Parquet
+    val parquetDF = spark.read.format(&quot;parquet&quot;).load(&quot;/Users/shirukai/Desktop/HollySys/Repository/learn-demo-spark/data/parquet&quot;)
+    parquetDF.printSchema()
+
+    /**
+      * root
+      * |-- name: string (nullable = true)
+      * |-- age: integer (nullable = true)
+      * |-- phone: long (nullable = true)
+      */
+
+    // Create a simple DataFrame, store into a partition directory
+    val squaresDF = spark.sparkContext.makeRDD(1 to 5).map(i =&gt; (i, i * i)).toDF(&quot;value&quot;, &quot;square&quot;)
+    squaresDF.write.parquet(&quot;/Users/shirukai/Desktop/HollySys/Repository/learn-demo-spark/data/parquet/test_table/key=1&quot;)
+
+    // Create another DataFrame in a new partition directory,
+    // adding a new column and dropping an existing column
+    val cubesDF = spark.sparkContext.makeRDD(6 to 10).map(i =&gt; (i, i * i * i)).toDF(&quot;value&quot;, &quot;cube&quot;)
+    cubesDF.write.parquet(&quot;/Users/shirukai/Desktop/HollySys/Repository/learn-demo-spark/data/parquet/test_table/key=2&quot;)
+
+    // Read the partitioned table
+    val mergedDF = spark.read.option(&quot;mergeSchema&quot;, &quot;true&quot;).parquet(&quot;/Users/shirukai/Desktop/HollySys/Repository/learn-demo-spark/data/parquet/test_table&quot;)
+    mergedDF.printSchema()
+
+    /** *
+      * root
+      * |-- value: integer (nullable = true)
+      * |-- square: integer (nullable = true)
+      * |-- cube: integer (nullable = true)
+      * |-- key: integer (nullable = true)
+      */
+  &#125;
+
+  def jdbcExample(spark: SparkSession): Unit = &#123;
+    import spark.implicits._
+    //从内存中创建一个DataFrame
+    val df = Seq((&quot;Ming&quot;, 20, 15552211521L), (&quot;hong&quot;, 19, 13287994007L), (&quot;zhi&quot;, 21, 15552211523L)).toDF(&quot;name&quot;, &quot;age&quot;, &quot;phone&quot;)
+    df.show()
+    val connectionProperties = new Properties()
+    connectionProperties.put(&quot;user&quot;, &quot;root&quot;)
+    connectionProperties.put(&quot;password&quot;, &quot;hollysys&quot;)
+    //写入mysql数据库
+    df.write.mode(&quot;overwrite&quot;).jdbc(&quot;jdbc:mysql://localhost:3306/springboot?useSSL=false&amp;characterEncoding=utf-8&quot;, &quot;spark_people&quot;, connectionProperties)
+
+    //读取mysql数据库表数据
+    val mysqlDF = spark.read.jdbc(&quot;jdbc:mysql://localhost:3306/springboot?useSSL=false&amp;characterEncoding=utf-8&quot;, &quot;spark_people&quot;, connectionProperties)
+    mysqlDF.show()
+
+    /**
+      * +----+---+-----------+
+      * |name|age|      phone|
+      * +----+---+-----------+
+      * |Ming| 20|15552211521|
+      * |hong| 19|13287994007|
+      * | zhi| 21|15552211523|
+      * +----+---+-----------+
+      */
+
+  &#125;
+&#125;
+</code></pre>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-JSON%E6%95%B0%E6%8D%AE%E6%BA%90"><span class="toc-number">1.</span> <span class="toc-text">1 JSON数据源</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-%E4%BB%A5json%E6%A0%BC%E5%BC%8F%E5%86%99%E5%85%A5"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 以json格式写入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-%E4%BB%A5json%E6%A0%BC%E5%BC%8F%E8%AF%BB%E5%8F%96"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 以json格式读取</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-CSV%E6%95%B0%E6%8D%AE%E6%BA%90"><span class="toc-number">2.</span> <span class="toc-text">2 CSV数据源</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-%E4%BB%A5csv%E6%A0%BC%E5%BC%8F%E5%86%99%E5%85%A5"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 以csv格式写入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-%E4%BB%A5csv%E6%A0%BC%E5%BC%8F%E8%AF%BB%E5%8F%96"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 以csv格式读取</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-Text%E6%95%B0%E6%8D%AE%E6%BA%90"><span class="toc-number">3.</span> <span class="toc-text">3 Text数据源</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-%E4%BB%A5Text%E6%A0%BC%E5%BC%8F%E5%86%99%E5%85%A5"><span class="toc-number">3.1.</span> <span class="toc-text">3.1 以Text格式写入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-%E4%BB%A5Text%E6%A0%BC%E5%BC%8F%E8%AF%BB%E5%8F%96%EF%BC%8C%E5%B9%B6%E8%BD%AC%E4%B8%BADataFrame"><span class="toc-number">3.2.</span> <span class="toc-text">3.2 以Text格式读取，并转为DataFrame</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-Parquet%E6%95%B0%E6%8D%AE%E6%BA%90"><span class="toc-number">4.</span> <span class="toc-text">4 Parquet数据源</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-%E4%BB%A5Parquet%E6%A0%BC%E5%BC%8F%E5%86%99%E5%85%A5"><span class="toc-number">4.1.</span> <span class="toc-text">4.1 以Parquet格式写入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-%E4%BB%A5Parquet%E6%A0%BC%E5%BC%8F%E8%AF%BB%E5%8F%96"><span class="toc-number">4.2.</span> <span class="toc-text">4.2 以Parquet格式读取</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-3-%E6%A8%A1%E5%BC%8F%E5%90%88%E5%B9%B6"><span class="toc-number">4.3.</span> <span class="toc-text">4.3 模式合并</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-JDBC%E6%95%B0%E6%8D%AE%E6%BA%90"><span class="toc-number">5.</span> <span class="toc-text">5 JDBC数据源</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#5-1-%E4%BB%A5JDBC%E6%95%B0%E6%8D%AE%E6%BA%90%E5%86%99%E5%85%A5"><span class="toc-number">5.1.</span> <span class="toc-text">5.1 以JDBC数据源写入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-2-%E4%BB%A5JDBC%E6%95%B0%E6%8D%AE%E6%BA%90%E8%AF%BB%E5%8F%96"><span class="toc-number">5.2.</span> <span class="toc-text">5.2 以JDBC数据源读取</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%8C%E6%95%B4%E4%BB%A3%E7%A0%81%EF%BC%9A"><span class="toc-number">6.</span> <span class="toc-text">完整代码：</span></a></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

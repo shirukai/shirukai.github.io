@@ -1,0 +1,1424 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>基于Netty的http server实现 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="
+版本说明：
+netty：4.1.17.Final
+项目地址：https://github.com/shirukai/netty-http-server-demo.git
+
+最近在看Spark源码的,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">基于Netty的http server实现</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/8.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/Java"><b>「
+                    </b>JAVA<b> 」</b></a>
+                
+                October 09, 2018
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/netty-based-http-server-implementation.html" title="基于Netty的http server实现" class="">基于Netty的http server实现</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    40k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    36 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Java/" rel="tag">Java</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <blockquote>
+<p>版本说明：</p>
+<p>netty：4.1.17.Final</p>
+<p>项目地址：<a target="_blank" rel="noopener" href="https://github.com/shirukai/netty-http-server-demo.git">https://github.com/shirukai/netty-http-server-demo.git</a></p>
+</blockquote>
+<p>最近在看Spark源码的RPC框架实现的代码的时候，接触到Netty。在Spark1.6之后，Spark中RPC通信的框架由Netty逐渐代替了Akka。</p>
+<p>为什么Netty可以取代Akka？首先毋庸置疑的是Akka可以做到的，Netty也可以做到，但是Netty可以做到，Akka却无法做到，原因是啥？在软件栈中，Akka相比Netty要Higher一点，它专门针对RPC做了很多事情，而Netty相比更加基础一点，可以为不同的应用层通信协议（RPC，FTP，HTTP等）提供支持，在早期的Akka版本，底层的NIO通信就是用的Netty；其次一个优雅的工程师是不会允许一个系统中容纳两套通信框架，恶心！最后，虽然Netty没有Akka协程级的性能优势，但是Netty内部高效的Reactor线程模型，无锁化的串行设计，高效的序列化，零拷贝，内存池等特性也保证了Netty不会存在性能问题。（摘自：<a target="_blank" rel="noopener" href="http://www.aboutyun.com/thread-21115-1-1.html%E3%80%82%E5%85%B3%E4%BA%8E%E4%B8%BA%E4%BB%80%E4%B9%88Spark%E8%A6%81%E4%BD%BF%E7%94%A8Netty%E6%9B%BF%E4%BB%A3Akka%E7%9A%84%E8%AF%A6%E7%BB%86%E5%86%85%E5%AE%B9%EF%BC%8C%E5%8F%AF%E4%BB%A5%E5%8F%82%E8%80%83%E8%BF%99%E7%AF%87%E6%96%87%E7%AB%A0%EF%BC%89">http://www.aboutyun.com/thread-21115-1-1.html。关于为什么Spark要使用Netty替代Akka的详细内容，可以参考这篇文章）</a></p>
+<h2 id="1-什么是Netty？"><a href="#1-什么是Netty？" class="headerlink" title="1 什么是Netty？"></a>1 什么是Netty？</h2><blockquote>
+<p>Netty 是一个利用 Java 的高级网络的能力，隐藏其背后的复杂性而提供一个易于使用的 API 的客户端/服务器框架。<br>Netty 是一个广泛使用的 Java 网络编程框架（Netty 在 2011 年获得了Duke’s Choice Award，见<a target="_blank" rel="noopener" href="https://www.java.net/dukeschoice/2011">https://www.java.net/dukeschoice/2011</a>）。它活跃和成长于用户社区，像大型公司 Facebook 和 Instagram 以及流行 开源项目如 Infinispan, HornetQ, Vert.x, Apache Cassandra 和 Elasticsearch 等，都利用其强大的对于网络抽象的核心代码。</p>
+</blockquote>
+<p>Essential Netty in Action 《Netty 实战(精髓)》:<a target="_blank" rel="noopener" href="https://waylau.gitbooks.io/essential-netty-in-action/content/">https://waylau.gitbooks.io/essential-netty-in-action/content/</a></p>
+<p>关于Netty介绍：<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/b9f3f6a16911">https://www.jianshu.com/p/b9f3f6a16911</a></p>
+<h2 id="2-Netty的简单使用"><a href="#2-Netty的简单使用" class="headerlink" title="2 Netty的简单使用"></a>2 Netty的简单使用</h2><h3 id="2-1-准备"><a href="#2-1-准备" class="headerlink" title="2.1 准备"></a>2.1 准备</h3><p>在开始之前，我们需要创建一个maven项目。这里就不做演示了。项目的目录结构如下图所示：</p>
+<p><img src="http://shirukai.gitee.io/images/63c3ddf6d58191988f38dd86281d3f73.jpg"></p>
+<p>关于Netty的简单使用的Demo在项目中netty.demo的包下。</p>
+<p>相关jar包依赖：</p>
+<pre><code class="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot;
+         xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+         xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+
+    &lt;groupId&gt;netty.http.server&lt;/groupId&gt;
+    &lt;artifactId&gt;server&lt;/artifactId&gt;
+    &lt;version&gt;1.0&lt;/version&gt;
+    &lt;dependencies&gt;
+        &lt;!--netty--&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;io.netty&lt;/groupId&gt;
+            &lt;artifactId&gt;netty-all&lt;/artifactId&gt;
+            &lt;version&gt;4.1.17.Final&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;!--log--&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.slf4j&lt;/groupId&gt;
+            &lt;artifactId&gt;slf4j-log4j12&lt;/artifactId&gt;
+            &lt;version&gt;1.5.8&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;!--json--&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.alibaba&lt;/groupId&gt;
+            &lt;artifactId&gt;fastjson&lt;/artifactId&gt;
+            &lt;version&gt;1.1.37&lt;/version&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+
+&lt;/project&gt;
+</code></pre>
+<h3 id="2-2-创建Netty-服务端"><a href="#2-2-创建Netty-服务端" class="headerlink" title="2.2 创建Netty 服务端"></a>2.2 创建Netty 服务端</h3><h4 id="2-2-1-创建Server启动类"><a href="#2-2-1-创建Server启动类" class="headerlink" title="2.2.1 创建Server启动类"></a>2.2.1 创建Server启动类</h4><p>该类主要用于对Netty Server进行一些配置，如端口号、EventLoopGroup、ServerBootstrap以及chanal中的pipline等，以及netty服务的启动。代码如下所示：</p>
+<pre><code class="java">package netty.demo;
+
+import io.netty.bootstrap.ServerBootstrap;
+import io.netty.channel.*;
+import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.SocketChannel;
+import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.codec.string.StringDecoder;
+import io.netty.handler.codec.string.StringEncoder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.nio.charset.Charset;
+
+/**
+ * Created by shirukai on 2018/9/30
+ * 基于Netty实现的Socket Server
+ */
+public class NettySocketServer &#123;
+    public final Logger log = LoggerFactory.getLogger(this.getClass());
+    private int port;
+
+    public NettySocketServer(int port) &#123;
+        this.port = port;
+    &#125;
+
+    public void start() &#123;
+
+        EventLoopGroup bossGroup = new NioEventLoopGroup();
+        EventLoopGroup workerGroup = new NioEventLoopGroup();
+        ServerBootstrap bootstrap = new ServerBootstrap();
+        try &#123;
+            bootstrap
+                    .option(ChannelOption.SO_BACKLOG, 1024)
+                    // BACKLOG用于构造服务端套接字ServerSocket对象，标识当服务器请求处理线程全满时，
+                    // 用于临时存放已完成三次握手的请求的队列的最大长度。如果未设置或所设置的值小于1，Java将使用默认值50。
+                    .group(bossGroup, workerGroup) //绑定线程池
+                    .channel(NioServerSocketChannel.class)// 指定使用的channel
+                    .localAddress(port)
+                    .childHandler(new ChannelInitializer&lt;SocketChannel&gt;() &#123;
+                        // 绑定客户端时触发的操作
+                        @Override
+                        protected void initChannel(SocketChannel socketChannel) throws Exception &#123;
+                            log.info(&quot;Client connected service：&#123;&#125;&quot;, socketChannel);
+                            ChannelPipeline pipeline = socketChannel.pipeline();
+                            pipeline.addLast(new StringDecoder(Charset.forName(&quot;UTF-8&quot;)));
+                            pipeline.addLast(new NettySocketServerHandler());//服务器处理客户端请求
+                            pipeline.addLast(new StringEncoder(Charset.forName(&quot;UTF-8&quot;)));
+                        &#125;
+                    &#125;);
+            ChannelFuture channelFuture = bootstrap.bind().sync(); //服务器异步创建绑定
+            log.info(&quot;Server is listening：&#123;&#125;&quot;, channelFuture.channel());
+            channelFuture.channel().closeFuture().sync();//关闭服务器
+        &#125; catch (Exception e) &#123;
+            log.error(e.getMessage());
+        &#125; finally &#123;
+            try &#123;
+                // 释放线程池资源
+                workerGroup.shutdownGracefully().sync();
+                bossGroup.shutdownGracefully().sync();
+            &#125; catch (InterruptedException e) &#123;
+                log.error(e.getMessage());
+            &#125;
+        &#125;
+
+    &#125;
+
+    public static void main(String[] args) &#123;
+        NettySocketServer server = new NettySocketServer(9099);
+        server.start();
+    &#125;
+&#125;
+</code></pre>
+<p>Bootstrap的option参数：<a target="_blank" rel="noopener" href="https://blog.csdn.net/zhousenshan/article/details/72859923">https://blog.csdn.net/zhousenshan/article/details/72859923</a></p>
+<h4 id="2-2-2-Netty-服务端处理类"><a href="#2-2-2-Netty-服务端处理类" class="headerlink" title="2.2.2 Netty 服务端处理类"></a>2.2.2 Netty 服务端处理类</h4><p>如上代码，我们在pipeline中指定了服务端处理客户端请求的实例</p>
+<pre><code class="java"> pipeline.addLast(new NettySocketServerHandler());
+</code></pre>
+<p>下面我们就要实现NettySocketServerHandler这个类，代码如下所示：</p>
+<pre><code class="java">package netty.demo;
+
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInboundHandlerAdapter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * Created by shirukai on 2018/9/30
+ * netty socket server 处理器
+ */
+public class NettySocketServerHandler extends ChannelInboundHandlerAdapter &#123;
+    public final Logger log = LoggerFactory.getLogger(this.getClass());
+
+    @Override
+    public void channelActive(ChannelHandlerContext ctx) throws Exception &#123;
+        log.info(&quot;The channel &#123;&#125; is ACTIVE.&quot;);
+    &#125;
+
+    @Override
+    public void channelInactive(ChannelHandlerContext ctx) throws Exception &#123;
+        log.info(&quot;The channel &#123;&#125; is INACTIVE.&quot;);
+    &#125;
+
+    @Override
+    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception &#123;
+        log.info(&quot;message:&#123;&#125;&quot;, msg);
+        ctx.channel().writeAndFlush(&quot;返回信息给客户端：&quot; + msg);
+    &#125;
+
+    @Override
+    public void channelReadComplete(ChannelHandlerContext ctx) throws Exception &#123;
+        super.channelReadComplete(ctx);
+    &#125;
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception &#123;
+        super.exceptionCaught(ctx, cause);
+    &#125;
+&#125;
+</code></pre>
+<h3 id="2-3-创建Netty-客户端"><a href="#2-3-创建Netty-客户端" class="headerlink" title="2.3 创建Netty 客户端"></a>2.3 创建Netty 客户端</h3><p>客户端的创建于服务端类似，也需要一个客户端配置类和处理类。</p>
+<h4 id="2-3-1-创建-Client-配置类"><a href="#2-3-1-创建-Client-配置类" class="headerlink" title="2.3.1 创建 Client 配置类"></a>2.3.1 创建 Client 配置类</h4><pre><code class="java">package netty.demo;
+
+import io.netty.bootstrap.Bootstrap;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelPipeline;
+import io.netty.channel.EventLoopGroup;
+import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.SocketChannel;
+import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.codec.string.StringDecoder;
+import io.netty.handler.codec.string.StringEncoder;
+
+import java.nio.charset.Charset;
+
+/**
+ * Created by shirukai on 2018/9/30
+ * netty socket client
+ */
+public class NettySocketClient &#123;
+    private String host;
+    private int port;
+
+    public NettySocketClient(String host, int port) &#123;
+        this.host = host;
+        this.port = port;
+    &#125;
+
+    public void start() &#123;
+        EventLoopGroup group = new NioEventLoopGroup();
+        Bootstrap bootstrap = new Bootstrap();
+        try &#123;
+            bootstrap
+                    .group(group)//注册线程池
+                    .channel(NioSocketChannel.class)// 使用NioSocketChannel来作为连接用的Channel类
+                    .remoteAddress(host, port)//绑定远程服务的IP和端口
+                    .handler(new ChannelInitializer&lt;SocketChannel&gt;() &#123;//连接初始化
+                        @Override
+                        protected void initChannel(SocketChannel socketChannel) throws Exception &#123;
+                            ChannelPipeline pipeline = socketChannel.pipeline();
+                            // 输入流编码为StringEncoder
+                            pipeline.addLast(new StringDecoder(Charset.forName(&quot;UTF-8&quot;)));
+                            pipeline.addLast(new NettySocketClientHandler());
+                            // 输出流编码为StringDecoder
+                            pipeline.addLast(new StringEncoder(Charset.forName(&quot;UTF-8&quot;)));
+                        &#125;
+                    &#125;);
+            ChannelFuture channelFuture = bootstrap.connect().sync();
+            channelFuture.channel().closeFuture().sync();
+        &#125; catch (Exception e) &#123;
+            e.printStackTrace();
+        &#125; finally &#123;
+            try &#123;
+                group.shutdownGracefully().sync();
+            &#125; catch (InterruptedException e) &#123;
+                e.printStackTrace();
+            &#125;
+        &#125;
+
+    &#125;
+
+    public static void main(String[] args) &#123;
+        NettySocketClient client = new NettySocketClient(&quot;127.0.0.1&quot;, 9099);
+        client.start();
+    &#125;
+&#125;
+</code></pre>
+<h4 id="2-3-2-Netty-客户端处理类"><a href="#2-3-2-Netty-客户端处理类" class="headerlink" title="2.3.2 Netty 客户端处理类"></a>2.3.2 Netty 客户端处理类</h4><pre><code class="java">package netty.demo;
+
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.SimpleChannelInboundHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
+/**
+ * Created by shirukai on 2018/9/30
+ */
+public class NettySocketClientHandler extends SimpleChannelInboundHandler&lt;String&gt; &#123;
+    public final Logger log = LoggerFactory.getLogger(this.getClass());
+
+    @Override
+    public void channelActive(ChannelHandlerContext ctx) throws Exception &#123;
+        ctx.channel().writeAndFlush(&quot;向客户端发送消息&quot;);
+    &#125;
+
+    @Override
+    protected void channelRead0(ChannelHandlerContext channelHandlerContext, String s) throws Exception &#123;
+        log.info(s);
+    &#125;
+&#125;
+</code></pre>
+<h3 id="2-4-Demo-演示"><a href="#2-4-Demo-演示" class="headerlink" title="2.4 Demo 演示"></a>2.4 Demo 演示</h3><p>首先启动服务端，然后启动客户端，效果如下图所示：</p>
+<p><img src="http://shirukai.gitee.io/images/3beb7d5ba5dd4a2cd56f3eb113cf6857.gif"></p>
+<h2 id="3-基于Netty的http-server实现"><a href="#3-基于Netty的http-server实现" class="headerlink" title="3 基于Netty的http server实现"></a>3 基于Netty的http server实现</h2><p>上面已经记录了Netty的简单实用，接下来记录一下在学习实用Netty实现http server实现。从0到1的搭建一个http服务。通过实现Netty http服务，学到了以下几个知识点：</p>
+<ul>
+<li><p>java 中注解的使用（模仿spring对请求路由和参数进行控制）</p>
+</li>
+<li><p>通过反射机制执行路由指定的方法</p>
+</li>
+<li><p>处理http请求</p>
+</li>
+<li><p>java链式调用</p>
+</li>
+</ul>
+<p>设计思路：</p>
+<p>首先实现一个基于Netty的http server，使用HttpRequestDecoder和HttpResponseEncoder进行输入流输出流编解码。</p>
+<p>然后使用自定义的HttpServerhandler类进行请求处理。模仿springmvc的controller层，使用注解的方式，设置方法路由。扫描指定类下的注解，将注解信息以及类信息缓存到Map里。</p>
+<p>最后根据请求的url从Map中获取相关信息，路由到指定的方法，利用反射机制，实例化该方法，传入参数并执行。</p>
+<p>对于请求参数，支持传统的url传参，使用？id=1或者/{id}两种url参数的形式获取，支持处理post请求中的json请求。其他请求，如formdata等传参形式没有支持，处理逻辑相似，对于请求的不同类型处理可以参考：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/cyfonly/p/5616493.html%E3%80%82">https://www.cnblogs.com/cyfonly/p/5616493.html。</a></p>
+<h3 id="3-1-Http-Server的实现"><a href="#3-1-Http-Server的实现" class="headerlink" title="3.1 Http Server的实现"></a>3.1 Http Server的实现</h3><p>实现代码如下：</p>
+<pre><code class="java">package netty.http.server;
+
+import io.netty.bootstrap.ServerBootstrap;
+import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelOption;
+import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.SocketChannel;
+import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.codec.http.HttpObjectAggregator;
+import io.netty.handler.codec.http.HttpRequestDecoder;
+import io.netty.handler.codec.http.HttpResponseEncoder;
+import netty.http.server.entity.Router;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Map;
+
+/**
+ * Created by shirukai on 2018/9/30
+ * 基于netty 实现httpSever
+ */
+public class HttpServer &#123;
+    private HttpServerConfig config;
+    private int port;
+    private Map&lt;String, Router&gt; routers;
+
+    public final Logger log = LoggerFactory.getLogger(this.getClass());
+
+    public HttpServerConfig builder() &#123;
+        this.config = new HttpServerConfig(this);
+        return config;
+    &#125;
+
+    public void start() &#123;
+        ServerBootstrap bootstrap = new ServerBootstrap();
+        NioEventLoopGroup group = new NioEventLoopGroup();
+        try &#123;
+            bootstrap
+                    .group(group)
+                    .channel(NioServerSocketChannel.class)
+                    .childHandler(new ChannelInitializer&lt;SocketChannel&gt;() &#123;
+                        @Override
+                        protected void initChannel(SocketChannel socketChannel) &#123;
+                            socketChannel.pipeline()
+                                    .addLast(&quot;decoder&quot;, new HttpRequestDecoder())
+                                    .addLast(&quot;encoder&quot;, new HttpResponseEncoder())
+                                    .addLast(&quot;aggregator&quot;, new HttpObjectAggregator(512 * 1024))
+                                    .addLast(&quot;handler&quot;, new HttpServerHandler(routers));
+                        &#125;
+                    &#125;)
+                    .option(ChannelOption.SO_BACKLOG, 128)
+                    .childOption(ChannelOption.SO_KEEPALIVE, Boolean.TRUE);
+            bootstrap.bind(port).sync();
+        &#125; catch (Exception e) &#123;
+            e.printStackTrace();
+        &#125;
+        log.info(&quot;Start app server at port:&#123;&#125;&quot;, port);
+    &#125;
+
+    public void setPort(int port) &#123;
+        this.port = port;
+    &#125;
+
+    public void setRouters(Map&lt;String, Router&gt; routers) &#123;
+        this.routers = routers;
+    &#125;
+&#125;
+</code></pre>
+<p>由上面代码可以看出，在HttpServer这个类中，我们设置了三个私有的属性：config、port、routers，分别为服务器配置、端口和路由信息。提供一个builder方法，返回HttpServerConfig实例，用来构建HttpServer。</p>
+<h3 id="3-2-HttpServerConfig的实现"><a href="#3-2-HttpServerConfig的实现" class="headerlink" title="3.2 HttpServerConfig的实现"></a>3.2 HttpServerConfig的实现</h3><p>该类主要是对服务的配置信息进行缓存。如端口号、controller等，实现代码如下：</p>
+<pre><code class="java">package netty.http.server;
+
+import java.util.concurrent.ConcurrentHashMap;
+
+/**
+ * Created by shirukai on 2018/9/30
+ * 用来配置HttpServer
+ */
+public class HttpServerConfig &#123;
+    // 初始化Map用来缓存配置信息
+    private ConcurrentHashMap&lt;String, Object&gt; conf = new ConcurrentHashMap&lt;&gt;();
+    private static final String SERVER_CONTROLLERS = &quot;netty.http.server.controllers&quot;;
+    private static final String SERVER_PORT = &quot;netty.http.server.port&quot;;
+    private HttpServer httpServer;
+
+    public HttpServerConfig(HttpServer httpServer) &#123;
+        this.httpServer = httpServer;
+    &#125;
+
+    public HttpServerConfig set(String name, Object value) &#123;
+        conf.put(name, value);
+        return this;
+    &#125;
+
+    /**
+     * 设置端口号
+     *
+     * @param port 端口
+     * @return conf
+     */
+    public HttpServerConfig setPort(int port) &#123;
+        conf.put(SERVER_PORT, port);
+        return this;
+    &#125;
+
+    /**
+     * 设置多个Controller的class 以便进行注解扫描
+     *
+     * @param className class names
+     * @return conf
+     */
+    public HttpServerConfig setControllers(Class&lt;?&gt;... className) &#123;
+        Class&lt;?&gt;[] oldClasses = getClasses();
+        Class&lt;?&gt;[] newClasses = insertClasses(oldClasses, className);
+        conf.put(SERVER_CONTROLLERS, newClasses);
+        return this;
+    &#125;
+
+    /**
+     * 设置单个controller的class
+     *
+     * @param className class name
+     * @return conf
+     */
+    public HttpServerConfig setController(Class&lt;?&gt; className) &#123;
+        //获取已有的class
+        Class&lt;?&gt;[] oldClasses = getClasses();
+        //新增class
+        Class&lt;?&gt;[] newClasses = insertClass(oldClasses, className);
+        conf.put(SERVER_CONTROLLERS, newClasses);
+        return this;
+    &#125;
+
+    /**
+     * 获取String类型的值
+     *
+     * @param key key
+     * @return value
+     */
+    public String getString(String key) &#123;
+        return conf.get(key).toString();
+    &#125;
+
+    /**
+     * 获取 int类型的值
+     *
+     * @param key key
+     * @return value
+     */
+    public int getInt(String key) &#123;
+        return (int) conf.get(key);
+    &#125;
+
+    /**
+     * 获取所有的class
+     *
+     * @return classes
+     */
+    public Class&lt;?&gt;[] getClasses() &#123;
+        return (Class&lt;?&gt;[]) conf.get(SERVER_CONTROLLERS);
+    &#125;
+
+    /**
+     * 插入一个class
+     *
+     * @param oldClasses 旧的classes
+     * @param addClass   要添加的class
+     * @return 新的 classes
+     */
+    private Class&lt;?&gt;[] insertClass(Class&lt;?&gt;[] oldClasses, Class&lt;?&gt; addClass) &#123;
+        Class&lt;?&gt;[] newClasses;
+        //判断原始的Class 数组是否为null
+        if (oldClasses != null) &#123;
+            //获取数组长度
+            int length = oldClasses.length;
+            //创建一个新数组
+            newClasses = new Class&lt;?&gt;[length + 1];
+            //copy数组
+            System.arraycopy(oldClasses, 0, newClasses, 0, length);
+            newClasses[length + 1] = addClass;
+        &#125; else &#123;
+            newClasses = new Class&lt;?&gt;[]&#123;addClass&#125;;
+        &#125;
+        return newClasses;
+    &#125;
+
+    /**
+     * 插入多个class
+     *
+     * @param oldClasses 旧的classes
+     * @param addClasses 要添加的classes
+     * @return 新的classes
+     */
+    private Class&lt;?&gt;[] insertClasses(Class&lt;?&gt;[] oldClasses, Class&lt;?&gt;[] addClasses) &#123;
+        Class&lt;?&gt;[] newClasses;
+        if (oldClasses != null) &#123;
+            int oldLength = oldClasses.length;
+            int addLength = addClasses.length;
+            newClasses = new Class&lt;?&gt;[oldLength + addLength];
+            System.arraycopy(oldClasses, 0, newClasses, 0, oldLength);
+            System.arraycopy(addClasses, 0, newClasses, oldLength, addLength);
+        &#125; else &#123;
+            newClasses = addClasses;
+        &#125;
+        return newClasses;
+    &#125;
+
+    public HttpServer create() &#123;
+        httpServer.setPort(this.getInt(SERVER_PORT));
+        //获取controller类
+        Class&lt;?&gt;[] classes = this.getClasses();
+        //扫描注解
+        httpServer.setRouters(AnnotationScan.getRouters(classes));
+        return this.httpServer;
+    &#125;
+
+    public ConcurrentHashMap&lt;String, Object&gt; getConf() &#123;
+        return this.conf;
+    &#125;
+
+&#125;
+</code></pre>
+<p>通过上面两个类，我们基本可以完成一个HttpServer的初始化操作：</p>
+<pre><code class="java">import netty.http.server.HttpServer;
+import netty.http.worker.controller.TestController;
+
+/**
+ * Created by shirukai on 2018/9/30
+ * netty sever 启动类
+ */
+public class App &#123;
+    public static void main(String[] args) &#123;
+        HttpServer server = new HttpServer();
+        server.builder()
+                .setPort(9090)
+                .setController(TestController.class)
+                .create().start();
+    &#125;
+&#125;
+</code></pre>
+<p>当然到目前为止，我们的服务是没有办法启动的，因为我们还没有HttpServerHandler类用来处理http请求和AnnotationScan类用来扫描指定Controller类下的注解信息。所以接下来，我们先实现AnnotationScan类，演示注解在该Demo中的使用。</p>
+<h3 id="3-3-路由控制"><a href="#3-3-路由控制" class="headerlink" title="3.3  路由控制"></a>3.3  路由控制</h3><p>这里，我们模仿spring mvc 使用注解的方式，对Controller层进行路由控制。</p>
+<h4 id="3-3-1-注解类设置"><a href="#3-3-1-注解类设置" class="headerlink" title="3.3.1 注解类设置"></a>3.3.1 注解类设置</h4><p>在netty.http.server.annotation包下创建相关注解类。</p>
+<h5 id="3-3-1-1-RouterMapping"><a href="#3-3-1-1-RouterMapping" class="headerlink" title="3.3.1.1 @RouterMapping"></a>3.3.1.1 @RouterMapping</h5><p>@RouterMapping，功能类似于spring中的RequestMapping主要是对Controller层方法的路由。该注解作用于方法，根据用于发送的url，执行映射的方法。</p>
+<pre><code class="java">package netty.http.server.annotation;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+/**
+ * Created by shirukai on 2018/9/30
+ * 路由
+ */
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface RouterMapping &#123;
+    String api() default &quot;&quot;;
+
+    String method() default &quot;GET,POST,PUT,DELETE&quot;;
+&#125;
+</code></pre>
+<h5 id="3-3-1-2-RequestParam"><a href="#3-3-1-2-RequestParam" class="headerlink" title="3.3.1.2 @RequestParam"></a>3.3.1.2 @RequestParam</h5><p>@RequestParam，功能类似于spring中的@RequestParam，作用于方法中的参数列表，服务会根据该注解自动去匹配请求参数。主要是从url中获取？id=1这样形式的参数。代码如下：</p>
+<pre><code class="java">package netty.http.server.annotation;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+/**
+ * Created by shirukai on 2018/9/30
+ */
+@Target(ElementType.PARAMETER)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface RequestParam &#123;
+    String value() default &quot;&quot;;
+&#125;
+</code></pre>
+<h5 id="3-3-1-3-PathParam"><a href="#3-3-1-3-PathParam" class="headerlink" title="3.3.1.3 @PathParam"></a>3.3.1.3 @PathParam</h5><p>@PathParam同样是作用于参数列表，用以获取/{id} 这样形式的参数，代码如下：</p>
+<pre><code class="java">package netty.http.server.annotation;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+/**
+ * Created by shirukai on 2018/9/30
+ */
+@Target(ElementType.PARAMETER)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface PathParam &#123;
+    String value() default &quot;&quot;;
+&#125;
+</code></pre>
+<h5 id="3-3-1-4-JsonParam"><a href="#3-3-1-4-JsonParam" class="headerlink" title="3.3.1.4 @JsonParam"></a>3.3.1.4 @JsonParam</h5><p> @JsonParam也是作用于参数列表，用于获取json参数格式的请求，代码如下：</p>
+<pre><code class="java">package netty.http.server.annotation;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+/**
+ * Created by shirukai on 2018/9/30
+ */
+@Target(ElementType.PARAMETER)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface JsonParam &#123;
+    String value() default &quot;&quot;;
+&#125;
+</code></pre>
+<h4 id="3-3-2-注解扫描"><a href="#3-3-2-注解扫描" class="headerlink" title="3.3.2 注解扫描"></a>3.3.2 注解扫描</h4><p>有了注解类之后，我们需要知道，我们的哪些方法使用了注解，哪些参数使用了注解。所以我们需要进行注解的扫描，并将扫描的注解信息缓存到Map里。AnnotationScan类的代码如下所示：</p>
+<pre><code class="java">package netty.http.server;
+
+import netty.http.server.annotation.JsonParam;
+import netty.http.server.annotation.PathParam;
+import netty.http.server.annotation.RequestParam;
+import netty.http.server.annotation.RouterMapping;
+import netty.http.server.entity.Param;
+import netty.http.server.entity.Router;
+
+import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Created by shirukai on 2018/9/30
+ * 注解扫描
+ */
+public class AnnotationScan &#123;
+    public static Map&lt;String, Router&gt; getRouters(Class&lt;?&gt;... classes) &#123;
+        Map&lt;String, Router&gt; routers = new HashMap&lt;&gt;(16);
+        // 遍历传入的class
+        for (Class&lt;?&gt; tClass : classes) &#123;
+            // 遍历类中的方法
+            for (Method method : tClass.getDeclaredMethods()) &#123;
+                // 扫描方法的注解
+                RouterMapping routerMapping = method.getAnnotation(RouterMapping.class);
+                // 如果注解不为空，扫描该方法内的参数注解
+                if (routerMapping != null) &#123;
+                    Router router = new Router();
+                    // 获取参数
+                    List&lt;Param&gt; params = new ArrayList&lt;&gt;(16);
+                    // 遍历方法中的参数
+                    for (Parameter parameter : method.getParameters()) &#123;
+                        // 扫描参数注解
+                        PathParam pathParam = parameter.getAnnotation(PathParam.class);
+                        RequestParam requestParam = parameter.getAnnotation(RequestParam.class);
+                        JsonParam jsonParam = parameter.getAnnotation(JsonParam.class);
+                        Param param = new Param();
+                        // 将注解写入到信息写入到Param中
+                        if (pathParam != null) &#123;
+                            param.setType(&quot;path&quot;);
+                            param.setValue(pathParam.value());
+                        &#125;
+                        if (requestParam != null) &#123;
+                            param.setType(&quot;request&quot;);
+                            param.setValue(requestParam.value());
+                        &#125;
+                        if (jsonParam != null) &#123;
+                            param.setType(&quot;json&quot;);
+                            param.setValue(jsonParam.value());
+                        &#125;
+                        // 将Param信息写入到List里
+                        params.add(param);
+                    &#125;
+                    router.setParams(params);
+                    router.settClass(tClass);
+                    router.setMethodType(routerMapping.method());
+                    router.setMethod(method);
+                    router.setUrl(routerMapping.api());
+                    // 保存Router信息
+                    routers.put(router.getUrl(), router);
+                &#125;
+            &#125;
+        &#125;
+        return routers;
+    &#125;
+&#125;
+</code></pre>
+<h4 id="3-3-3-请求处理"><a href="#3-3-3-请求处理" class="headerlink" title="3.3.3 请求处理"></a>3.3.3 请求处理</h4><p>完成上面的工作之后，接下来是该demo的核心功能，就是对http请求进行处理。根据请求的url，获取参数，通过反射执行相应方法。</p>
+<pre><code class="java">package netty.http.server;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import io.netty.buffer.Unpooled;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.handler.codec.http.*;
+import io.netty.util.AsciiString;
+import netty.http.server.entity.Param;
+import netty.http.server.entity.Router;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.lang.reflect.Method;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
+
+/**
+ * Created by shirukai on 2018/9/30
+ * Http服务处理器
+ */
+public class HttpServerHandler extends SimpleChannelInboundHandler&lt;FullHttpRequest&gt; &#123;
+    private Map&lt;String, Router&gt; routers;
+    private AsciiString contentType = HttpHeaderValues.APPLICATION_JSON;
+    public final Logger log = LoggerFactory.getLogger(this.getClass());
+
+    public HttpServerHandler(Map&lt;String, Router&gt; routers) &#123;
+        this.routers = routers;
+    &#125;
+
+    @Override
+    protected void channelRead0(ChannelHandlerContext channelHandlerContext, FullHttpRequest request) &#123;
+        log.info(&quot;Handler request:&#123;&#125;&quot;, request);
+        Object result = null;
+        HttpResponseStatus status = null;
+        try &#123;
+            // 初始化请求参数
+            List&lt;Object&gt; params = new ArrayList&lt;&gt;(16);
+            // 解析URL中的参数
+            QueryStringDecoder decoder = new QueryStringDecoder(request.uri(), Charset.forName(&quot;UTF-8&quot;));
+            // 获取请求路径
+            String url = decoder.path();
+            // 获取请求方法
+            String method = request.method().toString();
+            // 获取URL中的参数
+            Map&lt;String, List&lt;String&gt;&gt; urlParams = decoder.parameters();
+            // 从扫描的注解中获取Router信息
+            Router router = getRoute(url);
+            //判断router里是否包含url
+            if (router == null) &#123;
+                throw new RuntimeException(&quot;URL does not exist!&quot;);
+            &#125;
+            //判断请求方法是否匹配
+            if (!router.getMethodType().contains(method)) &#123;
+                throw new RuntimeException(&quot;Method does not match!&quot;);
+            &#125;
+            //获取controller里请求参数信息
+            List&lt;Param&gt; paramInfo = router.getParams();
+            if (paramInfo != null) &#123;
+                //处理URL参数
+                Map&lt;String, String&gt; pathParams = PathUrlHandler.getParams(url, router.getUrl());
+                JSONObject initJson = null;
+                //处理POST请求
+                if (method.equals(&quot;POST&quot;)) &#123;
+                    String contentType = request.headers().get(&quot;Content-Type&quot;);
+                    //处理application/json请求
+                    if (contentType.contains(&quot;application/json&quot;)) &#123;
+                        initJson = JSON.parseObject(request.content().toString(Charset.forName(&quot;UTF-8&quot;)));
+                    &#125;
+                &#125;
+                JSONObject finalJson = initJson;
+                paramInfo.forEach(param -&gt; &#123;
+                    String type = param.getType();
+                    String value = param.getValue();
+                    // 如果参数在url里形如/test/&#123;id&#125;时 添加参数
+                    if (type.equals(&quot;path&quot;)) &#123;
+                        params.add(pathParams.get(value));
+                    &#125;
+                    // 如果参数在url里形如/test?id=124时 添加参数
+                    if (type.equals(&quot;request&quot;)) &#123;
+                        params.add(urlParams.get(value).get(0));
+                    &#125;
+                    // 如果参数在body里以json形如传入时 添加参数
+                    if (type.equals(&quot;json&quot;)) &#123;
+                        params.add(finalJson);
+                    &#125;
+                &#125;);
+                // 执行router映射的方法，并获取返回结果
+                result = executeMethod(router, params.toArray());
+                // 设置response状态为 OK
+                status = HttpResponseStatus.OK;
+            &#125; else &#123;
+                // 如果没有参数，直接执行映射的方法
+                result = executeMethod(router);
+            &#125;
+        &#125; catch (Exception e) &#123;
+            // 如果捕获到异常，将异常信息放到返回结果里
+            result = e.getMessage();
+        &#125; finally &#123;
+            // 如果状态为null,将返回结果设置为500
+            if (status == null) &#123;
+                status = HttpResponseStatus.INTERNAL_SERVER_ERROR;
+            &#125;
+        &#125;
+        // 包装response
+        DefaultFullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1,
+                status,
+                Unpooled.wrappedBuffer(JSON.toJSONBytes(result)));
+
+        // 设置response 的header
+        HttpHeaders heads = response.headers();
+        heads.add(HttpHeaderNames.CONTENT_TYPE, contentType + &quot;; charset=UTF-8&quot;);
+        heads.add(HttpHeaderNames.CONTENT_LENGTH, response.content().readableBytes());
+        heads.add(HttpHeaderNames.CONNECTION, HttpHeaderValues.KEEP_ALIVE);
+        // 将返回结果返回
+        channelHandlerContext.write(response);
+
+
+    &#125;
+
+    @Override
+    public void channelReadComplete(ChannelHandlerContext ctx) throws Exception &#123;
+        super.channelReadComplete(ctx);
+        ctx.flush();
+    &#125;
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception &#123;
+        if (null != cause) cause.printStackTrace();
+        if (null != ctx) ctx.close();
+    &#125;
+
+    /**
+     * 获取Router信息
+     *
+     * @param url url
+     * @return Router
+     */
+    private Router getRoute(String url) &#123;
+        AtomicReference&lt;Router&gt; router = new AtomicReference&lt;&gt;();
+        routers.keySet().forEach(routerKey -&gt; &#123;
+            if (PathUrlHandler.verify(url, routerKey)) &#123;
+                router.set(routers.get(routerKey));
+            &#125;
+        &#125;);
+        return router.get();
+    &#125;
+
+    /**
+     * 执行路由映射的方法
+     *
+     * @param router Router
+     * @param params params
+     * @return Object
+     * @throws Exception 执行异常
+     */
+    private Object executeMethod(Router router, Object... params) throws Exception &#123;
+        Class&lt;?&gt; cls = router.gettClass();
+        Object obj = cls.newInstance();
+        Method method = router.getMethod();
+        return method.invoke(obj, params);
+    &#125;
+
+&#125;
+</code></pre>
+<p>对于url中类似于/{id}这样参数的处理，单独写到了PathUrlHandler类里，代码如下：</p>
+<pre><code class="java">package netty.http.server;
+
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+/**
+ * Created by shirukai on 2018/10/8
+ * 处理URL中的参数
+ */
+public class PathUrlHandler &#123;
+    private static final String pattern = &quot;(\\&#123;[^&#125;]*&#125;)&quot;;
+
+
+    /**
+     * 校验请求url和路由中的url是否匹配
+     * 如：/test/111 匹配 /test/&#123;id&#125;
+     *
+     * @param requestUrl 请求的url
+     * @param routerUrl  路由中设置的url
+     * @return boolean
+     */
+    public static boolean verify(String requestUrl, String routerUrl) &#123;
+        Matcher keyMatcher = Pattern.compile(pattern).matcher(routerUrl);
+        String replacePattern = keyMatcher.replaceAll(&quot;(.*)&quot;);
+        Matcher valueMatcher = Pattern.compile(replacePattern).matcher(requestUrl);
+        return valueMatcher.matches();
+    &#125;
+
+    /**
+     * 获取参数
+     * 请求URL：/test/111
+     * 路由URL：/test/&#123;id&#125;
+     * 参数为&#123;&quot;id&quot;:&quot;111&quot;&#125;
+     *
+     * @param requestUrl 请求的url
+     * @param routerUrl  路由中设置的url
+     * @return map
+     */
+    public static Map&lt;String, String&gt; getParams(String requestUrl, String routerUrl) &#123;
+        Map&lt;String, String&gt; params = new HashMap&lt;&gt;(16);
+        Matcher keyMatcher = Pattern.compile(pattern).matcher(routerUrl);
+        List&lt;String&gt; keys = new ArrayList&lt;&gt;(16);
+        List&lt;String&gt; values = new ArrayList&lt;&gt;(16);
+        while (keyMatcher.find()) &#123;
+            keys.add(keyMatcher.group(1).replace(&quot;&#123;&quot;, &quot;&quot;).replace(&quot;&#125;&quot;, &quot;&quot;));
+        &#125;
+        String replacePattern = keyMatcher.replaceAll(&quot;(.*)&quot;);
+        Matcher valueMatcher = Pattern.compile(replacePattern).matcher(requestUrl);
+        if (valueMatcher.find()) &#123;
+            int count = valueMatcher.groupCount();
+            for (int i = 1; i &lt;= count; i++) &#123;
+                values.add(valueMatcher.group(i));
+            &#125;
+        &#125;
+        int valueSize = values.size();
+        for (int i = 0; i &lt; keys.size(); i++) &#123;
+            String value = i &lt; valueSize ? values.get(i) : &quot;&quot;;
+            params.put(keys.get(i), value);
+        &#125;
+        return params;
+    &#125;
+
+&#125;
+</code></pre>
+<h3 id="3-4-Demo演示"><a href="#3-4-Demo演示" class="headerlink" title="3.4 Demo演示"></a>3.4 Demo演示</h3><p>完成以上工作之后，我们的Http服务相关的操作都已经完成了，下面我们将写一个简单的例子，来测试我们的服务。</p>
+<p>在netty.http.worker.controller包下创建一个TestController类，该类里面使用了我们之前设置好的@RouterMapping、 @RequestParam、@PathParam、@JsonParam注解。并且分别展示了GET请求和POST请求。</p>
+<p>代码如下：</p>
+<pre><code class="java">package netty.http.worker.controller;
+
+import com.alibaba.fastjson.JSONObject;
+import netty.http.server.annotation.JsonParam;
+import netty.http.server.annotation.PathParam;
+import netty.http.server.annotation.RequestParam;
+import netty.http.server.annotation.RouterMapping;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Created by shirukai on 2018/9/30
+ * controller
+ */
+public class TestController &#123;
+    /**
+     * 测试GET请求
+     *
+     * @param name name
+     * @param id   id
+     * @return map
+     */
+    @RouterMapping(api = &quot;/api/v1/test/get/&#123;id&#125;&quot;, method = &quot;GET&quot;)
+    public Map&lt;String, Object&gt; testGet(
+            @RequestParam(&quot;name&quot;) String name,
+            @PathParam(&quot;id&quot;) String id
+    ) &#123;
+        Map&lt;String, Object&gt; map = new HashMap&lt;&gt;(16);
+        map.put(&quot;name&quot;, name);
+        map.put(&quot;id&quot;, id);
+        return map;
+    &#125;
+
+    /**
+     * 测试POST请求
+     *
+     * @param json json
+     * @return json
+     */
+    @RouterMapping(api = &quot;/api/v1/test/post&quot;, method = &quot;POST&quot;)
+    public JSONObject testPost(
+            @JsonParam(&quot;json&quot;) JSONObject json
+    ) &#123;
+        return json;
+    &#125;
+&#125;
+</code></pre>
+<p>在App类里我们启动Http Server，设置我们刚才创建的Controller类到Http Server</p>
+<pre><code class="java">import netty.http.server.HttpServer;
+import netty.http.worker.controller.TestController;
+
+/**
+ * Created by shirukai on 2018/9/30
+ * netty sever 启动类
+ */
+public class App &#123;
+    public static void main(String[] args) &#123;
+        HttpServer server = new HttpServer();
+        server.builder()
+                .setPort(9090)
+                .setController(TestController.class)
+                .create().start();
+    &#125;
+&#125;
+</code></pre>
+<p><img src="http://shirukai.gitee.io/images/c764779fc1406084401997db1f603eb8.jpg"></p>
+<p>使用PostMan向服务器发送GET请求：</p>
+<p><img src="http://shirukai.gitee.io/images/468cbedc3994f9f6160363f3725837e5.jpg"></p>
+<p>服务器日志：</p>
+<p><img src="http://shirukai.gitee.io/images/66c62cbfbf3d494adebf8055ad627f40.jpg"></p>
+<p>使用PostMan向服务器发送POST请求</p>
+<p><img src="http://shirukai.gitee.io/images/a60eb2a54564cc8a5a4ff63f5204e20d.jpg"></p>
+<p>服务器日志：</p>
+<p><img src="http://shirukai.gitee.io/images/d2f5350e034c9defaa8ecd2cbb5e9595.jpg"></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E4%BB%80%E4%B9%88%E6%98%AFNetty%EF%BC%9F"><span class="toc-number">1.</span> <span class="toc-text">1 什么是Netty？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Netty%E7%9A%84%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8"><span class="toc-number">2.</span> <span class="toc-text">2 Netty的简单使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E5%87%86%E5%A4%87"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 准备</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E5%88%9B%E5%BB%BANetty-%E6%9C%8D%E5%8A%A1%E7%AB%AF"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 创建Netty 服务端</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E5%88%9B%E5%BB%BANetty-%E5%AE%A2%E6%88%B7%E7%AB%AF"><span class="toc-number">2.3.</span> <span class="toc-text">2.3 创建Netty 客户端</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-Demo-%E6%BC%94%E7%A4%BA"><span class="toc-number">2.4.</span> <span class="toc-text">2.4 Demo 演示</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%9F%BA%E4%BA%8ENetty%E7%9A%84http-server%E5%AE%9E%E7%8E%B0"><span class="toc-number">3.</span> <span class="toc-text">3 基于Netty的http server实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-Http-Server%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="toc-number">3.1.</span> <span class="toc-text">3.1 Http Server的实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-HttpServerConfig%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="toc-number">3.2.</span> <span class="toc-text">3.2 HttpServerConfig的实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-%E8%B7%AF%E7%94%B1%E6%8E%A7%E5%88%B6"><span class="toc-number">3.3.</span> <span class="toc-text">3.3  路由控制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-Demo%E6%BC%94%E7%A4%BA"><span class="toc-number">3.4.</span> <span class="toc-text">3.4 Demo演示</span></a></li></ol></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

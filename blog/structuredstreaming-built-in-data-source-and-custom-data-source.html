@@ -1,0 +1,1380 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>StructuredStreaming 内置数据源及实现自定义数据源 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="
+版本说明：
+Spark:2.3/2.4
+代码仓库：https://github.com/shirukai/spark-structured-datasource.git
+
+1 Structured,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">StructuredStreaming 内置数据源及实现自定义数据源</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/2.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/Spark"><b>「
+                    </b>SPARK<b> 」</b></a>
+                
+                January 29, 2019
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/structuredstreaming-built-in-data-source-and-custom-data-source.html" title="StructuredStreaming 内置数据源及实现自定义数据源" class="">StructuredStreaming 内置数据源及实现自定义数据源</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    41k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    38 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Spark/" rel="tag">Spark</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <blockquote>
+<p>版本说明：</p>
+<p>Spark:2.3/2.4</p>
+<p>代码仓库：<a target="_blank" rel="noopener" href="https://github.com/shirukai/spark-structured-datasource.git">https://github.com/shirukai/spark-structured-datasource.git</a></p>
+</blockquote>
+<h1 id="1-Structured内置的输入源-Source"><a href="#1-Structured内置的输入源-Source" class="headerlink" title="1 Structured内置的输入源 Source"></a>1 Structured内置的输入源 Source</h1><p>官网文档：<a target="_blank" rel="noopener" href="http://spark.apache.org/docs/latest/structured-streaming-programming-guide.html#input-sources">http://spark.apache.org/docs/latest/structured-streaming-programming-guide.html#input-sources</a></p>
+<table>
+<thead>
+<tr>
+<th>Source</th>
+<th>Options</th>
+<th>Fault-tolerant</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>File Source</td>
+<td>maxFilesPerTrigger：每个触发器中要考虑的最大新文件数（默认值：无最大值）latestFirst：是否先处理最新的新文件，当存在大量积压的文件时有用（默认值：false） <br/>fileNameOnly：是否基于以下方法检查新文件只有文件名而不是完整路径（默认值：false）。</td>
+<td>支持容错</td>
+<td>支持glob路径，但不支持以口号分割的多个路径</td>
+</tr>
+<tr>
+<td>Socket Source</td>
+<td>host：要连接的主机，必须指定<br/>port：要连接的端口，必须指定</td>
+<td>不支持容错</td>
+<td></td>
+</tr>
+<tr>
+<td>Rate Source</td>
+<td>rowsPerSecond（例如100，默认值：1）：每秒应生成多少行。<br/>rampUpTime（例如5s，默认值：0s）：在生成速度变为之前加速多长时间rowsPerSecond。使用比秒更精细的粒度将被截断为整数秒。numPartitions（例如10，默认值：Spark的默认并行性）：生成的行的分区号</td>
+<td>支持容错</td>
+<td></td>
+</tr>
+<tr>
+<td>Kafka Source</td>
+<td><a target="_blank" rel="noopener" href="http://spark.apache.org/docs/latest/structured-streaming-kafka-integration.html">http://spark.apache.org/docs/latest/structured-streaming-kafka-integration.html</a></td>
+<td>支持容错</td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="1-1-File-Source"><a href="#1-1-File-Source" class="headerlink" title="1.1 File Source"></a>1.1 File Source</h2><p>将目录中写入的文件作为数据流读取。支持的文件格式为：text、csv、json、orc、parquet</p>
+<p><strong>用例</strong></p>
+<p>代码位置：org.apache.spark.sql.structured.datasource.example</p>
+<pre><code class="scala">val source = spark
+  .readStream
+  // Schema must be specified when creating a streaming source DataFrame.
+  .schema(schema)
+  // 每个trigger最大文件数量
+  .option(&quot;maxFilesPerTrigger&quot;,100)
+  // 是否首先计算最新的文件，默认为false
+  .option(&quot;latestFirst&quot;,value = true)
+  // 是否值检查名字，如果名字相同，则不视为更新，默认为false
+  .option(&quot;fileNameOnly&quot;,value = true)
+  .csv(&quot;*.csv&quot;)
+</code></pre>
+<h2 id="1-2-Socket-Source"><a href="#1-2-Socket-Source" class="headerlink" title="1.2 Socket Source"></a>1.2 Socket Source</h2><p>从Socket中读取UTF8文本数据。一般用于测试，使用nc -lc 端口号 向Socket监听的端口发送数据。</p>
+<p><strong>用例</strong></p>
+<p>代码位置：org.apache.spark.sql.structured.datasource.example</p>
+<pre><code class="scala">val lines = spark.readStream
+  .format(&quot;socket&quot;)
+  .option(&quot;host&quot;, &quot;localhost&quot;)
+  .option(&quot;port&quot;, 9090)
+  .load()
+</code></pre>
+<h2 id="1-3-Rate-Source"><a href="#1-3-Rate-Source" class="headerlink" title="1.3 Rate Source"></a>1.3 Rate Source</h2><p>以每秒指定的行数生成数据，每个输出行包含一个<code>timestamp</code>和<code>value</code>。其中<code>timestamp</code>是一个<code>Timestamp</code>含有信息分配的时间类型，并且<code>value</code>是<code>Long</code>包含消息的计数从0开始作为第一行类型。此源用于测试和基准测试。</p>
+<p><strong>用例</strong></p>
+<p>代码位置：org.apache.spark.sql.structured.datasource.example</p>
+<pre><code class="scala">    val rate = spark.readStream
+      .format(&quot;rate&quot;)
+      // 每秒生成的行数，默认值为1
+      .option(&quot;rowsPerSecond&quot;, 10)
+      .option(&quot;numPartitions&quot;, 10)
+      .option(&quot;rampUpTime&quot;,0)
+      .option(&quot;rampUpTime&quot;,5)
+      .load()
+</code></pre>
+<h2 id="1-4-Kafka-Source"><a href="#1-4-Kafka-Source" class="headerlink" title="1.4 Kafka Source"></a>1.4 Kafka Source</h2><p>官网文档：<a target="_blank" rel="noopener" href="http://spark.apache.org/docs/latest/structured-streaming-kafka-integration.html">http://spark.apache.org/docs/latest/structured-streaming-kafka-integration.html</a></p>
+<p><strong>用例</strong></p>
+<p>代码位置：org.apache.spark.sql.structured.datasource.example</p>
+<pre><code class="scala">val df = spark
+  .readStream
+  .format(&quot;kafka&quot;)
+  .option(&quot;kafka.bootstrap.servers&quot;, &quot;host1:port1,host2:port2&quot;)
+  .option(&quot;subscribePattern&quot;, &quot;topic.*&quot;)
+  .load()
+</code></pre>
+<h1 id="2-Structured-内置的输出源-Sink"><a href="#2-Structured-内置的输出源-Sink" class="headerlink" title="2 Structured 内置的输出源 Sink"></a>2 Structured 内置的输出源 Sink</h1><table>
+<thead>
+<tr>
+<th>Sink</th>
+<th>Supported Output Modes</th>
+<th>Options</th>
+<th>Fault-tolerant</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>File Sink</td>
+<td>Append</td>
+<td>path：输出路径（必须指定）</td>
+<td>支持容错（exactly-once）</td>
+<td>支持分区写入</td>
+</tr>
+<tr>
+<td>Kafka Sink</td>
+<td>Append,Update,Complete</td>
+<td>See the <a target="_blank" rel="noopener" href="http://spark.apache.org/docs/latest/structured-streaming-kafka-integration.html">Kafka Integration Guide</a></td>
+<td>支持容错（at-least-once）</td>
+<td><a target="_blank" rel="noopener" href="http://spark.apache.org/docs/latest/structured-streaming-kafka-integration.html">Kafka Integration Guide</a></td>
+</tr>
+<tr>
+<td>Foreach Sink</td>
+<td>Append,Update,Complete</td>
+<td>None</td>
+<td></td>
+<td><a target="_blank" rel="noopener" href="http://spark.apache.org/docs/latest/structured-streaming-programming-guide.html#using-foreach-and-foreachbatch">Foreach Guide</a></td>
+</tr>
+<tr>
+<td>ForeachBatch Sink</td>
+<td>Append,Update,Complete</td>
+<td>None</td>
+<td></td>
+<td><a target="_blank" rel="noopener" href="http://spark.apache.org/docs/latest/structured-streaming-programming-guide.html#using-foreach-and-foreachbatch">Foreach Guide</a></td>
+</tr>
+<tr>
+<td>Console Sink</td>
+<td>Append,Update,Complete</td>
+<td>numRows：每次触发器打印的行数（默认值：20） <br/>truncate：是否过长时截断输出（默认值：true</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Memory Sink</td>
+<td>Append,Complete</td>
+<td>None</td>
+<td></td>
+<td>表名是查询的名字</td>
+</tr>
+</tbody></table>
+<h2 id="2-1-File-Sink"><a href="#2-1-File-Sink" class="headerlink" title="2.1 File Sink"></a>2.1 File Sink</h2><p>将结果输出到文件，支持格式parquet、csv、orc、json等</p>
+<p><strong>用例</strong></p>
+<p>代码位置：org.apache.spark.sql.structured.datasource.example</p>
+<pre><code class="scala">val fileSink = source.writeStream
+  .format(&quot;parquet&quot;)
+  //.format(&quot;csv&quot;)
+  //.format(&quot;orc&quot;)
+ // .format(&quot;json&quot;)
+  .option(&quot;path&quot;, &quot;data/sink&quot;)
+  .option(&quot;checkpointLocation&quot;, &quot;/tmp/temporary-&quot; + UUID.randomUUID.toString)
+  .start()
+</code></pre>
+<h2 id="2-2-Console-Sink"><a href="#2-2-Console-Sink" class="headerlink" title="2.2 Console Sink"></a>2.2 Console Sink</h2><p>将结果输出到控制台</p>
+<p><strong>用例</strong></p>
+<p>代码位置：org.apache.spark.sql.structured.datasource.example</p>
+<pre><code class="scala">    val consoleSink = source.writeStream
+      .format(&quot;console&quot;)
+      // 是否压缩显示
+      .option(&quot;truncate&quot;, value = false)
+      // 显示条数
+      .option(&quot;numRows&quot;, 30)
+      .option(&quot;checkpointLocation&quot;, &quot;/tmp/temporary-&quot; + UUID.randomUUID.toString)
+      .start()
+</code></pre>
+<h2 id="2-3-Memory-Sink"><a href="#2-3-Memory-Sink" class="headerlink" title="2.3 Memory Sink"></a>2.3 Memory Sink</h2><p>将结果输出到内存，需要指定内存中的表名。可以使用sql进行查询</p>
+<p><strong>用例</strong></p>
+<p>代码位置：org.apache.spark.sql.structured.datasource.example</p>
+<pre><code class="scala">
+    val memorySink = source.writeStream
+      .format(&quot;memory&quot;)
+      .queryName(&quot;memorySinkTable&quot;)
+      .option(&quot;checkpointLocation&quot;, &quot;/tmp/temporary-&quot; + UUID.randomUUID.toString)
+      .start()
+
+
+    new Thread(new Runnable &#123;
+      override def run(): Unit = &#123;
+        while (true) &#123;
+          spark.sql(&quot;select * from memorySinkTable&quot;).show(false)
+          Thread.sleep(1000)
+        &#125;
+      &#125;
+    &#125;).start()
+    memorySink.awaitTermination()
+</code></pre>
+<h2 id="2-4-Kafka-Sink"><a href="#2-4-Kafka-Sink" class="headerlink" title="2.4 Kafka Sink"></a>2.4 Kafka Sink</h2><p>将结果输出到Kafka，需要将DataFrame转成key，value两列，或者topic、key、value三列</p>
+<p><strong>用例</strong></p>
+<p>代码位置：org.apache.spark.sql.structured.datasource.example</p>
+<pre><code class="scala">    import org.apache.spark.sql.functions._
+    import spark.implicits._
+    val kafkaSink = source.select(array(to_json(struct(&quot;*&quot;))).as(&quot;value&quot;).cast(StringType),
+      $&quot;timestamp&quot;.as(&quot;key&quot;).cast(StringType)).writeStream
+      .format(&quot;kafka&quot;)
+      .option(&quot;kafka.bootstrap.servers&quot;, &quot;localhost:9092&quot;)
+      .option(&quot;checkpointLocation&quot;, &quot;/tmp/temporary-&quot; + UUID.randomUUID.toString)
+      .option(&quot;topic&quot;, &quot;hiacloud-ts-dev&quot;)
+      .start()
+</code></pre>
+<h2 id="2-5-ForeachBatch-Sink-2-4"><a href="#2-5-ForeachBatch-Sink-2-4" class="headerlink" title="2.5 ForeachBatch Sink(2.4)"></a>2.5 ForeachBatch Sink(2.4)</h2><p>适用于对于一个批次来说应用相同的写入方式的场景。方法传入这个batch的DataFrame以及batchId。这个方法在2.3之后的版本才有而且仅支持微批模式。</p>
+<p><img src="http://shirukai.gitee.io/images/4a5973ac848b33f8b5938be7e7754b85.jpg"></p>
+<p><strong>用例</strong></p>
+<p>代码位置：org.apache.spark.sql.structured.datasource.example</p>
+<pre><code class="scala">    val foreachBatchSink = source.writeStream.foreachBatch((batchData: DataFrame, batchId) =&gt; &#123;
+      batchData.show(false)
+    &#125;).start()
+</code></pre>
+<h2 id="2-6-Foreach-Sink"><a href="#2-6-Foreach-Sink" class="headerlink" title="2.6 Foreach Sink"></a>2.6 Foreach Sink</h2><p>Foreach 每一条记录，通过继承ForeachWriter[Row]，实现open()，process()，close()方法。在open方法了我们可以获取一个资源连接，如MySQL的连接。在process里我们可以获取一条记录，并处理这条数据发送到刚才获取资源连接的MySQL中，在close里我们可以关闭资源连接。注意，foreach是对Partition来说的，同一个分区只会调用一次open、close方法，但对于每条记录来说，都会调用process方法。</p>
+<p><strong>用例</strong></p>
+<p>代码位置：org.apache.spark.sql.structured.datasource.example</p>
+<pre><code class="scala">    val foreachSink = source.writeStream
+        .foreach(new ForeachWriter[Row] &#123;
+          override def open(partitionId: Long, version: Long): Boolean = &#123;
+            println(s&quot;partitionId=$partitionId,version=$version&quot;)
+            true
+
+          &#125;
+
+          override def process(value: Row): Unit = &#123;
+            println(value)
+          &#125;
+
+          override def close(errorOrNull: Throwable): Unit = &#123;
+            println(&quot;close&quot;)
+          &#125;
+        &#125;)
+      .start()
+</code></pre>
+<h1 id="3-自定义输入源"><a href="#3-自定义输入源" class="headerlink" title="3 自定义输入源"></a>3 自定义输入源</h1><p>某些应用场景下我们可能需要自定义数据源，如业务中，需要在获取KafkaSource的同时，动态从缓存中或者http请求中加载业务数据，或者是其它的数据源等都可以参考规范自定义。自定义输入源需要以下步骤：</p>
+<p>第一步：继承DataSourceRegister和StreamSourceProvider创建自定义Provider类</p>
+<p>第二步：重写DataSourceRegister类中的shotName和StreamSourceProvider中的createSource以及sourceSchema方法</p>
+<p>第三步：继承Source创建自定义Source类</p>
+<p>第四步：重写Source中的schema方法指定输入源的schema</p>
+<p>第五步：重写Source中的getOffest方法监听流数据</p>
+<p>第六步：重写Source中的getBatch方法获取数据</p>
+<p> 第七步：重写Source中的stop方法用来关闭资源</p>
+<h2 id="3-1-创建CustomDataSourceProvider类"><a href="#3-1-创建CustomDataSourceProvider类" class="headerlink" title="3.1 创建CustomDataSourceProvider类"></a>3.1 创建CustomDataSourceProvider类</h2><h3 id="3-1-1-继承DataSourceRegister和StreamSourceProvider"><a href="#3-1-1-继承DataSourceRegister和StreamSourceProvider" class="headerlink" title="3.1.1 继承DataSourceRegister和StreamSourceProvider"></a>3.1.1 继承DataSourceRegister和StreamSourceProvider</h3><p>要创建自定义的DataSourceProvider必须要继承位于org.apache.spark.sql.sources包下的DataSourceRegister以及该包下的StreamSourceProvider。如下所示：</p>
+<pre><code class="scala">class CustomDataSourceProvider extends DataSourceRegister
+  with StreamSourceProvider
+  with Logging &#123;
+      //Override some functions ……
+  &#125;
+</code></pre>
+<h3 id="3-1-2-重写DataSourceRegister的shotName方法"><a href="#3-1-2-重写DataSourceRegister的shotName方法" class="headerlink" title="3.1.2 重写DataSourceRegister的shotName方法"></a>3.1.2 重写DataSourceRegister的shotName方法</h3><p>该方法用来指定一个数据源的名字，用来想spark注册该数据源。如Spark内置的数据源的shotName:kafka</p>
+<p>、socket、rate等，该方法返回一个字符串，如下所示：</p>
+<pre><code class="scala">  /**
+    * 数据源的描述名字，如：kafka、socket
+    *
+    * @return 字符串shotName
+    */
+  override def shortName(): String = &quot;custom&quot;
+</code></pre>
+<h3 id="3-1-3-重写StreamSourceProvider中的sourceSchema方法"><a href="#3-1-3-重写StreamSourceProvider中的sourceSchema方法" class="headerlink" title="3.1.3 重写StreamSourceProvider中的sourceSchema方法"></a>3.1.3 重写StreamSourceProvider中的sourceSchema方法</h3><p>该方法是用来定义数据源的schema，可以使用用户传入的schema，也可以根据传入的参数进行动态创建。返回值是个二元组(shotName,scheam)，代码如下所示：</p>
+<pre><code class="scala">  /**
+    * 定义数据源的Schema
+    *
+    * @param sqlContext   Spark SQL 上下文
+    * @param schema       通过.schema()方法传入的schema
+    * @param providerName Provider的名称，包名+类名
+    * @param parameters   通过.option()方法传入的参数
+    * @return 元组，(shotName,schema)
+    */
+  override def sourceSchema(sqlContext: SQLContext,
+                            schema: Option[StructType],
+                            providerName: String,
+                            parameters: Map[String, String]): (String, StructType) = (shortName(),schema.get)
+</code></pre>
+<h3 id="3-1-4-重写StreamSourceProvider中的createSource方法"><a href="#3-1-4-重写StreamSourceProvider中的createSource方法" class="headerlink" title="3.1.4 重写StreamSourceProvider中的createSource方法"></a>3.1.4 重写StreamSourceProvider中的createSource方法</h3><p>通过传入的参数，来实例化我们自定义的DataSource，是我们自定义Source的重要入口的地方</p>
+<pre><code class="scala">/**
+  * 创建输入源
+  *
+  * @param sqlContext   Spark SQL 上下文
+  * @param metadataPath 元数据Path
+  * @param schema       通过.schema()方法传入的schema
+  * @param providerName Provider的名称，包名+类名
+  * @param parameters   通过.option()方法传入的参数
+  * @return 自定义source，需要继承Source接口实现
+  **/
+
+override def createSource(sqlContext: SQLContext,
+                          metadataPath: String,
+                          schema: Option[StructType],
+                          providerName: String,
+                          parameters: Map[String, String]): Source = new CustomDataSource(sqlContext,parameters,schema)
+</code></pre>
+<h3 id="3-1-5-CustomDataSourceProvider-scala完整代码"><a href="#3-1-5-CustomDataSourceProvider-scala完整代码" class="headerlink" title="3.1.5 CustomDataSourceProvider.scala完整代码"></a>3.1.5 CustomDataSourceProvider.scala完整代码</h3><pre><code class="scala">package org.apache.spark.sql.structured.datasource.custom
+
+import org.apache.spark.internal.Logging
+import org.apache.spark.sql.SQLContext
+import org.apache.spark.sql.execution.streaming.&#123;Sink, Source&#125;
+import org.apache.spark.sql.sources.&#123;DataSourceRegister, StreamSinkProvider, StreamSourceProvider&#125;
+import org.apache.spark.sql.streaming.OutputMode
+import org.apache.spark.sql.types.StructType
+
+/**
+  * @author : shirukai
+  * @date : 2019-01-25 17:49
+  *       自定义Structured Streaming数据源
+  *
+  *       （1）继承DataSourceRegister类
+  *       需要重写shortName方法，用来向Spark注册该组件
+  *
+  *       （2）继承StreamSourceProvider类
+  *       需要重写createSource以及sourceSchema方法，用来创建数据输入源
+  *
+  *       （3）继承StreamSinkProvider类
+  *       需要重写createSink方法，用来创建数据输出源
+  *
+  *
+  */
+class CustomDataSourceProvider extends DataSourceRegister
+  with StreamSourceProvider
+  with StreamSinkProvider
+  with Logging &#123;
+
+
+  /**
+    * 数据源的描述名字，如：kafka、socket
+    *
+    * @return 字符串shotName
+    */
+  override def shortName(): String = &quot;custom&quot;
+
+
+  /**
+    * 定义数据源的Schema
+    *
+    * @param sqlContext   Spark SQL 上下文
+    * @param schema       通过.schema()方法传入的schema
+    * @param providerName Provider的名称，包名+类名
+    * @param parameters   通过.option()方法传入的参数
+    * @return 元组，(shotName,schema)
+    */
+  override def sourceSchema(sqlContext: SQLContext,
+                            schema: Option[StructType],
+                            providerName: String,
+                            parameters: Map[String, String]): (String, StructType) = (shortName(),schema.get)
+
+  /**
+    * 创建输入源
+    *
+    * @param sqlContext   Spark SQL 上下文
+    * @param metadataPath 元数据Path
+    * @param schema       通过.schema()方法传入的schema
+    * @param providerName Provider的名称，包名+类名
+    * @param parameters   通过.option()方法传入的参数
+    * @return 自定义source，需要继承Source接口实现
+    **/
+
+  override def createSource(sqlContext: SQLContext,
+                            metadataPath: String,
+                            schema: Option[StructType],
+                            providerName: String,
+                            parameters: Map[String, String]): Source = new CustomDataSource(sqlContext,parameters,schema)
+
+
+  /**
+    * 创建输出源
+    *
+    * @param sqlContext       Spark SQL 上下文
+    * @param parameters       通过.option()方法传入的参数
+    * @param partitionColumns 分区列名?
+    * @param outputMode       输出模式
+    * @return
+    */
+  override def createSink(sqlContext: SQLContext,
+                          parameters: Map[String, String],
+                          partitionColumns: Seq[String],
+                          outputMode: OutputMode): Sink = new CustomDataSink(sqlContext,parameters,outputMode)
+&#125;
+</code></pre>
+<h2 id="3-2-创建CustomDataSource类"><a href="#3-2-创建CustomDataSource类" class="headerlink" title="3.2 创建CustomDataSource类"></a>3.2 创建CustomDataSource类</h2><h3 id="3-2-1-继承Source创建CustomDataSource类"><a href="#3-2-1-继承Source创建CustomDataSource类" class="headerlink" title="3.2.1 继承Source创建CustomDataSource类"></a>3.2.1 继承Source创建CustomDataSource类</h3><p>要创建自定义的DataSource必须要继承位于org.apache.spark.sql.sources包下的Source。如下所示：</p>
+<pre><code class="scala">class CustomDataSource(sqlContext: SQLContext,
+                       parameters: Map[String, String],
+                       schemaOption: Option[StructType]) extends Source
+  with Logging &#123;
+  //Override some functions ……
+&#125;
+</code></pre>
+<h3 id="3-2-2-重写Source的schema方法"><a href="#3-2-2-重写Source的schema方法" class="headerlink" title="3.2.2 重写Source的schema方法"></a>3.2.2 重写Source的schema方法</h3><p>指定数据源的schema，需要与Provider中的sourceSchema指定的schema保持一致，否则会报异常</p>
+<pre><code class="scala">  /**
+    * 指定数据源的schema，需要与Provider中sourceSchema中指定的schema保持一直，否则会报异常
+    * 触发机制：当创建数据源的时候被触发执行
+    *
+    * @return schema
+    */
+  override def schema: StructType = schemaOption.get
+</code></pre>
+<h3 id="3-2-3-重写Source的getOffset方法"><a href="#3-2-3-重写Source的getOffset方法" class="headerlink" title="3.2.3 重写Source的getOffset方法"></a>3.2.3 重写Source的getOffset方法</h3><p>此方法是Spark不断的轮询执行的，目的是用来监控流数据的变化情况，一旦数据发生变化，就会触发getBatch方法用来获取数据。</p>
+<pre><code class="scala">  /**
+    * 获取offset，用来监控数据的变化情况
+    * 触发机制：不断轮询调用
+    * 实现要点：
+    * （1）Offset的实现：
+    * 由函数返回值可以看出，我们需要提供一个标准的返回值Option[Offset]
+    * 我们可以通过继承 org.apache.spark.sql.sources.v2.reader.streaming.Offset实现，这里面其实就是保存了个json字符串
+    *
+    * （2) JSON转化
+    * 因为Offset里实现的是一个json字符串，所以我们需要将我们存放offset的集合或者case class转化重json字符串
+    * spark里是通过org.json4s.jackson这个包来实现case class 集合类（Map、List、Seq、Set等）与json字符串的相互转化
+    *
+    * @return Offset
+    */
+  override def getOffset: Option[Offset] = ???
+</code></pre>
+<h3 id="3-2-4-重写Source的getBatch方法"><a href="#3-2-4-重写Source的getBatch方法" class="headerlink" title="3.2.4 重写Source的getBatch方法"></a>3.2.4 重写Source的getBatch方法</h3><p>此方法是Spark用来获取数据的，getOffset方法检测的数据发生变化的时候，会触发该方法， 传入上一次触发时的end Offset作为当前batch的start Offset，将新的offset作为end Offset。</p>
+<pre><code class="scala">  /**
+    * 获取数据
+    *
+    * @param start 上一个批次的end offset
+    * @param end   通过getOffset获取的新的offset
+    *              触发机制：当不断轮询的getOffset方法，获取的offset发生改变时，会触发该方法
+    *
+    *              实现要点：
+    *              （1）DataFrame的创建：
+    *              可以通过生成RDD，然后使用RDD创建DataFrame
+    *              RDD创建：sqlContext.sparkContext.parallelize(rows.toSeq)
+    *              DataFrame创建：sqlContext.internalCreateDataFrame(rdd, schema, isStreaming = true)
+    * @return DataFrame
+    */
+  override def getBatch(start: Option[Offset], end: Offset): DataFrame = ???
+</code></pre>
+<h3 id="3-2-5-重写Source的stop方法"><a href="#3-2-5-重写Source的stop方法" class="headerlink" title="3.2.5 重写Source的stop方法"></a>3.2.5 重写Source的stop方法</h3><p>用来关闭一些需要关闭或停止的资源及进程</p>
+<pre><code class="scala">  /**
+    * 关闭资源
+    * 将一些需要关闭的资源放到这里来关闭，如MySQL的数据库连接等
+    */
+  override def stop(): Unit = ???
+</code></pre>
+<h3 id="3-2-6-CustomDataSource-scala完整代码"><a href="#3-2-6-CustomDataSource-scala完整代码" class="headerlink" title="3.2.6 CustomDataSource.scala完整代码"></a>3.2.6 CustomDataSource.scala完整代码</h3><pre><code class="scala">package org.apache.spark.sql.structured.datasource.custom
+
+import org.apache.spark.internal.Logging
+import org.apache.spark.sql.execution.streaming.&#123;Offset, Source&#125;
+import org.apache.spark.sql.types.StructType
+import org.apache.spark.sql.&#123;DataFrame, SQLContext&#125;
+
+/**
+  * @author : shirukai
+  * @date : 2019-01-25 18:03
+  *       自定义数据输入源：需要继承Source接口
+  *       实现思路：
+  *       （1）通过重写schema方法来指定数据输入源的schema，这个schema需要与Provider中指定的schema保持一致
+  *       （2）通过重写getOffset方法来获取数据的偏移量，这个方法会一直被轮询调用，不断的获取偏移量
+  *       （3) 通过重写getBatch方法，来获取数据，这个方法是在偏移量发生改变后被触发
+  *       （4）通过stop方法，来进行一下关闭资源的操作
+  *
+  */
+class CustomDataSource(sqlContext: SQLContext,
+                       parameters: Map[String, String],
+                       schemaOption: Option[StructType]) extends Source
+  with Logging &#123;
+
+  /**
+    * 指定数据源的schema，需要与Provider中sourceSchema中指定的schema保持一直，否则会报异常
+    * 触发机制：当创建数据源的时候被触发执行
+    *
+    * @return schema
+    */
+  override def schema: StructType = schemaOption.get
+
+  /**
+    * 获取offset，用来监控数据的变化情况
+    * 触发机制：不断轮询调用
+    * 实现要点：
+    * （1）Offset的实现：
+    * 由函数返回值可以看出，我们需要提供一个标准的返回值Option[Offset]
+    * 我们可以通过继承 org.apache.spark.sql.sources.v2.reader.streaming.Offset实现，这里面其实就是保存了个json字符串
+    *
+    * （2) JSON转化
+    * 因为Offset里实现的是一个json字符串，所以我们需要将我们存放offset的集合或者case class转化重json字符串
+    * spark里是通过org.json4s.jackson这个包来实现case class 集合类（Map、List、Seq、Set等）与json字符串的相互转化
+    *
+    * @return Offset
+    */
+  override def getOffset: Option[Offset] = ???
+
+  /**
+    * 获取数据
+    *
+    * @param start 上一个批次的end offset
+    * @param end   通过getOffset获取的新的offset
+    *              触发机制：当不断轮询的getOffset方法，获取的offset发生改变时，会触发该方法
+    *
+    *              实现要点：
+    *              （1）DataFrame的创建：
+    *              可以通过生成RDD，然后使用RDD创建DataFrame
+    *              RDD创建：sqlContext.sparkContext.parallelize(rows.toSeq)
+    *              DataFrame创建：sqlContext.internalCreateDataFrame(rdd, schema, isStreaming = true)
+    * @return DataFrame
+    */
+  override def getBatch(start: Option[Offset], end: Offset): DataFrame = ???
+
+  /**
+    * 关闭资源
+    * 将一些需要关闭的资源放到这里来关闭，如MySQL的数据库连接等
+    */
+  override def stop(): Unit = ???
+&#125;
+</code></pre>
+<h2 id="3-3-自定义DataSource的使用"><a href="#3-3-自定义DataSource的使用" class="headerlink" title="3.3 自定义DataSource的使用"></a>3.3 自定义DataSource的使用</h2><p>自定义DataSource的使用与内置DataSource一样，只需要在format里指定一下我们的Provider类路径即可。如</p>
+<pre><code class="scala">    val source = spark
+      .readStream
+      .format(&quot;org.apache.spark.sql.kafka010.CustomSourceProvider&quot;)
+      .options(options)
+      .schema(schema)
+      .load()
+</code></pre>
+<h2 id="3-4-实现MySQL自定义数据源"><a href="#3-4-实现MySQL自定义数据源" class="headerlink" title="3.4 实现MySQL自定义数据源"></a>3.4 实现MySQL自定义数据源</h2><p>此例子仅仅是为了演示如何自定义数据源，与实际业务场景无关。</p>
+<h3 id="3-4-1-创建MySQLSourceProvider-scala"><a href="#3-4-1-创建MySQLSourceProvider-scala" class="headerlink" title="3.4.1 创建MySQLSourceProvider.scala"></a>3.4.1 创建MySQLSourceProvider.scala</h3><pre><code class="scala">package org.apache.spark.sql.structured.datasource
+
+import org.apache.spark.internal.Logging
+import org.apache.spark.sql.SQLContext
+import org.apache.spark.sql.execution.streaming.&#123;Sink, Source&#125;
+import org.apache.spark.sql.sources.&#123;DataSourceRegister, StreamSinkProvider, StreamSourceProvider&#125;
+import org.apache.spark.sql.streaming.OutputMode
+import org.apache.spark.sql.types.StructType
+
+/**
+  * @author : shirukai
+  * @date : 2019-01-25 09:10
+  *       自定义MySQL数据源
+  */
+class MySQLSourceProvider extends DataSourceRegister
+  with StreamSourceProvider
+  with StreamSinkProvider
+  with Logging &#123;
+  /**
+    * 数据源的描述名字，如：kafka、socket
+    *
+    * @return 字符串shotName
+    */
+  override def shortName(): String = &quot;mysql&quot;
+
+
+  /**
+    * 定义数据源的Schema
+    *
+    * @param sqlContext   Spark SQL 上下文
+    * @param schema       通过.schema()方法传入的schema
+    * @param providerName Provider的名称，包名+类名
+    * @param parameters   通过.option()方法传入的参数
+    * @return 元组，(shotName,schema)
+    */
+  override def sourceSchema(
+                             sqlContext: SQLContext,
+                             schema: Option[StructType],
+                             providerName: String,
+                             parameters: Map[String, String]): (String, StructType) = &#123;
+    (providerName, schema.get)
+  &#125;
+
+  /**
+    * 创建输入源
+    *
+    * @param sqlContext   Spark SQL 上下文
+    * @param metadataPath 元数据Path
+    * @param schema       通过.schema()方法传入的schema
+    * @param providerName Provider的名称，包名+类名
+    * @param parameters   通过.option()方法传入的参数
+    * @return 自定义source，需要继承Source接口实现
+    */
+  override def createSource(
+                             sqlContext: SQLContext,
+                             metadataPath: String, schema: Option[StructType],
+                             providerName: String, parameters: Map[String, String]): Source = new MySQLSource(sqlContext, parameters, schema)
+
+  /**
+    * 创建输出源
+    *
+    * @param sqlContext       Spark SQL 上下文
+    * @param parameters       通过.option()方法传入的参数
+    * @param partitionColumns 分区列名?
+    * @param outputMode       输出模式
+    * @return
+    */
+  override def createSink(
+                           sqlContext: SQLContext,
+                           parameters: Map[String, String],
+                           partitionColumns: Seq[String], outputMode: OutputMode): Sink = new MySQLSink(sqlContext: SQLContext,parameters, outputMode)
+&#125;
+</code></pre>
+<h3 id="3-4-2-创建MySQLSource-scala"><a href="#3-4-2-创建MySQLSource-scala" class="headerlink" title="3.4.2 创建MySQLSource.scala"></a>3.4.2 创建MySQLSource.scala</h3><pre><code class="scala">package org.apache.spark.sql.structured.datasource
+
+import java.sql.Connection
+
+import org.apache.spark.executor.InputMetrics
+import org.apache.spark.internal.Logging
+import org.apache.spark.sql.catalyst.InternalRow
+import org.apache.spark.sql.execution.datasources.jdbc.JdbcUtils
+import org.apache.spark.sql.execution.streaming.&#123;Offset, Source&#125;
+import org.apache.spark.sql.types.StructType
+import org.apache.spark.sql.&#123;DataFrame, SQLContext&#125;
+import org.json4s.jackson.Serialization
+import org.json4s.&#123;Formats, NoTypeHints&#125;
+
+
+/**
+  * @author : shirukai
+  * @date : 2019-01-25 09:41
+  */
+class MySQLSource(sqlContext: SQLContext,
+                  options: Map[String, String],
+                  schemaOption: Option[StructType]) extends Source with Logging &#123;
+
+  lazy val conn: Connection = C3p0Utils.getDataSource(options).getConnection
+
+  val tableName: String = options(&quot;tableName&quot;)
+
+  var currentOffset: Map[String, Long] = Map[String, Long](tableName -&gt; 0)
+
+  val maxOffsetPerBatch: Option[Long] = Option(100)
+
+  val inputMetrics = new InputMetrics()
+
+  override def schema: StructType = schemaOption.get
+
+  /**
+    * 获取Offset
+    * 这里监控MySQL数据库表中条数变化情况
+    * @return Option[Offset]
+    */
+  override def getOffset: Option[Offset] = &#123;
+    val latest = getLatestOffset
+    val offsets = maxOffsetPerBatch match &#123;
+      case None =&gt; MySQLSourceOffset(latest)
+      case Some(limit) =&gt;
+        MySQLSourceOffset(rateLimit(limit, currentOffset, latest))
+    &#125;
+    Option(offsets)
+  &#125;
+
+  /**
+    * 获取数据
+    * @param start 上一次的offset
+    * @param end 最新的offset
+    * @return df
+    */
+  override def getBatch(start: Option[Offset], end: Offset): DataFrame = &#123;
+
+    var offset: Long = 0
+    if (start.isDefined) &#123;
+      offset = offset2Map(start.get)(tableName)
+    &#125;
+    val limit = offset2Map(end)(tableName) - offset
+    val sql = s&quot;SELECT * FROM $tableName limit $limit offset $offset&quot;
+
+    val st = conn.prepareStatement(sql)
+    val rs = st.executeQuery()
+    val rows: Iterator[InternalRow] = JdbcUtils.resultSetToSparkInternalRows(rs, schemaOption.get, inputMetrics) //todo 好用
+    val rdd = sqlContext.sparkContext.parallelize(rows.toSeq)
+
+    currentOffset = offset2Map(end)
+
+    sqlContext.internalCreateDataFrame(rdd, schema, isStreaming = true)
+  &#125;
+
+  override def stop(): Unit = &#123;
+    conn.close()
+  &#125;
+
+  def rateLimit(limit: Long, currentOffset: Map[String, Long], latestOffset: Map[String, Long]): Map[String, Long] = &#123;
+    val co = currentOffset(tableName)
+    val lo = latestOffset(tableName)
+    if (co + limit &gt; lo) &#123;
+      Map[String, Long](tableName -&gt; lo)
+    &#125; else &#123;
+      Map[String, Long](tableName -&gt; (co + limit))
+    &#125;
+  &#125;
+
+  // 获取最新条数
+  def getLatestOffset: Map[String, Long] = &#123;
+    var offset: Long = 0
+    val sql = s&quot;SELECT COUNT(1) FROM $tableName&quot;
+    val st = conn.prepareStatement(sql)
+    val rs = st.executeQuery()
+    while (rs.next()) &#123;
+      offset = rs.getLong(1)
+    &#125;
+    Map[String, Long](tableName -&gt; offset)
+  &#125;
+
+  def offset2Map(offset: Offset): Map[String, Long] = &#123;
+    implicit val formats: AnyRef with Formats = Serialization.formats(NoTypeHints)
+    Serialization.read[Map[String, Long]](offset.json())
+  &#125;
+&#125;
+
+case class MySQLSourceOffset(offset: Map[String, Long]) extends Offset &#123;
+  implicit val formats: AnyRef with Formats = Serialization.formats(NoTypeHints)
+
+  override def json(): String = Serialization.write(offset)
+&#125;
+</code></pre>
+<h3 id="3-4-3-测试MySQLSource"><a href="#3-4-3-测试MySQLSource" class="headerlink" title="3.4.3 测试MySQLSource"></a>3.4.3 测试MySQLSource</h3><pre><code class="scala">package org.apache.spark.sql.structured.datasource
+
+import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.types.&#123;StringType, StructField, StructType, TimestampType&#125;
+
+/**
+  * @author : shirukai
+  * @date : 2019-01-25 15:12
+  */
+object MySQLSourceTest &#123;
+  def main(args: Array[String]): Unit = &#123;
+    val spark = SparkSession
+      .builder()
+      .appName(this.getClass.getSimpleName)
+      .master(&quot;local[2]&quot;)
+      .getOrCreate()
+    val schema = StructType(List(
+      StructField(&quot;name&quot;, StringType),
+      StructField(&quot;creatTime&quot;, TimestampType),
+      StructField(&quot;modifyTime&quot;, TimestampType)
+    )
+    )
+    val options = Map[String, String](
+      &quot;driverClass&quot; -&gt; &quot;com.mysql.cj.jdbc.Driver&quot;,
+      &quot;jdbcUrl&quot; -&gt; &quot;jdbc:mysql://localhost:3306/spark-source?useSSL=false&amp;characterEncoding=utf-8&quot;,
+      &quot;user&quot; -&gt; &quot;root&quot;,
+      &quot;password&quot; -&gt; &quot;hollysys&quot;,
+      &quot;tableName&quot; -&gt; &quot;model&quot;)
+    val source = spark
+      .readStream
+      .format(&quot;org.apache.spark.sql.structured.datasource.MySQLSourceProvider&quot;)
+      .options(options)
+      .schema(schema)
+      .load()
+
+    import org.apache.spark.sql.functions._
+    val query = source.writeStream.format(&quot;console&quot;)
+      // 是否压缩显示
+      .option(&quot;truncate&quot;, value = false)
+      // 显示条数
+      .option(&quot;numRows&quot;, 30)
+      .option(&quot;checkpointLocation&quot;, &quot;/tmp/temporary-&quot; + UUID.randomUUID.toString)
+      .start()
+    query.awaitTermination()
+  &#125;
+&#125;
+</code></pre>
+<h1 id="4-自定义输出源"><a href="#4-自定义输出源" class="headerlink" title="4 自定义输出源"></a>4 自定义输出源</h1><p>相比较输入源的自定义性，输出源自定义的应用场景貌似更为常用。比如：数据写入关系型数据库、数据写入HBase、数据写入Redis等等。其实Structured提供的foreach以及2.4版本的foreachBatch方法已经可以实现绝大数的应用场景的，几乎是数据想写到什么地方都能实现。但是想要更优雅的实现，我们可以参考Spark SQL Sink规范，通过自定义的Sink的方式来实现。实现自定义Sink需要以下四个个步骤：</p>
+<p>第一步：继承DataSourceRegister和StreamSinkProvider创建自定义SinkProvider类</p>
+<p>第二步：重写DataSourceRegister类中的shotName和StreamSinkProvider中的createSink方法</p>
+<p>第三步：继承Sink创建自定义Sink类</p>
+<p>第四步：重写Sink中的addBatch方法</p>
+<h2 id="4-1-改写CustomDataSourceProvider类"><a href="#4-1-改写CustomDataSourceProvider类" class="headerlink" title="4.1 改写CustomDataSourceProvider类"></a>4.1 改写CustomDataSourceProvider类</h2><h3 id="4-1-1-新增继承StreamSinkProvider"><a href="#4-1-1-新增继承StreamSinkProvider" class="headerlink" title="4.1.1 新增继承StreamSinkProvider"></a>4.1.1 新增继承StreamSinkProvider</h3><p>在上面创建自定义输入源的基础上，新增继承StreamSourceProvider。如下所示：</p>
+<pre><code class="scala">class CustomDataSourceProvider extends DataSourceRegister
+  with StreamSourceProvider
+  with StreamSinkProvider
+  with Logging &#123;
+      //Override some functions ……
+  &#125;
+</code></pre>
+<h3 id="4-1-2-重写StreamSinkProvider中的createSink方法"><a href="#4-1-2-重写StreamSinkProvider中的createSink方法" class="headerlink" title="4.1.2 重写StreamSinkProvider中的createSink方法"></a>4.1.2 重写StreamSinkProvider中的createSink方法</h3><p>通过传入的参数，来实例化我们自定义的DataSink，是我们自定义Sink的重要入口的地方</p>
+<pre><code class="scala">  /**
+    * 创建输出源
+    *
+    * @param sqlContext       Spark SQL 上下文
+    * @param parameters       通过.option()方法传入的参数
+    * @param partitionColumns 分区列名?
+    * @param outputMode       输出模式
+    * @return
+    */
+  override def createSink(sqlContext: SQLContext,
+                          parameters: Map[String, String],
+                          partitionColumns: Seq[String],
+                          outputMode: OutputMode): Sink = new CustomDataSink(sqlContext,parameters,outputMode)
+</code></pre>
+<h2 id="4-2-创建CustomDataSink类"><a href="#4-2-创建CustomDataSink类" class="headerlink" title="4.2 创建CustomDataSink类"></a>4.2 创建CustomDataSink类</h2><h3 id="4-2-1-继承Sink创建CustomDataSink类"><a href="#4-2-1-继承Sink创建CustomDataSink类" class="headerlink" title="4.2.1 继承Sink创建CustomDataSink类"></a>4.2.1 继承Sink创建CustomDataSink类</h3><p>要创建自定义的DataSink必须要继承位于org.apache.spark.sql.sources包下的Sink。如下所示：</p>
+<pre><code class="scala">class CustomDataSink(sqlContext: SQLContext,
+                     parameters: Map[String, String],
+                     outputMode: OutputMode) extends Sink with Logging &#123;
+    // Override some functions
+&#125;
+</code></pre>
+<h3 id="4-2-2-重写Sink中的addBatch方法"><a href="#4-2-2-重写Sink中的addBatch方法" class="headerlink" title="4.2.2 重写Sink中的addBatch方法"></a>4.2.2 重写Sink中的addBatch方法</h3><p>该方法是当发生计算时会被触发，传入的是一个batchId和dataFrame，拿到DataFrame之后，我们有三种写出方式，第一种是使用Spark SQL内置的Sink写出，如 JSON数据源、CSV数据源、Text数据源、Parquet数据源、JDBC数据源等。第二种是通过DataFrame的foreachPartition写出。第三种就是自定义SparkSQL的输出源然后写出。</p>
+<pre><code class="scala">/**
+  * 添加Batch，即数据写出
+  *
+  * @param batchId batchId
+  * @param data    DataFrame
+  *                触发机制：当发生计算时，会触发该方法，并且得到要输出的DataFrame
+  *                实现摘要：
+  *                1. 数据写入方式：
+  *                （1）通过SparkSQL内置的数据源写出
+  *                我们拿到DataFrame之后可以通过SparkSQL内置的数据源将数据写出，如：
+  *                JSON数据源、CSV数据源、Text数据源、Parquet数据源、JDBC数据源等。
+  *                （2）通过自定义SparkSQL的数据源进行写出
+  *                （3）通过foreachPartition 将数据写出
+  */
+override def addBatch(batchId: Long, data: DataFrame): Unit = ???
+</code></pre>
+<p><strong>注意</strong>：</p>
+<p>当我们使用第一种方式的时候要注意，此时拿到的DataFrame是一个流式的DataFrame，即isStreaming=ture，通过查看KafkaSink，如下代码所示，先是通过DataFrame.queryExecution执行查询,然后在wite里转成rdd，通过rdd的foreachPartition实现。同样的思路，我们可以利用这个rdd和schema,利用sqlContext.internalCreateDataFrame(rdd, data.schema)重新生成DataFrame，这个在MySQLSink中使用过。</p>
+<pre><code class="scala">override def addBatch(batchId: Long, data: DataFrame): Unit = &#123;
+  if (batchId &lt;= latestBatchId) &#123;
+    logInfo(s&quot;Skipping already committed batch $batchId&quot;)
+  &#125; else &#123;
+    KafkaWriter.write(sqlContext.sparkSession,
+      data.queryExecution, executorKafkaParams, topic)
+    latestBatchId = batchId
+  &#125;
+&#125;
+
+  def write(
+      sparkSession: SparkSession,
+      queryExecution: QueryExecution,
+      kafkaParameters: ju.Map[String, Object],
+      topic: Option[String] = None): Unit = &#123;
+    val schema = queryExecution.analyzed.output
+    validateQuery(schema, kafkaParameters, topic)
+    queryExecution.toRdd.foreachPartition &#123; iter =&gt;
+      val writeTask = new KafkaWriteTask(kafkaParameters, schema, topic)
+      Utils.tryWithSafeFinally(block = writeTask.execute(iter))(
+        finallyBlock = writeTask.close())
+    &#125;
+  &#125;
+</code></pre>
+<h2 id="4-3-自定义DataSink的使用"><a href="#4-3-自定义DataSink的使用" class="headerlink" title="4.3 自定义DataSink的使用"></a>4.3 自定义DataSink的使用</h2><p>自定义DataSink的使用与自定义DataSource的使用相同，在format里指定一些类Provider的类路径即可。</p>
+<pre><code class="scala">val query = source.groupBy(&quot;creatTime&quot;).agg(collect_list(&quot;name&quot;)).writeStream
+      .outputMode(&quot;update&quot;)
+      .format(&quot;org.apache.spark.sql.kafka010.CustomDataSourceProvider&quot;)
+      .option(options)
+      .start()
+    query.awaitTermination()
+</code></pre>
+<h2 id="4-4-实现MySQL自定义输出源"><a href="#4-4-实现MySQL自定义输出源" class="headerlink" title="4.4 实现MySQL自定义输出源"></a>4.4 实现MySQL自定义输出源</h2><h3 id="4-4-1-修改MySQLSourceProvider-scala"><a href="#4-4-1-修改MySQLSourceProvider-scala" class="headerlink" title="4.4.1 修改MySQLSourceProvider.scala"></a>4.4.1 修改MySQLSourceProvider.scala</h3><p>上面我们实现MySQL自定义输入源的时候，已经创建了MySQLSourceProvider类，我们需要在这个基础上新增继承StreamSinkProvider，并重写createSink方法，如下所示：</p>
+<pre><code class="scala">package org.apache.spark.sql.structured.datasource
+
+import org.apache.spark.internal.Logging
+import org.apache.spark.sql.SQLContext
+import org.apache.spark.sql.execution.streaming.&#123;Sink, Source&#125;
+import org.apache.spark.sql.kafka010.&#123;MySQLSink, MySQLSource&#125;
+import org.apache.spark.sql.sources.&#123;DataSourceRegister, StreamSinkProvider, StreamSourceProvider&#125;
+import org.apache.spark.sql.streaming.OutputMode
+import org.apache.spark.sql.types.StructType
+
+/**
+  * @author : shirukai
+  * @date : 2019-01-25 09:10
+  *       自定义MySQL数据源
+  */
+class MySQLSourceProvider extends DataSourceRegister
+  with StreamSourceProvider
+  with StreamSinkProvider
+  with Logging &#123;
+      
+  //……省略自定义输入源的方法
+
+  /**
+    * 创建输出源
+    *
+    * @param sqlContext       Spark SQL 上下文
+    * @param parameters       通过.option()方法传入的参数
+    * @param partitionColumns 分区列名?
+    * @param outputMode       输出模式
+    * @return
+    */
+  override def createSink(
+                           sqlContext: SQLContext,
+                           parameters: Map[String, String],
+                           partitionColumns: Seq[String], outputMode: OutputMode): Sink = new MySQLSink(sqlContext: SQLContext,parameters, outputMode)
+&#125;
+</code></pre>
+<h3 id="4-4-1-创建MySQLSink-scala"><a href="#4-4-1-创建MySQLSink-scala" class="headerlink" title="4.4.1 创建MySQLSink.scala"></a>4.4.1 创建MySQLSink.scala</h3><pre><code class="scala">package org.apache.spark.sql.structured.datasource
+
+import org.apache.spark.internal.Logging
+import org.apache.spark.sql.&#123;DataFrame, SQLContext, SaveMode&#125;
+import org.apache.spark.sql.execution.streaming.Sink
+import org.apache.spark.sql.streaming.OutputMode
+
+/**
+  * @author : shirukai
+  * @date : 2019-01-25 17:35
+  */
+class MySQLSink(sqlContext: SQLContext,parameters: Map[String, String], outputMode: OutputMode) extends Sink with Logging &#123;
+  override def addBatch(batchId: Long, data: DataFrame): Unit = &#123;
+    val query = data.queryExecution
+    val rdd = query.toRdd
+    val df = sqlContext.internalCreateDataFrame(rdd, data.schema)
+    df.show(false)
+    df.write.format(&quot;jdbc&quot;).options(parameters).mode(SaveMode.Append).save()
+  &#125;
+&#125;
+</code></pre>
+<h3 id="4-2-3-测试MySQLSink"><a href="#4-2-3-测试MySQLSink" class="headerlink" title="4.2.3 测试MySQLSink"></a>4.2.3 测试MySQLSink</h3><pre><code class="scala">package org.apache.spark.sql.structured.datasource
+
+import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.types.&#123;StringType, StructField, StructType, TimestampType&#125;
+
+/**
+  * @author : shirukai
+  * @date : 2019-01-29 09:57
+  *       测试自定义MySQLSource
+  */
+object MySQLSourceTest &#123;
+  def main(args: Array[String]): Unit = &#123;
+    val spark = SparkSession
+      .builder()
+      .appName(this.getClass.getSimpleName)
+      .master(&quot;local[2]&quot;)
+      .getOrCreate()
+    val schema = StructType(List(
+      StructField(&quot;name&quot;, StringType),
+      StructField(&quot;creatTime&quot;, TimestampType),
+      StructField(&quot;modifyTime&quot;, TimestampType)
+    )
+    )
+    val options = Map[String, String](
+      &quot;driverClass&quot; -&gt; &quot;com.mysql.cj.jdbc.Driver&quot;,
+      &quot;jdbcUrl&quot; -&gt; &quot;jdbc:mysql://localhost:3306/spark-source?useSSL=false&amp;characterEncoding=utf-8&quot;,
+      &quot;user&quot; -&gt; &quot;root&quot;,
+      &quot;password&quot; -&gt; &quot;hollysys&quot;,
+      &quot;tableName&quot; -&gt; &quot;model&quot;)
+    val source = spark
+      .readStream
+      .format(&quot;org.apache.spark.sql.structured.datasource.MySQLSourceProvider&quot;)
+      .options(options)
+      .schema(schema)
+      .load()
+
+    import org.apache.spark.sql.functions._
+    val query = source.groupBy(&quot;creatTime&quot;).agg(collect_list(&quot;name&quot;).cast(StringType).as(&quot;names&quot;)).writeStream
+      .outputMode(&quot;update&quot;)
+      .format(&quot;org.apache.spark.sql.structured.datasource.MySQLSourceProvider&quot;)
+      .option(&quot;checkpointLocation&quot;, &quot;/tmp/MySQLSourceProvider11&quot;)
+      .option(&quot;user&quot;,&quot;root&quot;)
+      .option(&quot;password&quot;,&quot;hollysys&quot;)
+      .option(&quot;dbtable&quot;,&quot;test&quot;)
+      .option(&quot;url&quot;,&quot;jdbc:mysql://localhost:3306/spark-source?useSSL=false&amp;characterEncoding=utf-8&quot;)
+      .start()
+
+    query.awaitTermination()
+  &#125;
+&#125;
+</code></pre>
+<h1 id="3-总结"><a href="#3-总结" class="headerlink" title="3 总结"></a>3 总结</h1><p>通过上面的笔记，参看官网文档，可以学习到Structured支持的几种输入源：File Source、Socket Source、Rate Source、Kafka Source，平时我们会用到KafkaSource以及FileSource,SocketSource、RateSource多用于测试场景。关于输入源没有什么优雅的操作，只能通过重写Source来实现。对于输出源来说，Spark Structured提供的foreach以及foreachBatch已经能适用于大多数场景，没有重写Sink的必要。关于Spark SQL 自定义输入源、Streaming自定义数据源后期会慢慢整理出来。</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-Structured%E5%86%85%E7%BD%AE%E7%9A%84%E8%BE%93%E5%85%A5%E6%BA%90-Source"><span class="toc-number">1.</span> <span class="toc-text">1 Structured内置的输入源 Source</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-File-Source"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 File Source</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-Socket-Source"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 Socket Source</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3-Rate-Source"><span class="toc-number">1.3.</span> <span class="toc-text">1.3 Rate Source</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-4-Kafka-Source"><span class="toc-number">1.4.</span> <span class="toc-text">1.4 Kafka Source</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-Structured-%E5%86%85%E7%BD%AE%E7%9A%84%E8%BE%93%E5%87%BA%E6%BA%90-Sink"><span class="toc-number">2.</span> <span class="toc-text">2 Structured 内置的输出源 Sink</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-File-Sink"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 File Sink</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-Console-Sink"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 Console Sink</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-Memory-Sink"><span class="toc-number">2.3.</span> <span class="toc-text">2.3 Memory Sink</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4-Kafka-Sink"><span class="toc-number">2.4.</span> <span class="toc-text">2.4 Kafka Sink</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-5-ForeachBatch-Sink-2-4"><span class="toc-number">2.5.</span> <span class="toc-text">2.5 ForeachBatch Sink(2.4)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-6-Foreach-Sink"><span class="toc-number">2.6.</span> <span class="toc-text">2.6 Foreach Sink</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E8%87%AA%E5%AE%9A%E4%B9%89%E8%BE%93%E5%85%A5%E6%BA%90"><span class="toc-number">3.</span> <span class="toc-text">3 自定义输入源</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-%E5%88%9B%E5%BB%BACustomDataSourceProvider%E7%B1%BB"><span class="toc-number">3.1.</span> <span class="toc-text">3.1 创建CustomDataSourceProvider类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-1-%E7%BB%A7%E6%89%BFDataSourceRegister%E5%92%8CStreamSourceProvider"><span class="toc-number">3.1.1.</span> <span class="toc-text">3.1.1 继承DataSourceRegister和StreamSourceProvider</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-2-%E9%87%8D%E5%86%99DataSourceRegister%E7%9A%84shotName%E6%96%B9%E6%B3%95"><span class="toc-number">3.1.2.</span> <span class="toc-text">3.1.2 重写DataSourceRegister的shotName方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-3-%E9%87%8D%E5%86%99StreamSourceProvider%E4%B8%AD%E7%9A%84sourceSchema%E6%96%B9%E6%B3%95"><span class="toc-number">3.1.3.</span> <span class="toc-text">3.1.3 重写StreamSourceProvider中的sourceSchema方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-4-%E9%87%8D%E5%86%99StreamSourceProvider%E4%B8%AD%E7%9A%84createSource%E6%96%B9%E6%B3%95"><span class="toc-number">3.1.4.</span> <span class="toc-text">3.1.4 重写StreamSourceProvider中的createSource方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-5-CustomDataSourceProvider-scala%E5%AE%8C%E6%95%B4%E4%BB%A3%E7%A0%81"><span class="toc-number">3.1.5.</span> <span class="toc-text">3.1.5 CustomDataSourceProvider.scala完整代码</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-%E5%88%9B%E5%BB%BACustomDataSource%E7%B1%BB"><span class="toc-number">3.2.</span> <span class="toc-text">3.2 创建CustomDataSource类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-1-%E7%BB%A7%E6%89%BFSource%E5%88%9B%E5%BB%BACustomDataSource%E7%B1%BB"><span class="toc-number">3.2.1.</span> <span class="toc-text">3.2.1 继承Source创建CustomDataSource类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-2-%E9%87%8D%E5%86%99Source%E7%9A%84schema%E6%96%B9%E6%B3%95"><span class="toc-number">3.2.2.</span> <span class="toc-text">3.2.2 重写Source的schema方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-3-%E9%87%8D%E5%86%99Source%E7%9A%84getOffset%E6%96%B9%E6%B3%95"><span class="toc-number">3.2.3.</span> <span class="toc-text">3.2.3 重写Source的getOffset方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-4-%E9%87%8D%E5%86%99Source%E7%9A%84getBatch%E6%96%B9%E6%B3%95"><span class="toc-number">3.2.4.</span> <span class="toc-text">3.2.4 重写Source的getBatch方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-5-%E9%87%8D%E5%86%99Source%E7%9A%84stop%E6%96%B9%E6%B3%95"><span class="toc-number">3.2.5.</span> <span class="toc-text">3.2.5 重写Source的stop方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-6-CustomDataSource-scala%E5%AE%8C%E6%95%B4%E4%BB%A3%E7%A0%81"><span class="toc-number">3.2.6.</span> <span class="toc-text">3.2.6 CustomDataSource.scala完整代码</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-%E8%87%AA%E5%AE%9A%E4%B9%89DataSource%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="toc-number">3.3.</span> <span class="toc-text">3.3 自定义DataSource的使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-4-%E5%AE%9E%E7%8E%B0MySQL%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE%E6%BA%90"><span class="toc-number">3.4.</span> <span class="toc-text">3.4 实现MySQL自定义数据源</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-1-%E5%88%9B%E5%BB%BAMySQLSourceProvider-scala"><span class="toc-number">3.4.1.</span> <span class="toc-text">3.4.1 创建MySQLSourceProvider.scala</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-2-%E5%88%9B%E5%BB%BAMySQLSource-scala"><span class="toc-number">3.4.2.</span> <span class="toc-text">3.4.2 创建MySQLSource.scala</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-3-%E6%B5%8B%E8%AF%95MySQLSource"><span class="toc-number">3.4.3.</span> <span class="toc-text">3.4.3 测试MySQLSource</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%E8%87%AA%E5%AE%9A%E4%B9%89%E8%BE%93%E5%87%BA%E6%BA%90"><span class="toc-number">4.</span> <span class="toc-text">4 自定义输出源</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-%E6%94%B9%E5%86%99CustomDataSourceProvider%E7%B1%BB"><span class="toc-number">4.1.</span> <span class="toc-text">4.1 改写CustomDataSourceProvider类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-1-%E6%96%B0%E5%A2%9E%E7%BB%A7%E6%89%BFStreamSinkProvider"><span class="toc-number">4.1.1.</span> <span class="toc-text">4.1.1 新增继承StreamSinkProvider</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-2-%E9%87%8D%E5%86%99StreamSinkProvider%E4%B8%AD%E7%9A%84createSink%E6%96%B9%E6%B3%95"><span class="toc-number">4.1.2.</span> <span class="toc-text">4.1.2 重写StreamSinkProvider中的createSink方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-%E5%88%9B%E5%BB%BACustomDataSink%E7%B1%BB"><span class="toc-number">4.2.</span> <span class="toc-text">4.2 创建CustomDataSink类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-1-%E7%BB%A7%E6%89%BFSink%E5%88%9B%E5%BB%BACustomDataSink%E7%B1%BB"><span class="toc-number">4.2.1.</span> <span class="toc-text">4.2.1 继承Sink创建CustomDataSink类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-2-%E9%87%8D%E5%86%99Sink%E4%B8%AD%E7%9A%84addBatch%E6%96%B9%E6%B3%95"><span class="toc-number">4.2.2.</span> <span class="toc-text">4.2.2 重写Sink中的addBatch方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-3-%E8%87%AA%E5%AE%9A%E4%B9%89DataSink%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="toc-number">4.3.</span> <span class="toc-text">4.3 自定义DataSink的使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-4-%E5%AE%9E%E7%8E%B0MySQL%E8%87%AA%E5%AE%9A%E4%B9%89%E8%BE%93%E5%87%BA%E6%BA%90"><span class="toc-number">4.4.</span> <span class="toc-text">4.4 实现MySQL自定义输出源</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-1-%E4%BF%AE%E6%94%B9MySQLSourceProvider-scala"><span class="toc-number">4.4.1.</span> <span class="toc-text">4.4.1 修改MySQLSourceProvider.scala</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-1-%E5%88%9B%E5%BB%BAMySQLSink-scala"><span class="toc-number">4.4.2.</span> <span class="toc-text">4.4.1 创建MySQLSink.scala</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-3-%E6%B5%8B%E8%AF%95MySQLSink"><span class="toc-number">4.4.3.</span> <span class="toc-text">4.2.3 测试MySQLSink</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E6%80%BB%E7%BB%93"><span class="toc-number">5.</span> <span class="toc-text">3 总结</span></a></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

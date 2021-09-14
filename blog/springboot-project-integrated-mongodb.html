@@ -1,0 +1,842 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Springboot项目整合MongoDB - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="本文主要记录在Springboot项目中整合MongoDB，并演示增删改查，以及分页查询。
+1 整合MongoDB1.1 引入依赖在sparingboot项目中引入MongoDB依赖
+&amp;lt;!--,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">Springboot项目整合MongoDB</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/2.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/MongoDB"><b>「
+                    </b>MONGODB<b> 」</b></a>
+                
+                August 19, 2018
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/springboot-project-integrated-mongodb.html" title="Springboot项目整合MongoDB" class="">Springboot项目整合MongoDB</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    13k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    12 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/MongoDB/" rel="tag">MongoDB</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <p>本文主要记录在Springboot项目中整合MongoDB，并演示增删改查，以及分页查询。</p>
+<h2 id="1-整合MongoDB"><a href="#1-整合MongoDB" class="headerlink" title="1 整合MongoDB"></a>1 整合MongoDB</h2><h3 id="1-1-引入依赖"><a href="#1-1-引入依赖" class="headerlink" title="1.1 引入依赖"></a>1.1 引入依赖</h3><p>在sparingboot项目中引入MongoDB依赖</p>
+<pre><code>&lt;!--mongodb--&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-data-mongodb&lt;/artifactId&gt;
+&lt;/dependency&gt;
+</code></pre>
+<h3 id="1-2-MongoDB配置"><a href="#1-2-MongoDB配置" class="headerlink" title="1.2 MongoDB配置"></a>1.2 MongoDB配置</h3><p>引入依赖之后，需要在springboot配置中，加入MongoDB的配置信息。</p>
+<p>这里我使用的springboot项目的配置文件是yml格式的，配置内容如下：</p>
+<pre><code>spring:
+ data:
+  mongodb:
+    uri: mongodb://192.168.162.128:27017/local?maxPoolSize=256
+</code></pre>
+<p>如果为properties格式，添加内容如下：</p>
+<pre><code>spring.data.mongodb.uri=mongodb://192.168.162.128:27017/local?maxPoolSize=256
+</code></pre>
+<p>uri格式解释</p>
+<pre><code>mongodb://用户名:密码@连接地址:端口/数据库名
+</code></pre>
+<h2 id="2-MongoDB的CRUD操作"><a href="#2-MongoDB的CRUD操作" class="headerlink" title="2 MongoDB的CRUD操作"></a>2 MongoDB的CRUD操作</h2><h3 id="2-1-entity层"><a href="#2-1-entity层" class="headerlink" title="2.1 entity层"></a>2.1 entity层</h3><p>java实体类用来映射MongoDB中的Collection</p>
+<p>如：我们创建一个User的实体类，里面包含id、userName、password字段。</p>
+<pre><code>package com.springboot.demo.mongo.entity;
+
+import org.springframework.data.mongodb.core.mapping.Field;
+
+import java.io.Serializable;
+
+/**
+ * Created by shirukai on 2018/8/8
+ */
+public class User implements Serializable &#123;
+    private static final long serialVersionUID = -3258839839160856613L;
+    @Field(&quot;id&quot;)
+    private Long id;
+    @Field(&quot;user_name&quot;)
+    private String userName;
+    @Field(&quot;password&quot;)
+    private String password;
+
+    public Long getId() &#123;
+        return id;
+    &#125;
+
+    public void setId(Long id) &#123;
+        this.id = id;
+    &#125;
+
+    public String getUserName() &#123;
+        return userName;
+    &#125;
+
+    public void setUserName(String userName) &#123;
+        this.userName = userName;
+    &#125;
+
+    public String getPassword() &#123;
+        return password;
+    &#125;
+
+    public void setPassword(String password) &#123;
+        this.password = password;
+    &#125;
+
+    @Override
+    public String toString() &#123;
+        return &quot;User&#123;&quot; +
+                &quot;id=&quot; + id +
+                &quot;, userName=&#39;&quot; + userName + &#39;\&#39;&#39; +
+                &quot;, password=&#39;&quot; + password + &#39;\&#39;&#39; +
+                &#39;&#125;&#39;;
+    &#125;
+&#125;
+</code></pre>
+<h3 id="2-2-dao层"><a href="#2-2-dao层" class="headerlink" title="2.2 dao层"></a>2.2 dao层</h3><p>DAO层主要提供对MongoBD的基础操作 如增删改查等。</p>
+<h4 id="2-2-1-添加操作"><a href="#2-2-1-添加操作" class="headerlink" title="2.2.1 添加操作"></a>2.2.1 添加操作</h4><p>对MongoDB的添加，主要是调到mongoTemplate的save()方法,首相通过Spring注入mongoTemplate。</p>
+<pre><code>    //注入mongoTemplate
+    @Autowired
+    private MongoTemplate mongoTemplate;
+    
+     /**
+     * 保存user
+     *
+     * @param user user
+     */
+    public void saveUser(User user) &#123;
+        mongoTemplate.save(user);
+    &#125;
+</code></pre>
+<h4 id="2-2-2-删除操作"><a href="#2-2-2-删除操作" class="headerlink" title="2.2.2 删除操作"></a>2.2.2 删除操作</h4><p>调用mongoTemplate中的remove()方法实现删除操作</p>
+<pre><code>/**
+ * 删除user
+ *
+ * @param id id
+ */
+public void deleteUserById(Long id) &#123;
+    Query query = new Query(Criteria.where(&quot;id&quot;).is(id));
+    mongoTemplate.remove(query, User.class);
+&#125;
+</code></pre>
+<h4 id="2-2-3-修改操作"><a href="#2-2-3-修改操作" class="headerlink" title="2.2.3 修改操作"></a>2.2.3 修改操作</h4><p>调用mongoTemplate中的update()方法实现修改操作</p>
+<pre><code>/**
+ * 更新user
+ *
+ * @param user user
+ */
+public void updateUser(User user) &#123;
+    Query query = new Query(Criteria.where(&quot;id&quot;).is(user.getId()));
+    Update update = new Update().set(&quot;userName&quot;, user.getUserName()).set(&quot;password&quot;, user.getPassword());
+    mongoTemplate.updateFirst(query, update, User.class);
+&#125;
+</code></pre>
+<h4 id="2-2-4-查找操作"><a href="#2-2-4-查找操作" class="headerlink" title="2.2.4 查找操作"></a>2.2.4 查找操作</h4><p>调用mongoTemplate中的findOne()方法实现查找操作</p>
+<pre><code>    /**
+     * 根据用户名查询user
+     *
+     * @param userName userName
+     * @return user
+     */
+    public User findUserByUserName(String userName) &#123;
+        Query query = new Query(Criteria.where(&quot;userName&quot;).is(userName));
+        return mongoTemplate.findOne(query, User.class);
+    &#125;
+</code></pre>
+<h4 id="2-2-5-分页查找"><a href="#2-2-5-分页查找" class="headerlink" title="2.2.5 分页查找"></a>2.2.5 分页查找</h4><h5 id="2-2-5-1-创建PageModel类"><a href="#2-2-5-1-创建PageModel类" class="headerlink" title="2.2.5.1 创建PageModel类"></a>2.2.5.1 创建PageModel类</h5><pre><code>package com.springboot.demo.mongo.page;
+
+import org.springframework.data.domain.Sort;
+
+import java.io.Serializable;
+
+/**
+ * Created by shirukai on 2018/8/8
+ */
+public class PageModel implements Serializable &#123;
+    private static final long serialVersionUID = -3258839839160856613L;
+    private Integer pagenumber = 1;
+    private Integer pagesize = 10;
+    private Sort sort;
+
+    public Integer getPagenumber() &#123;
+        return pagenumber;
+    &#125;
+
+    public void setPagenumber(Integer pagenumber) &#123;
+        this.pagenumber = pagenumber;
+    &#125;
+
+    public Integer getPagesize() &#123;
+        return pagesize;
+    &#125;
+
+    public void setPagesize(Integer pagesize) &#123;
+        this.pagesize = pagesize;
+    &#125;
+
+    public Sort getSort() &#123;
+        return sort;
+    &#125;
+
+    public void setSort(Sort sort) &#123;
+        this.sort = sort;
+    &#125;
+&#125;
+</code></pre>
+<h5 id="2-2-5-2-创建SpringPageable类"><a href="#2-2-5-2-创建SpringPageable类" class="headerlink" title="2.2.5.2 创建SpringPageable类"></a>2.2.5.2 创建SpringPageable类</h5><pre><code>package com.springboot.demo.mongo.page;
+
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+
+import java.io.Serializable;
+
+/**
+ * Created by shirukai on 2018/8/8
+ */
+public class SpringPageable implements Pageable, Serializable &#123;
+    private static final long serialVersionUID = -3258839839160856613L;
+
+    private PageModel page;
+
+    public PageModel getPage() &#123;
+        return page;
+    &#125;
+
+    public void setPage(PageModel page) &#123;
+        this.page = page;
+    &#125;
+
+
+    @Override
+    public int getPageNumber() &#123;
+        return page.getPagenumber();
+    &#125;
+
+    @Override
+    public int getPageSize() &#123;
+        return page.getPagesize();
+    &#125;
+
+    @Override
+    public long getOffset() &#123;
+        return (page.getPagenumber() - 1) * page.getPagesize();
+    &#125;
+
+    @Override
+    public Sort getSort() &#123;
+        return page.getSort();
+    &#125;
+
+    @Override
+    public Pageable next() &#123;
+        return null;
+    &#125;
+
+    @Override
+    public Pageable previousOrFirst() &#123;
+        return null;
+    &#125;
+
+    @Override
+    public Pageable first() &#123;
+        return null;
+    &#125;
+
+    @Override
+    public boolean hasPrevious() &#123;
+        return false;
+    &#125;
+&#125;
+</code></pre>
+<h5 id="2-2-5-2-在DAO层实现分页方法"><a href="#2-2-5-2-在DAO层实现分页方法" class="headerlink" title="2.2.5.2 在DAO层实现分页方法"></a>2.2.5.2 在DAO层实现分页方法</h5><pre><code>    /**
+     * 分页查询
+     * @param pageNum 页数
+     * @param pageSize 每页数量
+     * @param sortField 排序字段
+     * @return pages
+     */
+    public Page&lt;User&gt; findUserPagination(Integer pageNum, Integer pageSize, String sortField) &#123;
+        SpringPageable pageable = new SpringPageable();
+        PageModel pm = new PageModel();
+        Query query = new Query();
+        Sort sort = new Sort(Sort.Direction.DESC, sortField);
+        pm.setPagenumber(pageNum);
+        pm.setPagesize(pageSize);
+        pm.setSort(sort);
+        pageable.setPage(pm);
+        Long count = mongoTemplate.count(query, User.class);
+        List&lt;User&gt; list = mongoTemplate.find(query.with(pageable), User.class);
+        return new PageImpl&lt;&gt;(list, pageable, count);
+    &#125;
+</code></pre>
+<h4 id="2-2-6-DAO层完成代码"><a href="#2-2-6-DAO层完成代码" class="headerlink" title="2.2.6 DAO层完成代码"></a>2.2.6 DAO层完成代码</h4><pre><code>package com.springboot.demo.mongo.dao;
+
+import com.springboot.demo.mongo.entity.User;
+import com.springboot.demo.mongo.page.PageModel;
+import com.springboot.demo.mongo.page.SpringPageable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
+import org.springframework.stereotype.Component;
+import java.util.List;
+
+/**
+ * Created by shirukai on 2018/8/8
+ */
+@Component
+public class UserDao &#123;
+    @Autowired
+    private MongoTemplate mongoTemplate;
+
+    /**
+     * 保存user
+     *
+     * @param user user
+     */
+    public void saveUser(User user) &#123;
+        mongoTemplate.save(user);
+    &#125;
+
+    /**
+     * 根据用户名查询user
+     *
+     * @param userName userName
+     * @return user
+     */
+    public User findUserByUserName(String userName) &#123;
+        Query query = new Query(Criteria.where(&quot;userName&quot;).is(userName));
+        return mongoTemplate.findOne(query, User.class);
+    &#125;
+
+    /**
+     * 更新user
+     *
+     * @param user user
+     */
+    public void updateUser(User user) &#123;
+        Query query = new Query(Criteria.where(&quot;id&quot;).is(user.getId()));
+        Update update = new Update().set(&quot;userName&quot;, user.getUserName()).set(&quot;password&quot;, user.getPassword());
+        mongoTemplate.updateFirst(query, update, User.class);
+    &#125;
+
+    /**
+     * 删除user
+     *
+     * @param id id
+     */
+    public void deleteUserById(Long id) &#123;
+        Query query = new Query(Criteria.where(&quot;id&quot;).is(id));
+        mongoTemplate.remove(query, User.class);
+    &#125;
+
+    /**
+     * 分页查询
+     * @param pageNum 页数
+     * @param pageSize 每页数量
+     * @param sortField 排序字段
+     * @return pages
+     */
+    public Page&lt;User&gt; findUserPagination(Integer pageNum, Integer pageSize, String sortField) &#123;
+        SpringPageable pageable = new SpringPageable();
+        PageModel pm = new PageModel();
+        Query query = new Query();
+        Sort sort = new Sort(Sort.Direction.DESC, sortField);
+        pm.setPagenumber(pageNum);
+        pm.setPagesize(pageSize);
+        pm.setSort(sort);
+        pageable.setPage(pm);
+        Long count = mongoTemplate.count(query, User.class);
+        List&lt;User&gt; list = mongoTemplate.find(query.with(pageable), User.class);
+        return new PageImpl&lt;&gt;(list, pageable, count);
+    &#125;
+&#125;
+</code></pre>
+<h3 id="2-2-测试类"><a href="#2-2-测试类" class="headerlink" title="2.2 测试类"></a>2.2 测试类</h3><pre><code>package com.springboot.demo.mongo.dao;
+
+import com.springboot.demo.mongo.entity.User;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.test.context.junit4.SpringRunner;
+
+
+/**
+ * Created by shirukai on 2018/8/8
+ */
+@RunWith(SpringRunner.class)
+@SpringBootTest
+public class UserDaoTest &#123;
+
+    @Autowired
+    UserDao userDao;
+
+    @Test
+    public void saveUser() &#123;
+        User user = new User();
+        for (int i = 0; i &lt; 100; i++) &#123;
+            user.setId((long) (100 + i));
+            user.setUserName(&quot;hollysys_&quot; + i);
+            user.setPassword(&quot;123456a?&quot;);
+            userDao.saveUser(user);
+            System.out.println(&quot;insert:&quot; + i);
+        &#125;
+    &#125;
+
+    @Test
+    public void findUserByUserName() &#123;
+        User user = userDao.findUserByUserName(&quot;shirukai&quot;);
+        System.out.println(user);
+    &#125;
+
+    @Test
+    public void updateUser() &#123;
+        User user = new User();
+        user.setId(1L);
+        user.setUserName(&quot;hollysys&quot;);
+        user.setPassword(&quot;123456a?&quot;);
+        userDao.updateUser(user);
+
+    &#125;
+
+    @Test
+    public void deleteUser() &#123;
+        userDao.deleteUserById(1L);
+    &#125;
+
+    @Test
+    public void findUserPagination() &#123;
+        Page&lt;User&gt; userPages = userDao.findUserPagination(1, 5, &quot;id&quot;);
+        userPages.forEach(u -&gt; &#123;
+            System.out.println(u);
+        &#125;);
+    &#125;
+&#125;
+</code></pre>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%95%B4%E5%90%88MongoDB"><span class="toc-number">1.</span> <span class="toc-text">1 整合MongoDB</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E5%BC%95%E5%85%A5%E4%BE%9D%E8%B5%96"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 引入依赖</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-MongoDB%E9%85%8D%E7%BD%AE"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 MongoDB配置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-MongoDB%E7%9A%84CRUD%E6%93%8D%E4%BD%9C"><span class="toc-number">2.</span> <span class="toc-text">2 MongoDB的CRUD操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-entity%E5%B1%82"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 entity层</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-dao%E5%B1%82"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 dao层</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E6%B5%8B%E8%AF%95%E7%B1%BB"><span class="toc-number">2.3.</span> <span class="toc-text">2.2 测试类</span></a></li></ol></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

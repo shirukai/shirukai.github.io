@@ -1,0 +1,833 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>2-5 数据归一化 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="解决方案：将所有的数据映射到同一尺度
+最值归一化：normalization把所有数据映射到0-1之间
+均值方差归一化 standardization把所有数据归一到均值为0方差为1的分布中
+适用于,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">2-5 数据归一化</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/6.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/机器学习"><b>「
+                    </b>机器学习<b> 」</b></a>
+                
+                August 20, 2018
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/2-5-data-normalization.html" title="2-5 数据归一化" class="">2-5 数据归一化</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    16k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    15 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/python3%E5%85%A5%E9%97%A8%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">python3入门机器学习</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <p>解决方案：将所有的数据映射到同一尺度</p>
+<h2 id="最值归一化：normalization"><a href="#最值归一化：normalization" class="headerlink" title="最值归一化：normalization"></a>最值归一化：normalization</h2><p>把所有数据映射到0-1之间<br><img src="https://shirukai.gitee.io/images/114c6b381dc325344a8790b0c9634877.jpg"></p>
+<h2 id="均值方差归一化-standardization"><a href="#均值方差归一化-standardization" class="headerlink" title="均值方差归一化 standardization"></a>均值方差归一化 standardization</h2><p>把所有数据归一到均值为0方差为1的分布中</p>
+<p>适用于：数据分布没有明显的边界；有可能存在极端数据值<br><img src="https://shirukai.gitee.io/images/79cd1f8f64817c6858f75e7d05073d2c.jpg"></p>
+<h2 id="数据归一化-Normalization"><a href="#数据归一化-Normalization" class="headerlink" title="数据归一化 Normalization"></a>数据归一化 Normalization</h2><pre><code class="python">import numpy as np
+import matplotlib.pyplot as plt
+</code></pre>
+<pre><code class="python">x = np.random.randint(0,100,size=100)
+x
+</code></pre>
+<pre><code>array([88, 64, 34, 56, 68, 54, 19, 45, 53, 34, 18, 34, 21, 35,  2, 94, 61,
+       31, 93, 78, 34, 96, 86, 57, 89, 50, 57, 34, 31, 16, 63,  8, 81, 10,
+       74, 93, 94, 58, 93, 73,  5, 10, 90, 29, 73, 92,  1, 44, 79, 41, 16,
+       83, 57, 83, 21, 20, 26, 95, 80,  2,  1, 77, 92, 22, 44, 92, 70, 49,
+       19, 99, 86, 99, 52, 20,  0, 11, 83, 62,  2, 81, 95, 18, 90, 99, 43,
+       12, 47, 91, 78, 31, 12, 46, 43, 92,  6, 38, 22, 32, 89, 62])
+</code></pre>
+<pre><code class="python">(x -np.min(x))/(np.max(x)-np.min(x))
+</code></pre>
+<pre><code>array([0.88888889, 0.64646465, 0.34343434, 0.56565657, 0.68686869,
+       0.54545455, 0.19191919, 0.45454545, 0.53535354, 0.34343434,
+       0.18181818, 0.34343434, 0.21212121, 0.35353535, 0.02020202,
+       0.94949495, 0.61616162, 0.31313131, 0.93939394, 0.78787879,
+       0.34343434, 0.96969697, 0.86868687, 0.57575758, 0.8989899 ,
+       0.50505051, 0.57575758, 0.34343434, 0.31313131, 0.16161616,
+       0.63636364, 0.08080808, 0.81818182, 0.1010101 , 0.74747475,
+       0.93939394, 0.94949495, 0.58585859, 0.93939394, 0.73737374,
+       0.05050505, 0.1010101 , 0.90909091, 0.29292929, 0.73737374,
+       0.92929293, 0.01010101, 0.44444444, 0.7979798 , 0.41414141,
+       0.16161616, 0.83838384, 0.57575758, 0.83838384, 0.21212121,
+       0.2020202 , 0.26262626, 0.95959596, 0.80808081, 0.02020202,
+       0.01010101, 0.77777778, 0.92929293, 0.22222222, 0.44444444,
+       0.92929293, 0.70707071, 0.49494949, 0.19191919, 1.        ,
+       0.86868687, 1.        , 0.52525253, 0.2020202 , 0.        ,
+       0.11111111, 0.83838384, 0.62626263, 0.02020202, 0.81818182,
+       0.95959596, 0.18181818, 0.90909091, 1.        , 0.43434343,
+       0.12121212, 0.47474747, 0.91919192, 0.78787879, 0.31313131,
+       0.12121212, 0.46464646, 0.43434343, 0.92929293, 0.06060606,
+       0.38383838, 0.22222222, 0.32323232, 0.8989899 , 0.62626263])
+</code></pre>
+<h2 id="均值方差归一化-Standardization"><a href="#均值方差归一化-Standardization" class="headerlink" title="均值方差归一化 Standardization"></a>均值方差归一化 Standardization</h2><pre><code class="python">X2 = np.random.randint(0,100,(50,2))
+X2
+</code></pre>
+<pre><code>array([[93, 86],
+       [39, 54],
+       [89, 31],
+       [ 4,  3],
+       [83, 10],
+       [81, 26],
+       [64, 14],
+       [29, 15],
+       [58,  0],
+       [23, 39],
+       [48, 36],
+       [40, 26],
+       [18,  4],
+       [61, 97],
+       [28, 35],
+       [20,  4],
+       [56,  0],
+       [60, 87],
+       [85, 66],
+       [81, 63],
+       [84, 15],
+       [98,  2],
+       [34, 45],
+       [78, 30],
+       [37, 49],
+       [96,  6],
+       [81, 86],
+       [ 6, 98],
+       [88, 86],
+       [74, 12],
+       [64, 98],
+       [ 6, 28],
+       [47, 36],
+       [50, 33],
+       [65, 92],
+       [36, 77],
+       [67, 78],
+       [66, 86],
+       [37, 13],
+       [46, 11],
+       [81, 45],
+       [46, 78],
+       [71, 79],
+       [97,  4],
+       [88, 19],
+       [32, 33],
+       [12, 44],
+       [76, 30],
+       [ 5, 49],
+       [41, 35]])
+</code></pre>
+<pre><code class="python">x2 = np.array(X2,dtype=float)
+</code></pre>
+<pre><code class="python">X2[:,0] = (X2[:,0]-np.mean(X2[:,0]))/np.std(X2[:,0])
+</code></pre>
+<pre><code class="python">X2
+</code></pre>
+<pre><code>array([[ 1, 86],
+       [ 0, 54],
+       [ 1, 31],
+       [-1,  3],
+       [ 1, 10],
+       [ 0, 26],
+       [ 0, 14],
+       [ 0, 15],
+       [ 0,  0],
+       [-1, 39],
+       [ 0, 36],
+       [ 0, 26],
+       [-1,  4],
+       [ 0, 97],
+       [-1, 35],
+       [-1,  4],
+       [ 0,  0],
+       [ 0, 87],
+       [ 1, 66],
+       [ 0, 63],
+       [ 1, 15],
+       [ 1,  2],
+       [ 0, 45],
+       [ 0, 30],
+       [ 0, 49],
+       [ 1,  6],
+       [ 0, 86],
+       [-1, 98],
+       [ 1, 86],
+       [ 0, 12],
+       [ 0, 98],
+       [-1, 28],
+       [ 0, 36],
+       [ 0, 33],
+       [ 0, 92],
+       [ 0, 77],
+       [ 0, 78],
+       [ 0, 86],
+       [ 0, 13],
+       [ 0, 11],
+       [ 0, 45],
+       [ 0, 78],
+       [ 0, 79],
+       [ 1,  4],
+       [ 1, 19],
+       [ 0, 33],
+       [-1, 44],
+       [ 0, 30],
+       [-1, 49],
+       [ 0, 35]])
+</code></pre>
+<pre><code class="python">X2[:,1] = (X2[:,1]-np.mean(X2[:,1]))/np.std(X2[:,1])
+X2
+</code></pre>
+<pre><code>array([[ 1,  1],
+       [ 0,  0],
+       [ 1,  0],
+       [-1, -1],
+       [ 1, -1],
+       [ 0,  0],
+       [ 0,  0],
+       [ 0,  0],
+       [ 0, -1],
+       [-1,  0],
+       [ 0,  0],
+       [ 0,  0],
+       [-1, -1],
+       [ 0,  1],
+       [-1,  0],
+       [-1, -1],
+       [ 0, -1],
+       [ 0,  1],
+       [ 1,  0],
+       [ 0,  0],
+       [ 1,  0],
+       [ 1, -1],
+       [ 0,  0],
+       [ 0,  0],
+       [ 0,  0],
+       [ 1, -1],
+       [ 0,  1],
+       [-1,  1],
+       [ 1,  1],
+       [ 0,  0],
+       [ 0,  1],
+       [-1,  0],
+       [ 0,  0],
+       [ 0,  0],
+       [ 0,  1],
+       [ 0,  1],
+       [ 0,  1],
+       [ 0,  1],
+       [ 0,  0],
+       [ 0,  0],
+       [ 0,  0],
+       [ 0,  1],
+       [ 0,  1],
+       [ 1, -1],
+       [ 1,  0],
+       [ 0,  0],
+       [-1,  0],
+       [ 0,  0],
+       [-1,  0],
+       [ 0,  0]])
+</code></pre>
+<pre><code class="python">plt.scatter(X2[:,0],X2[:,1])
+plt.show()
+</code></pre>
+<p><img src="https://shirukai.gitee.io/images/5be1591a134ebe707ef0a3a43fdc3b05.jpg"></p>
+<h2 id="对测试数据如何归一化"><a href="#对测试数据如何归一化" class="headerlink" title="对测试数据如何归一化"></a>对测试数据如何归一化</h2><p>要保存训练数据集得到的均值和方差<br><img src="https://shirukai.gitee.io/images/e5a000ab2cfe517beb3a78160f2e11bb.jpg"></p>
+<h3 id="Sclikit-learn中的Scalar"><a href="#Sclikit-learn中的Scalar" class="headerlink" title="Sclikit-learn中的Scalar"></a>Sclikit-learn中的Scalar</h3><pre><code class="python">from sklearn import datasets
+</code></pre>
+<pre><code class="python"># 获取燕尾花数据
+iris = datasets.load_iris()
+</code></pre>
+<pre><code class="python">X = iris.data
+y = iris.target
+</code></pre>
+<pre><code class="python"># 前十行内容
+X[:10,:]
+</code></pre>
+<pre><code>array([[5.1, 3.5, 1.4, 0.2],
+       [4.9, 3. , 1.4, 0.2],
+       [4.7, 3.2, 1.3, 0.2],
+       [4.6, 3.1, 1.5, 0.2],
+       [5. , 3.6, 1.4, 0.2],
+       [5.4, 3.9, 1.7, 0.4],
+       [4.6, 3.4, 1.4, 0.3],
+       [5. , 3.4, 1.5, 0.2],
+       [4.4, 2.9, 1.4, 0.2],
+       [4.9, 3.1, 1.5, 0.1]])
+</code></pre>
+<pre><code class="python"># train_test_split
+from sklearn.model_selection import train_test_split
+X_train,X_text,y_train,y_test = train_test_split(X,y,test_size=0.2,random_state=666)
+</code></pre>
+<h4 id="scikit-learn中的StandardScaler"><a href="#scikit-learn中的StandardScaler" class="headerlink" title="scikit-learn中的StandardScaler"></a>scikit-learn中的StandardScaler</h4><pre><code class="python">from sklearn.preprocessing import StandardScaler
+standarScaler = StandardScaler()
+</code></pre>
+<pre><code class="python">standarScaler.fit(X_train)
+</code></pre>
+<pre><code>StandardScaler(copy=True, with_mean=True, with_std=True)
+</code></pre>
+<pre><code class="python">standarScaler.mean_
+</code></pre>
+<pre><code>array([5.83416667, 3.0825    , 3.70916667, 1.16916667])
+</code></pre>
+<pre><code class="python">standarScaler.scale_
+</code></pre>
+<pre><code>array([0.81019502, 0.44076874, 1.76295187, 0.75429833])
+</code></pre>
+<pre><code class="python">X_train = standarScaler.transform(X_train)
+X_train
+</code></pre>
+<pre><code>array([[-0.90616043,  0.94720873, -1.30982967, -1.28485856],
+       [-1.15301457, -0.18717298, -1.30982967, -1.28485856],
+       [-0.16559799, -0.64092567,  0.22169257,  0.17345038],
+       [ 0.45153738,  0.72033239,  0.95909217,  1.49918578],
+       [-0.90616043, -1.3215547 , -0.40226093, -0.0916967 ],
+       [ 1.43895396,  0.2665797 ,  0.56203085,  0.30602392],
+       [ 0.3281103 , -1.09467835,  1.07253826,  0.30602392],
+       [ 2.1795164 , -0.18717298,  1.63976872,  1.2340387 ],
+       [-0.78273335,  2.30846679, -1.25310662, -1.4174321 ],
+       [ 0.45153738, -2.00218372,  0.44858475,  0.43859746],
+       [ 1.80923518, -0.41404933,  1.46959958,  0.83631808],
+       [ 0.69839152,  0.2665797 ,  0.90236912,  1.49918578],
+       [ 0.20468323,  0.72033239,  0.44858475,  0.571171  ],
+       [-0.78273335, -0.86780201,  0.10824648,  0.30602392],
+       [-0.53587921,  1.40096142, -1.25310662, -1.28485856],
+       [-0.65930628,  1.40096142, -1.25310662, -1.28485856],
+       [-1.0295875 ,  0.94720873, -1.19638358, -0.7545644 ],
+       [-1.77014994, -0.41404933, -1.30982967, -1.28485856],
+       [-0.04217092, -0.86780201,  0.10824648,  0.04087684],
+       [-0.78273335,  0.72033239, -1.30982967, -1.28485856],
+       [-1.52329579,  0.72033239, -1.30982967, -1.15228502],
+       [ 0.82181859,  0.2665797 ,  0.78892303,  1.10146516],
+       [-0.16559799, -0.41404933,  0.27841562,  0.17345038],
+       [ 0.94524567, -0.18717298,  0.39186171,  0.30602392],
+       [ 0.20468323, -0.41404933,  0.44858475,  0.43859746],
+       [-1.39986872,  0.2665797 , -1.19638358, -1.28485856],
+       [-1.15301457,  0.03970336, -1.25310662, -1.4174321 ],
+       [ 1.06867274,  0.03970336,  1.07253826,  1.63175932],
+       [ 0.57496445, -0.86780201,  0.67547694,  0.83631808],
+       [ 0.3281103 , -0.64092567,  0.56203085,  0.04087684],
+       [ 0.45153738, -0.64092567,  0.61875389,  0.83631808],
+       [-0.16559799,  2.98909581, -1.25310662, -1.01971148],
+       [ 0.57496445, -1.3215547 ,  0.67547694,  0.43859746],
+       [ 0.69839152, -0.41404933,  0.33513866,  0.17345038],
+       [-0.90616043,  1.62783776, -1.02621444, -1.01971148],
+       [ 1.19209981, -0.64092567,  0.61875389,  0.30602392],
+       [-0.90616043,  0.94720873, -1.30982967, -1.15228502],
+       [-1.89357701, -0.18717298, -1.47999881, -1.4174321 ],
+       [ 0.08125616, -0.18717298,  0.78892303,  0.83631808],
+       [ 0.69839152, -0.64092567,  1.07253826,  1.2340387 ],
+       [-0.28902506, -0.64092567,  0.67547694,  1.10146516],
+       [-0.41245214, -1.54843104, -0.00519961, -0.22427024],
+       [ 1.31552689,  0.03970336,  0.67547694,  0.43859746],
+       [ 0.57496445,  0.72033239,  1.07253826,  1.63175932],
+       [ 0.82181859, -0.18717298,  1.18598435,  1.36661224],
+       [-0.16559799,  1.62783776, -1.13966053, -1.15228502],
+       [ 0.94524567, -0.41404933,  0.5053078 ,  0.17345038],
+       [ 1.06867274,  0.49345605,  1.12926131,  1.76433286],
+       [-1.27644165, -0.18717298, -1.30982967, -1.4174321 ],
+       [-1.0295875 ,  1.17408507, -1.30982967, -1.28485856],
+       [ 0.20468323, -0.18717298,  0.61875389,  0.83631808],
+       [-1.0295875 , -0.18717298, -1.19638358, -1.28485856],
+       [ 0.3281103 , -0.18717298,  0.67547694,  0.83631808],
+       [ 0.69839152,  0.03970336,  1.01581521,  0.83631808],
+       [-0.90616043,  1.40096142, -1.25310662, -1.01971148],
+       [-0.16559799, -0.18717298,  0.27841562,  0.04087684],
+       [-1.0295875 ,  0.94720873, -1.36655271, -1.15228502],
+       [-0.90616043,  1.62783776, -1.25310662, -1.15228502],
+       [-1.52329579,  0.2665797 , -1.30982967, -1.28485856],
+       [-0.53587921, -0.18717298,  0.44858475,  0.43859746],
+       [ 0.82181859, -0.64092567,  0.5053078 ,  0.43859746],
+       [ 0.3281103 , -0.64092567,  0.16496953,  0.17345038],
+       [-1.27644165,  0.72033239, -1.19638358, -1.28485856],
+       [-0.90616043,  0.49345605, -1.13966053, -0.88713794],
+       [-0.04217092, -0.86780201,  0.78892303,  0.96889162],
+       [-0.28902506, -0.18717298,  0.22169257,  0.17345038],
+       [ 0.57496445, -0.64092567,  0.78892303,  0.43859746],
+       [ 1.06867274,  0.49345605,  1.12926131,  1.2340387 ],
+       [ 1.68580811, -0.18717298,  1.18598435,  0.571171  ],
+       [ 1.06867274, -0.18717298,  0.84564608,  1.49918578],
+       [-1.15301457,  0.03970336, -1.25310662, -1.4174321 ],
+       [-1.15301457, -1.3215547 ,  0.44858475,  0.70374454],
+       [-0.16559799, -1.3215547 ,  0.73219998,  1.10146516],
+       [-1.15301457, -1.54843104, -0.2320918 , -0.22427024],
+       [-0.41245214, -1.54843104,  0.05152343, -0.0916967 ],
+       [ 1.06867274, -1.3215547 ,  1.18598435,  0.83631808],
+       [ 0.82181859, -0.18717298,  1.01581521,  0.83631808],
+       [-0.16559799, -1.09467835, -0.1186457 , -0.22427024],
+       [ 0.20468323, -2.00218372,  0.73219998,  0.43859746],
+       [ 1.06867274,  0.03970336,  0.56203085,  0.43859746],
+       [-1.15301457,  0.03970336, -1.25310662, -1.4174321 ],
+       [ 0.57496445, -1.3215547 ,  0.73219998,  0.96889162],
+       [-1.39986872,  0.2665797 , -1.36655271, -1.28485856],
+       [ 0.20468323, -0.86780201,  0.78892303,  0.571171  ],
+       [-0.04217092, -1.09467835,  0.16496953,  0.04087684],
+       [ 1.31552689,  0.2665797 ,  1.12926131,  1.49918578],
+       [-1.77014994, -0.18717298, -1.36655271, -1.28485856],
+       [ 1.56238103, -0.18717298,  1.2427074 ,  1.2340387 ],
+       [ 1.19209981,  0.2665797 ,  1.2427074 ,  1.49918578],
+       [-0.78273335,  0.94720873, -1.25310662, -1.28485856],
+       [ 2.54979762,  1.62783776,  1.52632263,  1.10146516],
+       [ 0.69839152, -0.64092567,  1.07253826,  1.36661224],
+       [-0.28902506, -0.41404933, -0.06192266,  0.17345038],
+       [-0.41245214,  2.53534313, -1.30982967, -1.28485856],
+       [-1.27644165, -0.18717298, -1.30982967, -1.15228502],
+       [ 0.57496445, -0.41404933,  1.07253826,  0.83631808],
+       [-1.77014994,  0.2665797 , -1.36655271, -1.28485856],
+       [-0.53587921,  1.8547141 , -1.13966053, -1.01971148],
+       [-1.0295875 ,  0.72033239, -1.19638358, -1.01971148],
+       [ 1.06867274, -0.18717298,  0.73219998,  0.70374454],
+       [-0.53587921,  1.8547141 , -1.36655271, -1.01971148],
+       [ 2.30294347, -0.64092567,  1.69649176,  1.10146516],
+       [-0.28902506, -0.86780201,  0.27841562,  0.17345038],
+       [ 1.19209981, -0.18717298,  1.01581521,  1.2340387 ],
+       [-0.41245214,  0.94720873, -1.36655271, -1.28485856],
+       [-1.27644165,  0.72033239, -1.02621444, -1.28485856],
+       [-0.53587921,  0.72033239, -1.13966053, -1.28485856],
+       [ 2.30294347,  1.62783776,  1.69649176,  1.36661224],
+       [ 1.31552689,  0.03970336,  0.95909217,  1.2340387 ],
+       [-0.28902506, -1.3215547 ,  0.10824648, -0.0916967 ],
+       [-0.90616043,  0.72033239, -1.25310662, -1.28485856],
+       [-0.90616043,  1.62783776, -1.19638358, -1.28485856],
+       [ 0.3281103 , -0.41404933,  0.56203085,  0.30602392],
+       [-0.04217092,  2.08159044, -1.42327576, -1.28485856],
+       [-1.0295875 , -2.45593641, -0.1186457 , -0.22427024],
+       [ 0.69839152,  0.2665797 ,  0.44858475,  0.43859746],
+       [ 0.3281103 , -0.18717298,  0.5053078 ,  0.30602392],
+       [ 0.08125616,  0.2665797 ,  0.61875389,  0.83631808],
+       [ 0.20468323, -2.00218372,  0.16496953, -0.22427024],
+       [ 1.93266225, -0.64092567,  1.35615349,  0.96889162]])
+</code></pre>
+<pre><code class="python">X_test =standarScaler.transform(X_text)
+</code></pre>
+<pre><code class="python">from sklearn.neighbors import KNeighborsClassifier
+</code></pre>
+<pre><code class="python">knn_clf = KNeighborsClassifier(n_neighbors=3)
+</code></pre>
+<pre><code class="python">knn_clf.fit(X_train,y_train)
+</code></pre>
+<pre><code>KNeighborsClassifier(algorithm=&#39;auto&#39;, leaf_size=30, metric=&#39;minkowski&#39;,
+           metric_params=None, n_jobs=1, n_neighbors=3, p=2,
+           weights=&#39;uniform&#39;)
+</code></pre>
+<pre><code class="python">knn_clf.score(X_test,y_test)
+</code></pre>
+<pre><code>1.0
+</code></pre>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E5%80%BC%E5%BD%92%E4%B8%80%E5%8C%96%EF%BC%9Anormalization"><span class="toc-number">1.</span> <span class="toc-text">最值归一化：normalization</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9D%87%E5%80%BC%E6%96%B9%E5%B7%AE%E5%BD%92%E4%B8%80%E5%8C%96-standardization"><span class="toc-number">2.</span> <span class="toc-text">均值方差归一化 standardization</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BD%92%E4%B8%80%E5%8C%96-Normalization"><span class="toc-number">3.</span> <span class="toc-text">数据归一化 Normalization</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9D%87%E5%80%BC%E6%96%B9%E5%B7%AE%E5%BD%92%E4%B8%80%E5%8C%96-Standardization"><span class="toc-number">4.</span> <span class="toc-text">均值方差归一化 Standardization</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%B9%E6%B5%8B%E8%AF%95%E6%95%B0%E6%8D%AE%E5%A6%82%E4%BD%95%E5%BD%92%E4%B8%80%E5%8C%96"><span class="toc-number">5.</span> <span class="toc-text">对测试数据如何归一化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Sclikit-learn%E4%B8%AD%E7%9A%84Scalar"><span class="toc-number">5.1.</span> <span class="toc-text">Sclikit-learn中的Scalar</span></a></li></ol></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

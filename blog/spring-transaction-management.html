@@ -1,0 +1,704 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Spring事务管理 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="事务的概念和特性事务：一起成功、一起失败
+
+什么是事务呢？ 
+
+事务指的是逻辑上的一组操作，这组操作要么全部成功，要么全部失败
+事务的特性：
+
+原子性、一致性、隔离性、持久性原子性：原子性是值事务是,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">Spring事务管理</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/3.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/Spring"><b>「
+                    </b>SPRING<b> 」</b></a>
+                
+                August 20, 2018
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/spring-transaction-management.html" title="Spring事务管理" class="">Spring事务管理</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    13k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    12 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Spring/" rel="tag">Spring</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <h2 id="事务的概念和特性"><a href="#事务的概念和特性" class="headerlink" title="事务的概念和特性"></a>事务的概念和特性</h2><p>事务：一起成功、一起失败</p>
+<blockquote>
+<p>什么是事务呢？ </p>
+</blockquote>
+<h5 id="事务指的是逻辑上的一组操作，这组操作要么全部成功，要么全部失败"><a href="#事务指的是逻辑上的一组操作，这组操作要么全部成功，要么全部失败" class="headerlink" title="事务指的是逻辑上的一组操作，这组操作要么全部成功，要么全部失败"></a>事务指的是逻辑上的一组操作，这组操作要么全部成功，要么全部失败</h5><blockquote>
+<p>事务的特性：</p>
+</blockquote>
+<h5 id="原子性、一致性、隔离性、持久性"><a href="#原子性、一致性、隔离性、持久性" class="headerlink" title="原子性、一致性、隔离性、持久性"></a>原子性、一致性、隔离性、持久性</h5><p>原子性：原子性是值事务是一个不可分割的工作单位，事务中的操作要么都发生，要么都不发生</p>
+<p>一致性：一致性指事务前后数据的完整性必须保持一致</p>
+<p>隔离性：隔离性是指多个用户并发访问数据库时，一个用户的事务不能被其他用户的事务所干扰，多个并发事务之间数据要相互隔离。</p>
+<p>持久性：一个事务一旦被提交，它对数据库中数据的改变就是永久性的，即使数据库发生故障也不应该对其有任何影响。</p>
+<h4 id="如果不考虑隔离性，会引发安全问题如下："><a href="#如果不考虑隔离性，会引发安全问题如下：" class="headerlink" title="如果不考虑隔离性，会引发安全问题如下："></a>如果不考虑隔离性，会引发安全问题如下：</h4><p>脏读、不可重复读、幻读</p>
+<p>脏读：一个事务读取了另一个事务改写但还未提交的数据，如果这些数据被回滚，则读到的数据是无效的。</p>
+<p>不可重复读：在同一事务中，多次读取同一数据返回的结果有所不同。</p>
+<p>幻读：一个事务读取了几行记录后，另一个事务插入一些记录，幻读就发生了，再后来的查询中，第一个数据就会发现有些原来没有的记录</p>
+<h2 id="Spring接口介绍"><a href="#Spring接口介绍" class="headerlink" title="Spring接口介绍"></a>Spring接口介绍</h2><h3 id="Spring事务管理高层首相主要包括三个接口"><a href="#Spring事务管理高层首相主要包括三个接口" class="headerlink" title="Spring事务管理高层首相主要包括三个接口"></a>Spring事务管理高层首相主要包括三个接口</h3><p>PlatformTransactionManager</p>
+<p>平台事务管理器</p>
+<p>TransactionDefinition</p>
+<p>事务定义信息（隔离、传播、超时、只读）</p>
+<p>TransactionStatus</p>
+<p>事务具体运行状态</p>
+<h4 id="平台事务管理器"><a href="#平台事务管理器" class="headerlink" title="平台事务管理器"></a>平台事务管理器</h4><p><img src="https://shirukai.gitee.io/images/15094422425335962e81e000113e312800720.jpg" alt="https://shirukai.gitee.io/images/15094422425335962e81e000113e312800720.jpg"></p>
+<h4 id="事务的四种隔离级别"><a href="#事务的四种隔离级别" class="headerlink" title="事务的四种隔离级别"></a>事务的四种隔离级别</h4><p><img src="https://shirukai.gitee.io/images/150944206092159f71a160001178612800720.jpg" alt="https://shirukai.gitee.io/images/150944206092159f71a160001178612800720.jpg"></p>
+<pre><code>MySql默认的事务隔离级别为REPEATABLE_READ
+Oracle默认的事务隔离级别为READ_COMMITTED
+</code></pre>
+<h4 id="spring-事务的七种传播行为"><a href="#spring-事务的七种传播行为" class="headerlink" title="spring 事务的七种传播行为"></a>spring 事务的七种传播行为</h4><h5 id="什么是事务的传播行为？"><a href="#什么是事务的传播行为？" class="headerlink" title="什么是事务的传播行为？"></a>什么是事务的传播行为？</h5><p><img src="https://shirukai.gitee.io/images/150949928102259c31b1b000123d712800720.jpg" alt="https://shirukai.gitee.io/images/150949928102259c31b1b000123d712800720.jpg"></p>
+<h5 id="事务有哪些传播行为？"><a href="#事务有哪些传播行为？" class="headerlink" title="事务有哪些传播行为？"></a>事务有哪些传播行为？</h5><p><img src="https://shirukai.gitee.io/images/150944240857759eee1ff0001bb2c12800720.jpg" alt="https://shirukai.gitee.io/images/150944240857759eee1ff0001bb2c12800720.jpg"></p>
+<p>重点记第一个PROPAGATION_REQUIRED、第四个PROPAGATION_REQUIRES_NEW、和最后一个PROPAGATION_NESTED</p>
+<h3 id="Spring事务管理"><a href="#Spring事务管理" class="headerlink" title="Spring事务管理"></a>Spring事务管理</h3><p>Spring支持两种方式</p>
+<h5 id="1-编程式的事务"><a href="#1-编程式的事务" class="headerlink" title="1.编程式的事务"></a>1.编程式的事务</h5><p>在实际应用中很少使用</p>
+<p>通过TransactionTemplate手动管理事务</p>
+<h5 id="2-使用xml配置声明式事务"><a href="#2-使用xml配置声明式事务" class="headerlink" title="2.使用xml配置声明式事务"></a>2.使用xml配置声明式事务</h5><p>开发中推荐使用（代码侵入性最小）</p>
+<p>Spring的声明式事务是通过AOP实现的</p>
+<h2 id="Spring事务管理的实现"><a href="#Spring事务管理的实现" class="headerlink" title="Spring事务管理的实现"></a>Spring事务管理的实现</h2><p>描述：在ssm环境下，以简单的转账案例，分别使用编程式事务管理、以及声明式事务管理来实现Spring事务管理。</p>
+<h4 id="创建数据库表"><a href="#创建数据库表" class="headerlink" title="创建数据库表"></a>创建数据库表</h4><pre><code>CREATE TABLE `account` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(20) NOT NULL,
+  `money` double DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+INSERT INTO `account` VALUES (&#39;1&#39;, &#39;aaa&#39;, &#39;1000&#39;);
+INSERT INTO `account` VALUES (&#39;2&#39;, &#39;bbb&#39;, &#39;1000&#39;);
+INSERT INTO `account` VALUES (&#39;3&#39;, &#39;ccc&#39;, &#39;1000&#39;);
+</code></pre>
+<h4 id="编写AccountDaO层"><a href="#编写AccountDaO层" class="headerlink" title="编写AccountDaO层"></a>编写AccountDaO层</h4><pre><code>package com.mavenssmlr.dao;
+
+import org.apache.ibatis.annotations.Param;
+
+/**
+ * 转账案例的Dao层的接口
+ * Created by shirukai on 2017/11/1.
+ */
+public interface AccountDao &#123;
+    /**
+     *
+     * @param out   转出账号
+     * @param money 转出金额
+     */
+    public void outMoney(@Param(&quot;out&quot;) String out,@Param(&quot;money&quot;) Double money);
+
+    /**
+     *
+     * @param in    转入账号
+     * @param money 转入金额
+     */
+    public void inMoney(@Param(&quot;in&quot;) String in,@Param(&quot;money&quot;) Double money);
+&#125;
+</code></pre>
+<h4 id="编写-AccountDaoMappper"><a href="#编写-AccountDaoMappper" class="headerlink" title="编写 AccountDaoMappper"></a>编写 AccountDaoMappper</h4><pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
+&lt;!DOCTYPE mapper
+        PUBLIC &quot;-//mybatis.org//DTD Mapper 3.0//EN&quot;
+        &quot;http://mybatis.org/dtd/mybatis-3-mapper.dtd&quot;&gt;
+&lt;mapper namespace=&quot;com.mavenssmlr.dao.AccountDao&quot;&gt;
+    &lt;update id=&quot;outMoney&quot;&gt;
+        UPDATE mavenssmlr.account SET money = money - #&#123;money&#125; WHERE name = #&#123;out&#125;
+    &lt;/update&gt;
+    &lt;update id=&quot;inMoney&quot;&gt;
+        UPDATE mavenssmlr.account SET money = money+ #&#123;money&#125; WHERE name = #&#123;in&#125;
+    &lt;/update&gt;
+&lt;/mapper&gt;
+</code></pre>
+<h4 id="编写Service接口"><a href="#编写Service接口" class="headerlink" title="编写Service接口"></a>编写Service接口</h4><pre><code>/**
+ * 转账案例的业务接口
+ * @param out   转出的账号
+ * @param in    转入的账号
+ * @param money 转账金额
+ */
+Map&lt;String,String&gt; transfer(String out ,String in ,Double money);
+</code></pre>
+<h4 id="编写Service接口实现类"><a href="#编写Service接口实现类" class="headerlink" title="编写Service接口实现类"></a>编写Service接口实现类</h4><pre><code>public Map&lt;String, String&gt; transfer(String out, String in, Double money) &#123;
+    accountDao.outMoney(out, money);
+    accountDao.inMoney(in, money);
+    return null;
+&#125;
+</code></pre>
+<h4 id="编写service测试类"><a href="#编写service测试类" class="headerlink" title="编写service测试类"></a>编写service测试类</h4><pre><code>@Test
+public void accountTest()throws Exception&#123;
+    mavenssmlrService.transfer(&quot;aaa&quot;,&quot;bbb&quot;,200d);
+&#125;
+</code></pre>
+<p>以上基本的转账案例就写完了，但是没有加入事务管理。</p>
+<h3 id="一、基于编程式的事务管理"><a href="#一、基于编程式的事务管理" class="headerlink" title="一、基于编程式的事务管理"></a>一、基于编程式的事务管理</h3><p>Spring-service.xml </p>
+<h5 id="配置事务管理器"><a href="#配置事务管理器" class="headerlink" title="配置事务管理器"></a>配置事务管理器</h5><pre><code>&lt;!--配置事务管理器--&gt;
+&lt;bean id=&quot;transactionManager&quot; class=&quot;org.springframework.jdbc.datasource.DataSourceTransactionManager&quot;&gt;
+    &lt;!--注入数据库连接池--&gt;
+    &lt;property name=&quot;dataSource&quot; ref=&quot;dataSource&quot;/&gt;
+&lt;/bean&gt;
+</code></pre>
+<h5 id="配置事务管理模板"><a href="#配置事务管理模板" class="headerlink" title="配置事务管理模板"></a>配置事务管理模板</h5><pre><code>&lt;!--配置事务管理的模板：Spring为了简化事务管理的代码而提供的类--&gt;
+&lt;bean id=&quot;transactionTemplate&quot; class=&quot;org.springframework.transaction.support.TransactionTemplate&quot;&gt;
+    &lt;property name=&quot;transactionManager&quot; ref=&quot;transactionManager&quot;/&gt;
+&lt;/bean&gt;
+</code></pre>
+<p>service实现类</p>
+<h5 id="注入编程事务模板"><a href="#注入编程事务模板" class="headerlink" title="注入编程事务模板"></a>注入编程事务模板</h5><pre><code>//注入编程式事务模板
+@Autowired
+private TransactionTemplate transactionTemplate;
+</code></pre>
+<h5 id="编程式事务方法"><a href="#编程式事务方法" class="headerlink" title="编程式事务方法"></a>编程式事务方法</h5><pre><code>public Map&lt;String, String&gt; transfer(final String out,final String in,final Double money) &#123;
+    transactionTemplate.execute(new TransactionCallbackWithoutResult() &#123;
+        @Override
+        protected void doInTransactionWithoutResult(TransactionStatus status) &#123;
+            accountDao.outMoney(out, money);
+            //制造异常
+            int i = 1 / 0;
+            accountDao.inMoney(in, money);
+        &#125;
+    &#125;);
+    return null;
+&#125;
+</code></pre>
+<h5 id="测试类-无需改动"><a href="#测试类-无需改动" class="headerlink" title="测试类 无需改动"></a>测试类 无需改动</h5><pre><code>@Test
+public void accountTest()throws Exception&#123;
+    mavenssmlrService.transfer(&quot;aaa&quot;,&quot;bbb&quot;,200d);
+&#125;
+</code></pre>
+<h3 id="二、基于声明式的事务管理"><a href="#二、基于声明式的事务管理" class="headerlink" title="二、基于声明式的事务管理"></a>二、基于声明式的事务管理</h3><h4 id="1-基于TransactionProxy的声明式事务管理"><a href="#1-基于TransactionProxy的声明式事务管理" class="headerlink" title="1.基于TransactionProxy的声明式事务管理"></a>1.基于TransactionProxy的声明式事务管理</h4><p>Spring-service.xml </p>
+<h5 id="配置事务管理器-1"><a href="#配置事务管理器-1" class="headerlink" title="配置事务管理器"></a>配置事务管理器</h5><pre><code>&lt;!--配置事务管理器--&gt;
+&lt;bean id=&quot;transactionManager&quot; class=&quot;org.springframework.jdbc.datasource.DataSourceTransactionManager&quot;&gt;
+    &lt;!--注入数据库连接池--&gt;
+    &lt;property name=&quot;dataSource&quot; ref=&quot;dataSource&quot;/&gt;
+&lt;/bean&gt;
+</code></pre>
+<h5 id="配置业务代理"><a href="#配置业务代理" class="headerlink" title="配置业务代理"></a>配置业务代理</h5><pre><code>&lt;!--配置业务代理：--&gt;
+&lt;bean id=&quot;accountServiceProxy&quot; class=&quot;org.springframework.transaction.interceptor.TransactionProxyFactoryBean&quot;&gt;
+    &lt;!--配置目标对象--&gt;
+    &lt;property name=&quot;target&quot; ref=&quot;mavenssmlrServiceImpl&quot;/&gt;
+    &lt;!--注入事务管理器--&gt;
+    &lt;property name=&quot;transactionManager&quot; ref=&quot;transactionManager&quot;/&gt;
+    &lt;!--注入事务属性--&gt;
+    &lt;property name=&quot;transactionAttributes&quot;&gt;
+        &lt;props&gt;
+            &lt;!--prop的格式
+                    * PROPAGATION ：事务的传播行为
+                    * ISOLATION   ：事务的隔离级别
+                    * readOnly    ：只读
+                    * -Exception  ：发生哪些异常回滚事务
+                    * +Exception  ：发生哪些以上不回滚事务
+            --&gt;
+            &lt;prop key=&quot;transfer&quot;&gt;PROPAGATION_REQUIRED&lt;/prop&gt;
+        &lt;/props&gt;
+    &lt;/property&gt;
+</code></pre>
+<p>service实现类</p>
+<pre><code>public Map&lt;String, String&gt; transfer(String out, String in, Double money) &#123;
+    accountDao.outMoney(out, money);
+    //制造异常
+    int i = 1 / 0;
+    accountDao.inMoney(in, money);
+    return null;
+&#125;
+</code></pre>
+<h5 id="测试类-需要引入Service的增强类"><a href="#测试类-需要引入Service的增强类" class="headerlink" title="测试类 需要引入Service的增强类"></a>测试类 需要引入Service的增强类</h5><pre><code>@Resource(name = &quot;accountServiceProxy&quot;)
+private MavenssmlrService mavenssmlrService;
+
+@Test
+public void accountTest()throws Exception&#123;
+    mavenssmlrService.transfer(&quot;aaa&quot;,&quot;bbb&quot;,200d);
+&#125;
+</code></pre>
+<h3 id="2-基于AspectJ的xml配置声明式事务（没有实现）"><a href="#2-基于AspectJ的xml配置声明式事务（没有实现）" class="headerlink" title="2.基于AspectJ的xml配置声明式事务（没有实现）"></a>2.基于AspectJ的xml配置声明式事务（没有实现）</h3><pre><code>
+&lt;!--配置事务管理器--&gt;
+&lt;bean id=&quot;transactionManager&quot; class=&quot;org.springframework.jdbc.datasource.DataSourceTransactionManager&quot;&gt;
+    &lt;!--注入数据库连接池--&gt;
+    &lt;property name=&quot;dataSource&quot; ref=&quot;dataSource&quot;/&gt;
+&lt;/bean&gt;
+
+
+&lt;!--2)配置事务的通知（事务的增强）--&gt;
+&lt;tx:advice id=&quot;txAdvice&quot; transaction-manager=&quot;transactionManager&quot;&gt;
+    &lt;tx:attributes&gt;
+        &lt;!--
+            propagation    :事务传播行为
+            isolation  :事务的隔离级别
+            read-only  :只读
+            rollback-for:发生哪些异常回滚
+            no-rollback-for    :发生哪些异常不回滚
+            timeout       :过期信息
+         --&gt;
+        &lt;tx:method name=&quot;transfer&quot; propagation=&quot;REQUIRED&quot;/&gt;
+    &lt;/tx:attributes&gt;
+&lt;/tx:advice&gt;
+
+&lt;!-- 配置切面 --&gt;
+&lt;aop:config&gt;
+    &lt;!-- 配置切入点 --&gt;
+    &lt;aop:pointcut expression=&quot;execution(* com.mavenssmlr.service.MavenssmlrService+.*(..))&quot; id=&quot;pointcut1&quot;/&gt;
+    &lt;!-- 配置切面 --&gt;
+    &lt;aop:advisor advice-ref=&quot;txAdvice&quot; pointcut-ref=&quot;pointcut1&quot;/&gt;
+&lt;/aop:config&gt;
+</code></pre>
+<h3 id="3-基于注解的声明式事务"><a href="#3-基于注解的声明式事务" class="headerlink" title="3.基于注解的声明式事务"></a>3.基于注解的声明式事务</h3><p>Spring-service.xml </p>
+<pre><code>
+&lt;!--配置事务管理器--&gt;
+&lt;bean id=&quot;transactionManager&quot; class=&quot;org.springframework.jdbc.datasource.DataSourceTransactionManager&quot;&gt;
+    &lt;!--注入数据库连接池--&gt;
+    &lt;property name=&quot;dataSource&quot; ref=&quot;dataSource&quot;/&gt;
+&lt;/bean&gt;
+
+&lt;!--2配置基于注解的声明式事务--&gt;
+&lt;tx:annotation-driven transaction-manager=&quot;transactionManager&quot;/&gt;
+</code></pre>
+<h4 id="在方法上添加-Transactional"><a href="#在方法上添加-Transactional" class="headerlink" title="在方法上添加@Transactional"></a>在方法上添加@Transactional</h4><pre><code>/**
+ * 
+ * @param out   转出的账号
+ * @param in    转入的账号
+ * @param money 转账金额
+ * @return
+ * 
+ * Transactional注解中的属性
+ * propagation：事务的传播行为
+ * isolation：隔离基本
+ * readOnly：只读信息
+ * rollbackFor：发生哪些异常回滚
+ * noRollbackFor：发生哪些异常不回滚
+ */
+@Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.DEFAULT,readOnly = false)
+public Map&lt;String, String&gt; transfer(String out, String in, Double money) &#123;
+    accountDao.outMoney(out, money);
+    //制造异常
+    int i = 1 / 0;
+    accountDao.inMoney(in, money);
+    return null;
+&#125;
+</code></pre>
+<h2 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h2><p>Spring将事务管理分成了两类</p>
+<ul>
+<li><p>编程式事务管理</p>
+<p>手动编写代码进行事务管理（很少使用）</p>
+</li>
+<li><p>声明式事务管理</p>
+<p>基于TransactionProxyFactoryBean（很少使用）</p>
+<p>基于AspectJ的XMl方式</p>
+<p>基于注解方式（经常使用）</p>
+<p>​</p>
+</li>
+</ul>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8B%E5%8A%A1%E7%9A%84%E6%A6%82%E5%BF%B5%E5%92%8C%E7%89%B9%E6%80%A7"><span class="toc-number">1.</span> <span class="toc-text">事务的概念和特性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Spring%E6%8E%A5%E5%8F%A3%E4%BB%8B%E7%BB%8D"><span class="toc-number">2.</span> <span class="toc-text">Spring接口介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Spring%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86%E9%AB%98%E5%B1%82%E9%A6%96%E7%9B%B8%E4%B8%BB%E8%A6%81%E5%8C%85%E6%8B%AC%E4%B8%89%E4%B8%AA%E6%8E%A5%E5%8F%A3"><span class="toc-number">2.1.</span> <span class="toc-text">Spring事务管理高层首相主要包括三个接口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Spring%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86"><span class="toc-number">2.2.</span> <span class="toc-text">Spring事务管理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Spring%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="toc-number">3.</span> <span class="toc-text">Spring事务管理的实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%9F%BA%E4%BA%8E%E7%BC%96%E7%A8%8B%E5%BC%8F%E7%9A%84%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86"><span class="toc-number">3.1.</span> <span class="toc-text">一、基于编程式的事务管理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%9F%BA%E4%BA%8E%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%9A%84%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86"><span class="toc-number">3.2.</span> <span class="toc-text">二、基于声明式的事务管理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%9F%BA%E4%BA%8EAspectJ%E7%9A%84xml%E9%85%8D%E7%BD%AE%E5%A3%B0%E6%98%8E%E5%BC%8F%E4%BA%8B%E5%8A%A1%EF%BC%88%E6%B2%A1%E6%9C%89%E5%AE%9E%E7%8E%B0%EF%BC%89"><span class="toc-number">3.3.</span> <span class="toc-text">2.基于AspectJ的xml配置声明式事务（没有实现）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%9F%BA%E4%BA%8E%E6%B3%A8%E8%A7%A3%E7%9A%84%E5%A3%B0%E6%98%8E%E5%BC%8F%E4%BA%8B%E5%8A%A1"><span class="toc-number">3.4.</span> <span class="toc-text">3.基于注解的声明式事务</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93%EF%BC%9A"><span class="toc-number">4.</span> <span class="toc-text">总结：</span></a></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

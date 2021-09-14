@@ -1,0 +1,710 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ambari环境搭建 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="一、准备工作准备三台虚机并保证能相互ping通
+
+
+序号
+IP地址
+主机名
+类型
+用户名
+
+
+
+1
+192.168.162.167
+iop167.ambari.com
+service
+root
+
+
+,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">Ambari环境搭建</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/1.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/Ambari二次开发"><b>「
+                    </b>AMBARI二次开发<b> 」</b></a>
+                
+                April 11, 2020
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/ambari-environment.html" title="Ambari环境搭建" class="">Ambari环境搭建</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    11k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    10 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Ambari%E4%BA%8C%E6%AC%A1%E5%BC%80%E5%8F%91/" rel="tag">Ambari二次开发</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <h2 id="一、准备工作"><a href="#一、准备工作" class="headerlink" title="一、准备工作"></a>一、准备工作</h2><h3 id="准备三台虚机并保证能相互ping通"><a href="#准备三台虚机并保证能相互ping通" class="headerlink" title="准备三台虚机并保证能相互ping通"></a>准备三台虚机并保证能相互ping通</h3><table>
+<thead>
+<tr>
+<th>序号</th>
+<th>IP地址</th>
+<th>主机名</th>
+<th>类型</th>
+<th>用户名</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>192.168.162.167</td>
+<td>iop167.ambari.com</td>
+<td>service</td>
+<td>root</td>
+</tr>
+<tr>
+<td>2</td>
+<td>192.168.162.168</td>
+<td>iop168.ambari.com</td>
+<td>agent</td>
+<td>root</td>
+</tr>
+<tr>
+<td>3</td>
+<td>192.168.162.169</td>
+<td>iop169.ambari.com</td>
+<td>agent</td>
+<td>root</td>
+</tr>
+</tbody></table>
+<h3 id="主机名的修改："><a href="#主机名的修改：" class="headerlink" title="主机名的修改："></a>主机名的修改：</h3><pre><code>vim /etc/hostname
+</code></pre>
+<p>按照一定的格式修改三台机器的主机名。</p>
+<h3 id="配置Hosts"><a href="#配置Hosts" class="headerlink" title="配置Hosts"></a>配置Hosts</h3><pre><code>vim /etc/hosts
+</code></pre>
+<h3 id="添加映射到hosts文件"><a href="#添加映射到hosts文件" class="headerlink" title="添加映射到hosts文件"></a>添加映射到hosts文件</h3><pre><code>192.168.162.167 iop167.ambari.com iop167
+192.168.162.168 iop168.ambari.com iop168
+192.168.162.169 iop169.ambari.com iop169
+</code></pre>
+<p><strong>三台机器配置相同的hosts</strong></p>
+<h2 id="二、关闭防火墙"><a href="#二、关闭防火墙" class="headerlink" title="二、关闭防火墙"></a>二、关闭防火墙</h2><ol>
+<li><h3 id="查看防火墙状态"><a href="#查看防火墙状态" class="headerlink" title="查看防火墙状态"></a>查看防火墙状态</h3></li>
+</ol>
+<pre><code>systemctl status firewalld
+</code></pre>
+<ol>
+<li><h3 id="查看开机是否启动防火墙服务"><a href="#查看开机是否启动防火墙服务" class="headerlink" title="查看开机是否启动防火墙服务"></a>查看开机是否启动防火墙服务</h3></li>
+</ol>
+<pre><code> systemctl is-enabled firewalld
+</code></pre>
+<ol>
+<li><h3 id="关闭防火墙"><a href="#关闭防火墙" class="headerlink" title="关闭防火墙"></a>关闭防火墙</h3></li>
+</ol>
+<pre><code>systemctl stop firewalld
+systemctl status firewalld
+</code></pre>
+<ol>
+<li><h3 id="警用防火墙（系统启动时不启动防火墙）"><a href="#警用防火墙（系统启动时不启动防火墙）" class="headerlink" title="警用防火墙（系统启动时不启动防火墙）"></a>警用防火墙（系统启动时不启动防火墙）</h3></li>
+</ol>
+<pre><code>systemctl disable firewalld
+systemctl is-enabled firewalld
+</code></pre>
+<ol>
+<li><h3 id="确保setlinux关闭"><a href="#确保setlinux关闭" class="headerlink" title="确保setlinux关闭"></a>确保setlinux关闭</h3><p>临时关闭</p>
+</li>
+</ol>
+<pre><code>setenforce 0
+</code></pre>
+<p>永久关闭</p>
+<p>修改/etc/selinux/config文件中设置SELINUX=disabled ，然后重启服务器</p>
+<h2 id="三、免密登录"><a href="#三、免密登录" class="headerlink" title="三、免密登录"></a>三、免密登录</h2><p>首先虚机需要安装ssh如果没有安装，可以通过yum进行安装</p>
+<pre><code>yum install openssh-server
+yum install openssh-server
+</code></pre>
+<h3 id="iop167-ambari-com"><a href="#iop167-ambari-com" class="headerlink" title="iop167.ambari.com"></a>iop167.ambari.com</h3><p>在master主机输入生成秘钥</p>
+<pre><code>ssh-keygen -t dsa -P &#39;&#39; -f ~/.ssh/id_dsa
+</code></pre>
+<p>将秘钥追加到authorized_keys </p>
+<pre><code>cat ~/.ssh/id_dsa.pub &gt;&gt; ~/.ssh/authorized_keys
+</code></pre>
+<p>然后利用scp将其复制到两个slave主机上</p>
+<h3 id="iop168-ambari-com"><a href="#iop168-ambari-com" class="headerlink" title="iop168.ambari.com"></a>iop168.ambari.com</h3><p>在agent1主机上输入</p>
+<pre><code>scp root@iop167.ambari.com:~/.ssh/id_dsa.pub ~/.ssh/master_dsa.pub
+
+cat ~/.ssh/master_dsa.pub &gt;&gt; ~/.ssh/authorized_keys
+</code></pre>
+<h3 id="iop169-ambari-com"><a href="#iop169-ambari-com" class="headerlink" title="iop169.ambari.com"></a>iop169.ambari.com</h3><p>在agent2主机输入</p>
+<pre><code>scp root@iop167.ambari.com:~/.ssh/id_dsa.pub ~/.ssh/master_dsa.pub
+
+cat ~/.ssh/master_dsa.pub &gt;&gt; ~/.ssh/authorized_keys
+</code></pre>
+<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><p>在master主机上连接两个主机，如果不需要密码，说明免密成功</p>
+<pre><code>ssh iop168.ambari.com
+exit
+ssh iop169.ambari.com
+exit
+</code></pre>
+<h2 id="四、配置JDK"><a href="#四、配置JDK" class="headerlink" title="四、配置JDK"></a>四、配置JDK</h2><blockquote>
+<p>在master主机上配置jdk，然后scp到其他两台主机即可。</p>
+</blockquote>
+<h3 id="官网下载jdk-1-8"><a href="#官网下载jdk-1-8" class="headerlink" title="官网下载jdk 1.8"></a>官网下载jdk 1.8</h3><p><a target="_blank" rel="noopener" href="http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html">http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html</a></p>
+<p>下载jdk-8u151-linux-x64.tar.gz并复制到 /usr/lib目录下</p>
+<h3 id="解压"><a href="#解压" class="headerlink" title="解压"></a>解压</h3><pre><code>tar -zxvf jdk-8u151-linux-x64.tar.gz
+</code></pre>
+<h3 id="配置环境变量"><a href="#配置环境变量" class="headerlink" title="配置环境变量"></a>配置环境变量</h3><pre><code>vim /etc/profile
+</code></pre>
+<p>添加如下内容</p>
+<pre><code>#set java enviroenment
+export JAVA_HOME=/usr/lib/jdk1.8.0_151
+export PATH=$JAVA_HOME/bin:$PATH
+</code></pre>
+<p>使环境变量生效</p>
+<pre><code>. /etc/profile
+</code></pre>
+<h3 id="验证jdk"><a href="#验证jdk" class="headerlink" title="验证jdk"></a>验证jdk</h3><pre><code>[root@shirukai ~]# java -version
+java version &quot;1.8.0_151&quot;
+Java(TM) SE Runtime Environment (build 1.8.0_151-b12)
+Java HotSpot(TM) 64-Bit Server VM (build 25.151-b12, mixed mode)
+</code></pre>
+<h3 id="将jdk目录发送到两台Agent主机"><a href="#将jdk目录发送到两台Agent主机" class="headerlink" title="将jdk目录发送到两台Agent主机"></a>将jdk目录发送到两台Agent主机</h3><pre><code>scp -r /usr/lib/java-1.8.0_151 root@Slave1.Hadoop:/usr/lib/
+scp -r /usr/lib/java-1.8.0_151 root@Slave2.Hadoop:/usr/lib/
+</code></pre>
+<p>配置环境变量就不要统一发送了，每台机子单独配置，方法跟Service主机一样。</p>
+<h2 id="五、配置本地源"><a href="#五、配置本地源" class="headerlink" title="五、配置本地源"></a>五、配置本地源</h2><p>安装本地源的目的，是为了方式在安装ambari的过程总由于网络原因造成安装失败。在linux配置yum本地源的笔记中，有详细讲到。</p>
+<p>ambari2.6源地址：<a target="_blank" rel="noopener" href="https://docs.hortonworks.com/HDPDocuments/Ambari-2.6.0.0/bk_ambari-installation/content/download_the_ambari_repo_lnx7.html">https://docs.hortonworks.com/HDPDocuments/Ambari-2.6.0.0/bk_ambari-installation/content/download_the_ambari_repo_lnx7.html</a></p>
+<h2 id="六、安装mysql"><a href="#六、安装mysql" class="headerlink" title="六、安装mysql"></a>六、安装mysql</h2><p>在server节点安装ambari server 之前 首先需要安装mysql数据库</p>
+<pre><code>yum -y install mysql-community-server
+yum -y install mysql-connector-java
+
+
+systemctl enable mysqld.service
+systemctl restart mysqld.service
+</code></pre>
+<p>运行<code> mysql_secure_installation</code> 进行安全配置，会执行如下几个设置：</p>
+<pre><code>（1）为root用户设置密码；
+（2）删除匿名账号；
+（3）取消root用户远程登录；
+（4）删除test库和对test库的访问权限；
+（5）刷新授权表使修改生效。
+</code></pre>
+<p>设置root用户密码为root,新增ambari用户并设置权限</p>
+<pre><code>mysql -uroot -proot
+CREATE USER &#39;ambari&#39;@&#39;%&#39; IDENTIFIED BY &#39;ambari&#39;;
+GRANT ALL PRIVILEGES ON *.* TO &#39;ambari&#39;@&#39;%&#39;;
+CREATE USER &#39;ambari&#39;@&#39;localhost&#39; IDENTIFIED BY &#39;ambari&#39;;
+GRANT ALL PRIVILEGES ON *.* TO &#39;ambari&#39;@&#39;localhost&#39;;
+CREATE USER &#39;ambari&#39;@&#39;iop167.ambai.com&#39; IDENTIFIED BY &#39;ambari&#39;; //本地主机名
+GRANT ALL PRIVILEGES ON *.* TO &#39;ambari&#39;@&#39;iop167.ambai.com&#39;; //本地主机名
+FLUSH PRIVILEGES;
+</code></pre>
+<p>使用ambari用户登录，创建ambari数据库</p>
+<pre><code>mysql -uambari -pambari
+CREATE DATABASE ambari;
+</code></pre>
+<h2 id="七、安装配置ambari-server"><a href="#七、安装配置ambari-server" class="headerlink" title="七、安装配置ambari-server"></a>七、安装配置ambari-server</h2><h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><pre><code>yum -y install ambari-server
+</code></pre>
+<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><pre><code>[root@iop167 /]# ambari-server setup
+Using python  /usr/bin/python
+Setup ambari-server
+Checking SELinux...
+SELinux status is &#39;disabled&#39;
+Customize user account for ambari-server daemon [y/n] (n)? y
+Enter user account for ambari-server daemon (root):root
+Adjusting ambari-server permissions and ownership...
+Checking firewall status...
+Checking JDK...
+Do you want to change Oracle JDK [y/n] (n)? y
+[1] Oracle JDK 1.8 + Java Cryptography Extension (JCE) Policy Files 8
+[2] Oracle JDK 1.7 + Java Cryptography Extension (JCE) Policy Files 7
+[3] Custom JDK
+==============================================================================
+Enter choice (1): /usr/lib/jdk1.8.0_151
+Invalid number.
+[1] Oracle JDK 1.8 + Java Cryptography Extension (JCE) Policy Files 8
+[2] Oracle JDK 1.7 + Java Cryptography Extension (JCE) Policy Files 7
+[3] Custom JDK
+==============================================================================
+Enter choice (1): 3
+WARNING: JDK must be installed on all hosts and JAVA_HOME must be valid on all hosts.
+WARNING: JCE Policy files are required for configuring Kerberos security. If you plan to use Kerberos,please make sure JCE Unlimited Strength Jurisdiction Policy Files are valid on all hosts.
+Path to JAVA_HOME: /usr/lib/jdk1.8.0_151
+Validating JDK on Ambari Server...done.
+Completing setup...
+Configuring database...
+Enter advanced database configuration [y/n] (n)? y
+Configuring database...
+==============================================================================
+Choose one of the following options:
+[1] - PostgreSQL (Embedded)
+[2] - Oracle
+[3] - MySQL / MariaDB
+[4] - PostgreSQL
+[5] - Microsoft SQL Server (Tech Preview)
+[6] - SQL Anywhere
+[7] - BDB
+==============================================================================
+Enter choice (3): 3
+Hostname (localhost): 
+Port (3306): 
+Database name (ambari): 
+Username (ambari): 
+Enter Database Password (bigdata): 
+Re-enter password: 
+Configuring ambari database...
+Configuring remote database connection properties...
+WARNING: Before starting Ambari Server, you must run the following DDL against the database to create the schema: /var/lib/ambari-server/resources/Ambari-DDL-MySQL-CREATE.sql
+Proceed with configuring remote database connection properties [y/n] (y)? y
+Extracting system views...
+ambari-admin-2.5.1.0.159.jar
+...........
+Adjusting ambari-server permissions and ownership...
+Ambari Server &#39;setup&#39; completed successfully.
+</code></pre>
+<h3 id="执行SQL语句"><a href="#执行SQL语句" class="headerlink" title="执行SQL语句"></a>执行SQL语句</h3><pre><code>mysql -uambari -pambari
+use ambari
+source /var/lib/ambari-server/resources/Ambari-DDL-MySQL-CREATE.sql
+</code></pre>
+<h3 id="修改Ambari源配置文件"><a href="#修改Ambari源配置文件" class="headerlink" title="修改Ambari源配置文件"></a>修改Ambari源配置文件</h3><p>只保留相应操作系统版本，其他删除，baseurl改为对应本地地址即可。</p>
+<pre><code>cd /var/lib/ambari-server/resources/stacks/HDP/2.6/repos/
+</code></pre>
+<p>修改 repoinfo.xml文件</p>
+<pre><code>[root@iop167 repos]# vim repoinfo.xml 
+
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;reposinfo&gt;
+  &lt;os family=&quot;redhat7&quot;&gt;
+    &lt;repo&gt;
+      &lt;baseurl&gt;http://10.110.18.58:81/CentOS-7/HDP&lt;/baseurl&gt;
+      &lt;repoid&gt;HDP&lt;/repoid&gt;
+      &lt;reponame&gt;HDP&lt;/reponame&gt;
+    &lt;/repo&gt;
+    &lt;repo&gt;
+      &lt;baseurl&gt;http://10.110.18.58:81/CentOS-7/HDP-UTILS&lt;/baseurl&gt;
+      &lt;repoid&gt;HDP-UTILS&lt;/repoid&gt;
+      &lt;reponame&gt;HDP-UTILS&lt;/reponame&gt;
+    &lt;/repo&gt;
+    &lt;repo&gt;
+      &lt;baseurl&gt;http://10.110.18.58:81/CentOS-7/HDP-INSPUR&lt;/baseurl&gt;
+      &lt;repoid&gt;HDP-INSPUR&lt;/repoid&gt;
+      &lt;reponame&gt;HDP-INSPUR&lt;/reponame&gt;
+    &lt;/repo&gt;
+    &lt;repo&gt;
+      &lt;baseurl&gt;http://10.110.18.58:81/CentOS-7/HDF&lt;/baseurl&gt;
+      &lt;repoid&gt;HDF&lt;/repoid&gt;
+      &lt;reponame&gt;HDF&lt;/reponame&gt;
+    &lt;/repo&gt;
+  &lt;/os&gt;
+&lt;/reposinfo&gt;
+</code></pre>
+<h3 id="启动ambari"><a href="#启动ambari" class="headerlink" title="启动ambari"></a>启动ambari</h3><pre><code>ambari-server start
+</code></pre>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C"><span class="toc-number">1.</span> <span class="toc-text">一、准备工作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%86%E5%A4%87%E4%B8%89%E5%8F%B0%E8%99%9A%E6%9C%BA%E5%B9%B6%E4%BF%9D%E8%AF%81%E8%83%BD%E7%9B%B8%E4%BA%92ping%E9%80%9A"><span class="toc-number">1.1.</span> <span class="toc-text">准备三台虚机并保证能相互ping通</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E6%9C%BA%E5%90%8D%E7%9A%84%E4%BF%AE%E6%94%B9%EF%BC%9A"><span class="toc-number">1.2.</span> <span class="toc-text">主机名的修改：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AEHosts"><span class="toc-number">1.3.</span> <span class="toc-text">配置Hosts</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E6%98%A0%E5%B0%84%E5%88%B0hosts%E6%96%87%E4%BB%B6"><span class="toc-number">1.4.</span> <span class="toc-text">添加映射到hosts文件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%85%B3%E9%97%AD%E9%98%B2%E7%81%AB%E5%A2%99"><span class="toc-number">2.</span> <span class="toc-text">二、关闭防火墙</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E9%98%B2%E7%81%AB%E5%A2%99%E7%8A%B6%E6%80%81"><span class="toc-number">2.1.</span> <span class="toc-text">查看防火墙状态</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E5%BC%80%E6%9C%BA%E6%98%AF%E5%90%A6%E5%90%AF%E5%8A%A8%E9%98%B2%E7%81%AB%E5%A2%99%E6%9C%8D%E5%8A%A1"><span class="toc-number">2.2.</span> <span class="toc-text">查看开机是否启动防火墙服务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E9%97%AD%E9%98%B2%E7%81%AB%E5%A2%99"><span class="toc-number">2.3.</span> <span class="toc-text">关闭防火墙</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AD%A6%E7%94%A8%E9%98%B2%E7%81%AB%E5%A2%99%EF%BC%88%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E6%97%B6%E4%B8%8D%E5%90%AF%E5%8A%A8%E9%98%B2%E7%81%AB%E5%A2%99%EF%BC%89"><span class="toc-number">2.4.</span> <span class="toc-text">警用防火墙（系统启动时不启动防火墙）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A1%AE%E4%BF%9Dsetlinux%E5%85%B3%E9%97%AD"><span class="toc-number">2.5.</span> <span class="toc-text">确保setlinux关闭</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%85%8D%E5%AF%86%E7%99%BB%E5%BD%95"><span class="toc-number">3.</span> <span class="toc-text">三、免密登录</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#iop167-ambari-com"><span class="toc-number">3.1.</span> <span class="toc-text">iop167.ambari.com</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#iop168-ambari-com"><span class="toc-number">3.2.</span> <span class="toc-text">iop168.ambari.com</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#iop169-ambari-com"><span class="toc-number">3.3.</span> <span class="toc-text">iop169.ambari.com</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95"><span class="toc-number">3.4.</span> <span class="toc-text">测试</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E9%85%8D%E7%BD%AEJDK"><span class="toc-number">4.</span> <span class="toc-text">四、配置JDK</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%98%E7%BD%91%E4%B8%8B%E8%BD%BDjdk-1-8"><span class="toc-number">4.1.</span> <span class="toc-text">官网下载jdk 1.8</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E5%8E%8B"><span class="toc-number">4.2.</span> <span class="toc-text">解压</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="toc-number">4.3.</span> <span class="toc-text">配置环境变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%AA%8C%E8%AF%81jdk"><span class="toc-number">4.4.</span> <span class="toc-text">验证jdk</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%86jdk%E7%9B%AE%E5%BD%95%E5%8F%91%E9%80%81%E5%88%B0%E4%B8%A4%E5%8F%B0Agent%E4%B8%BB%E6%9C%BA"><span class="toc-number">4.5.</span> <span class="toc-text">将jdk目录发送到两台Agent主机</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E9%85%8D%E7%BD%AE%E6%9C%AC%E5%9C%B0%E6%BA%90"><span class="toc-number">5.</span> <span class="toc-text">五、配置本地源</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E5%AE%89%E8%A3%85mysql"><span class="toc-number">6.</span> <span class="toc-text">六、安装mysql</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%83%E3%80%81%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AEambari-server"><span class="toc-number">7.</span> <span class="toc-text">七、安装配置ambari-server</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85"><span class="toc-number">7.1.</span> <span class="toc-text">安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE"><span class="toc-number">7.2.</span> <span class="toc-text">配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%A7%E8%A1%8CSQL%E8%AF%AD%E5%8F%A5"><span class="toc-number">7.3.</span> <span class="toc-text">执行SQL语句</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9Ambari%E6%BA%90%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">7.4.</span> <span class="toc-text">修改Ambari源配置文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8ambari"><span class="toc-number">7.5.</span> <span class="toc-text">启动ambari</span></a></li></ol></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

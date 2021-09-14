@@ -1,0 +1,854 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Springboot异步任务执行及监控 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="除了自己实现线程外，springboot本身就提供了通过注解的方式，进行异步任务的执行。下面主要记录一下，在Springboot项目中实现异步任务，以及对异步任务进行封装监控。
+1 开启异步支持想要,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">Springboot异步任务执行及监控</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/6.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/Spring"><b>「
+                    </b>SPRING<b> 」</b></a>
+                
+                August 21, 2018
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/springboot-asynchronous-task-execution-and-monitoring.html" title="Springboot异步任务执行及监控" class="">Springboot异步任务执行及监控</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    15k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    14 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Spring/" rel="tag">Spring</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <p>除了自己实现线程外，springboot本身就提供了通过注解的方式，进行异步任务的执行。下面主要记录一下，在Springboot项目中实现异步任务，以及对异步任务进行封装监控。</p>
+<h2 id="1-开启异步支持"><a href="#1-开启异步支持" class="headerlink" title="1 开启异步支持"></a>1 开启异步支持</h2><p>想要使用springboot的注解进行异步任务，首先要开启springboot的异步任务支持。通过集成AsyncConfigurer接口，并实现getAsyncExcutor()方法，如下所示：</p>
+<pre><code>package com.springboot.demo.asyncTask.conf;
+
+import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.AsyncConfigurer;
+import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+
+import java.util.concurrent.Executor;
+
+/**
+ * Created by shirukai on 2018/7/30
+ * 配置spring boot 多线程支持
+ */
+@Configuration
+@EnableAsync   //开启异步任务支持
+public class SpringTaskExecutor implements AsyncConfigurer &#123;
+
+    @Override
+    public Executor getAsyncExecutor() &#123;
+        ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
+        taskExecutor.setCorePoolSize(5);
+        taskExecutor.setMaxPoolSize(10);
+        taskExecutor.setQueueCapacity(20);
+        taskExecutor.initialize();
+        return taskExecutor;
+    &#125;
+
+    @Override
+    public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() &#123;
+        return null;
+    &#125;
+&#125;
+</code></pre>
+<p>通过上面方法，就可以实现Spring boot的异步任务支持。然后只需要在想要进行异步的方法前添加@Async注解就可以了，如下图所示：</p>
+<pre><code>package com.springboot.demo.asyncTask.service;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Component;
+
+/**
+ * Created by shirukai on 2018/7/31
+ * 异步任务执行器
+ */
+@Component
+public class AsyncTaskExecutor &#123;
+    private static Logger LOG = LoggerFactory.getLogger(AsyncTaskExecutor.class);
+    @Async
+    public void executor(AsyncTaskConstructor asyncTaskGenerator, String taskInfo) &#123;
+        LOG.info(&quot;AsyncTaskExecutor is executing async task:&#123;&#125;&quot;, taskInfo);
+        asyncTaskGenerator.async();
+    &#125;
+&#125;
+</code></pre>
+<h2 id="2-异步任务封装监控"><a href="#2-异步任务封装监控" class="headerlink" title="2 异步任务封装监控"></a>2 异步任务封装监控</h2><h3 id="2-1-封装思路"><a href="#2-1-封装思路" class="headerlink" title="2.1 封装思路"></a>2.1 封装思路</h3><p>提供一个异步任务的管理器，管理器可以实现异步任务的提交、保存任务信息、获取任务信息等功能。</p>
+<p>提供一个异步任务的监控器，用于监控异步任务执行状况，并把执行信息保存到缓存中，并记录任务执行时间。</p>
+<p>提供一个异步任务的构造器，用于构造异步方法。</p>
+<p>提供一个异步任务的执行器，用于执行管理器提交的使用构造器构造的异步方法。</p>
+<h3 id="2-2-效果展示"><a href="#2-2-效果展示" class="headerlink" title="2.2 效果展示"></a>2.2 效果展示</h3><h4 id="2-2-1-启动异步任务"><a href="#2-2-1-启动异步任务" class="headerlink" title="2.2.1 启动异步任务"></a>2.2.1 启动异步任务</h4><p><img src="http://shirukai.gitee.io/images/2d96394ea6ee4b051074be33275f9205.jpg"></p>
+<h4 id="2-2-2-查看任务状态"><a href="#2-2-2-查看任务状态" class="headerlink" title="2.2.2 查看任务状态"></a>2.2.2 查看任务状态</h4><p><img src="http://shirukai.gitee.io/images/432bd3f012c5c58177ae1753054f597d.jpg"></p>
+<h3 id="2-3-编码实现"><a href="#2-3-编码实现" class="headerlink" title="2.3  编码实现"></a>2.3  编码实现</h3><h4 id="2-3-1-conf包"><a href="#2-3-1-conf包" class="headerlink" title="2.3.1 conf包"></a>2.3.1 conf包</h4><p>主要是配置springboot的线程池，开启spring boot支持异步支持</p>
+<h5 id="2-3-1-1-SpringTaskExcutor-java"><a href="#2-3-1-1-SpringTaskExcutor-java" class="headerlink" title="2.3.1.1 SpringTaskExcutor.java"></a>2.3.1.1 SpringTaskExcutor.java</h5><pre><code>package com.emcc.hiacloud.analytics.asynctask.conf;
+
+import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.AsyncConfigurer;
+import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+
+import java.util.concurrent.Executor;
+
+/**
+ * Created by shirukai on 2018/7/30
+ * 配置spring boot 多线程支持
+ */
+@Configuration
+@EnableAsync   //开启异步任务支持
+public class SpringTaskExecutor implements AsyncConfigurer &#123;
+    @Override
+    public Executor getAsyncExecutor() &#123;
+        ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
+        taskExecutor.setCorePoolSize(5);
+        taskExecutor.setMaxPoolSize(10);
+        taskExecutor.setQueueCapacity(20);
+        taskExecutor.initialize();
+        return taskExecutor;
+    &#125;
+
+    @Override
+    public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() &#123;
+        return null;
+    &#125;
+&#125;
+</code></pre>
+<h4 id="2-3-2-entity包"><a href="#2-3-2-entity包" class="headerlink" title="2.3.2 entity包"></a>2.3.2 entity包</h4><p>主要存放TaskInfo实例类用于保存任务信息，TaskStatusEnmu枚举类用来存放任务状态。</p>
+<h5 id="2-3-2-1-TaskInfo-java"><a href="#2-3-2-1-TaskInfo-java" class="headerlink" title="2.3.2.1 TaskInfo.java"></a>2.3.2.1 TaskInfo.java</h5><pre><code>package com.emcc.hiacloud.analytics.asynctask.entity;
+
+
+import java.util.Date;
+
+/**
+ * Created by shirukai on 2018/7/31
+ * 任务信息
+ */
+public class TaskInfo &#123;
+    private String taskId;
+    private TaskStatusEnum status;
+    private Date startTime;
+    private Date endTime;
+    private String totalTime;
+
+    public TaskStatusEnum getStatus() &#123;
+        return status;
+    &#125;
+
+    public void setStatus(TaskStatusEnum status) &#123;
+        this.status = status;
+    &#125;
+
+    public void setTotalTime(String totalTime) &#123;
+        this.totalTime = totalTime;
+    &#125;
+
+    public String getTaskId() &#123;
+        return taskId;
+    &#125;
+
+    public void setTaskId(String taskId) &#123;
+        this.taskId = taskId;
+    &#125;
+
+    public Date getStartTime() &#123;
+        return startTime;
+    &#125;
+
+    public void setStartTime(Date startTime) &#123;
+        this.startTime = startTime;
+    &#125;
+
+    public Date getEndTime() &#123;
+        return endTime;
+    &#125;
+
+    public void setEndTime(Date endTime) &#123;
+        this.endTime = endTime;
+    &#125;
+
+    public String getTotalTime() &#123;
+        return totalTime;
+    &#125;
+
+    public void setTotalTime() &#123;
+        this.totalTime = (this.endTime.getTime() - this.startTime.getTime()) + &quot;ms&quot;;
+    &#125;
+&#125;
+</code></pre>
+<h5 id="2-3-2-2-TaskStatusEnum-java"><a href="#2-3-2-2-TaskStatusEnum-java" class="headerlink" title="2.3.2.2  TaskStatusEnum.java"></a>2.3.2.2  TaskStatusEnum.java</h5><pre><code>package com.emcc.hiacloud.analytics.asynctask.entity;
+
+/**
+ * Created by shirukai on 2018/7/31
+ * 任务状态枚举
+ */
+public enum TaskStatusEnum &#123;
+
+    STARTED(1, &quot;任务已经启动&quot;),
+    RUNNING(0, &quot;任务正在运行&quot;),
+    SUCCESS(2, &quot;任务执行成功&quot;),
+    FAILED(-2, &quot;任务执行失败&quot;);
+    private int state;
+    private String stateInfo;
+
+    TaskStatusEnum(int state, String stateInfo) &#123;
+        this.state = state;
+        this.stateInfo = stateInfo;
+    &#125;
+
+    public int getState() &#123;
+        return state;
+    &#125;
+
+    public String getStateInfo() &#123;
+        return stateInfo;
+    &#125;
+
+&#125;
+</code></pre>
+<h4 id="2-3-3-manager包"><a href="#2-3-3-manager包" class="headerlink" title="2.3.3 manager包"></a>2.3.3 manager包</h4><p>存放要不任务的管理类和监控类</p>
+<h5 id="2-3-3-1-AsyncTaskManager-java"><a href="#2-3-3-1-AsyncTaskManager-java" class="headerlink" title="2.3.3.1 AsyncTaskManager.java"></a>2.3.3.1 AsyncTaskManager.java</h5><pre><code>package com.emcc.hiacloud.analytics.asynctask.manager;
+
+
+import com.emcc.hiacloud.analytics.asynctask.entity.TaskInfo;
+import com.emcc.hiacloud.analytics.asynctask.entity.TaskStatusEnum;
+import com.emcc.hiacloud.analytics.asynctask.service.AsyncTaskConstructor;
+import com.emcc.hiacloud.analytics.asynctask.service.AsyncTaskExecutor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
+/**
+ * Created by shirukai on 2018/7/31
+ * 异步任务管理器
+ */
+@Component
+public class AsyncTaskManager &#123;
+    private Map&lt;String, TaskInfo&gt; taskContainer = new HashMap&lt;&gt;(16);
+    @Autowired
+    AsyncTaskExecutor asyncTaskExecutor;
+
+
+    /**
+     * 初始化任务
+     *
+     * @return taskInfo
+     */
+    public TaskInfo initTask() &#123;
+        TaskInfo taskInfo = new TaskInfo();
+        taskInfo.setTaskId(getTaskId());
+        taskInfo.setStatus(TaskStatusEnum.STARTED);
+        taskInfo.setStartTime(new Date());
+        setTaskInfo(taskInfo);
+        return taskInfo;
+    &#125;
+
+    /**
+     * 初始化任务
+     * @param asyncTaskConstructor 异步任务构造器
+     * @return taskInfo
+     */
+    public TaskInfo submit(AsyncTaskConstructor asyncTaskConstructor) &#123;
+        TaskInfo info = initTask();
+        String taskId = info.getTaskId();
+        asyncTaskExecutor.executor(asyncTaskConstructor,taskId);
+        return info;
+    &#125;
+
+    /**
+     * 保存任务信息
+     *
+     * @param taskInfo 任务信息
+     */
+    public void setTaskInfo(TaskInfo taskInfo) &#123;
+        taskContainer.put(taskInfo.getTaskId(), taskInfo);
+    &#125;
+
+    /**
+     * 获取任务信息
+     *
+     * @param taskId 任务ID
+     * @return
+     */
+    public TaskInfo getTaskInfo(String taskId) &#123;
+        return taskContainer.get(taskId);
+    &#125;
+
+    /**
+     * 获取任务状态
+     *
+     * @param taskId 任务ID
+     * @return
+     */
+    public TaskStatusEnum getTaskStatus(String taskId) &#123;
+        return getTaskInfo(taskId).getStatus();
+    &#125;
+
+    /**
+     * 生成任务ID
+     *
+     * @return taskId
+     */
+    public String getTaskId() &#123;
+        return UUID.randomUUID().toString();
+    &#125;
+&#125;
+</code></pre>
+<h5 id="2-3-3-2-AsyncTaskMonitor-java"><a href="#2-3-3-2-AsyncTaskMonitor-java" class="headerlink" title="2.3.3.2 AsyncTaskMonitor.java"></a>2.3.3.2 AsyncTaskMonitor.java</h5><p>异步任务的监控主要是利用了spring的AOP面向切面，在异步方法的执行前和执行后进行监控，判断任务状态，并记录任务信息。</p>
+<pre><code>package com.emcc.hiacloud.analytics.asynctask.manager;
+
+
+import com.emcc.hiacloud.analytics.asynctask.entity.TaskInfo;
+import com.emcc.hiacloud.analytics.asynctask.entity.TaskStatusEnum;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.util.Date;
+
+/**
+ * Created by shirukai on 2018/7/31
+ * 异步任务监控
+ */
+@Component
+@Aspect
+public class AsyncTaskMonitor &#123;
+    @Autowired
+    AsyncTaskManager manager;
+    private static Logger LOG = LoggerFactory.getLogger(AsyncTaskMonitor.class);
+
+    @Around(&quot;execution(* com.emcc.hiacloud.analytics.asynctask.service.AsyncTaskExecutor.*(..))&quot;)
+    public void taskHandle(ProceedingJoinPoint pjp) &#123;
+        //获取taskId
+        String taskId = pjp.getArgs()[1].toString();
+        //获取任务信息
+        TaskInfo taskInfo = manager.getTaskInfo(taskId);
+        LOG.info(&quot;AsyncTaskMonitor is monitoring async task:&#123;&#125;&quot;, taskId);
+        taskInfo.setStatus(TaskStatusEnum.RUNNING);
+        manager.setTaskInfo(taskInfo);
+        TaskStatusEnum status = null;
+        try &#123;
+            pjp.proceed();
+            status = TaskStatusEnum.SUCCESS;
+        &#125; catch (Throwable throwable) &#123;
+            status = TaskStatusEnum.FAILED;
+            LOG.error(&quot;AsyncTaskMonitor:async task &#123;&#125; is failed.Error info:&#123;&#125;&quot;, taskId, throwable.getMessage());
+        &#125;
+        taskInfo.setEndTime(new Date());
+        taskInfo.setStatus(status);
+        taskInfo.setTotalTime();
+        manager.setTaskInfo(taskInfo);
+    &#125;
+&#125;
+</code></pre>
+<h4 id="2-3-4-service包"><a href="#2-3-4-service包" class="headerlink" title="2.3.4 service包"></a>2.3.4 service包</h4><p>主要存放异步任务的方法构造器和执行器。</p>
+<h5 id="2-3-4-1-AsyncTaskConstructor"><a href="#2-3-4-1-AsyncTaskConstructor" class="headerlink" title="2.3.4.1 AsyncTaskConstructor"></a>2.3.4.1 AsyncTaskConstructor</h5><p>通过该接口可以构建想要实现的异步方法。只要new 一下接口实例，然后重写李曼的async()方法即可。</p>
+<pre><code>package com.emcc.hiacloud.analytics.asynctask.service;
+
+/**
+ * Created by shirukai on 2018/7/31
+ * 异步任务构造器
+ */
+public interface AsyncTaskConstructor &#123;
+    public void async();
+&#125;
+</code></pre>
+<h5 id="2-3-4-2-AsyncTaskExecutor-java"><a href="#2-3-4-2-AsyncTaskExecutor-java" class="headerlink" title="2.3.4.2 AsyncTaskExecutor.java"></a>2.3.4.2 AsyncTaskExecutor.java</h5><p>异步任务执行器</p>
+<pre><code>package com.emcc.hiacloud.analytics.asynctask.service;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Component;
+
+/**
+ * Created by shirukai on 2018/7/31
+ * 异步任务执行器
+ */
+@Component
+public class AsyncTaskExecutor &#123;
+    private static Logger LOG = LoggerFactory.getLogger(AsyncTaskExecutor.class);
+    @Async
+    public void executor(AsyncTaskConstructor asyncTaskGenerator, String taskInfo) &#123;
+        LOG.info(&quot;AsyncTaskExecutor is executing async task:&#123;&#125;&quot;, taskInfo);
+        asyncTaskGenerator.async();
+    &#125;
+&#125;
+</code></pre>
+<h2 id="3-应用"><a href="#3-应用" class="headerlink" title="3 应用"></a>3 应用</h2><p>实现两个接口，一个是开启一个异步任务，另一个是查看任务状态。</p>
+<p>想要使用我们刚才分装好的异步任务，只需要将AsyncTaskManager注入到程序中。</p>
+<pre><code>package com.emcc.hiacloud.analytics.orchestrations.controller;
+
+import com.emcc.hiacloud.analytics.asynctask.entity.TaskInfo;
+import com.emcc.hiacloud.analytics.asynctask.manager.AsyncTaskManager;
+import com.emcc.hiacloud.analytics.common.rest.RestMessage;
+import com.emcc.hiacloud.analytics.common.util.RestMessageUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+/**
+ * Created by shirukai on 2018/7/31
+ */
+@RestController
+@RequestMapping(value = &quot;/api/v1/asynctask&quot;)
+public class AsyncTaskController &#123;
+    //注入异步任务管理器
+    @Autowired
+    AsyncTaskManager asyncTaskManager;
+
+    @RequestMapping(value = &quot;/startTask&quot;, method = RequestMethod.GET)
+    public RestMessage startAsyncTask() &#123;
+        //调用任务管理器中的submit去提交一个异步任务
+        TaskInfo taskInfo = asyncTaskManager.submit(() -&gt; &#123;
+            System.out.println(&quot;__________&quot;);
+            try &#123;
+                //模拟异步，睡眠6秒
+                Thread.sleep(30000);
+            &#125; catch (InterruptedException e) &#123;
+                e.printStackTrace();
+            &#125;
+            System.out.println(&quot;__________&quot;);
+        &#125;);
+        return RestMessageUtil.objectToRestMessage(taskInfo);
+    &#125;
+
+    @RequestMapping(value = &quot;/getTaskStatus&quot;, method = RequestMethod.GET)
+    public RestMessage getTaskStatus(
+            @RequestParam(&quot;taskId&quot;) String taskId) &#123;
+        return RestMessageUtil.objectToRestMessage(asyncTaskManager.getTaskInfo(taskId));
+    &#125;
+&#125;
+</code></pre>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%BC%80%E5%90%AF%E5%BC%82%E6%AD%A5%E6%94%AF%E6%8C%81"><span class="toc-number">1.</span> <span class="toc-text">1 开启异步支持</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1%E5%B0%81%E8%A3%85%E7%9B%91%E6%8E%A7"><span class="toc-number">2.</span> <span class="toc-text">2 异步任务封装监控</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E5%B0%81%E8%A3%85%E6%80%9D%E8%B7%AF"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 封装思路</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E6%95%88%E6%9E%9C%E5%B1%95%E7%A4%BA"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 效果展示</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E7%BC%96%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="toc-number">2.3.</span> <span class="toc-text">2.3  编码实现</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%BA%94%E7%94%A8"><span class="toc-number">3.</span> <span class="toc-text">3 应用</span></a></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

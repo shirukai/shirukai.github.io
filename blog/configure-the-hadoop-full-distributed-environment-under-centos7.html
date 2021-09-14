@@ -1,0 +1,751 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>centos7下配置Hadoop全分布式环境 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="一、准备工作准备三台虚机并保证能相互ping通
+
+
+序号
+IP地址
+主机名
+类型
+用户名
+
+
+
+1
+192.168.162.177
+Master.Hadoop
+NameNode
+root
+
+
+2
+1,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">centos7下配置Hadoop全分布式环境</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/2.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/Hadoop"><b>「
+                    </b>HADOOP<b> 」</b></a>
+                
+                August 19, 2018
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/configure-the-hadoop-full-distributed-environment-under-centos7.html" title="centos7下配置Hadoop全分布式环境" class="">centos7下配置Hadoop全分布式环境</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    14k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    13 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Hadoop/" rel="tag">Hadoop</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <h2 id="一、准备工作"><a href="#一、准备工作" class="headerlink" title="一、准备工作"></a>一、准备工作</h2><h3 id="准备三台虚机并保证能相互ping通"><a href="#准备三台虚机并保证能相互ping通" class="headerlink" title="准备三台虚机并保证能相互ping通"></a>准备三台虚机并保证能相互ping通</h3><table>
+<thead>
+<tr>
+<th>序号</th>
+<th>IP地址</th>
+<th>主机名</th>
+<th>类型</th>
+<th>用户名</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>192.168.162.177</td>
+<td>Master.Hadoop</td>
+<td>NameNode</td>
+<td>root</td>
+</tr>
+<tr>
+<td>2</td>
+<td>192.168.162.155</td>
+<td>Slave1.Hadoop</td>
+<td>DataNode</td>
+<td>root</td>
+</tr>
+<tr>
+<td>3</td>
+<td>192.168.162.166</td>
+<td>Slave2.Hadoop</td>
+<td>DataNode</td>
+<td>root</td>
+</tr>
+</tbody></table>
+<h3 id="主机名的修改："><a href="#主机名的修改：" class="headerlink" title="主机名的修改："></a>主机名的修改：</h3><pre><code>vim /etc/hostname
+</code></pre>
+<p>按照一定的格式修改三台机器的主机名。</p>
+<h3 id="配置Hosts"><a href="#配置Hosts" class="headerlink" title="配置Hosts"></a>配置Hosts</h3><pre><code>vim /etc/hosts
+</code></pre>
+<h3 id="添加映射到hosts文件"><a href="#添加映射到hosts文件" class="headerlink" title="添加映射到hosts文件"></a>添加映射到hosts文件</h3><pre><code>192.168.162.177 Master.Hadoop
+192.168.162.155 Slave1.Hadoop
+192.168.162.166 Slave2.Hadoop
+</code></pre>
+<p>三台机器配置相同的hosts</p>
+<h2 id="二、关闭防火墙"><a href="#二、关闭防火墙" class="headerlink" title="二、关闭防火墙"></a>二、关闭防火墙</h2><ol>
+<li><h3 id="查看防火墙状态"><a href="#查看防火墙状态" class="headerlink" title="查看防火墙状态"></a>查看防火墙状态</h3></li>
+</ol>
+<pre><code>systemctl status firewalld
+</code></pre>
+<ol start="2">
+<li><h3 id="查看开机是否启动防火墙服务"><a href="#查看开机是否启动防火墙服务" class="headerlink" title="查看开机是否启动防火墙服务"></a>查看开机是否启动防火墙服务</h3></li>
+</ol>
+<pre><code> systemctl is-enabled firewalld
+</code></pre>
+<ol start="3">
+<li><h3 id="关闭防火墙"><a href="#关闭防火墙" class="headerlink" title="关闭防火墙"></a>关闭防火墙</h3></li>
+</ol>
+<pre><code>systemctl stop firewalld
+systemctl status firewalld
+</code></pre>
+<ol start="4">
+<li><h3 id="警用防火墙（系统启动时不启动防火墙）"><a href="#警用防火墙（系统启动时不启动防火墙）" class="headerlink" title="警用防火墙（系统启动时不启动防火墙）"></a>警用防火墙（系统启动时不启动防火墙）</h3></li>
+</ol>
+<pre><code>systemctl disable firewalld
+systemctl is-enabled firewalld
+</code></pre>
+<ol start="5">
+<li><h3 id="确保setlinux关闭"><a href="#确保setlinux关闭" class="headerlink" title="确保setlinux关闭"></a>确保setlinux关闭</h3></li>
+</ol>
+<pre><code>setenforce 0
+</code></pre>
+<h2 id="三、免密登录"><a href="#三、免密登录" class="headerlink" title="三、免密登录"></a>三、免密登录</h2><p>首先虚机需要安装ssh如果没有安装，可以通过yum进行安装</p>
+<pre><code>yum install openssh-server
+yum install openssh-clients
+</code></pre>
+<blockquote>
+<p>为什么要免密登录？</p>
+</blockquote>
+<p>因为我们的nameNode与dataNode是在不同的主机上，我们需要主机间做互信，nameNode可以不用密码登录到dataNode。</p>
+<h3 id="Master-Hadoop"><a href="#Master-Hadoop" class="headerlink" title="Master.Hadoop"></a>Master.Hadoop</h3><p>在master主机输入生成秘钥</p>
+<pre><code>ssh-keygen -t dsa -P &#39;&#39; -f ~/.ssh/id_dsa
+</code></pre>
+<p>将秘钥追加到authorized_keys </p>
+<pre><code>cat ~/.ssh/id_dsa.pub &gt;&gt; ~/.ssh/authorized_keys
+</code></pre>
+<p>然后利用scp将其复制到两个slave主机上</p>
+<h3 id="Slave1"><a href="#Slave1" class="headerlink" title="Slave1"></a>Slave1</h3><p>在Slave1主机上输入</p>
+<pre><code>scp root@Master.Hadoop:~/.ssh/id_dsa.pub ~/.ssh/master_dsa.pub
+
+cat ~/.ssh/master_dsa.pub &gt;&gt; ~/.ssh/authorized_keys
+</code></pre>
+<h3 id="Slave2"><a href="#Slave2" class="headerlink" title="Slave2"></a>Slave2</h3><p>在Slave2主机输入</p>
+<pre><code>scp root@Master.Hadoop:~/.ssh/id_dsa.pub ~/.ssh/master_dsa.pub
+
+cat ~/.ssh/master_dsa.pub &gt;&gt; ~/.ssh/authorized_keys
+</code></pre>
+<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><p>在master主机上连接两个主机，如果不需要密码，说明免密成功</p>
+<pre><code>ssh Stave1.Hadoop
+exit
+ssh Stave2.Hadoop
+exit
+</code></pre>
+<h2 id="四、配置JDK"><a href="#四、配置JDK" class="headerlink" title="四、配置JDK"></a>四、配置JDK</h2><blockquote>
+<p>在master主机上配置jdk，然后scp到其他两台主机即可。</p>
+</blockquote>
+<h3 id="官网下载jdk-1-8"><a href="#官网下载jdk-1-8" class="headerlink" title="官网下载jdk 1.8"></a>官网下载jdk 1.8</h3><p><a target="_blank" rel="noopener" href="http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html">http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html</a></p>
+<p>下载jdk-8u151-linux-x64.tar.gz并复制到 /usr/lib目录下</p>
+<h3 id="解压"><a href="#解压" class="headerlink" title="解压"></a>解压</h3><pre><code>tar -zxvf jdk-8u151-linux-x64.tar.gz
+</code></pre>
+<h3 id="配置环境变量"><a href="#配置环境变量" class="headerlink" title="配置环境变量"></a>配置环境变量</h3><pre><code>vim /etc/profile
+</code></pre>
+<p>添加如下内容</p>
+<pre><code>#set java enviroenment
+export JAVA_HOME=/usr/lib/jdk1.8.0_151
+export PATH=$JAVA_HOME/bin:$PATH
+</code></pre>
+<p>使环境变量生效</p>
+<pre><code>. /etc/profile
+</code></pre>
+<h3 id="验证jdk"><a href="#验证jdk" class="headerlink" title="验证jdk"></a>验证jdk</h3><pre><code>[root@shirukai ~]# java -version
+java version &quot;1.8.0_151&quot;
+Java(TM) SE Runtime Environment (build 1.8.0_151-b12)
+Java HotSpot(TM) 64-Bit Server VM (build 25.151-b12, mixed mode)
+</code></pre>
+<h3 id="将jdk目录发送到两台Slave主机"><a href="#将jdk目录发送到两台Slave主机" class="headerlink" title="将jdk目录发送到两台Slave主机"></a>将jdk目录发送到两台Slave主机</h3><pre><code>scp -r /usr/lib/java-1.8.0_151 root@Slave1.Hadoop:/usr/lib/
+scp -r /usr/lib/java-1.8.0_151 root@Slave2.Hadoop:/usr/lib/
+</code></pre>
+<p>配置环境变量就不要统一发送了，每台机子单独配置，方法跟master一样。</p>
+<h2 id="五、下载Hadoop-master主机"><a href="#五、下载Hadoop-master主机" class="headerlink" title="五、下载Hadoop(master主机)"></a>五、下载Hadoop(master主机)</h2><blockquote>
+<p>注意：这里同样只在master主机下载，并配置，然后利用scp发送到其他两台slave主机上</p>
+</blockquote>
+<h3 id="在usr目录下创建hadoop目录"><a href="#在usr目录下创建hadoop目录" class="headerlink" title="在usr目录下创建hadoop目录"></a>在usr目录下创建hadoop目录</h3><pre><code>cd /usr
+mkdir hadoop
+cd hadoop
+</code></pre>
+<h3 id="下载hadoop"><a href="#下载hadoop" class="headerlink" title="下载hadoop"></a>下载hadoop</h3><pre><code>wget http://mirror.bit.edu.cn/apache/hadoop/common/hadoop-2.7.4/hadoop-2.7.4.tar.gz
+</code></pre>
+<p>地址：</p>
+<p><a target="_blank" rel="noopener" href="http://mirror.bit.edu.cn/apache/hadoop/common/hadoop-2.7.4/hadoop-2.7.4.tar.gz">http://mirror.bit.edu.cn/apache/hadoop/common/hadoop-2.7.4/hadoop-2.7.4.tar.gz</a></p>
+<p>解压hadoop-2.7.4.tar.gz</p>
+<pre><code>tar -zxvf hadoop-2.7.4.tar.gz
+</code></pre>
+<h3 id="在-hadoop目录下创建目录"><a href="#在-hadoop目录下创建目录" class="headerlink" title="在 hadoop目录下创建目录"></a>在 hadoop目录下创建目录</h3><pre><code>mkdir /usr/hadoop/tmp 
+mkdir /usr/hadoop/hdfs 
+mkdir /usr/hadoop/hdfs/data 
+mkdir /usr/hadoop/hdfs/name
+</code></pre>
+<h2 id="六、配置Hadoop"><a href="#六、配置Hadoop" class="headerlink" title="六、配置Hadoop"></a>六、配置Hadoop</h2><h3 id="1-配置系统环境变量"><a href="#1-配置系统环境变量" class="headerlink" title="1.配置系统环境变量"></a>1.配置系统环境变量</h3><pre><code>vim /etc/profile
+</code></pre>
+<p>添加内容</p>
+<pre><code>#set hadoop path
+export HADOOP_HOME=/usr/hadoop/hadoop-2.7.4
+export PATH=$HADOOP_HOME/sbin:$HADOOP_HOME/bin:$PATH
+</code></pre>
+<h3 id="2-配置hadoop-env-sh"><a href="#2-配置hadoop-env-sh" class="headerlink" title="2.配置hadoop-env.sh"></a>2.配置hadoop-env.sh</h3><p>将java的环境变量配置到里面指定位置(大约在25行)</p>
+<pre><code># The java implementation to use.
+export JAVA_HOME=/usr/lib/jdk1.8.0_151
+</code></pre>
+<h3 id="3-配置yarn-env-sh"><a href="#3-配置yarn-env-sh" class="headerlink" title="3.配置yarn-env.sh"></a>3.配置yarn-env.sh</h3><p>在大约26行位置</p>
+<pre><code> 25   echo &quot;run java in $JAVA_HOME&quot;
+ 26   JAVA_HOME=$JAVA_HOME
+</code></pre>
+<h3 id="4-配置core-site-xml"><a href="#4-配置core-site-xml" class="headerlink" title="4.配置core-site.xml"></a>4.配置core-site.xml</h3><pre><code>&lt;configuration&gt;
+ &lt;property&gt;
+    &lt;name&gt;fs.default.name&lt;/name&gt;
+    &lt;value&gt;hdfs://Master.Hadoop:9000&lt;/value&gt;
+    &lt;description&gt;HDFS的URI，文件系统://namenode标识:端口号&lt;/description&gt;
+&lt;/property&gt;
+
+&lt;property&gt;
+    &lt;name&gt;hadoop.tmp.dir&lt;/name&gt;
+    &lt;value&gt;/usr/hadoop/tmp&lt;/value&gt;
+    &lt;description&gt;namenode上本地的hadoop临时文件夹&lt;/description&gt;
+&lt;/property&gt;
+&lt;property&gt;
+   &lt;name&gt;io.file.buffer.size&lt;/name&gt;
+   &lt;value&gt;131073&lt;/value&gt;
+&lt;/property&gt;
+&lt;/configuration&gt;
+</code></pre>
+<h3 id="5-配置hdfs-site-xml"><a href="#5-配置hdfs-site-xml" class="headerlink" title="5.配置hdfs-site.xml"></a>5.配置hdfs-site.xml</h3><pre><code>&lt;configuration&gt;
+&lt;property&gt;
+    &lt;name&gt;dfs.name.dir&lt;/name&gt;
+    &lt;value&gt;file:/usr/hadoop/hdfs/name&lt;/value&gt;
+    &lt;description&gt;namenode上存储hdfs名字空间元数据 &lt;/description&gt;
+&lt;/property&gt;
+
+&lt;property&gt;
+    &lt;name&gt;dfs.data.dir&lt;/name&gt;
+    &lt;value&gt;file:/usr/hadoop/hdfs/data&lt;/value&gt;
+    &lt;description&gt;datanode上数据块的物理存储位置&lt;/description&gt;
+&lt;/property&gt;
+&lt;property&gt;
+    &lt;name&gt;dfs.namenode.secondary.http-address&lt;/name&gt;
+    &lt;value&gt;master.hadoop:9001&lt;/value&gt;
+&lt;/property&gt;
+&lt;property&gt;
+    &lt;name&gt;dfs.replication&lt;/name&gt;
+    &lt;value&gt;2&lt;/value&gt;
+    &lt;description&gt;副本个数，配置默认是3,应小于datanode机器数量&lt;/description&gt;
+&lt;/property&gt;
+    &lt;property&gt;
+         &lt;name&gt;dfs.webhdfs.enabled&lt;/name&gt;
+         &lt;value&gt;true&lt;/value&gt;
+    &lt;/property&gt;
+    &lt;property&gt;
+         &lt;name&gt;dfs.permissions&lt;/name&gt;
+         &lt;value&gt;false&lt;/value&gt;
+    &lt;/property&gt;
+&lt;/configuration&gt;
+</code></pre>
+<h3 id="6-配置mapred-site-xml-这个文件没有需要创建"><a href="#6-配置mapred-site-xml-这个文件没有需要创建" class="headerlink" title="6.配置mapred-site.xml(这个文件没有需要创建)"></a>6.配置mapred-site.xml(这个文件没有需要创建)</h3><pre><code>&lt;configuration&gt;
+&lt;property&gt;
+        &lt;name&gt;mapreduce.framework.name&lt;/name&gt;
+        &lt;value&gt;yarn&lt;/value&gt;
+          &lt;property&gt;
+                  &lt;name&gt;mapreduce.jobhistory.address&lt;/name&gt;
+                  &lt;value&gt;Master.Hadoop:10020&lt;/value&gt;
+          &lt;/property&gt;
+          &lt;property&gt;
+                &lt;name&gt;mapreduce.jobhistory.webapp.address&lt;/name&gt;
+                &lt;value&gt;Master.Hadoop:19888&lt;/value&gt;
+       &lt;/property&gt;
+&lt;/property&gt;
+&lt;/configuration&gt;
+</code></pre>
+<h3 id="7-配置yarn-site-xml"><a href="#7-配置yarn-site-xml" class="headerlink" title="7.配置yarn-site.xml"></a>7.配置yarn-site.xml</h3><pre><code>&lt;configuration&gt;
+
+&lt;!-- Site specific YARN configuration properties --&gt;
+&lt;property&gt;
+  &lt;name&gt;yarn.resourcemanager.address&lt;/name&gt;
+  &lt;value&gt;Master.Hadoop:18040&lt;/value&gt;
+&lt;/property&gt;
+&lt;property&gt;
+  &lt;name&gt;yarn.resourcemanager.scheduler.address&lt;/name&gt;
+  &lt;value&gt;Master.Hadoop:18030&lt;/value&gt;
+&lt;/property&gt;
+&lt;property&gt;
+  &lt;name&gt;yarn.resourcemanager.webapp.address&lt;/name&gt;
+  &lt;value&gt;Master.Hadoop:18088&lt;/value&gt;
+&lt;/property&gt;
+&lt;property&gt;
+  &lt;name&gt;yarn.resourcemanager.resource-tracker.address&lt;/name&gt;
+  &lt;value&gt;Master.Hadoop:18025&lt;/value&gt;
+&lt;/property&gt;
+&lt;property&gt;
+  &lt;name&gt;yarn.resourcemanager.admin.address&lt;/name&gt;
+  &lt;value&gt;Master.Hadoop:18141&lt;/value&gt;
+&lt;/property&gt;
+&lt;property&gt;
+  &lt;name&gt;yarn.nodemanager.aux-services&lt;/name&gt;
+  &lt;value&gt;mapreduce_shuffle&lt;/value&gt;
+&lt;/property&gt;
+&lt;property&gt;
+  &lt;name&gt;yarn.nodemanager.aux-services.mapreduce.shuffle.class&lt;/name&gt;
+  &lt;value&gt;org.apache.hadoop.mapred.ShuffleHandler&lt;/value&gt;
+&lt;/property&gt;
+</code></pre>
+<h3 id="8-添加-masters文件"><a href="#8-添加-masters文件" class="headerlink" title="8.添加 masters文件"></a>8.添加 masters文件</h3><pre><code>192.168.162.177
+</code></pre>
+<h3 id="9-修改slaves"><a href="#9-修改slaves" class="headerlink" title="9.修改slaves"></a>9.修改slaves</h3><pre><code>192.168.162.155
+192.168.162.166
+</code></pre>
+<h3 id="10-将配置后的hadoop利用scp发送到两台slave主机上"><a href="#10-将配置后的hadoop利用scp发送到两台slave主机上" class="headerlink" title="10.将配置后的hadoop利用scp发送到两台slave主机上"></a>10.将配置后的hadoop利用scp发送到两台slave主机上</h3><h4 id="发送给slave1"><a href="#发送给slave1" class="headerlink" title="发送给slave1"></a>发送给slave1</h4><pre><code>scp -r /usr/hadoop root@Slave1.Hadoop:/usr/
+</code></pre>
+<h4 id="发送给slave2"><a href="#发送给slave2" class="headerlink" title="发送给slave2"></a>发送给slave2</h4><pre><code>scp -r /usr/hadoop root@Slave2.Hadoop:/usr/
+</code></pre>
+<h3 id="11-配置另外两台slave的Hadoop环境变量"><a href="#11-配置另外两台slave的Hadoop环境变量" class="headerlink" title="11.配置另外两台slave的Hadoop环境变量"></a>11.配置另外两台slave的Hadoop环境变量</h3><p>分别编辑vim /etc/profile然后添加如下内容：</p>
+<pre><code>#set hadoop path
+export HADOOP_HOME=/usr/hadoop/hadoop-2.7.4
+export PATH=$HADOOP_HOME/sbin:$HADOOP_HOME/bin:$PATH
+</code></pre>
+<h2 id="七、启动服务"><a href="#七、启动服务" class="headerlink" title="七、启动服务"></a>七、启动服务</h2><p>只在master主机上启动服务即可</p>
+<h3 id="1-格式化namenode"><a href="#1-格式化namenode" class="headerlink" title="1.格式化namenode"></a>1.格式化namenode</h3><pre><code>bin/hdfs namenode -format
+</code></pre>
+<h3 id="2-启动namenode和datanode守护进程"><a href="#2-启动namenode和datanode守护进程" class="headerlink" title="2.启动namenode和datanode守护进程"></a>2.启动namenode和datanode守护进程</h3><pre><code>sbin/start-dfs.sh
+</code></pre>
+<h3 id="3-启动Resourcemanager和NodeManager守护进程"><a href="#3-启动Resourcemanager和NodeManager守护进程" class="headerlink" title="3.启动Resourcemanager和NodeManager守护进程"></a>3.启动Resourcemanager和NodeManager守护进程</h3><pre><code>sbin/start-yarn.sh
+</code></pre>
+<h2 id="八、测试服务"><a href="#八、测试服务" class="headerlink" title="八、测试服务"></a>八、测试服务</h2><h3 id="在master主机输入jps查看进程"><a href="#在master主机输入jps查看进程" class="headerlink" title="在master主机输入jps查看进程"></a>在master主机输入jps查看进程</h3><pre><code>[root@Master ~]# jps
+1328 SecondaryNameNode
+1141 NameNode
+1813 Jps
+1478 ResourceManager
+</code></pre>
+<h3 id="在slave1主机输入jps"><a href="#在slave1主机输入jps" class="headerlink" title="在slave1主机输入jps"></a>在slave1主机输入jps</h3><pre><code>[root@Slave1 ~]# jps
+2500 NodeManager
+2392 DataNode
+2634 Jps
+</code></pre>
+<h3 id="在slave2-主机输入jps"><a href="#在slave2-主机输入jps" class="headerlink" title="在slave2 主机输入jps"></a>在slave2 主机输入jps</h3><pre><code>[root@Slave2 ~]# jps
+2583 NodeManager
+2473 DataNode
+2715 Jps
+</code></pre>
+<h3 id="访问Master-Hadoop：50070即-192-168-162-177-50070查看集群状况"><a href="#访问Master-Hadoop：50070即-192-168-162-177-50070查看集群状况" class="headerlink" title="访问Master.Hadoop：50070即 192.168.162.177:50070查看集群状况"></a>访问Master.Hadoop：50070即 192.168.162.177:50070查看集群状况</h3>
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C"><span class="toc-number">1.</span> <span class="toc-text">一、准备工作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%86%E5%A4%87%E4%B8%89%E5%8F%B0%E8%99%9A%E6%9C%BA%E5%B9%B6%E4%BF%9D%E8%AF%81%E8%83%BD%E7%9B%B8%E4%BA%92ping%E9%80%9A"><span class="toc-number">1.1.</span> <span class="toc-text">准备三台虚机并保证能相互ping通</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E6%9C%BA%E5%90%8D%E7%9A%84%E4%BF%AE%E6%94%B9%EF%BC%9A"><span class="toc-number">1.2.</span> <span class="toc-text">主机名的修改：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AEHosts"><span class="toc-number">1.3.</span> <span class="toc-text">配置Hosts</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E6%98%A0%E5%B0%84%E5%88%B0hosts%E6%96%87%E4%BB%B6"><span class="toc-number">1.4.</span> <span class="toc-text">添加映射到hosts文件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%85%B3%E9%97%AD%E9%98%B2%E7%81%AB%E5%A2%99"><span class="toc-number">2.</span> <span class="toc-text">二、关闭防火墙</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E9%98%B2%E7%81%AB%E5%A2%99%E7%8A%B6%E6%80%81"><span class="toc-number">2.1.</span> <span class="toc-text">查看防火墙状态</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E5%BC%80%E6%9C%BA%E6%98%AF%E5%90%A6%E5%90%AF%E5%8A%A8%E9%98%B2%E7%81%AB%E5%A2%99%E6%9C%8D%E5%8A%A1"><span class="toc-number">2.2.</span> <span class="toc-text">查看开机是否启动防火墙服务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E9%97%AD%E9%98%B2%E7%81%AB%E5%A2%99"><span class="toc-number">2.3.</span> <span class="toc-text">关闭防火墙</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AD%A6%E7%94%A8%E9%98%B2%E7%81%AB%E5%A2%99%EF%BC%88%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E6%97%B6%E4%B8%8D%E5%90%AF%E5%8A%A8%E9%98%B2%E7%81%AB%E5%A2%99%EF%BC%89"><span class="toc-number">2.4.</span> <span class="toc-text">警用防火墙（系统启动时不启动防火墙）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A1%AE%E4%BF%9Dsetlinux%E5%85%B3%E9%97%AD"><span class="toc-number">2.5.</span> <span class="toc-text">确保setlinux关闭</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%85%8D%E5%AF%86%E7%99%BB%E5%BD%95"><span class="toc-number">3.</span> <span class="toc-text">三、免密登录</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Master-Hadoop"><span class="toc-number">3.1.</span> <span class="toc-text">Master.Hadoop</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Slave1"><span class="toc-number">3.2.</span> <span class="toc-text">Slave1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Slave2"><span class="toc-number">3.3.</span> <span class="toc-text">Slave2</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95"><span class="toc-number">3.4.</span> <span class="toc-text">测试</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E9%85%8D%E7%BD%AEJDK"><span class="toc-number">4.</span> <span class="toc-text">四、配置JDK</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%98%E7%BD%91%E4%B8%8B%E8%BD%BDjdk-1-8"><span class="toc-number">4.1.</span> <span class="toc-text">官网下载jdk 1.8</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E5%8E%8B"><span class="toc-number">4.2.</span> <span class="toc-text">解压</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="toc-number">4.3.</span> <span class="toc-text">配置环境变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%AA%8C%E8%AF%81jdk"><span class="toc-number">4.4.</span> <span class="toc-text">验证jdk</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%86jdk%E7%9B%AE%E5%BD%95%E5%8F%91%E9%80%81%E5%88%B0%E4%B8%A4%E5%8F%B0Slave%E4%B8%BB%E6%9C%BA"><span class="toc-number">4.5.</span> <span class="toc-text">将jdk目录发送到两台Slave主机</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E4%B8%8B%E8%BD%BDHadoop-master%E4%B8%BB%E6%9C%BA"><span class="toc-number">5.</span> <span class="toc-text">五、下载Hadoop(master主机)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8usr%E7%9B%AE%E5%BD%95%E4%B8%8B%E5%88%9B%E5%BB%BAhadoop%E7%9B%AE%E5%BD%95"><span class="toc-number">5.1.</span> <span class="toc-text">在usr目录下创建hadoop目录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BDhadoop"><span class="toc-number">5.2.</span> <span class="toc-text">下载hadoop</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8-hadoop%E7%9B%AE%E5%BD%95%E4%B8%8B%E5%88%9B%E5%BB%BA%E7%9B%AE%E5%BD%95"><span class="toc-number">5.3.</span> <span class="toc-text">在 hadoop目录下创建目录</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E9%85%8D%E7%BD%AEHadoop"><span class="toc-number">6.</span> <span class="toc-text">六、配置Hadoop</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E9%85%8D%E7%BD%AE%E7%B3%BB%E7%BB%9F%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="toc-number">6.1.</span> <span class="toc-text">1.配置系统环境变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E9%85%8D%E7%BD%AEhadoop-env-sh"><span class="toc-number">6.2.</span> <span class="toc-text">2.配置hadoop-env.sh</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E9%85%8D%E7%BD%AEyarn-env-sh"><span class="toc-number">6.3.</span> <span class="toc-text">3.配置yarn-env.sh</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E9%85%8D%E7%BD%AEcore-site-xml"><span class="toc-number">6.4.</span> <span class="toc-text">4.配置core-site.xml</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E9%85%8D%E7%BD%AEhdfs-site-xml"><span class="toc-number">6.5.</span> <span class="toc-text">5.配置hdfs-site.xml</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E9%85%8D%E7%BD%AEmapred-site-xml-%E8%BF%99%E4%B8%AA%E6%96%87%E4%BB%B6%E6%B2%A1%E6%9C%89%E9%9C%80%E8%A6%81%E5%88%9B%E5%BB%BA"><span class="toc-number">6.6.</span> <span class="toc-text">6.配置mapred-site.xml(这个文件没有需要创建)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-%E9%85%8D%E7%BD%AEyarn-site-xml"><span class="toc-number">6.7.</span> <span class="toc-text">7.配置yarn-site.xml</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-%E6%B7%BB%E5%8A%A0-masters%E6%96%87%E4%BB%B6"><span class="toc-number">6.8.</span> <span class="toc-text">8.添加 masters文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-%E4%BF%AE%E6%94%B9slaves"><span class="toc-number">6.9.</span> <span class="toc-text">9.修改slaves</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10-%E5%B0%86%E9%85%8D%E7%BD%AE%E5%90%8E%E7%9A%84hadoop%E5%88%A9%E7%94%A8scp%E5%8F%91%E9%80%81%E5%88%B0%E4%B8%A4%E5%8F%B0slave%E4%B8%BB%E6%9C%BA%E4%B8%8A"><span class="toc-number">6.10.</span> <span class="toc-text">10.将配置后的hadoop利用scp发送到两台slave主机上</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#11-%E9%85%8D%E7%BD%AE%E5%8F%A6%E5%A4%96%E4%B8%A4%E5%8F%B0slave%E7%9A%84Hadoop%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="toc-number">6.11.</span> <span class="toc-text">11.配置另外两台slave的Hadoop环境变量</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%83%E3%80%81%E5%90%AF%E5%8A%A8%E6%9C%8D%E5%8A%A1"><span class="toc-number">7.</span> <span class="toc-text">七、启动服务</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%A0%BC%E5%BC%8F%E5%8C%96namenode"><span class="toc-number">7.1.</span> <span class="toc-text">1.格式化namenode</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%90%AF%E5%8A%A8namenode%E5%92%8Cdatanode%E5%AE%88%E6%8A%A4%E8%BF%9B%E7%A8%8B"><span class="toc-number">7.2.</span> <span class="toc-text">2.启动namenode和datanode守护进程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%90%AF%E5%8A%A8Resourcemanager%E5%92%8CNodeManager%E5%AE%88%E6%8A%A4%E8%BF%9B%E7%A8%8B"><span class="toc-number">7.3.</span> <span class="toc-text">3.启动Resourcemanager和NodeManager守护进程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AB%E3%80%81%E6%B5%8B%E8%AF%95%E6%9C%8D%E5%8A%A1"><span class="toc-number">8.</span> <span class="toc-text">八、测试服务</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8master%E4%B8%BB%E6%9C%BA%E8%BE%93%E5%85%A5jps%E6%9F%A5%E7%9C%8B%E8%BF%9B%E7%A8%8B"><span class="toc-number">8.1.</span> <span class="toc-text">在master主机输入jps查看进程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8slave1%E4%B8%BB%E6%9C%BA%E8%BE%93%E5%85%A5jps"><span class="toc-number">8.2.</span> <span class="toc-text">在slave1主机输入jps</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8slave2-%E4%B8%BB%E6%9C%BA%E8%BE%93%E5%85%A5jps"><span class="toc-number">8.3.</span> <span class="toc-text">在slave2 主机输入jps</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BF%E9%97%AEMaster-Hadoop%EF%BC%9A50070%E5%8D%B3-192-168-162-177-50070%E6%9F%A5%E7%9C%8B%E9%9B%86%E7%BE%A4%E7%8A%B6%E5%86%B5"><span class="toc-number">8.4.</span> <span class="toc-text">访问Master.Hadoop：50070即 192.168.162.177:50070查看集群状况</span></a></li></ol></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

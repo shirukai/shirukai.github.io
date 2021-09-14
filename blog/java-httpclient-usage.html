@@ -1,0 +1,650 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>java httpClient 用法 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="
+当我们需要利用java在后台发送http请求，并对请求之后的数据处理时，我们可以用HttpClient来实现。下面是学习官网文档，关于HttpClient的用法。
+http://hc.apache,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">java httpClient 用法</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/8.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/Java"><b>「
+                    </b>JAVA<b> 」</b></a>
+                
+                August 19, 2018
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/java-httpclient-usage.html" title="java httpClient 用法" class="">java httpClient 用法</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    11k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    10 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Java/" rel="tag">Java</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <blockquote>
+<p>当我们需要利用java在后台发送http请求，并对请求之后的数据处理时，我们可以用HttpClient来实现。下面是学习官网文档，关于HttpClient的用法。</p>
+<p><a target="_blank" rel="noopener" href="http://hc.apache.org/httpcomponents-client-ga/tutorial/html/fundamentals.html">http://hc.apache.org/httpcomponents-client-ga/tutorial/html/fundamentals.html</a></p>
+</blockquote>
+<p>maven引入依赖jar包</p>
+<pre><code>    &lt;!--http请求依赖--&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.apache.httpcomponents&lt;/groupId&gt;
+      &lt;artifactId&gt;httpclient&lt;/artifactId&gt;
+      &lt;version&gt;4.5.2&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.apache.httpcomponents&lt;/groupId&gt;
+      &lt;artifactId&gt;httpcore&lt;/artifactId&gt;
+      &lt;version&gt;4.4.6&lt;/version&gt;
+    &lt;/dependency&gt;
+</code></pre>
+<h2 id="一、基础"><a href="#一、基础" class="headerlink" title="一、基础"></a>一、基础</h2><h3 id="1-1-请求执行-Request-Execution"><a href="#1-1-请求执行-Request-Execution" class="headerlink" title="1.1 请求执行 Request Execution"></a>1.1 请求执行 Request Execution</h3><p>HttpClient最重要的功能是执行HTTP方法。执行HTTP方法涉及一个或多个HTTP请求/ HTTP响应交换，通常由HttpClient内部处理。用户需要提供一个请求对象来执行，并且HttpClient需要向目标服务器传送请求返回相应的响应对象，或者如果执行不成功则抛出异常。</p>
+<p>很自然地，HttpClient API的主要入口点是定义上述合同的HttpClient接口。</p>
+<p>简单的请求实例</p>
+<pre><code>         CloseableHttpClient httpClient = HttpClients.createDefault();
+         HttpGet httpGet = new HttpGet(&quot;http://10.110.13.216:8500/v1/kv/hosts?recurse&quot;);
+         try &#123;
+             CloseableHttpResponse httpResponse = httpClient.execute(httpGet);
+         &#125; catch (Exception e) &#123;
+             logger.error(e.getMessage(), e);
+         &#125;finally &#123;
+             httpClient.close();
+         &#125;
+</code></pre>
+<h4 id="1-1-1-HTTP-请求-HTTP-request"><a href="#1-1-1-HTTP-请求-HTTP-request" class="headerlink" title="1.1.1 HTTP 请求  HTTP request"></a>1.1.1 HTTP 请求  HTTP request</h4><p>所有的HTTP请求都有一个请求行，它包含一个方法名，一个请求URI和一个HTTP协议版本。</p>
+<p>HttpClient的支持了在HTTP / 1.1规范中定义的所有HTTP方法的框的：<code>GET</code>，<code>HEAD</code>， <code>POST</code>，<code>PUT</code>，<code>DELETE</code>， <code>TRACE</code>和<code>OPTIONS</code>。没有为每个方法设置类型，而是一个特定的类<code>HttpGet</code>， <code>HttpHead</code>，<code>HttpPost</code>， <code>HttpPut</code>，<code>HttpDelete</code>， <code>HttpTrace</code>，和<code>HttpOptions</code>。</p>
+<p>Request-URI是一个统一资源标识符，用于标识应用请求的资源。HTTP请求URI由协议方案，主机名，可选端口，资源路径，可选查询和可选片段组成。</p>
+<blockquote>
+<p>可以自己拼接一个请求字符串，里面包括协议、主机名、端口、资源路径、以及参数</p>
+</blockquote>
+<pre><code>HttpGet httpget = new HttpGet（
+     “http://www.google.com/search?hl=zh-CN&amp;q=httpclient&amp;btnG=Google+Search&amp;aq=f&amp;oq=”）;
+</code></pre>
+<p>HttpClient也提供了一个URIBuilder的工具类，来简化请求URI的创建和修改</p>
+<blockquote>
+<p>如上一个请求，我们也可以用下面的方式表示</p>
+</blockquote>
+<pre><code>         CloseableHttpClient httpClient = HttpClients.createDefault();
+         URI uri = new URIBuilder()
+                 .setScheme(&quot;http&quot;)
+                 .setHost(&quot;www.google.com&quot;)
+                 .setPath(&quot;/search&quot;)
+                 .setParameter(&quot;q&quot;, &quot;httpclient&quot;)
+                 .setParameter(&quot;btnG&quot;, &quot;Google Search&quot;)
+                 .setParameter(&quot;aq&quot;, &quot;f&quot;)
+                 .setParameter(&quot;oq&quot;, &quot;&quot;)
+                 .build();
+         try &#123;
+             HttpGet httpGet = new HttpGet(uri);
+             System.out.println(httpGet.getURI());
+            // CloseableHttpResponse httpResponse = httpClient.execute(httpGet);
+         &#125; catch (Exception e) &#123;
+             System.out.println(e.getMessage());
+         &#125;finally &#123;
+             httpClient.close();
+         &#125;
+</code></pre>
+<p>以上的两种方法都是这样的http请求 <a target="_blank" rel="noopener" href="http://www.google.com/search?q=httpclient&amp;btnG=Google+Search&amp;aq=f&amp;oq=">http://www.google.com/search?q=httpclient&amp;btnG=Google+Search&amp;aq=f&amp;oq=</a></p>
+<h4 id="1-1-2-HTTP-request"><a href="#1-1-2-HTTP-request" class="headerlink" title="1.1.2 HTTP request"></a>1.1.2 HTTP request</h4><p>HTTP响应是服务器收到并解释请求消息后发送回客户端的消息。该消息的第一行由协议版本和数字状态代码及其相关的文本短语组成。</p>
+<pre><code>    @Test
+    public void httpResponse() &#123;
+        HttpResponse response = new BasicHttpResponse(HttpVersion.HTTP_1_1, HttpStatus.SC_OK, &quot;OK&quot;);
+        System.out.println(response.getProtocolVersion());
+        System.out.println(response.getStatusLine().getStatusCode());
+        System.out.println(response.getStatusLine().getReasonPhrase());
+        System.out.println(response.getStatusLine().toString());
+    &#125;
+</code></pre>
+<p>运行结果</p>
+<pre><code>HTTP/1.1
+200
+OK
+HTTP/1.1 200 OK
+
+Process finished with exit code 0
+</code></pre>
+<h4 id="1-1-3-使用消息头-working-with-message-headers"><a href="#1-1-3-使用消息头-working-with-message-headers" class="headerlink" title="1.1.3 使用消息头 working with message headers"></a>1.1.3 使用消息头 working with message headers</h4><p>HTTP消息可以包含许多描述消息属性的标题，如内容长度，内容类型等等。HttpClient提供了检索，添加，删除和枚举标题的方法。</p>
+<pre><code>public void messageHeaders()&#123;
+     HttpResponse response = new BasicHttpResponse(HttpVersion.HTTP_1_1,HttpStatus.SC_OK,&quot;OK&quot;);
+     response.addHeader(&quot;Set-Cookie&quot;,&quot;c1=a;path=/;domain=localhost&quot;);
+     response.addHeader(&quot;Set-Cookie&quot;,&quot;c2=b; path=\&quot;/\&quot;, c3=c; domain=\&quot;localhost\&quot;&quot;);
+     Header h1 = response.getFirstHeader(&quot;Set-Cookie&quot;);
+     System.out.println(h1);
+     Header h2 = response.getLastHeader(&quot;Set-Cookie&quot;);
+     System.out.println(h2);
+     Header[] hs = response.getHeaders(&quot;Set-Cookie&quot;);
+     System.out.println(hs.length);
+&#125;
+</code></pre>
+<p>输出：</p>
+<pre><code>Set-Cookie: c1=a;path=/;domain=localhost
+Set-Cookie: c2=b; path=&quot;/&quot;, c3=c; domain=&quot;localhost&quot;
+2
+
+Process finished with exit code 0
+</code></pre>
+<p>获取指定类型的所有头文件的最有效的方法是使用HeaderIterator接口</p>
+<pre><code>@Test
+public void headerIterator()&#123;
+    HttpResponse response = new BasicHttpResponse(HttpVersion.HTTP_1_1,HttpStatus.SC_OK,&quot;OK&quot;);
+    response.addHeader(&quot;Set-Cookie&quot;,&quot;c1=a;path=/;domain=localhost&quot;);
+    response.addHeader(&quot;Set-Cookie&quot;,&quot;c2=b; path=\&quot;/\&quot;, c3=c; domain=\&quot;localhost\&quot;&quot;);
+    HeaderIterator iterator = response.headerIterator(&quot;Set-Cookie&quot;);
+    while (iterator.hasNext())&#123;
+        System.out.println(iterator.next());
+    &#125;
+&#125;
+</code></pre>
+<p>输出</p>
+<pre><code>Set-Cookie: c1=a;path=/;domain=localhost
+Set-Cookie: c2=b; path=&quot;/&quot;, c3=c; domain=&quot;localhost&quot;
+</code></pre>
+<p>它还提供了便捷的方法来将HTTP消息解析为单独的头元素</p>
+<pre><code>public void headerElementIterator()&#123;
+    HttpResponse response = new BasicHttpResponse(HttpVersion.HTTP_1_1,HttpStatus.SC_OK,&quot;OK&quot;);
+    response.addHeader(&quot;Set-Cookie&quot;,&quot;c1=a;path=/;domain=localhost&quot;);
+    response.addHeader(&quot;Set-Cookie&quot;,&quot;c2=b; path=\&quot;/\&quot;, c3=c; domain=\&quot;localhost\&quot;&quot;);
+    HeaderElementIterator iterator = new BasicHeaderElementIterator(response.headerIterator(&quot;Set-Cookie&quot;));
+    while (iterator.hasNext())&#123;
+        HeaderElement element = iterator.nextElement();
+        System.out.println(element.getName()+&quot;=&quot; +element.getValue());
+        NameValuePair[] pairs = element.getParameters();
+        for (int i= 0;i&lt;pairs.length;i++)&#123;
+            System.out.println(&quot;&quot;+pairs[i]);
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<p>输出</p>
+<pre><code>c1=a
+path=/
+domain=localhost
+c2=b
+path=/
+c3=c
+domain=localhost
+
+Process finished with exit code 0
+</code></pre>
+<h4 id="1-1-4-HTTP-实体-HTTP-entity"><a href="#1-1-4-HTTP-实体-HTTP-entity" class="headerlink" title="1.1.4 HTTP 实体 HTTP entity"></a>1.1.4 HTTP 实体 HTTP entity</h4><p>HTTP消息可以携带与请求或响应相关联的内容实体。实体可以在一些请求和一些响应中找到，因为它们是可选的。使用实体的请求被称为实体封闭请求。HTTP规范定义了两个实体封闭请求方法：<code>POST</code>和 <code>PUT</code>。通常预期响应将包含内容实体。有例外的情况，如应对 <code>HEAD</code>方法<code>204 No Content</code>， <code>304 Not Modified</code>，<code>205 Reset Content</code> 响应。</p>
+<p>HttpClient根据内容的来源区分了三种实体：</p>
+<ul>
+<li>**流式传输： ** 内容是从流接收的，或者是随时产生的。具体来说，这个类别包括从HTTP响应中收到的实体。流派实体通常不可重复。</li>
+<li>**自包含： ** 内容在内存中或通过独立于连接或其他实体的方式获得。独立的实体通常是可重复的。这种类型的实体将主要用于包含HTTP请求的实体。</li>
+<li>**包装： ** 内容是从另一个实体获得的。</li>
+</ul>
+<p>当从HTTP响应中流出内容时，这种区别对连接管理很重要。对于由应用程序创建并仅使用HttpClient发送的请求实体，流式和自包含之间的区别并不重要。在这种情况下，建议将不可重复的实体视为流式，将可重复的实体视为独立式。</p>
+<h5 id="1-1-4-1-可重复的实体"><a href="#1-1-4-1-可重复的实体" class="headerlink" title="1.1.4.1 可重复的实体"></a>1.1.4.1 可重复的实体</h5><p>一个实体可以是可重复的，这意味着它的内容可以被多次读取。这只适用于自包含的实体（如 <code>ByteArrayEntity</code>或 <code>StringEntity</code>）</p>
+<h5 id="1-1-4-2-使用HTTP实体"><a href="#1-1-4-2-使用HTTP实体" class="headerlink" title="1.1.4.2 使用HTTP实体"></a>1.1.4.2 使用HTTP实体</h5><p>由于实体可以表示二进制和字符内容，因此它支持字符编码（以支持后者，即字符内容）。</p>
+<p>在执行带有封闭内容的请求时或者请求成功时使用响应主体将结果发送回客户端时创建实体。</p>
+<p>要从实体读取内容，可以通过<code>HttpEntity#getContent()</code>返回一个方法来检索输入流，也<code>java.io.InputStream</code>可以向该<code>HttpEntity#writeTo(OutputStream)</code>方法提供一个输出流，一旦所有内容被写入给定流，该方法将返回。</p>
+<p>当实体已经与传入消息接收，该方法 <code>HttpEntity#getContentType()</code>和 <code>HttpEntity#getContentLength()</code>方法可用于读取所述公共元数据，例如<code>Content-Type</code>与 <code>Content-Length</code>报头（如果可用）。由于 <code>Content-Type</code>标题可以包含文本MIME类型的字符编码，如text / plain或text / html，所以该 <code>HttpEntity#getContentEncoding()</code>方法用于读取这些信息。如果标题不可用，则将返回-1的长度，对于内容类型则返回NULL。如果<code>Content-Type</code> 头部可用，<code>Header</code>则会返回一个对象。</p>
+<p>为外发消息创建实体时，此元数据必须由实体的创建者提供</p>
+<pre><code>@Test
+public void httpEntity()throws Exception&#123;
+    StringEntity myEntity = new StringEntity(&quot;important message&quot;, ContentType.create(&quot;text/plain&quot;,&quot;UTF-8&quot;));
+    System.out.println(myEntity.getContentType());
+    System.out.println(myEntity.getContentLength());
+    System.out.println(EntityUtils.toString(myEntity));
+    System.out.println(EntityUtils.toByteArray(myEntity).length);
+&#125;
+</code></pre>
+<p>输出</p>
+<pre><code>Content-Type: text/plain; charset=UTF-8
+17
+important message
+17
+
+Process finished with exit code 0
+</code></pre>
+<h5 id="1-1-5-释放资源"><a href="#1-1-5-释放资源" class="headerlink" title="1.1.5 释放资源"></a>1.1.5 释放资源</h5><p>为了确保正确释放系统资源，必须关闭与实体相关的内容流或响应本身</p>
+<pre><code>public void closeResource()throws Exception&#123;
+    CloseableHttpClient httpClient = HttpClients.createDefault();
+    HttpGet httpGet = new HttpGet(&quot;http://10.110.13.216:8500/v1/kv/hosts?recurse&quot;);
+    CloseableHttpResponse response = httpClient.execute(httpGet);
+    try &#123;
+      
+        HttpEntity entity = response.getEntity();
+        if (entity !=null)&#123;
+            InputStream inputStream = entity.getContent();
+            System.out.println(inputStream.read());
+            try &#123;
+            //todo
+            &#125; catch (Exception e) &#123;
+                logger.error(e.getMessage(), e);
+            &#125;finally &#123;
+                inputStream.close();
+            &#125;
+        &#125;
+    &#125; catch (Exception e) &#123;
+        logger.error(e.getMessage(), e);
+    &#125;finally &#123;
+        response.close();
+    &#125;
+
+&#125;
+</code></pre>
+<h4 id="1-1-6-相应处理"><a href="#1-1-6-相应处理" class="headerlink" title="1.1.6 相应处理"></a>1.1.6 相应处理</h4><pre><code>CloseableHttpClient httpClient = HttpClients.createDefault();
+HttpGet httpGet = new HttpGet(&quot;http://10.110.13.216:8500/v1/kv/hosts?recurse&quot;);
+CloseableHttpResponse response = httpClient.execute(httpGet);
+HttpEntity entity = response.getEntity();
+System.out.println(EntityUtils.toString(entity));
+</code></pre>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%9F%BA%E7%A1%80"><span class="toc-number">1.</span> <span class="toc-text">一、基础</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E8%AF%B7%E6%B1%82%E6%89%A7%E8%A1%8C-Request-Execution"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 请求执行 Request Execution</span></a></li></ol></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

@@ -1,0 +1,688 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Django 国际化 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="
+django版本:
+
+&amp;gt;&amp;gt;&amp;gt; import django
+&amp;gt;&amp;gt;&amp;gt; print django.VERSION
+(1, 11, 5, u&amp;#39;final&amp;#39,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">Django 国际化</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/2.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/Python"><b>「
+                    </b>PYTHON<b> 」</b></a>
+                
+                August 20, 2018
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/django-international.html" title="Django 国际化" class="">Django 国际化</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    7.4k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    7 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/django/" rel="tag">django</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <blockquote>
+<p>django版本:</p>
+</blockquote>
+<pre><code>&gt;&gt;&gt; import django
+&gt;&gt;&gt; print django.VERSION
+(1, 11, 5, u&#39;final&#39;, 0)
+&gt;&gt;&gt; 
+</code></pre>
+<blockquote>
+<p>python版本：</p>
+</blockquote>
+<pre><code>[root@new_name ~]# python -V
+Python 2.7.5
+</code></pre>
+<p>一、 构建Django项目</p>
+<ol>
+<li>创建项目</li>
+</ol>
+<pre><code>django-admin startproject myproject
+</code></pre>
+<p>目录结构：</p>
+<p><img src="https://shirukai.gitee.io/images/django+vue.png" alt="image"></p>
+<ol start="2">
+<li>进入项目根目录，创建一个app</li>
+</ol>
+<pre><code>python manage.py startapp language
+</code></pre>
+<p>项目目录：</p>
+<p><img src="https://shirukai.gitee.io/images/django+vue2.png" alt="image"></p>
+<ol start="3">
+<li>在languagetest下的settings.py中，配置数据库</li>
+</ol>
+<pre><code># Database
+# https://docs.djangoproject.com/en/1.11/ref/settings/#databases
+
+DATABASES = &#123;
+    &#39;default&#39;: &#123;
+        &#39;ENGINE&#39;: &#39;django.db.backends.mysql&#39;,
+        &#39;NAME&#39;: &#39;language&#39;,
+        &#39;USER&#39;: &#39;root&#39;,
+        &#39;PASSWORD&#39;: &#39;inspur&#39;,
+        &#39;HOST&#39;: &#39;localhost&#39;,
+    &#125;
+&#125;
+</code></pre>
+<ol start="4">
+<li>把创建的language 加入到 INSTALLED_APPS列表里</li>
+</ol>
+<pre><code>INSTALLED_APPS = [
+    &#39;django.contrib.admin&#39;,
+    &#39;django.contrib.auth&#39;,
+    &#39;django.contrib.contenttypes&#39;,
+    &#39;django.contrib.sessions&#39;,
+    &#39;django.contrib.messages&#39;,
+    &#39;django.contrib.staticfiles&#39;,
+    &#39;language&#39;
+]
+</code></pre>
+<ol start="5">
+<li>创建模板</li>
+</ol>
+<p>在language目录下创建templates目录</p>
+<p>然后新建index.html文件</p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;title&gt;Django多语言测试&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<ol start="6">
+<li>添加视图<br>在language目录下的views.py文件中添加：</li>
+</ol>
+<pre><code># -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
+from django.shortcuts import render
+
+# Create your views here.
+
+
+def index(request):
+    return render(request, &#39;index.html&#39;)
+</code></pre>
+<ol start="7">
+<li>添加url</li>
+</ol>
+<pre><code>from django.conf.urls import url
+from django.contrib import admin
+from language import views as language_views
+urlpatterns = [
+    url(r&#39;^$&#39;, language_views.index, name=&#39;index&#39;),
+    url(r&#39;^admin/&#39;, admin.site.urls),
+]
+</code></pre>
+<ol start="8">
+<li>创建数据库表</li>
+</ol>
+<pre><code># 1. 创建更改的文件
+python manage.py makemigrations
+# 2. 将生成的py文件应用到数据库
+python manage.py migrate
+</code></pre>
+<ol start="9">
+<li>运行服务器</li>
+</ol>
+<pre><code>python manage.py runserver 0.0.0.0 8001
+</code></pre>
+<p>访问服务器</p>
+<p>如果出现如下问题：</p>
+<p><img src="https://shirukai.gitee.io/images/django.png" alt="image"><br>则需要修改settings配置</p>
+<pre><code>ALLOWED_HOSTS = [&#39;*&#39;]
+</code></pre>
+<h2 id="二、配置settings"><a href="#二、配置settings" class="headerlink" title="二、配置settings"></a>二、配置settings</h2><blockquote>
+<p>==因为settings中用到了中文，为了防止报错，在settings头部添加一行代码如下：==</p>
+</blockquote>
+<pre><code># -*- coding: utf-8 -*-
+</code></pre>
+<ol>
+<li>添加中间件</li>
+</ol>
+<pre><code>MIDDLEWARE_CLASSES = (
+#……省略好多中间件……
+
+    &#39;django.middleware.locale.LocaleMiddleware&#39;,
+    
+#……省略好多中间件……
+)
+</code></pre>
+<ol start="2">
+<li>修改语言设置</li>
+</ol>
+<pre><code>LANGUAGE_CODE = &#39;en&#39;
+
+TIME_ZONE = &#39;UTC&#39;
+
+USE_I18N = True
+
+USE_L10N = True
+
+USE_TZ = True
+
+LANGUAGES = (
+    (&#39;en&#39;, &#39;English&#39;),
+    (&#39;zh-hans&#39;, &#39;中文简体&#39;),
+)
+</code></pre>
+<ol start="3">
+<li>添加语言目录</li>
+</ol>
+<pre><code># 翻译文件所在目录，需要手工创建
+LOCALE_PATHS = (
+    os.path.join(BASE_DIR, &#39;locale&#39;),
+)
+</code></pre>
+<ol start="4">
+<li>添加i18n上下文渲染器</li>
+</ol>
+<pre><code>TEMPLATES = [
+    &#123;
+        &#39;BACKEND&#39;: &#39;django.template.backends.django.DjangoTemplates&#39;,
+        &#39;DIRS&#39;: [],
+        &#39;APP_DIRS&#39;: True,
+        &#39;OPTIONS&#39;: &#123;
+            &#39;context_processors&#39;: [
+                &#39;django.template.context_processors.i18n&#39;,
+                &#39;django.template.context_processors.debug&#39;,
+                &#39;django.template.context_processors.request&#39;,
+                &#39;django.contrib.auth.context_processors.auth&#39;,
+                &#39;django.contrib.messages.context_processors.messages&#39;,
+            ],
+        &#125;,
+    &#125;,
+]
+</code></pre>
+<h2 id="三、创建翻译文件的目录"><a href="#三、创建翻译文件的目录" class="headerlink" title="三、创建翻译文件的目录"></a>三、创建翻译文件的目录</h2><p>在manage.py所在目录的根目录创建目录locale</p>
+<h2 id="四、-修改HTML模板"><a href="#四、-修改HTML模板" class="headerlink" title="四、 修改HTML模板"></a>四、 修改HTML模板</h2><p>在头部添加多语言标签</p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&#123;% load i18n %&#125;
+</code></pre>
+<p>标注需要翻译的字符串</p>
+<pre><code>&lt;h1&gt;&#123;% trans "Django多语言国际化测试"  %&#125;&lt;/h1&gt;
+</code></pre>
+<h2 id="四、生成需要翻译的-po文件"><a href="#四、生成需要翻译的-po文件" class="headerlink" title="四、生成需要翻译的.po文件"></a>四、生成需要翻译的.po文件</h2><p>在与manage.py同级目录下执行命令生成.po文件</p>
+<pre><code>python manage.py makemessages -l en
+
+python manage.py makemessages -l zh-hant
+</code></pre>
+<h2 id="五、编辑生成的-po文件"><a href="#五、编辑生成的-po文件" class="headerlink" title="五、编辑生成的.po文件"></a>五、编辑生成的.po文件</h2><p>en文件夹下的.po文件</p>
+<pre><code>#: language/templates/index.html:9
+msgid &quot;Django多语言国际化测试&quot;
+msgstr &quot;Django multilingual internationalization test&quot;
+</code></pre>
+<h2 id="六、编译"><a href="#六、编译" class="headerlink" title="六、编译"></a>六、编译</h2><pre><code>python manage.py compilemessages
+</code></pre>
+<h2 id="七、-实现页面动态切换"><a href="#七、-实现页面动态切换" class="headerlink" title="七、 实现页面动态切换"></a>七、 实现页面动态切换</h2><ol>
+<li>修改url.py</li>
+</ol>
+<pre><code>from django.conf.urls import include, url
+from django.contrib import admin
+from language import views as language_views
+urlpatterns = [
+    url(r&#39;^$&#39;, language_views.index, name=&#39;index&#39;),
+    url(r&#39;^admin/&#39;, admin.site.urls),
+    url(r&#39;^i18n/&#39;, include(&#39;django.conf.urls.i18n&#39;))
+]
+</code></pre>
+<ol start="2">
+<li>修改 index.html</li>
+</ol>
+<pre><code>&lt;!DOCTYPE html&gt;
+&#123;% load i18n %&#125;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;title&gt;Django多语言测试&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;form action=&quot;&#123;% url 'set_language' %&#125;&quot; id=&quot;language_form&quot; method=&quot;post&quot;&gt;
+    &#123;% csrf_token %&#125;
+    &lt;input name=&quot;next&quot; type=&quot;hidden&quot; value=&quot;&#123;&#123; redirect_to &#125;&#125;&quot;/&gt;
+    &lt;div style=&quot;display: flex&quot;&gt;
+        &lt;label for=&quot;language_select&quot; style=&quot;line-height: 30px&quot;&gt;语言设置：&lt;/label&gt;
+        &lt;select name=&quot;language&quot; id=&quot;language_select&quot; onchange=&quot;form.submit()&quot;&gt;
+            &lt;option value=&quot;&quot;&gt;选择语言&lt;/option&gt;
+            &lt;option value=&quot;zh-hans&quot;&gt;简体中文&lt;/option&gt;
+            &lt;option value=&quot;en&quot;&gt;English&lt;/option&gt;
+        &lt;/select&gt;
+    &lt;/div&gt;
+&lt;/form&gt;
+&lt;h1&gt;&#123;% trans "Django多语言国际化测试" %&#125;&lt;/h1&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<ol start="3">
+<li>重启服务</li>
+</ol>
+<p><img src="https://shirukai.gitee.io/images/changelanguage.gif" alt="image"></p>
+<p>gitHub源码 ：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/shirukai/Django_international.git">https://github.com/shirukai/Django_international.git</a></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E9%85%8D%E7%BD%AEsettings"><span class="toc-number">1.</span> <span class="toc-text">二、配置settings</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%88%9B%E5%BB%BA%E7%BF%BB%E8%AF%91%E6%96%87%E4%BB%B6%E7%9A%84%E7%9B%AE%E5%BD%95"><span class="toc-number">2.</span> <span class="toc-text">三、创建翻译文件的目录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81-%E4%BF%AE%E6%94%B9HTML%E6%A8%A1%E6%9D%BF"><span class="toc-number">3.</span> <span class="toc-text">四、 修改HTML模板</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E7%94%9F%E6%88%90%E9%9C%80%E8%A6%81%E7%BF%BB%E8%AF%91%E7%9A%84-po%E6%96%87%E4%BB%B6"><span class="toc-number">4.</span> <span class="toc-text">四、生成需要翻译的.po文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E7%BC%96%E8%BE%91%E7%94%9F%E6%88%90%E7%9A%84-po%E6%96%87%E4%BB%B6"><span class="toc-number">5.</span> <span class="toc-text">五、编辑生成的.po文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E7%BC%96%E8%AF%91"><span class="toc-number">6.</span> <span class="toc-text">六、编译</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%83%E3%80%81-%E5%AE%9E%E7%8E%B0%E9%A1%B5%E9%9D%A2%E5%8A%A8%E6%80%81%E5%88%87%E6%8D%A2"><span class="toc-number">7.</span> <span class="toc-text">七、 实现页面动态切换</span></a></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

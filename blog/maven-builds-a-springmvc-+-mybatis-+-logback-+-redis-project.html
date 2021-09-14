@@ -1,0 +1,1148 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Maven构建springmvc+mybatis+logback+redis项目 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="一、利用maven指令创建web项目1.创建一个名字为mavenssmlr的项目,在命令行输入以下指令：mvn archetype:generate -DgroupId=org.mavenssmls,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">Maven构建springmvc+mybatis+logback+redis项目</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/5.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/Spring"><b>「
+                    </b>SPRING<b> 」</b></a>
+                
+                August 19, 2018
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/maven-builds-a-springmvc-+-mybatis-+-logback-+-redis-project.html" title="Maven构建springmvc+mybatis+logback+redis项目" class="">Maven构建springmvc+mybatis+logback+redis项目</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    31k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    29 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Spring/" rel="tag">Spring</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <h2 id="一、利用maven指令创建web项目"><a href="#一、利用maven指令创建web项目" class="headerlink" title="一、利用maven指令创建web项目"></a>一、利用maven指令创建web项目</h2><h3 id="1-创建一个名字为mavenssmlr的项目-在命令行输入以下指令："><a href="#1-创建一个名字为mavenssmlr的项目-在命令行输入以下指令：" class="headerlink" title="1.创建一个名字为mavenssmlr的项目,在命令行输入以下指令："></a>1.创建一个名字为mavenssmlr的项目,在命令行输入以下指令：</h3><pre><code>mvn archetype:generate -DgroupId=org.mavenssmls -DartifactId=mavenssmlr -DarchetypeArtifactId=maven-archetype-webapp
+</code></pre>
+<p>创建成功后，用IDEA导入项目：File - Open</p>
+<h3 id="2-补全目录"><a href="#2-补全目录" class="headerlink" title="2.补全目录"></a>2.补全目录</h3><p>打开Module settings 在Modules里创建目录</p>
+<p>在src/main目录下创建名字为java的Sources目录</p>
+<p>在src/main目录下创建名字resource的Resource目录</p>
+<p>在src下创建test目录</p>
+<p>在src/test下创建创建名字为java的Tests目录</p>
+<p>在src/test下创建创建名字为Test Resource目录</p>
+<p>在src/java下创建包</p>
+<p>数据持久化层DAO：com.mavenssmlr.dao </p>
+<p>数据实体类：com.mavenssmlr.entity</p>
+<p>Service层：com.mavenssmlr.service</p>
+<p>Controller层：com.mavenssmlr.web</p>
+<h3 id="3-处理依赖pom-xml"><a href="#3-处理依赖pom-xml" class="headerlink" title="3.处理依赖pom.xml"></a>3.处理依赖pom.xml</h3><pre><code>&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+         xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd&quot;&gt;
+  &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+  &lt;groupId&gt;org.mavenssmlr&lt;/groupId&gt;
+  &lt;artifactId&gt;mavenssmlr&lt;/artifactId&gt;
+  &lt;packaging&gt;war&lt;/packaging&gt;
+  &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+  &lt;name&gt;mavenssmlr Maven Webapp&lt;/name&gt;
+  &lt;url&gt;http://maven.apache.org&lt;/url&gt;
+  &lt;dependencies&gt;
+    &lt;dependency&gt;
+      &lt;!--使用junit4--&gt;
+      &lt;!--为什么使用junit4？因为junit3是采用编程的方式运行junit，而junit4是采用注解的方式运行junit --&gt;
+      &lt;groupId&gt;junit&lt;/groupId&gt;
+      &lt;artifactId&gt;junit&lt;/artifactId&gt;
+      &lt;version&gt;4.12&lt;/version&gt;
+      &lt;scope&gt;test&lt;/scope&gt;
+    &lt;/dependency&gt;
+    &lt;!--补全项目依赖--&gt;
+    &lt;!--1：日志 java日志：slf4j，log4j，logback，common-logging
+    slf4j 是规范/接口
+    日志实现：log4j，logback，common-logging
+    使用：slf4j + logback
+    --&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.slf4j&lt;/groupId&gt;
+      &lt;artifactId&gt;slf4j-api&lt;/artifactId&gt;
+      &lt;version&gt;1.7.12&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;ch.qos.logback&lt;/groupId&gt;
+      &lt;artifactId&gt;logback-core&lt;/artifactId&gt;
+      &lt;version&gt;1.1.1&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;!--实现slf4j接口并整合--&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;ch.qos.logback&lt;/groupId&gt;
+      &lt;artifactId&gt;logback-classic&lt;/artifactId&gt;
+      &lt;version&gt;1.1.1&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;!--2：数据库相关的依赖--&gt;
+    &lt;!--数据库连接驱动--&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;mysql&lt;/groupId&gt;
+      &lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;
+      &lt;version&gt;5.1.35&lt;/version&gt;
+      &lt;scope&gt;runtime&lt;/scope&gt;
+    &lt;/dependency&gt;
+    &lt;!--数据库连接池--&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;c3p0&lt;/groupId&gt;
+      &lt;artifactId&gt;c3p0&lt;/artifactId&gt;
+      &lt;version&gt;0.9.1.2&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;!--3：DAO框架：mybatis依赖--&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.mybatis&lt;/groupId&gt;
+      &lt;artifactId&gt;mybatis&lt;/artifactId&gt;
+      &lt;version&gt;3.3.0&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;!--mybatis自身实现的spring整合依赖--&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.mybatis&lt;/groupId&gt;
+      &lt;artifactId&gt;mybatis-spring&lt;/artifactId&gt;
+      &lt;version&gt;1.2.3&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;!--servlet web相关依赖--&gt;
+    &lt;!--jsp标签--&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;taglibs&lt;/groupId&gt;
+      &lt;artifactId&gt;standard&lt;/artifactId&gt;
+      &lt;version&gt;1.1.2&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;!--jsp servlet--&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
+      &lt;artifactId&gt;jstl&lt;/artifactId&gt;
+      &lt;version&gt;1.2&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;!--jackson--&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;com.fasterxml.jackson.core&lt;/groupId&gt;
+      &lt;artifactId&gt;jackson-databind&lt;/artifactId&gt;
+      &lt;version&gt;2.7.5&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
+      &lt;artifactId&gt;javax.servlet-api&lt;/artifactId&gt;
+      &lt;version&gt;3.1.0&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;!--4：spring依赖--&gt;
+    &lt;!--1)spring核心依赖--&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+      &lt;artifactId&gt;spring-core&lt;/artifactId&gt;
+      &lt;version&gt;4.3.6.RELEASE&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+      &lt;artifactId&gt;spring-beans&lt;/artifactId&gt;
+      &lt;version&gt;4.3.6.RELEASE&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+      &lt;artifactId&gt;spring-context&lt;/artifactId&gt;
+      &lt;version&gt;4.3.6.RELEASE&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;!--2）spring DAO层依赖--&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+      &lt;artifactId&gt;spring-jdbc&lt;/artifactId&gt;
+      &lt;version&gt;4.3.6.RELEASE&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+      &lt;artifactId&gt;spring-tx&lt;/artifactId&gt;
+      &lt;version&gt;4.3.6.RELEASE&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;!--3)spring web 相关依赖--&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+      &lt;artifactId&gt;spring-web&lt;/artifactId&gt;
+      &lt;version&gt;4.3.6.RELEASE&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+      &lt;artifactId&gt;spring-webmvc&lt;/artifactId&gt;
+      &lt;version&gt;4.3.6.RELEASE&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;!--4) spring test 相关依赖--&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+      &lt;artifactId&gt;spring-test&lt;/artifactId&gt;
+      &lt;version&gt;4.3.6.RELEASE&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;!--redis客户端 jedis--&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;redis.clients&lt;/groupId&gt;
+      &lt;artifactId&gt;jedis&lt;/artifactId&gt;
+      &lt;version&gt;2.7.3&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;!--protostuff序列化依赖--&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;com.dyuproject.protostuff&lt;/groupId&gt;
+      &lt;artifactId&gt;protostuff-core&lt;/artifactId&gt;
+      &lt;version&gt;1.1.2&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;com.dyuproject.protostuff&lt;/groupId&gt;
+      &lt;artifactId&gt;protostuff-runtime&lt;/artifactId&gt;
+      &lt;version&gt;1.1.2&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;commons-collections&lt;/groupId&gt;
+      &lt;artifactId&gt;commons-collections&lt;/artifactId&gt;
+      &lt;version&gt;3.2.1&lt;/version&gt;
+    &lt;/dependency&gt;
+  &lt;/dependencies&gt;
+  &lt;build&gt;
+    &lt;finalName&gt;mavenssmlr&lt;/finalName&gt;
+  &lt;/build&gt;
+
+&lt;/project&gt;
+</code></pre>
+<h3 id="4-相关配置"><a href="#4-相关配置" class="headerlink" title="4.相关配置"></a>4.相关配置</h3><h4 id="配置DAO层："><a href="#配置DAO层：" class="headerlink" title="配置DAO层："></a>配置DAO层：</h4><p>在java/resources里创建</p>
+<h5 id="mapper包：用来存放数据mapper映射的xml文件"><a href="#mapper包：用来存放数据mapper映射的xml文件" class="headerlink" title="mapper包：用来存放数据mapper映射的xml文件"></a>mapper包：用来存放数据mapper映射的xml文件</h5><h5 id="spring包：用来存放spring相关的xml配置文件"><a href="#spring包：用来存放spring相关的xml配置文件" class="headerlink" title="spring包：用来存放spring相关的xml配置文件"></a>spring包：用来存放spring相关的xml配置文件</h5><p>在java/resources/spring包下创建：</p>
+<p>spring-dao.xml</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+       xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+       xmlns:context=&quot;http://www.springframework.org/schema/context&quot;
+       xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+                    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd&quot;&gt;
+    &lt;!--配置整合mybatis过程--&gt;
+    &lt;!--1：配置数据库相关参数properties的属性：$&#123;url&#125;--&gt;
+    &lt;context:property-placeholder location=&quot;classpath:jdbc.properties&quot;/&gt;
+    &lt;!--2：数据库连接池--&gt;
+    &lt;bean id=&quot;dataSource&quot; class=&quot;com.mchange.v2.c3p0.ComboPooledDataSource&quot;&gt;
+        &lt;!--配置连接池属性--&gt;
+        &lt;property name=&quot;driverClass&quot; value=&quot;$&#123;driver&#125;&quot;/&gt;
+        &lt;property name=&quot;jdbcUrl&quot; value=&quot;$&#123;url&#125;&quot;/&gt;
+        &lt;property name=&quot;user&quot; value=&quot;$&#123;jdbc.username&#125;&quot;/&gt;
+        &lt;property name=&quot;password&quot; value=&quot;$&#123;password&#125;&quot;/&gt;
+
+        &lt;!--c3po连接池的私有属性--&gt;
+        &lt;property name=&quot;maxPoolSize&quot; value=&quot;30&quot;/&gt;
+        &lt;property name=&quot;minPoolSize&quot; value=&quot;10&quot;/&gt;
+        &lt;!--关闭连接后不自动commit--&gt;
+        &lt;property name=&quot;autoCommitOnClose&quot; value=&quot;false&quot;/&gt;
+        &lt;!--获取连接超时时间--&gt;
+        &lt;property name=&quot;checkoutTimeout&quot; value=&quot;1000&quot;/&gt;
+        &lt;!--当获取连接失败重试次数--&gt;
+        &lt;property name=&quot;acquireRetryAttempts&quot; value=&quot;2&quot;/&gt;
+    &lt;/bean&gt;
+    &lt;!--约定大于配置--&gt;
+    &lt;!--3：配置sqlSessionFactory对象--&gt;
+    &lt;bean id=&quot;sqlSessionFactory&quot; class=&quot;org.mybatis.spring.SqlSessionFactoryBean&quot;&gt;
+        &lt;!--注入数据库连接池--&gt;
+        &lt;property name=&quot;dataSource&quot; ref=&quot;dataSource&quot;/&gt;
+        &lt;!--配置mybatis全局配置文件：mybatis-config.xml--&gt;
+        &lt;property name=&quot;configLocation&quot; value=&quot;classpath:mybatis-config&quot;/&gt;
+        &lt;!--扫描entity包 使用别名--&gt;
+        &lt;property name=&quot;typeAliasesPackage&quot; value=&quot;com.mavenssmlr.entity/&gt;
+        &lt;!--扫描sql配置文件：mapper需要的xml文件--&gt;
+        &lt;property name=&quot;mapperLocations&quot; value=&quot;classpath:mapper/*.xml&quot;/&gt;
+    &lt;/bean&gt;
+    &lt;!--4：配置扫描Dao接口包，动态实现Dao接口，并注入到spring容器中--&gt;
+    &lt;bean class=&quot;org.mybatis.spring.mapper.MapperScannerConfigurer&quot;&gt;
+        &lt;!--注入sqlSessionFactory--&gt;
+        &lt;property name=&quot;sqlSessionFactoryBeanName&quot; value=&quot;sqlSessionFactory&quot;/&gt;
+        &lt;!--给出扫描dao接口包--&gt;
+        &lt;property name=&quot;basePackage&quot; value=&quot;com.mavenssmlr.dao&quot;/&gt;
+    &lt;/bean&gt;
+&lt;/beans&gt;
+</code></pre>
+<h5 id="jdbc-properties文件：数据库连接池相关的配置"><a href="#jdbc-properties文件：数据库连接池相关的配置" class="headerlink" title="jdbc.properties文件：数据库连接池相关的配置"></a>jdbc.properties文件：数据库连接池相关的配置</h5><pre><code>driver=com.mysql.jdbc.Driver
+url=jdbc:mysql://localhost:3306/mavensslr?characterEncoding=UTF-8
+jdbc.username=root
+password=inspur
+</code></pre>
+<h5 id="mybatis-config-xml：mybatis先关的配置文件"><a href="#mybatis-config-xml：mybatis先关的配置文件" class="headerlink" title="mybatis-config.xml：mybatis先关的配置文件"></a>mybatis-config.xml：mybatis先关的配置文件</h5><pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
+&lt;!DOCTYPE configuration
+        PUBLIC &quot;-//mybatis.org//DTD Config 3.0//EN&quot;
+        &quot;http://mybatis.org/dtd/mybatis-3-config.dtd&quot;&gt;
+&lt;configuration&gt;
+    &lt;!--配置全局属性--&gt;
+    &lt;settings&gt;
+        &lt;!--使用jdbc的getGeneratedKeys 获取数据库自增主键值--&gt;
+        &lt;setting name=&quot;useGeneratedKeys&quot; value=&quot;true&quot;/&gt;
+        &lt;!--使用列别名替换列名 默认true--&gt;
+        &lt;setting name=&quot;useColumnLabel&quot; value=&quot;true&quot;/&gt;
+        &lt;!--开启驼峰命名转换--&gt;
+        &lt;setting name=&quot;mapUnderscoreToCamelCase&quot; value=&quot;true&quot;/&gt;
+    &lt;/settings&gt;
+&lt;/configuration&gt;
+</code></pre>
+<h5 id="logback-xml-配置logback"><a href="#logback-xml-配置logback" class="headerlink" title="logback.xml:配置logback"></a>logback.xml:配置logback</h5><pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;configuration&gt;
+    &lt;jmxConfigurator /&gt;
+
+    &lt;appender name=&quot;console&quot; class=&quot;ch.qos.logback.core.ConsoleAppender&quot;&gt;
+        &lt;layout class=&quot;ch.qos.logback.classic.PatternLayout&quot;&gt;
+            &lt;Pattern&gt;%date [%thread] %-5level %logger&#123;25&#125; - %msg%n&lt;/Pattern&gt;
+        &lt;/layout&gt;
+    &lt;/appender&gt;
+
+    &lt;root level=&quot;debug&quot;&gt;
+        &lt;appender-ref ref=&quot;console&quot; /&gt;
+    &lt;/root&gt;
+&lt;/configuration&gt;
+</code></pre>
+<h4 id="配置Service层"><a href="#配置Service层" class="headerlink" title="配置Service层"></a>配置Service层</h4><p>在java/spring下创建</p>
+<p>spring-service.xml</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+       xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+       xmlns:context=&quot;http://www.springframework.org/schema/context&quot; xmlns:tx=&quot;http://www.springframework.org/schema/tx&quot;
+       xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+                    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+                     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd&quot;&gt;
+    &lt;!--扫描service包下所有使用注解的类型--&gt;
+    &lt;context:component-scan base-package=&quot;com.mavenssmlr.service&quot;/&gt;
+
+    &lt;!--配置事务管理器--&gt;
+    &lt;bean id=&quot;transactionManager&quot; class=&quot;org.springframework.jdbc.datasource.DataSourceTransactionManager&quot;&gt;
+        &lt;!--注入数据库连接池--&gt;
+        &lt;property name=&quot;dataSource&quot; ref=&quot;dataSource&quot;/&gt;
+    &lt;/bean&gt;
+    &lt;!--配置基于注解的声明式事务--&gt;
+    &lt;tx:annotation-driven transaction-manager=&quot;transactionManager&quot;/&gt;
+&lt;/beans&gt;
+</code></pre>
+<h4 id="配置web层"><a href="#配置web层" class="headerlink" title="配置web层"></a>配置web层</h4><p>创建spring-web.xml</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+       xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+       xmlns:context=&quot;http://www.springframework.org/schema/context&quot;
+       xmlns:mvc=&quot;http://www.springframework.org/schema/mvc&quot;
+       xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+                    http://www.springframework.org/schema/context
+                    http://www.springframework.org/schema/context/spring-context.xsd
+                    http://www.springframework.org/schema/mvc
+                    http://www.springframework.org/schema/mvc/spring-mvc.xsd&quot;&gt;
+    &lt;!--配置springmvc--&gt;
+    &lt;!--1:开启springMVC注解模式--&gt;
+    &lt;!--简化配置：
+        （1）自动注册DefaultAnnotationHandlerMapping，AnnotationMethodHandlerAdapter
+        （2）提供一系列：数据绑定，数字和日期的format @NumberFormat @DataTimeFormat,
+             xml,json默认读写支持
+    --&gt;
+    &lt;mvc:annotation-driven/&gt;
+    &lt;!--servlet-mapping 映射路径：&quot;/&quot;--&gt;
+    &lt;!--2:静态资源默认servlet配置
+        (1)：加入对静态资源的处理 js，gif，png
+        (2)：允许使用&#39;/&#39;做整体映射
+    --&gt;
+    &lt;mvc:default-servlet-handler/&gt;
+    &lt;!--3:配置jsp 显示ViewResolver--&gt;
+    &lt;bean class=&quot;org.springframework.web.servlet.view.InternalResourceViewResolver&quot;&gt;
+        &lt;property name=&quot;viewClass&quot; value=&quot;org.springframework.web.servlet.view.JstlView&quot;/&gt;
+        &lt;property name=&quot;prefix&quot; value=&quot;/WEB-INF/jsp/&quot;/&gt;
+        &lt;property name=&quot;suffix&quot; value=&quot;.jsp&quot;/&gt;
+    &lt;/bean&gt;
+    &lt;!--4:扫描web相关的bean--&gt;
+    &lt;context:component-scan base-package=&quot;com.mavenssmlr.web&quot;/&gt;
+    &lt;!--静态资源包--&gt;
+    &lt;mvc:resources mapping=&quot;/skins/**&quot; location=&quot;WEB-INF/skins/&quot;/&gt;
+&lt;/beans&gt;
+</code></pre>
+<h4 id="配置web-xml文件"><a href="#配置web-xml文件" class="headerlink" title="配置web.xml文件"></a>配置web.xml文件</h4><pre><code>&lt;web-app xmlns=&quot;http://xmlns.jcp.org/xml/ns/javaee&quot;
+         xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+         xsi:schemaLocation=&quot;http://xmlns.jcp.org/xml/ns/javaee
+                      http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd&quot;
+         version=&quot;3.1&quot;
+         metadata-complete=&quot;true&quot;&gt;
+  &lt;!--修改servlet版本为3.1--&gt;
+  &lt;!--配置DispatcherServlet--&gt;
+  &lt;servlet&gt;
+    &lt;servlet-name&gt;mavenssmlr-dispatcher&lt;/servlet-name&gt;
+    &lt;servlet-class&gt;org.springframework.web.servlet.DispatcherServlet&lt;/servlet-class&gt;
+    &lt;!--配置Springmvc需要加载的配置文件
+        spring-dao.xml,spring-service.xml,spring-web.xml
+        mybatis -&gt; spring -&gt; spring mvc
+    --&gt;
+    &lt;init-param&gt;
+      &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;
+      &lt;param-value&gt;classpath:spring/spring-*.xml&lt;/param-value&gt;
+    &lt;/init-param&gt;
+  &lt;/servlet&gt;
+  &lt;servlet-mapping&gt;
+    &lt;servlet-name&gt;mavenssmlr-dispatcher&lt;/servlet-name&gt;
+    &lt;!--匹配/下请求--&gt;
+    &lt;url-pattern&gt;/&lt;/url-pattern&gt;
+  &lt;/servlet-mapping&gt;
+  &lt;!-- Spring字符编码过滤器配置，处理中文乱码，针对post请求 --&gt;
+  &lt;filter&gt;
+    &lt;filter-name&gt;characterEncodingFilter&lt;/filter-name&gt;
+    &lt;filter-class&gt;org.springframework.web.filter.CharacterEncodingFilter&lt;/filter-class&gt;
+    &lt;init-param&gt;
+      &lt;param-name&gt;encoding&lt;/param-name&gt;
+      &lt;param-value&gt;UTF-8&lt;/param-value&gt;
+    &lt;/init-param&gt;
+    &lt;init-param&gt;
+      &lt;param-name&gt;forceEncoding&lt;/param-name&gt;
+      &lt;param-value&gt;true&lt;/param-value&gt;
+    &lt;/init-param&gt;
+  &lt;/filter&gt;
+  &lt;filter-mapping&gt;
+    &lt;filter-name&gt;characterEncodingFilter&lt;/filter-name&gt;
+    &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+  &lt;/filter-mapping&gt;
+&lt;/web-app&gt;
+</code></pre>
+<h2 id="二、DAO层编写测试"><a href="#二、DAO层编写测试" class="headerlink" title="二、DAO层编写测试"></a>二、DAO层编写测试</h2><h3 id="在resources下创建sql包用来存放sql脚本"><a href="#在resources下创建sql包用来存放sql脚本" class="headerlink" title="在resources下创建sql包用来存放sql脚本"></a>在resources下创建sql包用来存放sql脚本</h3><p>创建scahme.sql文件并初始化数据</p>
+<pre><code>-- 创建数据库
+CREATE DATABASE mavenssmlr CHARSET &#39;UTF8&#39;;
+
+-- 使用数据库
+USE mavenssmlr;
+
+-- 创建数据库表
+
+CREATE TABLE IF NOT EXISTS `user` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `uname` varchar(100) NOT NULL COMMENT &#39;用户名&#39;,
+  `create-time` datetime DEFAULT NOW() COMMENT &#39;创建时间&#39;,
+  `modify-time` TIMESTAMP NOT NULL DEFAULT current_timestamp ON UPDATE current_timestamp COMMENT &#39;最后修改时间&#39;,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uname` (`uname`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT=&#39;用户表&#39;;
+
+INSERT INTO mavenssmlr.user (uname)
+    VALUES (&#39;test&#39;);
+</code></pre>
+<h3 id="在java-com-mavenssmlr-entity-包下创建User实体类"><a href="#在java-com-mavenssmlr-entity-包下创建User实体类" class="headerlink" title="在java/com/mavenssmlr/entity/包下创建User实体类"></a>在java/com/mavenssmlr/entity/包下创建User实体类</h3><pre><code>public class User &#123;
+    private int id;
+    private String uname;
+    private Date createTime;
+    private Date modifyTime;
+
+    public int getId() &#123;
+        return id;
+    &#125;
+
+    public void setId(int id) &#123;
+        this.id = id;
+    &#125;
+
+    public String getUname() &#123;
+        return uname;
+    &#125;
+
+    public void setUname(String uname) &#123;
+        this.uname = uname;
+    &#125;
+
+    public Date getCreateTime() &#123;
+        return createTime;
+    &#125;
+
+    public void setCreateTime(Date createTime) &#123;
+        this.createTime = createTime;
+    &#125;
+
+    public Date getModifyTime() &#123;
+        return modifyTime;
+    &#125;
+
+    public void setModifyTime(Date modifyTime) &#123;
+        this.modifyTime = modifyTime;
+    &#125;
+
+    @Override
+    public String toString() &#123;
+        return &quot;User&#123;&quot; +
+                &quot;id=&quot; + id +
+                &quot;, uname=&#39;&quot; + uname + &#39;\&#39;&#39; +
+                &quot;, createTime=&quot; + createTime +
+                &quot;, modifyTime=&quot; + modifyTime +
+                &#39;&#125;&#39;;
+    &#125;
+&#125;
+</code></pre>
+<h3 id="在java-com-mavenssmlr-dao-包下创建Dao层接口-UserDao"><a href="#在java-com-mavenssmlr-dao-包下创建Dao层接口-UserDao" class="headerlink" title="在java/com/mavenssmlr/dao/包下创建Dao层接口 UserDao"></a>在java/com/mavenssmlr/dao/包下创建Dao层接口 UserDao</h3><pre><code>package com.mavenssmlr.dao;
+
+import com.mavenssmlr.entity.User;
+
+import java.util.List;
+
+/**
+ *
+ * Created by shirukai on 2017/10/17.
+ */
+public interface UserDao &#123;
+    /**
+     * 新增用户信息
+     * @param user 用户实体类
+     * @return
+     */
+    int insertUser(User user);
+
+    /**
+     * 查询所有用户
+     * @return
+     */
+    List&lt;User&gt; queryAll();
+
+    /**
+     * 根据id查询用户
+     * @param id
+     * @return
+     */
+    User queryById(int id);
+
+    /**
+     * 根据id删除用户
+     * @param id
+     * @return
+     */
+    int deleteById(int id);
+&#125;
+</code></pre>
+<h3 id="在resources-mapper下创建映射文件-UserMapper-xml"><a href="#在resources-mapper下创建映射文件-UserMapper-xml" class="headerlink" title="在resources/mapper下创建映射文件 UserMapper.xml"></a>在resources/mapper下创建映射文件 UserMapper.xml</h3><pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
+&lt;!DOCTYPE mapper
+        PUBLIC &quot;-//mybatis.org//DTD Mapper 3.0//EN&quot;
+        &quot;http://mybatis.org/dtd/mybatis-3-mapper.dtd&quot;&gt;
+&lt;mapper namespace=&quot;com.mavenssmlr.dao.UserDao&quot;&gt;
+    &lt;resultMap id=&quot;resultUser&quot; type=&quot;com.mavenssmlr.entity.User&quot;&gt;
+         &lt;id property=&quot;id&quot; column=&quot;id&quot;/&gt;
+        &lt;result property=&quot;uname&quot; column=&quot;uname&quot; /&gt;
+        &lt;result property=&quot;createTime&quot; column=&quot;create_time&quot; /&gt;
+        &lt;result property=&quot;modifyTime&quot; column=&quot;modify_time&quot; /&gt;
+    &lt;/resultMap&gt;
+    &lt;insert id=&quot;insertUser&quot; parameterType=&quot;User&quot; &gt;
+        INSERT INTO mavenssmlr.user (uname)VALUES (#&#123;uname&#125;)
+    &lt;/insert&gt;
+    &lt;select id=&quot;queryAll&quot; resultMap=&quot;resultUser&quot;&gt;
+        SELECT * FROM mavenssmlr.user
+    &lt;/select&gt;
+    &lt;select id=&quot;queryById&quot; parameterType=&quot;int&quot;&gt;
+        SELECT * FROM mavenssmlr.user
+        WHERE id = #&#123;id&#125;
+    &lt;/select&gt;
+    &lt;delete id=&quot;deleteByid&quot; parameterType=&quot;int&quot;&gt;
+        DELETE FROM mavenssmlr.user
+        WHERE id=#&#123;id&#125;
+    &lt;/delete&gt;
+&lt;/mapper&gt;
+</code></pre>
+<h4 id="对UserDao进行单元测试"><a href="#对UserDao进行单元测试" class="headerlink" title="对UserDao进行单元测试"></a>对UserDao进行单元测试</h4><p>在UserDao接口 内 快捷键 ctrl+shift+t生成单元测试，编写单元测试类：</p>
+<pre><code>package com.mavenssmlr.dao;
+
+import com.mavenssmlr.entity.User;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import java.util.List;
+import java.util.logging.Logger;
+
+import static org.junit.Assert.*;
+
+
+/**
+ * 配置spring和junit整合，junit启动时加载springIOC容器
+ */
+@RunWith(SpringJUnit4ClassRunner.class)
+//告诉junit spring配置文件
+@ContextConfiguration(&#123;&quot;classpath:spring/spring-dao.xml&quot;&#125;)
+public class UserDaoTest &#123;
+    private org.slf4j.Logger logger = LoggerFactory.getLogger(this.getClass());
+    @Autowired
+    private UserDao userDao;
+
+    @Test
+    public void insertUser() throws Exception &#123;
+        User user = new User();
+        user.setUname(&quot;史汝凯&quot;);
+        int inserCount = userDao.insertUser(user);
+        logger.info(&quot;_____________insertCount=&#123;&#125;&quot;, inserCount);
+
+    &#125;
+
+    @Test
+    public void queryAll() throws Exception &#123;
+        List&lt;User&gt; userList = userDao.queryAll();
+        logger.info(&quot;____________userList=&#123;&#125;&quot;, userList);
+    &#125;
+
+    @Test
+    public void queryById() throws Exception &#123;
+    &#125;
+
+    @Test
+    public void deleteById() throws Exception &#123;
+    &#125;
+
+&#125;
+</code></pre>
+<h2 id="三、service层单元测试"><a href="#三、service层单元测试" class="headerlink" title="三、service层单元测试"></a>三、service层单元测试</h2><h3 id="创建service接口"><a href="#创建service接口" class="headerlink" title="创建service接口"></a>创建service接口</h3><p>在 com/mavenssmlr/service包下创建MavenssmlrService接口</p>
+<pre><code>package com.mavenssmlr.service;
+
+import com.mavenssmlr.entity.User;
+
+import java.util.List;
+
+public interface MavenssmlrService &#123;
+    List&lt;User&gt; queryAll();
+&#125;
+</code></pre>
+<h3 id="创建接口service接口实现类"><a href="#创建接口service接口实现类" class="headerlink" title="创建接口service接口实现类"></a>创建接口service接口实现类</h3><p>在 com/mavenssmlr/service包下创建Impl包然后创建是实现类 MavenssmlrServiceImpl</p>
+<pre><code>package com.mavenssmlr.service.Impl;
+
+import com.mavenssmlr.dao.UserDao;
+import com.mavenssmlr.entity.User;
+import com.mavenssmlr.service.MavenssmlrService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class MavenssmlrServiceImpl implements MavenssmlrService &#123;
+    @Autowired
+    private UserDao userDao;
+    public List&lt;User&gt; queryAll() &#123;
+        return userDao.queryAll();
+    &#125;
+&#125;
+</code></pre>
+<h3 id="创建Service单元测试"><a href="#创建Service单元测试" class="headerlink" title="创建Service单元测试"></a>创建Service单元测试</h3><p>在service接口按住 ctrl+shift+t生成单元测试</p>
+<pre><code>package com.mavenssmlr.service;
+
+import com.mavenssmlr.entity.User;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import java.util.List;
+
+import static org.junit.Assert.*;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+//告诉junit spring配置文件
+@ContextConfiguration(&#123;
+        &quot;classpath:spring/spring-dao.xml&quot;,
+        &quot;classpath:spring/spring-service.xml&quot;&#125;)
+public class MavenssmlrServiceTest &#123;
+     private Logger logger = LoggerFactory.getLogger(this.getClass());
+    @Autowired
+    private MavenssmlrService mavenssmlrService;
+    @Test
+    public void queryAll() throws Exception &#123;
+       List&lt;User&gt; usersList =  mavenssmlrService.queryAll();
+       logger.info(&quot;usersList=&#123;&#125;&quot;,usersList);
+    &#125;
+
+&#125;
+</code></pre>
+<h2 id="四、编写controller"><a href="#四、编写controller" class="headerlink" title="四、编写controller"></a>四、编写controller</h2><p>在web下面创建UserController类</p>
+<pre><code>package com.mavenssmlr.web;
+
+import com.mavenssmlr.service.MavenssmlrService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+
+@Controller
+@RequestMapping(&quot;/user&quot;)
+public class UserController &#123;
+    @Autowired
+    private MavenssmlrService mavenssmlrService;
+    @RequestMapping(&quot;/list&quot;)
+    public String userList(Model model)&#123;
+        model.addAttribute(&quot;list&quot;,mavenssmlrService.queryAll());
+        return &quot;list&quot;;
+    &#125;
+&#125;
+</code></pre>
+<h2 id="五、编写jsp"><a href="#五、编写jsp" class="headerlink" title="五、编写jsp"></a>五、编写jsp</h2><p>在WEB-INF下创建jsp目录</p>
+<p>在jsp目录下创建common目录</p>
+<p>1.创建head.jsp 公共头部分，用于存放公用的css、js文件</p>
+<pre><code>&lt;%@ page contentType=&quot;text/html;charset=UTF-8&quot; language=&quot;java&quot; %&gt;
+&lt;%--引入css文件--%&gt;
+&lt;link href=&quot;&lt;%=request.getContextPath()%&gt;/skins/css/bootstrap.css&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;%--引入js文件--%&gt;
+&lt;script src=&quot;&lt;%=request.getContextPath()%&gt;/skins/js/jquery.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;&lt;%=request.getContextPath()%&gt;/skins/js/bootstrap.js&quot;&gt;&lt;/script&gt;
+</code></pre>
+<p>2.创建meta.jsp 公共meta部分</p>
+<pre><code>&lt;%@ page contentType=&quot;text/html;charset=UTF-8&quot; language=&quot;java&quot; %&gt;
+&lt;meta charset=&quot;utf-8&quot;&gt;
+&lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+&lt;!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ --&gt;
+</code></pre>
+<p>3.tag.jsp 引入jsp常用标签</p>
+<pre><code>&lt;%@taglib prefix=&quot;c&quot; uri=&quot;http://java.sun.com/jsp/jstl/core&quot; %&gt;
+&lt;%@taglib prefix=&quot;fmt&quot; uri=&quot;http://java.sun.com/jsp/jstl/fmt&quot; %&gt;
+</code></pre>
+<p>在jsp目录下创建list.jsp文件用于测试Spring mvc项目的完成性</p>
+<pre><code>&lt;%@ page contentType=&quot;text/html;charset=UTF-8&quot; language=&quot;java&quot; %&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;%--引入meta标签--%&gt;
+    &lt;%@include file=&quot;common/meta.jsp&quot; %&gt;
+    &lt;title&gt;用户列表&lt;/title&gt;
+    &lt;%--引入jsp标签--%&gt;
+    &lt;%@include file=&quot;common/tag.jsp&quot; %&gt;
+    &lt;%--引入css、js--%&gt;
+    &lt;%@include file=&quot;common/head.jsp&quot; %&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;table class=&quot;table table-bordered&quot;&gt;
+    &lt;thead&gt;
+    &lt;tr&gt;
+        &lt;th&gt;Id&lt;/th&gt;
+        &lt;th&gt;用户名&lt;/th&gt;
+        &lt;th&gt;创建时间&lt;/th&gt;
+        &lt;th&gt;修改时间&lt;/th&gt;
+    &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+    &lt;c:forEach var=&quot;user&quot; items=&quot;$&#123;list&#125;&quot;&gt;
+        &lt;tr&gt;
+            &lt;td&gt;$&#123;user.id&#125;&lt;/td&gt;
+            &lt;td&gt;$&#123;user.uname&#125;&lt;/td&gt;
+            &lt;td&gt;
+                &lt;fmt:formatDate value=&quot;$&#123;user.createTime&#125;&quot; pattern=&quot;yyyy年MM月dd日 HH时mm分ss秒&quot;/&gt;
+            &lt;/td&gt;
+            &lt;td&gt;
+                &lt;fmt:formatDate value=&quot;$&#123;user.modifyTime&#125;&quot; pattern=&quot;yyyy年MM月dd日 HH时mm分ss秒&quot;/&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/c:forEach&gt;
+    &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<h2 id="五、logback使用详解"><a href="#五、logback使用详解" class="headerlink" title="五、logback使用详解"></a>五、logback使用详解</h2><p>待补充</p>
+<h2 id="六、Redis使用详解"><a href="#六、Redis使用详解" class="headerlink" title="六、Redis使用详解"></a>六、Redis使用详解</h2><p>待补充</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%88%A9%E7%94%A8maven%E6%8C%87%E4%BB%A4%E5%88%9B%E5%BB%BAweb%E9%A1%B9%E7%9B%AE"><span class="toc-number">1.</span> <span class="toc-text">一、利用maven指令创建web项目</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E5%90%8D%E5%AD%97%E4%B8%BAmavenssmlr%E7%9A%84%E9%A1%B9%E7%9B%AE-%E5%9C%A8%E5%91%BD%E4%BB%A4%E8%A1%8C%E8%BE%93%E5%85%A5%E4%BB%A5%E4%B8%8B%E6%8C%87%E4%BB%A4%EF%BC%9A"><span class="toc-number">1.1.</span> <span class="toc-text">1.创建一个名字为mavenssmlr的项目,在命令行输入以下指令：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E8%A1%A5%E5%85%A8%E7%9B%AE%E5%BD%95"><span class="toc-number">1.2.</span> <span class="toc-text">2.补全目录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%A4%84%E7%90%86%E4%BE%9D%E8%B5%96pom-xml"><span class="toc-number">1.3.</span> <span class="toc-text">3.处理依赖pom.xml</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E7%9B%B8%E5%85%B3%E9%85%8D%E7%BD%AE"><span class="toc-number">1.4.</span> <span class="toc-text">4.相关配置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81DAO%E5%B1%82%E7%BC%96%E5%86%99%E6%B5%8B%E8%AF%95"><span class="toc-number">2.</span> <span class="toc-text">二、DAO层编写测试</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8resources%E4%B8%8B%E5%88%9B%E5%BB%BAsql%E5%8C%85%E7%94%A8%E6%9D%A5%E5%AD%98%E6%94%BEsql%E8%84%9A%E6%9C%AC"><span class="toc-number">2.1.</span> <span class="toc-text">在resources下创建sql包用来存放sql脚本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8java-com-mavenssmlr-entity-%E5%8C%85%E4%B8%8B%E5%88%9B%E5%BB%BAUser%E5%AE%9E%E4%BD%93%E7%B1%BB"><span class="toc-number">2.2.</span> <span class="toc-text">在java&#x2F;com&#x2F;mavenssmlr&#x2F;entity&#x2F;包下创建User实体类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8java-com-mavenssmlr-dao-%E5%8C%85%E4%B8%8B%E5%88%9B%E5%BB%BADao%E5%B1%82%E6%8E%A5%E5%8F%A3-UserDao"><span class="toc-number">2.3.</span> <span class="toc-text">在java&#x2F;com&#x2F;mavenssmlr&#x2F;dao&#x2F;包下创建Dao层接口 UserDao</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8resources-mapper%E4%B8%8B%E5%88%9B%E5%BB%BA%E6%98%A0%E5%B0%84%E6%96%87%E4%BB%B6-UserMapper-xml"><span class="toc-number">2.4.</span> <span class="toc-text">在resources&#x2F;mapper下创建映射文件 UserMapper.xml</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81service%E5%B1%82%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95"><span class="toc-number">3.</span> <span class="toc-text">三、service层单元测试</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BAservice%E6%8E%A5%E5%8F%A3"><span class="toc-number">3.1.</span> <span class="toc-text">创建service接口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E6%8E%A5%E5%8F%A3service%E6%8E%A5%E5%8F%A3%E5%AE%9E%E7%8E%B0%E7%B1%BB"><span class="toc-number">3.2.</span> <span class="toc-text">创建接口service接口实现类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BAService%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95"><span class="toc-number">3.3.</span> <span class="toc-text">创建Service单元测试</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E7%BC%96%E5%86%99controller"><span class="toc-number">4.</span> <span class="toc-text">四、编写controller</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E7%BC%96%E5%86%99jsp"><span class="toc-number">5.</span> <span class="toc-text">五、编写jsp</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81logback%E4%BD%BF%E7%94%A8%E8%AF%A6%E8%A7%A3"><span class="toc-number">6.</span> <span class="toc-text">五、logback使用详解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81Redis%E4%BD%BF%E7%94%A8%E8%AF%A6%E8%A7%A3"><span class="toc-number">7.</span> <span class="toc-text">六、Redis使用详解</span></a></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

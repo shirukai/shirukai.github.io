@@ -1,0 +1,775 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PySpark实战之Spark Core核心 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="1 RDD常用操作RDD操作有两种：Transformation和Action
+Transformation：从一个已有的RDD中创建一个新的RDD
+Action：执行计算，返回一个结果
+1.1 T,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">PySpark实战之Spark Core核心</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/7.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/Spark"><b>「
+                    </b>SPARK<b> 」</b></a>
+                
+                August 28, 2018
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/pyspark-purpose-spark-core-core.html" title="PySpark实战之Spark Core核心" class="">PySpark实战之Spark Core核心</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    16k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    15 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Python3%E5%AE%9E%E6%88%98Spark%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" rel="tag">Python3实战Spark大数据分析</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Spark/" rel="tag">Spark</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <h2 id="1-RDD常用操作"><a href="#1-RDD常用操作" class="headerlink" title="1 RDD常用操作"></a>1 RDD常用操作</h2><p>RDD操作有两种：Transformation和Action</p>
+<p>Transformation：从一个已有的RDD中创建一个新的RDD</p>
+<p>Action：执行计算，返回一个结果</p>
+<h3 id="1-1-Transformations算子"><a href="#1-1-Transformations算子" class="headerlink" title="1.1 Transformations算子"></a>1.1 Transformations算子</h3><table>
+<thead>
+<tr>
+<th>Transformation</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>map(func)</td>
+<td>遍历已有的RDD中的每个元素，并应用func函数，生成新的RDD返回。</td>
+</tr>
+<tr>
+<td>filter(func)</td>
+<td>应用func函数过滤已有RDD的每个元素，生成新的RDD返回。</td>
+</tr>
+<tr>
+<td>flatMap(func)</td>
+<td>与map类似，但每个输入项可以映射到0个或更多输出项（因此func应该返回Seq而不是单个项。</td>
+</tr>
+<tr>
+<td>mapPartitions(func)</td>
+<td>与map类似，但在RDD的每个分区（块）上单独运行，因此当在类型T的RDD上运行时，func必须是Iterator <T> =&gt; Iterator <U>类型。</td>
+</tr>
+<tr>
+<td>mapPartitionsWithIndex(func)</td>
+<td>与mapPartitions类似，但也为func提供了表示分区索引的整数值，因此当在类型T的RDD上运行时，func必须是类型（Int,Iterator <T>）=&gt; Iterator <U>。</td>
+</tr>
+<tr>
+<td>sample(withReplacement, fraction, seed)</td>
+<td>使用给定的随机数生成器种子，在有或没有替换的情况下对数据的一小部分进行采样。</td>
+</tr>
+<tr>
+<td>union(otherDataset)</td>
+<td>返回一个新数据集，其中包含源数据集和参数中元素的并集。</td>
+</tr>
+<tr>
+<td>intersection(otherDataset)</td>
+<td>返回包含源数据集和参数中元素交集的新RDD。</td>
+</tr>
+<tr>
+<td>distinct([numPartitions]))</td>
+<td>返回包含源数据集的不同元素的新数据集。</td>
+</tr>
+<tr>
+<td>groupByKey([numPartitions])</td>
+<td>在（K，V）对的数据集上调用时，返回（K，Iterable <V>）对的数据集，注意：如果要对每个键执行聚合（例如总和或平均值）进行分组，则使用reduceByKey或aggregateByKey将产生更好的性能。<br/>注意：默认情况下，输出中的并行级别取决于父RDD的分区数。 您可以传递可选的numPartitions参数来设置不同数量的任务。</td>
+</tr>
+<tr>
+<td>reduceByKey(func, [numPartitions])</td>
+<td>当调用（K，V）对的数据集时，返回（K，V）对的数据集，其中使用给定的reduce函数func聚合每个键的值，该函数必须是类型（V，V）=&gt; V.与groupByKey类似，reduce任务的数量可通过可选的第二个参数进行配置。</td>
+</tr>
+<tr>
+<td>aggregateByKey(zeroValue)(seqOp, combOp, [numPartitions])</td>
+<td>当调用（K，V）对的数据集时，返回（K，U）对的数据集，其中使用给定的组合函数和中性“零”值聚合每个键的值。 允许与输入值类型不同的聚合值类型，同时避免不必要的分配。 与groupByKey类似，reduce任务的数量可通过可选的第二个参数进行配置。</td>
+</tr>
+<tr>
+<td>sortByKey([ascending], [numPartitions])</td>
+<td>当调用K实现Ordered的（K，V）对数据集时，返回按键升序或降序排序的（K，V）对的数据集，如布尔升序参数中所指定。</td>
+</tr>
+<tr>
+<td>join(otherDataset, [numPartitions])</td>
+<td>当调用类型（K，V）和（K，W）的数据集时，返回（K，（V，W））对的数据集以及每个键的所有元素对。 通过leftOuterJoin，rightOuterJoin和fullOuterJoin支持外连接。</td>
+</tr>
+<tr>
+<td>cogroup(otherDataset, [numPartitions])</td>
+<td>当调用类型（K，V）和（K，W）的数据集时，返回（K，（Iterable <V>，Iterable <W>））元组的数据集。 此操作也称为groupWith。</td>
+</tr>
+<tr>
+<td>cartesian(otherDataset)</td>
+<td>当调用类型T和U的数据集时，返回（T，U）对的数据集（所有元素对）。</td>
+</tr>
+<tr>
+<td>pipe(command, [envVars])</td>
+<td>通过shell命令管道RDD的每个分区，例如， 一个Perl或bash脚本。 RDD元素被写入进程的stdin，并且输出到其stdout的行将作为字符串的RDD返回。</td>
+</tr>
+<tr>
+<td>coalesce(numPartitions)</td>
+<td>将RDD中的分区数减少为numPartitions。 过滤大型数据集后，可以更有效地运行操作。</td>
+</tr>
+<tr>
+<td>repartition(numPartitions)</td>
+<td>随机重新调整RDD中的数据以创建更多或更少的分区并在它们之间进行平衡。 这总是随机播放网络上的所有数据。</td>
+</tr>
+<tr>
+<td>repartitionAndSortWithinPartitions(partitioner)</td>
+<td>根据给定的分区重新分区RDD，并在每个生成的分区中按键对记录进行排序。 这比调用重新分区然后在每个分区内排序更有效，因为它可以将排序推送到shuffle机器中。</td>
+</tr>
+</tbody></table>
+<h3 id="1-2-Actions算子"><a href="#1-2-Actions算子" class="headerlink" title="1.2 Actions算子"></a>1.2 Actions算子</h3><table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>reduce(func)</td>
+<td>使用函数func（它接受两个参数并返回一个）来聚合数据集的元素。 该函数应该是可交换的和关联的，以便可以并行正确计算。</td>
+</tr>
+<tr>
+<td>collect()</td>
+<td>在驱动程序中将数据集的所有元素作为数组返回。 在过滤器或其他返回足够小的数据子集的操作之后，这通常很有用。</td>
+</tr>
+<tr>
+<td>count()</td>
+<td>返回数据集中的元素数。</td>
+</tr>
+<tr>
+<td>first()</td>
+<td>返回数据集的第一个元素（类似于take(1)）。</td>
+</tr>
+<tr>
+<td>take(n)</td>
+<td>返回包含数据集的前n个元素的数组。</td>
+</tr>
+<tr>
+<td>takeSample(withReplacement, num, [seed])</td>
+<td>返回一个数组，其中包含数据集的num个元素的随机样本，有或没有替换，可选地预先指定随机数生成器种子。</td>
+</tr>
+<tr>
+<td>takeOrdered(n, [ordering])</td>
+<td>使用自然顺序或自定义比较器返回RDD的前n个元素。</td>
+</tr>
+<tr>
+<td>saveAsTextFile(path)</td>
+<td>将数据集的元素作为文本文件（或文本文件集）写入本地文件系统，HDFS或任何其他Hadoop支持的文件系统的给定目录中。 Spark将在每个元素上调用toString，将其转换为文件中的一行文本。</td>
+</tr>
+<tr>
+<td>saveAsSequenceFile(path(Java and Scala)</td>
+<td>将数据集的元素作为Hadoop SequenceFile写入本地文件系统，HDFS或任何其他Hadoop支持的文件系统中的给定路径中。 这可以在实现Hadoop的Writable接口的键值对的RDD上使用。 在Scala中，它也可以在可隐式转换为Writable的类型上使用（Spark包括基本类型的转换，如Int，Double，String等）。</td>
+</tr>
+<tr>
+<td>saveAsObjectFile(path) (Java and Scala)</td>
+<td>使用Java序列化以简单格式编写数据集的元素，然后可以使用SparkContext.objectFile（）加载。</td>
+</tr>
+<tr>
+<td>countByKey()</td>
+<td>仅适用于类型（K，V）的RDD。 返回（K，Int）对的散列映射以及每个键的计数。</td>
+</tr>
+<tr>
+<td>foreach(func)</td>
+<td>在数据集的每个元素上运行函数func。 这通常用于副作用，例如更新累加器或与外部存储系统交互。注意：在foreach（）之外修改除累加器之外的变量可能会导致未定义的行为。 有关详细信息，请参阅了解闭包。</td>
+</tr>
+</tbody></table>
+<h3 id="1-3-常用算子"><a href="#1-3-常用算子" class="headerlink" title="1.3 常用算子"></a>1.3 常用算子</h3><h4 id="1-3-1-map"><a href="#1-3-1-map" class="headerlink" title="1.3.1 map"></a>1.3.1 map</h4><p>map(func):将func函数作用到数据集的每一个元素上，生成一个新的数据集返回。</p>
+<pre><code class="python">        data = [1, 2, 3, 4, 5]
+        rdd1 = sc.parallelize(data)
+        rdd2 = rdd1.map(lambda x: x * 2)
+        print(rdd2.collect())
+        &quot;&quot;&quot;
+        [2, 4, 6, 8, 10]
+        &quot;&quot;&quot;
+</code></pre>
+<h4 id="1-3-2-filter"><a href="#1-3-2-filter" class="headerlink" title="1.3.2 filter"></a>1.3.2 filter</h4><p>filter(func): 选出所有func返回值为ture的元素，生成一个新的分布式的数据集返回</p>
+<pre><code class="python">data = [1, 2, 3, 4, 5]
+rdd1 = sc.parallelize(data)
+map_rdd = rdd1.map(lambda x: x * 2)
+filter_rdd = map_rdd.filter(lambda x: x &gt; 5)
+print(filter_rdd.collect())
+&quot;&quot;&quot;
+[6, 8, 10]
+&quot;&quot;&quot;
+</code></pre>
+<h4 id="1-3-3-flatMap"><a href="#1-3-3-flatMap" class="headerlink" title="1.3.3 flatMap"></a>1.3.3 flatMap</h4><p>flatMap(func) 输入的item能够被map到0或者多个items输出，返回值是一个Sequence</p>
+<pre><code class="python">data = [&#39;hello spark&#39;, &#39;hello world&#39;, &#39;hello world&#39;]
+rdd = sc.parallelize(data)
+print(rdd.flatMap(lambda line: line.split(&quot; &quot;)).collect())
+&quot;&quot;&quot;
+[&#39;hello&#39;, &#39;spark&#39;, &#39;hello&#39;, &#39;world&#39;, &#39;hello&#39;, &#39;world&#39;]
+&quot;&quot;&quot;
+</code></pre>
+<h4 id="1-3-4-groupByKey"><a href="#1-3-4-groupByKey" class="headerlink" title="1.3.4 groupByKey"></a>1.3.4 groupByKey</h4><p>把相同key的数据分发到一起</p>
+<pre><code class="python">data = [&#39;hello spark&#39;, &#39;hello world&#39;, &#39;hello world&#39;]
+rdd = sc.parallelize(data)
+mapRdd = rdd.flatMap(lambda line: line.split(&quot; &quot;)).map(lambda x: (x, 1))
+groupRdd = mapRdd.groupByKey()
+print(groupRdd.collect())
+&quot;&quot;&quot;
+[(&#39;hello&#39;, &lt;pyspark.resultiterable.ResultIterable object at 0x10b94ea20&gt;), (&#39;spark&#39;, &lt;pyspark.resultiterable.ResultIterable object at 0x10b94ee10&gt;), (&#39;world&#39;, &lt;pyspark.resultiterable.ResultIterable object at 0x10b94ef60&gt;)]
+&quot;&quot;&quot;
+print(groupRdd.map(lambda x: &#123;x[0]: list(x[1])&#125;).collect())
+&quot;&quot;&quot;
+[&#123;&#39;hello&#39;: [1, 1, 1]&#125;, &#123;&#39;spark&#39;: [1]&#125;, &#123;&#39;world&#39;: [1, 1]&#125;]
+&quot;&quot;&quot;
+</code></pre>
+<h4 id="1-3-5-reduceByKey"><a href="#1-3-5-reduceByKey" class="headerlink" title="1.3.5 reduceByKey"></a>1.3.5 reduceByKey</h4><p>把相同的key的数据分发到一起并进行相应的计算</p>
+<pre><code class="python">data = [&#39;hello spark&#39;, &#39;hello world&#39;, &#39;hello world&#39;]
+rdd = sc.parallelize(data)
+mapRdd = rdd.flatMap(lambda line: line.split(&quot; &quot;)).map(lambda x: (x, 1))
+reduceByKeyRdd = mapRdd.reduceByKey(lambda a, b: a + b)
+print(reduceByKeyRdd.collect())
+&quot;&quot;&quot;
+[(&#39;hello&#39;, 3), (&#39;spark&#39;, 1), (&#39;world&#39;, 2)]
+&quot;&quot;&quot;
+</code></pre>
+<h4 id="1-3-6-sortByKey"><a href="#1-3-6-sortByKey" class="headerlink" title="1.3.6 sortByKey"></a>1.3.6 sortByKey</h4><p>根据key排序</p>
+<pre><code class="python">data = [&#39;hello spark&#39;, &#39;hello world&#39;, &#39;hello world&#39;]
+rdd = sc.parallelize(data)
+mapRdd = rdd.flatMap(lambda line: line.split(&quot; &quot;)).map(lambda x: (x, 1))
+reduceByKeyRdd = mapRdd.reduceByKey(lambda a, b: a + b)
+print(reduceByKeyRdd.map(lambda x: (x[1], x[0])).sortByKey(True).map(lambda x: (x[1], x[0])).collect())
+&quot;&quot;&quot;
+[(&#39;spark&#39;, 1), (&#39;world&#39;, 2), (&#39;hello&#39;, 3)]
+&quot;&quot;&quot;
+</code></pre>
+<h4 id="1-3-7-union"><a href="#1-3-7-union" class="headerlink" title="1.3.7 union"></a>1.3.7 union</h4><p>返回一个新数据集，其中包含源数据集和参数中元素的并集。</p>
+<pre><code class="python">a = sc.parallelize([1,2,3])
+b = sc.parallelize([3,4,5])
+print(a.union(b).collect())
+&quot;&quot;&quot;
+[1, 2, 3, 3, 4, 5]
+&quot;&quot;&quot;
+</code></pre>
+<h4 id="1-3-8-distinct"><a href="#1-3-8-distinct" class="headerlink" title="1.3.8 distinct"></a>1.3.8 distinct</h4><p>去重</p>
+<pre><code class="python">a = sc.parallelize([1,2,3])
+b = sc.parallelize([3,4,5])
+unionRdd = a.union(b)
+print(unionRdd.distinct().collect())
+&quot;&quot;&quot;
+[2, 4, 1, 3, 5]
+&quot;&quot;&quot;
+</code></pre>
+<h4 id="1-3-9-join"><a href="#1-3-9-join" class="headerlink" title="1.3.9 join"></a>1.3.9 join</h4><p>inner join</p>
+<p>outer join:left/right/full</p>
+<pre><code class="python">a = sc.parallelize([(&quot;A&quot;, &quot;a1&quot;), (&quot;C&quot;, &quot;c1&quot;), (&quot;D&quot;, &quot;d1&quot;), (&quot;F&quot;, &quot;f1&quot;), (&quot;F&quot;, &quot;f2&quot;)])
+b = sc.parallelize([(&quot;A&quot;, &quot;a2&quot;), (&quot;C&quot;, &quot;c2&quot;), (&quot;C&quot;, &quot;c3&quot;), (&quot;E&quot;, &quot;e1&quot;)])
+print(a.join(b).collect())
+&quot;&quot;&quot;
+[(&#39;C&#39;, (&#39;c1&#39;, &#39;c2&#39;)), (&#39;C&#39;, (&#39;c1&#39;, &#39;c3&#39;)), (&#39;A&#39;, (&#39;a1&#39;, &#39;a2&#39;))]
+&quot;&quot;&quot;
+</code></pre>
+<h3 id="1-3-10-reduce"><a href="#1-3-10-reduce" class="headerlink" title="1.3.10 reduce"></a>1.3.10 reduce</h3><pre><code class="python">data = [1, 2, 3, 4, 5, 6, 7, 8]
+rdd = sc.parallelize(data)
+print(rdd.reduce(lambda x, b: x + b))
+&quot;&quot;&quot;
+36
+&quot;&quot;&quot;
+</code></pre>
+<h2 id="2-词频统计"><a href="#2-词频统计" class="headerlink" title="2 词频统计"></a>2 词频统计</h2><h4 id="开发步骤分析："><a href="#开发步骤分析：" class="headerlink" title="开发步骤分析："></a>开发步骤分析：</h4><p>文本内容的每一行转成一个个的单词 flatmap</p>
+<p>单词==&gt; (单词，1) map</p>
+<p>把所有相同单词的计数相加得到最终的结果 reduceByKey</p>
+<pre><code class="python">conf = SparkConf().setMaster(&quot;local&quot;).setAppName(&quot;spark0827&quot;)
+sc = SparkContext(conf=conf)
+input = &quot;file:///Users/shirukai/Desktop/HollySys/Repository/learn-demo-pyspark/data/words.txt&quot;
+output = &quot;file:///Users/shirukai/Desktop/HollySys/Repository/learn-demo-pyspark/data/output&quot;
+words = sc.textFile(input).map(lambda line: line.replace(&quot;. &quot;, &quot; &quot;).replace(&quot;, &quot;, &quot; &quot;).rstrip(&quot;.&quot;)).flatMap(
+    lambda line: line.split(&quot; &quot;)).map(lambda word: (word, 1)).reduceByKey(lambda a, b: a + b)
+words.saveAsTextFile(output)
+sc.stop()
+</code></pre>
+<h2 id="3-核心概述"><a href="#3-核心概述" class="headerlink" title="3 核心概述"></a>3 核心概述</h2><p><a target="_blank" rel="noopener" href="http://spark.apache.org/docs/latest/cluster-overview.html">http://spark.apache.org/docs/latest/cluster-overview.html</a></p>
+<h3 id="3-1-相关术语"><a href="#3-1-相关术语" class="headerlink" title="3.1 相关术语"></a>3.1 相关术语</h3><p>Application：基于Spark的应用程序 = 1 driver + executors</p>
+<p>Driver program：The process running the main() function of the application and creating the SparkContext</p>
+<p>Cluster manager：An external service for acquiring resources on the cluster (e.g. standalone manager, Mesos, YARN)</p>
+<p>Deploy mode：Distinguishes where the driver process runs. In “cluster” mode, the framework launches the driver inside of the cluster. In “client” mode, the submitter launches the driver outside of the cluster.</p>
+<p>Worker node：Any node that can run application code in the cluster</p>
+<p>Executor：A process launched for an application on a worker node, that runs tasks and keeps data in memory or disk storage across them. Each application has its own executors.</p>
+<p>Task：A unit of work that will be sent to one executor</p>
+<p>Job： A parallel computation consisting of multiple tasks that gets spawned in response to a Spark action (e.g. <code>save</code>, <code>collect</code>); you’ll see this term used in the driver’s logs.一个action对应一个job</p>
+<p>Stage：Each job gets divided into smaller sets of tasks called <em>stages</em> that depend on each other (similar to the map and reduce stages in MapReduce); you’ll see this term used in the driver’s logs.一个stage的边界往往是从某个地方取数据开始，到shuffle的结束。</p>
+<h3 id="3-1-运行架构及注意事项"><a href="#3-1-运行架构及注意事项" class="headerlink" title="3.1 运行架构及注意事项"></a>3.1 运行架构及注意事项</h3><p><img src="http://spark.apache.org/docs/latest/img/cluster-overview.png"></p>
+<p>关于这个体系结构有几个有用的注意事项：<br>每个应用程序都有自己的执行器进程，这些进程在整个应用程序期间都处于待机状态，并在多个线程中运行任务。这样做的好处是，在调度侧（每个驱动程序都调度自己的任务）和执行侧（来自不同应用程序的任务在不同的JVM中运行）将应用程序彼此隔离。然而，这也意味着如果不将数据写入外部存储系统，数据就不能在不同的Spark应用程序（SparkContext的实例）之间共享。<br>Snice是底层集群管理器的不可知论者。只要它能够获取执行器进程，并且这些进程彼此通信，那么即使在也支持其他应用程序（例如，Mesos/YARN）的集群管理器上运行它就相对容易。<br>驱动程序必须在其整个生命周期中侦听并接受来自其执行器的传入连接（例如，请参阅网络配置部分中的spark…port）。因此，驱动程序必须是从工人节点网络可寻址的。<br>因为驱动程序在集群上调度任务，所以应该在接近工作节点的地方运行，最好是在相同的局域网上。如果希望远程向集群发送请求，最好向驱动程序打开RPC，让它从附近提交操作，而不是在远离工作节点的地方运行驱动程序。</p>
+<h2 id="4-spark缓存"><a href="#4-spark缓存" class="headerlink" title="4 spark缓存"></a>4 spark缓存</h2><p><a target="_blank" rel="noopener" href="http://spark.apache.org/docs/latest/rdd-programming-guide.html#rdd-persistence">http://spark.apache.org/docs/latest/rdd-programming-guide.html#rdd-persistence</a></p>
+<h3 id="4-1-缓存描述"><a href="#4-1-缓存描述" class="headerlink" title="4.1 缓存描述"></a>4.1 缓存描述</h3><p>Spark中最重要的功能之一是在内存中跨操作持久化（或缓存）数据集。当持久化RDD时，每个节点都将其计算的任何分区存储在内存中，并在数据集（或从中派生的数据集）上的其他操作中重用它们。这允许未来的行动要快得多（通常超过10倍）。缓存是迭代算法和快速交互使用的关键工具。</p>
+<p>可以使用它的持久persist()或cach()方法标记RDD。当执行第一个action操作时，它将被保存在节点上的内存中。Spark的缓存是容错的——如果RDD的任何分区丢失，它将使用最初创建它的转换自动重新计算。</p>
+<p>此外，每个持久化RDD可以使用不同的存储级别来存储，例如，允许您将数据集保存在磁盘上，将其保存在内存中，也可以作为序列化的Java对象（以节省空间），将其复制到节点上。这些级别是通过将StorageLevel对象（Scala、Java、Python）传递到Sturiar()来设置的。cache()方法是使用默认存储级别的简写，即StorageLevel.MEMORY_ONLY（在内存中存储反序列化对象）。</p>
+<table>
+<thead>
+<tr>
+<th>Storage Level</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>MEMORY_ONLY</td>
+<td>将RDD存储为JVM中的反序列化Java对象。如果RDD不适合内存，某些分区将不会被缓存，并且将在需要时重新计算。这是默认级别。</td>
+</tr>
+<tr>
+<td>MEMORY_AND_DISK</td>
+<td>将RDD存储为JVM中的反序列化Java对象。如果RDD不适用于内存，则存储到磁盘，并在需要时从那里读取它们。</td>
+</tr>
+<tr>
+<td>MEMORY_ONLY_SER  (Java and Scala)</td>
+<td>将RDD存储为序列化的Java对象（每个分区的一个字节数组）。这通常比反序列化对象更加节省空间，尤其是在使用快速序列化器时，但是读取时需要更多的CPU。</td>
+</tr>
+<tr>
+<td>MEMORY_AND_DISK_SER  (Java and Scala)</td>
+<td>类似于MEMORY_ONLY_SER，但是将不适合内存的分区溢出到磁盘中，而不是在每次需要时动态地重新计算它们。</td>
+</tr>
+<tr>
+<td>DISK_ONLY</td>
+<td>只在磁盘上存储RDD分区。</td>
+</tr>
+<tr>
+<td>MEMORY_ONLY_2, MEMORY_AND_DISK_2, etc</td>
+<td>与上面的级别相同，但是在两个群集节点上复制每个分区。</td>
+</tr>
+<tr>
+<td>OFF_HEAP (experimental)</td>
+<td>类似于MexyyOnLySysServer，但将数据存储在堆内存中。这需要启用堆堆内存。</td>
+</tr>
+</tbody></table>
+<p>cache/persist和其他的tranformation操作一样都是lazy模式，没有遇到action是不会提交作业到spark上运行的。</p>
+<p>如果一个RDD在后续的计算中可能会被使用到，那么建议cache</p>
+<p>cache底层调用的是persist方法，传入的参数是：StorageLevel.MEMORY_ONLY</p>
+<pre><code class="python">def cache(self):
+    &quot;&quot;&quot;
+    Persist this RDD with the default storage level (C&#123;MEMORY_ONLY&#125;).
+    &quot;&quot;&quot;
+    self.is_cached = True
+    self.persist(StorageLevel.MEMORY_ONLY)
+    return self
+</code></pre>
+<p>移除缓存：unpersist()</p>
+<h3 id="4-2-选择缓存策略的依据"><a href="#4-2-选择缓存策略的依据" class="headerlink" title="4.2 选择缓存策略的依据"></a>4.2 选择缓存策略的依据</h3><p>Spark的存储级别是为了在内存使用和CPU效率之间提供不同的权衡。我们建议通过以下过程来选择一个：</p>
+<ul>
+<li><p>如果您的RDDs与默认存储级别（MeimyIyOnLead）适配，那么就把它们保留下来。这是CPU效率最高的选项，允许RDDs上的操作尽可能快地运行。</p>
+</li>
+<li><p>如果没有，请尝试使用MEMORY_ONLY_SER并选择一个快速序列化库来使对象更加节省空间，但是访问速度仍然相当快。（java、scala）</p>
+</li>
+<li><p>不要写数据到磁盘，除非计算数据集的函数是昂贵的，否则它们会过滤大量数据。否则，重新计算分区可能与从磁盘读取一样快。</p>
+</li>
+<li><p>如果需要快速故障恢复（例如，如果使用spark来服务Web应用程序的请求），则使用复制的存储级别。所有存储级别都通过重新计算丢失的数据来提供完全的容错性，但是复制的数据允许您在RDD上继续运行任务，而不必等待重新计算丢失的分区。</p>
+</li>
+</ul>
+<h2 id="5-Spark-Lineage机制"><a href="#5-Spark-Lineage机制" class="headerlink" title="5 Spark Lineage机制"></a>5 Spark Lineage机制</h2><p>RDD之间的依赖关系：Lineage</p>
+<h3 id="5-1-Spark-Dependency"><a href="#5-1-Spark-Dependency" class="headerlink" title="5.1 Spark Dependency"></a>5.1 Spark Dependency</h3><p>窄依赖：一个父RDD的partition之多被子RDD使用一次</p>
+<p><img src="http://shirukai.gitee.io/images/d38dff1f7082e9abbd9680fbea190d88.jpg"></p>
+<p>宽依赖：一个父RDD的partition会被子RDD的partition使用多次，有shuffle</p>
+<p><img src="http://shirukai.gitee.io/images/1960c4779e1db5bb335d7c993fe78afd.jpg"></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-RDD%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C"><span class="toc-number">1.</span> <span class="toc-text">1 RDD常用操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-Transformations%E7%AE%97%E5%AD%90"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 Transformations算子</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-Actions%E7%AE%97%E5%AD%90"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 Actions算子</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-%E5%B8%B8%E7%94%A8%E7%AE%97%E5%AD%90"><span class="toc-number">1.3.</span> <span class="toc-text">1.3 常用算子</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-10-reduce"><span class="toc-number">1.4.</span> <span class="toc-text">1.3.10 reduce</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E8%AF%8D%E9%A2%91%E7%BB%9F%E8%AE%A1"><span class="toc-number">2.</span> <span class="toc-text">2 词频统计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E6%A0%B8%E5%BF%83%E6%A6%82%E8%BF%B0"><span class="toc-number">3.</span> <span class="toc-text">3 核心概述</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E7%9B%B8%E5%85%B3%E6%9C%AF%E8%AF%AD"><span class="toc-number">3.1.</span> <span class="toc-text">3.1 相关术语</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E8%BF%90%E8%A1%8C%E6%9E%B6%E6%9E%84%E5%8F%8A%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-number">3.2.</span> <span class="toc-text">3.1 运行架构及注意事项</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-spark%E7%BC%93%E5%AD%98"><span class="toc-number">4.</span> <span class="toc-text">4 spark缓存</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E7%BC%93%E5%AD%98%E6%8F%8F%E8%BF%B0"><span class="toc-number">4.1.</span> <span class="toc-text">4.1 缓存描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-%E9%80%89%E6%8B%A9%E7%BC%93%E5%AD%98%E7%AD%96%E7%95%A5%E7%9A%84%E4%BE%9D%E6%8D%AE"><span class="toc-number">4.2.</span> <span class="toc-text">4.2 选择缓存策略的依据</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-Spark-Lineage%E6%9C%BA%E5%88%B6"><span class="toc-number">5.</span> <span class="toc-text">5 Spark Lineage机制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-Spark-Dependency"><span class="toc-number">5.1.</span> <span class="toc-text">5.1 Spark Dependency</span></a></li></ol></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

@@ -1,0 +1,1399 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Hadoop推荐算法-基于用户的协同过滤推荐算法UserCF - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="算法思想：给用户推荐和他兴趣相似的其他用户喜欢的物品
+理论现有如下用户、商品、行为、权重![https://shirukai.gitee.io/images/1510554135635__IZF__,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">Hadoop推荐算法-基于用户的协同过滤推荐算法UserCF</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/1.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/Hadoop"><b>「
+                    </b>HADOOP<b> 」</b></a>
+                
+                August 20, 2018
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/hadoop-recommended-algorithm---user-cooperative-filter-recommendation-algorithm-usercf.html" title="Hadoop推荐算法-基于用户的协同过滤推荐算法UserCF" class="">Hadoop推荐算法-基于用户的协同过滤推荐算法UserCF</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    37k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    34 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Hadoop/" rel="tag">Hadoop</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <p>算法思想：给用户推荐和他兴趣相似的其他用户喜欢的物品</p>
+<h2 id="理论"><a href="#理论" class="headerlink" title="理论"></a>理论</h2><h3 id="现有如下用户、商品、行为、权重"><a href="#现有如下用户、商品、行为、权重" class="headerlink" title="现有如下用户、商品、行为、权重"></a>现有如下用户、商品、行为、权重</h3><p>![<a target="_blank" rel="noopener" href="https://shirukai.gitee.io/images/1510554135635__IZF__1U_Z@XX4R%60_UTFEW.png](https://shirukai.gitee.io/images/1510554135635__IZF__1U_Z@XX4R%60_UTFEW.png)">https://shirukai.gitee.io/images/1510554135635__IZF__1U_Z@XX4R`_UTFEW.png](https://shirukai.gitee.io/images/1510554135635__IZF__1U_Z@XX4R`_UTFEW.png)</a></p>
+<h3 id="行为列表"><a href="#行为列表" class="headerlink" title="行为列表"></a>行为列表</h3><p>![<a target="_blank" rel="noopener" href="https://shirukai.gitee.io/images/1510554230791ESFBEVY70B6_0%60__93AC4AB.png](https://shirukai.gitee.io/images/1510554230791ESFBEVY70B6_0%60__93AC4AB.png)">https://shirukai.gitee.io/images/1510554230791ESFBEVY70B6_0`__93AC4AB.png](https://shirukai.gitee.io/images/1510554230791ESFBEVY70B6_0`__93AC4AB.png)</a></p>
+<h3 id="算法步骤"><a href="#算法步骤" class="headerlink" title="算法步骤"></a>算法步骤</h3><h4 id="1-根据用户行为列表计算物品、用户的评分矩阵"><a href="#1-根据用户行为列表计算物品、用户的评分矩阵" class="headerlink" title="1.根据用户行为列表计算物品、用户的评分矩阵"></a>1.根据用户行为列表计算物品、用户的评分矩阵</h4><p><img src="https://shirukai.gitee.io/images/1510554331568@Q_K50~~DLCDT__NJSJW_13.png"></p>
+<h4 id="2-根据评分矩阵计算用户与用户的相似矩阵"><a href="#2-根据评分矩阵计算用户与用户的相似矩阵" class="headerlink" title="2.根据评分矩阵计算用户与用户的相似矩阵"></a>2.根据评分矩阵计算用户与用户的相似矩阵</h4><p><img src="https://shirukai.gitee.io/images/1510554447729V5E@_965_2RNB__UGNX__9G.png"></p>
+<p>用户与用户之间的相似度矩阵</p>
+<p><img src="https://shirukai.gitee.io/images/1510554484395___745A___5NE~%60ND3_SLC3.png"></p>
+<h3 id="3-相似度矩阵-X-评分矩阵-推荐列表"><a href="#3-相似度矩阵-X-评分矩阵-推荐列表" class="headerlink" title="3.相似度矩阵 X 评分矩阵 = 推荐列表"></a>3.相似度矩阵 X 评分矩阵 = 推荐列表</h3><p><img src="https://shirukai.gitee.io/images/1510554577308_%601U3ICG_JJI7X6M_BBT_DU.png"></p>
+<p>得到的推荐列表如下</p>
+<p><img src="https://shirukai.gitee.io/images/1510554657684_XCJ_ZP_7N_JPBESPI_~7_L.png"></p>
+<h4 id="4-根据评分矩阵对推荐列表进行过滤"><a href="#4-根据评分矩阵对推荐列表进行过滤" class="headerlink" title="4.根据评分矩阵对推荐列表进行过滤"></a>4.根据评分矩阵对推荐列表进行过滤</h4><p><img src="https://shirukai.gitee.io/images/1510554824499Z74_IYEF5R9NBUP@__M_G8F.png"></p>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p><img src="https://shirukai.gitee.io/images/15105549099244E__FLA83_DCZX1_HRG350J.png"></p>
+<h3 id="Step1-根据用户行为列表构建评分矩阵"><a href="#Step1-根据用户行为列表构建评分矩阵" class="headerlink" title="Step1 根据用户行为列表构建评分矩阵"></a>Step1 根据用户行为列表构建评分矩阵</h3><h4 id="Mapper1"><a href="#Mapper1" class="headerlink" title="Mapper1"></a>Mapper1</h4><pre><code>package org.hadoop.mrs.userCF.step1;
+
+import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Mapper;
+
+import java.io.IOException;
+
+/**
+ *
+ * Created by shirukai on 2017/11/12.
+ */
+public class Mapper1 extends Mapper&lt;LongWritable, Text, Text, Text&gt; &#123;
+    //定义输出key
+    private Text outKey = new Text();
+    //定义输出value
+    private Text outValue = new Text();
+
+    /**
+     *
+     * @param key 行号 1 2 3
+     * @param value 输入文件文本的值 A,1,1（用户ID，物品ID，分值)
+     * @param context context
+     * @throws IOException
+     * @throws InterruptedException
+     */
+    @Override
+    protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException &#123;
+        String[] values = value.toString().split(&quot;,&quot;);
+        String userID = values[0];
+        String itemID = values[1];
+        String score = values[2];
+
+        outKey.set(userID);
+        outValue.set(itemID+&quot;_&quot;+score);
+        context.write(outKey,outValue);
+    &#125;
+&#125;
+</code></pre>
+<h4 id="Reducer1"><a href="#Reducer1" class="headerlink" title="Reducer1"></a>Reducer1</h4><pre><code>package org.hadoop.mrs.userCF.step1;
+
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Reducer;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Reducer1
+ * Created by shirukai on 2017/11/12.
+ */
+public class Reducer1 extends Reducer&lt;Text, Text, Text, Text&gt; &#123;
+    private Text outKey = new Text();
+    private Text outValue = new Text();
+
+    @Override
+    protected void reduce(Text key, Iterable&lt;Text&gt; values, Context context) throws IOException, InterruptedException &#123;
+        String userID = key.toString();
+        //&lt;userID,sore&gt;
+        Map&lt;String, Integer&gt; map = new HashMap&lt;String, Integer&gt;();
+        for (Text value :values)&#123;
+            String itemId = value.toString().split(&quot;_&quot;)[0];
+            String score = value.toString().split(&quot;_&quot;)[1];
+            if (map.get(itemId) == null)&#123;
+                map.put(itemId,Integer.valueOf(score));
+            &#125;else &#123;
+                Integer preScore = map.get(itemId);
+                map.put(itemId,preScore+Integer.valueOf(score));
+            &#125;
+        &#125;
+        StringBuilder sBuilder = new StringBuilder();
+        for (Map.Entry&lt;String,Integer&gt; entry: map.entrySet()
+             ) &#123;
+            String itemID = entry.getKey();
+            String score = String.valueOf(entry.getValue());
+            sBuilder.append(itemID+&quot;_&quot;+score+&quot;,&quot;);
+        &#125;
+        String line = null;
+        //去掉末尾的“，”
+        if (sBuilder.toString().endsWith(&quot;,&quot;))&#123;
+            line = sBuilder.substring(0,sBuilder.length()-1);
+        &#125;
+        outKey.set(userID);
+        outValue.set(line);
+        context.write(outKey,outValue);
+    &#125;
+&#125;
+</code></pre>
+<h4 id="MR1"><a href="#MR1" class="headerlink" title="MR1"></a>MR1</h4><pre><code>package org.hadoop.mrs.userCF.step1;
+
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Job;
+import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.apache.log4j.Logger;
+import org.hadoop.conf.Conf;
+
+import java.io.IOException;
+
+/**
+ *
+ * Created by shirukai on 2017/11/12.
+ */
+public class MR1 &#123;
+    private static Logger logger = Logger.getLogger(&quot;MR1&quot;);
+    //输入文件的相对路径
+    private static String inPath = &quot;/userCF/step1/step1_input/userCF.txt&quot;;
+    //输出文件的相对路径
+    private static String outPath = &quot;/userCF/step1/step1_output&quot;;
+
+    public static int run()&#123;
+        try &#123;
+            Configuration conf = Conf.get();
+            //创建一个job实例
+            Job job = Job.getInstance(conf,&quot;step1&quot;);
+
+            //设置job的主类
+            job.setJarByClass(MR1.class);
+            //设置job的Mapper类和Reducer类
+            job.setMapperClass(Mapper1.class);
+            job.setReducerClass(Reducer1.class);
+
+            //设置Mapper的输出类型
+            job.setMapOutputKeyClass(Text.class);
+            job.setMapOutputValueClass(Text.class);
+
+            //设置Reducer的输出类型
+            job.setOutputKeyClass(Text.class);
+            job.setOutputValueClass(Text.class);
+
+            //设置输入和输出路径
+            FileSystem fs = FileSystem.get(conf);
+            Path inputPath = new Path(inPath);
+            if (fs.exists(inputPath))&#123;
+                FileInputFormat.addInputPath(job,inputPath);
+            &#125;
+            Path outputPath = new Path(outPath);
+            fs.delete(outputPath,true);
+
+            FileOutputFormat.setOutputPath(job,outputPath);
+            return job.waitForCompletion(true)?1:-1;
+        &#125;catch (IOException e)&#123;
+            logger.error(e.getMessage());
+        &#125;catch (ClassNotFoundException e)&#123;
+            logger.error(e.getMessage());
+        &#125;catch (InterruptedException e)&#123;
+            logger.error(e.getMessage());
+        &#125;
+        return -1;
+    &#125;
+&#125;
+</code></pre>
+<h5 id="执行step之后得到的结果"><a href="#执行step之后得到的结果" class="headerlink" title="执行step之后得到的结果"></a>执行step之后得到的结果</h5><pre><code>A    1_1,3_5,4_3
+B    2_3,5_3
+C    1_5,6_10
+D    1_10,5_5
+E    3_5,4_1
+F    2_5,3_3,6_1
+</code></pre>
+<h3 id="Step2-利用评分矩阵，构建用户与用户的相似度矩阵"><a href="#Step2-利用评分矩阵，构建用户与用户的相似度矩阵" class="headerlink" title="Step2 利用评分矩阵，构建用户与用户的相似度矩阵"></a>Step2 利用评分矩阵，构建用户与用户的相似度矩阵</h3><h4 id="Mapper2"><a href="#Mapper2" class="headerlink" title="Mapper2"></a>Mapper2</h4><pre><code>package org.hadoop.mrs.userCF.step2;
+
+import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Mapper;
+import org.apache.log4j.Logger;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * 根据用户、物品的评分矩阵计算物品与物品的相似度矩阵 评分矩阵*评分矩阵
+ * Created by shirukai on 2017/11/12.
+ */
+public class Mapper2 extends Mapper&lt;LongWritable, Text, Text, Text&gt; &#123;
+    private static Logger logger = Logger.getLogger(&quot;Mapper2&quot;);
+    private Text outKey = new Text();
+    private Text outValue = new Text();
+    private List&lt;String&gt; cacheList = new ArrayList&lt;String&gt;();
+    private DecimalFormat df = new DecimalFormat(&quot;0.00&quot;);
+
+    @Override
+    protected void setup(Context context) throws IOException, InterruptedException &#123;
+        super.setup(context);
+        //通过输入流将全局缓存中的右侧矩阵读入List&lt;String&gt;
+        FileReader fr = new FileReader(&quot;itemUserScore1&quot;);
+        BufferedReader br = new BufferedReader(fr);
+        String line = null;
+        while ((line = br.readLine()) != null) &#123;
+            cacheList.add(line);
+        &#125;
+        fr.close();
+        br.close();
+    &#125;
+
+    @Override
+    protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException &#123;
+        String[] mapLine = value.toString().split(&quot;\t&quot;);
+        String mapIndex = mapLine[0];
+        String[] mapKeyAndValues = mapLine[1].split(&quot;,&quot;);
+
+        //遍历缓存
+        for (String cache : cacheList
+                ) &#123;
+
+            int num = 0;//分子
+            Double cacheDen = 0D;
+            Double mapDen = 0D;
+            Double den;//分母
+            Double cos = 0D;//最后结果
+
+            String[] cacheLine = cache.split(&quot;\t&quot;);
+            String cacheIndex = cacheLine[0];
+            String[] cacheKeyAndValues = cacheLine[1].split(&quot;,&quot;);
+            for (String cacheKeyAndValue : cacheKeyAndValues
+                    ) &#123;
+                String cacheScore = cacheKeyAndValue.split(&quot;_&quot;)[1];
+                cacheDen += Double.valueOf(cacheScore) * Double.valueOf(cacheScore);
+
+            &#125;
+            //遍历mapKeyAndValues
+            for (String mapKeyAndValue : mapKeyAndValues
+                    ) &#123;
+                String mapUserId = mapKeyAndValue.split(&quot;_&quot;)[0];
+                String mapScore = mapKeyAndValue.split(&quot;_&quot;)[1];
+                //遍历cacheKeyAndValues
+                for (String cacheKeyAndValue : cacheKeyAndValues
+                        ) &#123;
+                    String cacheUserId = cacheKeyAndValue.split(&quot;_&quot;)[0];
+                    String cacheScore = cacheKeyAndValue.split(&quot;_&quot;)[1];
+                    if (mapUserId.equals(cacheUserId)) &#123;
+                        //分子
+                        num += Integer.valueOf(mapScore) * Integer.valueOf(cacheScore);
+                    &#125;
+                &#125;
+
+                mapDen += Double.valueOf(mapScore) * Double.valueOf(mapScore);
+            &#125;
+            den = Math.sqrt(mapDen) * Math.sqrt(cacheDen);
+            cos = num / den;
+            if (num == 0) &#123;
+                continue;
+            &#125;
+            outKey.set(mapIndex);
+            outValue.set(cacheIndex + &quot;_&quot; + df.format(cos));
+            context.write(outKey, outValue);
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<h4 id="Reducer2"><a href="#Reducer2" class="headerlink" title="Reducer2"></a>Reducer2</h4><pre><code>package org.hadoop.mrs.userCF.step2;
+
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Reducer;
+
+import java.io.IOException;
+
+/**
+ * Created by shirukai on 2017/11/12.
+ */
+public class Reducer2 extends Reducer&lt;Text, Text, Text, Text&gt; &#123;
+    private Text outKey = new Text();
+    private Text outValue = new Text();
+
+    @Override
+    protected void reduce(Text key, Iterable&lt;Text&gt; values, Context context) throws IOException, InterruptedException &#123;
+        StringBuilder sb = new StringBuilder();
+        for (Text value : values) &#123;
+            sb.append(value + &quot;,&quot;);
+        &#125;
+        String result = null;
+        if (sb.toString().endsWith(&quot;,&quot;)) &#123;
+            result = sb.substring(0, sb.length() - 1);
+        &#125;
+        outKey.set(key);
+        outValue.set(result);
+        context.write(outKey, outValue);
+    &#125;
+&#125;
+</code></pre>
+<h4 id="MR2"><a href="#MR2" class="headerlink" title="MR2"></a>MR2</h4><pre><code>package org.hadoop.mrs.userCF.step2;
+
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Job;
+import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.apache.log4j.Logger;
+import org.hadoop.conf.Conf;
+
+import java.net.URI;
+
+/**
+ *
+ * Created by shirukai on 2017/11/12.
+ */
+public class MR2 &#123;
+    private static Logger logger = Logger.getLogger(&quot;MR2&quot;);
+    //输入文件的相对路径
+    private static String inPath = &quot;/userCF/step1/step1_output/part-r-00000&quot;;
+    //输出文件的相对路径
+    private static String outPath = &quot;/userCF/step2/step2_output&quot;;
+
+    //将step1输出的转置矩阵作为全局缓存
+    private static String cache = &quot;/userCF/step1/step1_output/part-r-00000&quot;;
+
+    public static int run()&#123;
+        try &#123;
+            //创建job配置类
+            Configuration conf = Conf.get();
+            //创建一个job实例
+            Job job = Job.getInstance(conf,&quot;step2&quot;);
+
+            //添加分布式缓存文件
+            job.addCacheArchive(new URI(cache+&quot;#itemUserScore1&quot;));
+            //设置job的主类
+            job.setJarByClass(org.hadoop.mrs.matrix.step2.MR2.class);
+            //设置job的Mapper类和Reducer类
+            job.setMapperClass(Mapper2.class);
+            job.setReducerClass(Reducer2.class);
+
+            //设置Mapper的输出类型
+            job.setMapOutputKeyClass(Text.class);
+            job.setMapOutputValueClass(Text.class);
+
+            //设置Reducer的输出类型
+            job.setOutputKeyClass(Text.class);
+            job.setOutputValueClass(Text.class);
+
+            //设置输入和输出路径
+            FileSystem fs = FileSystem.get(conf);
+            Path inputPath = new Path(inPath);
+            if (fs.exists(inputPath))&#123;
+                FileInputFormat.addInputPath(job,inputPath);
+            &#125;
+            Path outputPath = new Path(outPath);
+            fs.delete(outputPath,true);
+
+            FileOutputFormat.setOutputPath(job,outputPath);
+            return job.waitForCompletion(true)?1:-1;
+        &#125;catch (Exception e)&#123;
+            logger.error(e.getMessage());
+        &#125;
+        return -1;
+
+    &#125;
+&#125;
+</code></pre>
+<p>Step2执行后得到结果:</p>
+<pre><code>A    A_1.00,C_0.08,D_0.15,E_0.93,F_0.43
+B    B_1.00,D_0.32,F_0.60
+C    F_0.15,D_0.40,C_1.00,A_0.08
+D    D_1.00,C_0.40,B_0.32,A_0.15
+E    A_0.93,E_1.00,F_0.50
+F    C_0.15,E_0.50,F_1.00,A_0.43,B_0.60
+</code></pre>
+<h3 id="Step3-将评分矩阵转置"><a href="#Step3-将评分矩阵转置" class="headerlink" title="Step3 将评分矩阵转置"></a>Step3 将评分矩阵转置</h3><h4 id="Mapper3"><a href="#Mapper3" class="headerlink" title="Mapper3"></a>Mapper3</h4><pre><code>package org.hadoop.mrs.userCF.step3;
+
+import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Mapper;
+
+import java.io.IOException;
+
+/**
+ * 将评分列表转置
+ * Created by shirukai on 2017/11/13.
+ */
+public class Mapper3 extends Mapper&lt;LongWritable,Text,Text,Text&gt; &#123;
+    private Text outKey = new Text();
+    private Text outValue = new Text();
+
+    @Override
+    protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException &#123;
+        String[] mapLine = value.toString().split(&quot;\t&quot;);
+        String mapIndex = mapLine[0];
+        String[] keyAndValues = mapLine[1].split(&quot;,&quot;);
+        for (String keyAndValue:keyAndValues
+             ) &#123;
+            String mapKey = keyAndValue.split(&quot;_&quot;)[0];
+            String mapValue = keyAndValue.split(&quot;_&quot;)[1];
+            outKey.set(mapKey);
+            outValue.set(mapIndex+&quot;_&quot;+mapValue);
+            context.write(outKey,outValue);
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<h4 id="Reducer3"><a href="#Reducer3" class="headerlink" title="Reducer3"></a>Reducer3</h4><pre><code>package org.hadoop.mrs.userCF.step3;
+
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Reducer;
+
+import java.io.IOException;
+
+/**
+ *
+ * Created by shirukai on 2017/11/13.
+ */
+public class Reducer3 extends Reducer&lt;Text, Text, Text, Text&gt; &#123;
+    private Text outKey = new Text();
+    private Text outValue = new Text();
+    @Override
+    protected void reduce(Text key, Iterable&lt;Text&gt; values, Context context) throws IOException, InterruptedException &#123;
+        StringBuilder sb = new StringBuilder();
+        for (Text value : values)&#123;
+            sb.append(value+&quot;,&quot;);
+        &#125;
+        String result = null;
+        if (sb.toString().endsWith(&quot;,&quot;))&#123;
+            result = sb.substring(0,sb.length()-1);
+        &#125;
+        //outKey:行 outValue:列_值
+        outKey.set(key);
+        outValue.set(result);
+        context.write(outKey,outValue);
+    &#125;
+&#125;
+</code></pre>
+<h4 id="MR3"><a href="#MR3" class="headerlink" title="MR3"></a>MR3</h4><pre><code>package org.hadoop.mrs.userCF.step3;
+
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Job;
+import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.apache.log4j.Logger;
+import org.hadoop.conf.Conf;
+
+import java.io.IOException;
+
+/**
+ *
+ * Created by shirukai on 2017/11/13.
+ */
+public class MR3 &#123;
+    private static Logger logger = Logger.getLogger(&quot;MR3&quot;);
+    //输入文件的相对路径
+    private static String inPath = &quot;/userCF/step1/step1_output/part-r-00000&quot;;
+    //输出文件的相对路径
+    private static String outPath = &quot;/userCF/step3/step3_output&quot;;
+
+    public static int run()&#123;
+        try &#123;
+            Configuration conf = Conf.get();
+            //创建一个job实例
+            Job job = Job.getInstance(conf,&quot;step3&quot;);
+
+            //设置job的主类
+            job.setJarByClass(MR3.class);
+            //设置job的Mapper类和Reducer类
+            job.setMapperClass(Mapper3.class);
+            job.setReducerClass(Reducer3.class);
+
+            //设置Mapper的输出类型
+            job.setMapOutputKeyClass(Text.class);
+            job.setMapOutputValueClass(Text.class);
+
+            //设置Reducer的输出类型
+            job.setOutputKeyClass(Text.class);
+            job.setOutputValueClass(Text.class);
+
+            //设置输入和输出路径
+            FileSystem fs = FileSystem.get(conf);
+            Path inputPath = new Path(inPath);
+            if (fs.exists(inputPath))&#123;
+                FileInputFormat.addInputPath(job,inputPath);
+            &#125;
+            Path outputPath = new Path(outPath);
+            fs.delete(outputPath,true);
+
+            FileOutputFormat.setOutputPath(job,outputPath);
+            return job.waitForCompletion(true)?1:-1;
+        &#125;catch (IOException e)&#123;
+            logger.error(e.getMessage());
+        &#125;catch (ClassNotFoundException e)&#123;
+            logger.error(e.getMessage());
+        &#125;catch (InterruptedException e)&#123;
+            logger.error(e.getMessage());
+        &#125;
+        return -1;
+    &#125;
+&#125;
+</code></pre>
+<h5 id="Step3执行成功后，得到的结果"><a href="#Step3执行成功后，得到的结果" class="headerlink" title="Step3执行成功后，得到的结果"></a>Step3执行成功后，得到的结果</h5><pre><code>1    D_10,A_1,C_5
+2    F_5,B_3
+3    A_5,F_3,E_5
+4    E_1,A_3
+5    D_5,B_3
+6    F_1,C_10
+</code></pre>
+<h3 id="Step4-用户与用户相似度矩阵-X-评分矩阵"><a href="#Step4-用户与用户相似度矩阵-X-评分矩阵" class="headerlink" title="Step4 用户与用户相似度矩阵 X 评分矩阵"></a>Step4 用户与用户相似度矩阵 X 评分矩阵</h3><h4 id="Mapper4"><a href="#Mapper4" class="headerlink" title="Mapper4"></a>Mapper4</h4><pre><code>package org.hadoop.mrs.userCF.step4;
+
+import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Mapper;
+import org.apache.log4j.Logger;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ *
+ * Created by shirukai on 2017/11/13.
+ */
+public class Mapper4 extends Mapper&lt;LongWritable,Text,Text,Text&gt; &#123;
+    private static Logger logger = Logger.getLogger(&quot;Mapper4&quot;);
+    private Text outKey = new Text();
+    private Text outValue = new Text();
+    private List&lt;String&gt; cacheList = new ArrayList&lt;String&gt;();
+    private DecimalFormat df = new DecimalFormat(&quot;0.00&quot;);
+
+    @Override
+    protected void setup(Context context) throws IOException, InterruptedException &#123;
+        super.setup(context);
+        //通过输入流将全局缓存中的右侧矩阵读入List&lt;String&gt;
+        FileReader fr = new FileReader(&quot;itemUserScore4&quot;);
+        BufferedReader br = new BufferedReader(fr);
+        //每一行的格式是：  A  6_5,4_3,2_10,1_2
+        String line = null;
+        while ((line = br.readLine()) != null) &#123;
+            cacheList.add(line);
+        &#125;
+        fr.close();
+        br.close();
+    &#125;
+
+    @Override
+    protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException &#123;
+        String[] mapLine = value.toString().split(&quot;\t&quot;);
+        String mapIndex = mapLine[0];
+        String[] mapKeyAndValues = mapLine[1].split(&quot;,&quot;);
+
+        //遍历缓存
+        for (String cache : cacheList
+                ) &#123;
+
+            Double result = 0D;
+            String[] cacheLine = cache.split(&quot;\t&quot;);
+            String cacheIndex = cacheLine[0];
+            String[] cacheKeyAndValues = cacheLine[1].split(&quot;,&quot;);
+
+            //遍历mapKeyAndValues
+            for (String mapKeyAndValue : mapKeyAndValues
+                    ) &#123;
+                String mapKey = mapKeyAndValue.split(&quot;_&quot;)[0];
+                String mapSimilarity = mapKeyAndValue.split(&quot;_&quot;)[1];
+                //遍历cacheUserIdAndScores
+                for (String cacheKeyAndValue : cacheKeyAndValues
+                        ) &#123;
+                    String cacheKey = cacheKeyAndValue.split(&quot;_&quot;)[0];
+                    String cacheSimilarity = cacheKeyAndValue.split(&quot;_&quot;)[1];
+                    if (mapKey.equals(cacheKey)) &#123;
+                        result += Double.valueOf(mapSimilarity) * Double.valueOf(cacheSimilarity);
+                    &#125;
+                &#125;
+            &#125;
+            if (result == 0) &#123;
+                continue;
+            &#125;
+            outKey.set(mapIndex);
+            outValue.set(cacheIndex + &quot;_&quot; + df.format(result));
+            context.write(outKey, outValue);
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<h4 id="Reducer4"><a href="#Reducer4" class="headerlink" title="Reducer4"></a>Reducer4</h4><pre><code>package org.hadoop.mrs.userCF.step4;
+
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Reducer;
+
+import java.io.IOException;
+
+/**
+ * Created by shirukai on 2017/11/13.
+ */
+public class Reducer4 extends Reducer&lt;Text, Text, Text, Text&gt; &#123;
+    private Text outKey = new Text();
+    private Text outValue = new Text();
+
+    @Override
+    protected void reduce(Text key, Iterable&lt;Text&gt; values, Context context) throws IOException, InterruptedException &#123;
+        StringBuilder sb = new StringBuilder();
+        for (Text value : values) &#123;
+            sb.append(value + &quot;,&quot;);
+        &#125;
+        String result = null;
+        if (sb.toString().endsWith(&quot;,&quot;)) &#123;
+            result = sb.substring(0, sb.length() - 1);
+        &#125;
+        outKey.set(key);
+        outValue.set(result);
+        context.write(outKey, outValue);
+    &#125;
+&#125;
+</code></pre>
+<h4 id="MR4"><a href="#MR4" class="headerlink" title="MR4"></a>MR4</h4><pre><code>package org.hadoop.mrs.userCF.step4;
+
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Job;
+import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.apache.log4j.Logger;
+import org.hadoop.conf.Conf;
+
+import java.net.URI;
+
+/**
+ * Created by shirukai on 2017/11/13.
+ */
+public class MR4 &#123;
+    private static Logger logger = Logger.getLogger(&quot;MR4&quot;);
+    //输入文件的相对路径
+    private static String inPath = &quot;/userCF/step2/step2_output/part-r-00000&quot;;
+    //输出文件的相对路径
+    private static String outPath = &quot;/userCF/step4/step4_output&quot;;
+
+    //将step3输出的转置矩阵作为全局缓存
+    private static String cache = &quot;/userCF/step3/step3_output/part-r-00000&quot;;
+
+    public static int run()&#123;
+        try &#123;
+            //创建job配置类
+            Configuration conf = Conf.get();
+            //创建一个job实例
+            Job job = Job.getInstance(conf,&quot;step4&quot;);
+
+            //添加分布式缓存文件
+            job.addCacheArchive(new URI(cache+&quot;#itemUserScore4&quot;));
+            //设置job的主类
+            job.setJarByClass(MR4.class);
+            //设置job的Mapper类和Reducer类
+            job.setMapperClass(Mapper4.class);
+            job.setReducerClass(Reducer4.class);
+
+            //设置Mapper的输出类型
+            job.setMapOutputKeyClass(Text.class);
+            job.setMapOutputValueClass(Text.class);
+
+            //设置Reducer的输出类型
+            job.setOutputKeyClass(Text.class);
+            job.setOutputValueClass(Text.class);
+
+            //设置输入和输出路径
+            FileSystem fs = FileSystem.get(conf);
+            Path inputPath = new Path(inPath);
+            if (fs.exists(inputPath))&#123;
+                FileInputFormat.addInputPath(job,inputPath);
+            &#125;
+            Path outputPath = new Path(outPath);
+            fs.delete(outputPath,true);
+
+            FileOutputFormat.setOutputPath(job,outputPath);
+            return job.waitForCompletion(true)?1:-1;
+        &#125;catch (Exception e)&#123;
+            logger.error(e.getMessage());
+        &#125;
+        return -1;
+
+    &#125;
+&#125;
+</code></pre>
+<h5 id="Step4执行后的结果："><a href="#Step4执行后的结果：" class="headerlink" title="Step4执行后的结果："></a>Step4执行后的结果：</h5><pre><code>A    1_2.90,2_2.15,3_10.94,4_3.93,5_0.75,6_1.23
+B    1_3.20,2_6.00,3_1.80,5_4.60,6_0.60
+C    6_10.15,5_2.00,4_0.24,3_0.85,2_0.75,1_9.08
+D    1_12.15,6_4.00,5_5.96,4_0.45,3_0.75,2_0.96
+E    1_0.93,2_2.50,3_11.15,4_3.79,6_0.50
+F    1_1.18,2_6.80,3_7.65,4_1.79,5_1.80,6_2.50
+</code></pre>
+<h3 id="Step5-根据评分矩阵将在步骤4的输出中，用户已经用过行为的商品评分置0"><a href="#Step5-根据评分矩阵将在步骤4的输出中，用户已经用过行为的商品评分置0" class="headerlink" title="Step5 根据评分矩阵将在步骤4的输出中，用户已经用过行为的商品评分置0"></a>Step5 根据评分矩阵将在步骤4的输出中，用户已经用过行为的商品评分置0</h3><h4 id="Mapper5"><a href="#Mapper5" class="headerlink" title="Mapper5"></a>Mapper5</h4><pre><code>package org.hadoop.mrs.userCF.step5;
+
+import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Mapper;
+import org.apache.log4j.Logger;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ *
+ * Created by shirukai on 2017/11/13.
+ */
+public class Mapper5 extends Mapper&lt;LongWritable,Text,Text,Text&gt; &#123;
+    private static Logger logger = Logger.getLogger(&quot;Mapper4&quot;);
+    private Text outKey = new Text();
+    private Text outValue = new Text();
+    private List&lt;String&gt; cacheList = new ArrayList&lt;String&gt;();
+    private DecimalFormat df = new DecimalFormat(&quot;0.00&quot;);
+    @Override
+    protected void setup(Context context) throws IOException, InterruptedException &#123;
+        super.setup(context);
+        //通过输入流将全局缓存中的右侧矩阵读入List&lt;String&gt;
+        FileReader fr = new FileReader(&quot;itemUserScore5&quot;);
+        BufferedReader br = new BufferedReader(fr);
+        String line = null;
+        while ((line = br.readLine()) != null) &#123;
+            cacheList.add(line);
+        &#125;
+        fr.close();
+        br.close();
+    &#125;
+
+    @Override
+    protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException &#123;
+        String[] mapLine = value.toString().split(&quot;\t&quot;);
+        String mapIndex = mapLine[0];
+        String[] mapKeyAndValues = mapLine[1].split(&quot;,&quot;);
+
+        //遍历缓存
+        for (String cache : cacheList
+                ) &#123;
+            String[] cacheLine = cache.split(&quot;\t&quot;);
+            String cacheIndex = cacheLine[0];
+            String[] cacheKeyAndValues = cacheLine[1].split(&quot;,&quot;);
+            if (mapIndex.equals(cacheIndex))&#123;
+                for (String mapKeyAndValue : mapKeyAndValues
+                        ) &#123;
+                    boolean flag = false;
+                    String mapKey = mapKeyAndValue.split(&quot;_&quot;)[0];
+                    String mapSimilarity = mapKeyAndValue.split(&quot;_&quot;)[1];
+                    //遍历cacheUserIdAndScores
+                    for (String cacheKeyAndValue : cacheKeyAndValues
+                            ) &#123;
+                        String cacheKey = cacheKeyAndValue.split(&quot;_&quot;)[0];
+                        if (mapKey.equals(cacheKey)) &#123;
+                            flag = true;
+                        &#125;
+                    &#125;
+                    if (!flag)&#123;
+                        outKey.set(mapIndex);
+                        outValue.set(mapKey+&quot;_&quot;+mapSimilarity);
+                        context.write(outKey,outValue);
+                    &#125;
+                &#125;
+            &#125;
+
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<h4 id="Reducer5"><a href="#Reducer5" class="headerlink" title="Reducer5"></a>Reducer5</h4><pre><code>package org.hadoop.mrs.userCF.step5;
+
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Reducer;
+
+import java.io.IOException;
+
+/**
+ * Created by shirukai on 2017/11/13.
+ */
+public class Reducer5 extends Reducer&lt;Text, Text, Text, Text&gt; &#123;
+    private Text outKey = new Text();
+    private Text outValue = new Text();
+
+    @Override
+    protected void reduce(Text key, Iterable&lt;Text&gt; values, Context context) throws IOException, InterruptedException &#123;
+        StringBuilder sb = new StringBuilder();
+        for (Text value : values) &#123;
+            sb.append(value + &quot;,&quot;);
+        &#125;
+        String result = null;
+        if (sb.toString().endsWith(&quot;,&quot;)) &#123;
+            result = sb.substring(0, sb.length() - 1);
+        &#125;
+        outKey.set(key);
+        outValue.set(result);
+        context.write(outKey, outValue);
+    &#125;
+&#125;
+</code></pre>
+<h4 id="MR5"><a href="#MR5" class="headerlink" title="MR5"></a>MR5</h4><pre><code>package org.hadoop.mrs.userCF.step5;
+
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Job;
+import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.apache.log4j.Logger;
+import org.hadoop.conf.Conf;
+
+import java.net.URI;
+
+/**
+ * Created by shirukai on 2017/11/13.
+ */
+public class MR5 &#123;
+    private static Logger logger = Logger.getLogger(&quot;MR5&quot;);
+    //输入文件的相对路径
+    private static String inPath = &quot;/userCF/step4/step4_output/part-r-00000&quot;;
+    //输出文件的相对路径
+    private static String outPath = &quot;/userCF/step5/step5_output&quot;;
+
+    //将step1输出的转置矩阵作为全局缓存
+    private static String cache = &quot;/userCF/step1/step1_output/part-r-00000&quot;;
+
+    public static int run()&#123;
+        try &#123;
+            //创建job配置类
+            Configuration conf = Conf.get();
+            //创建一个job实例
+            Job job = Job.getInstance(conf,&quot;step5&quot;);
+
+            //添加分布式缓存文件
+            job.addCacheArchive(new URI(cache+&quot;#itemUserScore5&quot;));
+            //设置job的主类
+            job.setJarByClass(MR5.class);
+            //设置job的Mapper类和Reducer类
+            job.setMapperClass(Mapper5.class);
+            job.setReducerClass(Reducer5.class);
+
+            //设置Mapper的输出类型
+            job.setMapOutputKeyClass(Text.class);
+            job.setMapOutputValueClass(Text.class);
+
+            //设置Reducer的输出类型
+            job.setOutputKeyClass(Text.class);
+            job.setOutputValueClass(Text.class);
+
+            //设置输入和输出路径
+            FileSystem fs = FileSystem.get(conf);
+            Path inputPath = new Path(inPath);
+            if (fs.exists(inputPath))&#123;
+                FileInputFormat.addInputPath(job,inputPath);
+            &#125;
+            Path outputPath = new Path(outPath);
+            fs.delete(outputPath,true);
+
+            FileOutputFormat.setOutputPath(job,outputPath);
+            return job.waitForCompletion(true)?1:-1;
+        &#125;catch (Exception e)&#123;
+            logger.error(e.getMessage());
+        &#125;
+        return -1;
+
+    &#125;
+&#125;
+</code></pre>
+<h5 id="Step5执行后的结果："><a href="#Step5执行后的结果：" class="headerlink" title="Step5执行后的结果："></a>Step5执行后的结果：</h5><pre><code>A    2_2.15,5_0.75,6_1.23
+B    1_3.20,3_1.80,6_0.60
+C    2_0.75,3_0.85,4_0.24,5_2.00
+D    2_0.96,3_0.75,4_0.45,6_4.00
+E    1_0.93,2_2.50,6_0.50
+F    1_1.18,4_1.79,5_1.80
+</code></pre>
+<h3 id="在userCF包下创建RunUserCF类，用户执行各个步骤方法"><a href="#在userCF包下创建RunUserCF类，用户执行各个步骤方法" class="headerlink" title="在userCF包下创建RunUserCF类，用户执行各个步骤方法"></a>在userCF包下创建RunUserCF类，用户执行各个步骤方法</h3><h4 id="RunUserCF类"><a href="#RunUserCF类" class="headerlink" title="RunUserCF类"></a>RunUserCF类</h4><pre><code>package org.hadoop.mrs.userCF;
+
+import org.apache.hadoop.fs.Path;
+import org.hadoop.files.Files;
+import org.hadoop.mrs.userCF.step1.MR1;
+import org.hadoop.mrs.userCF.step2.MR2;
+import org.hadoop.mrs.userCF.step3.MR3;
+import org.hadoop.mrs.userCF.step4.MR4;
+import org.hadoop.mrs.userCF.step5.MR5;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
+/**
+ * 运行ItemCF
+ * Created by shirukai on 2017/11/12.
+ */
+public class RunUserCF &#123;
+    private static org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(&quot;RunUserCF&quot;);
+    public static void Run() &#123;
+        //开始时间
+        long startTime = System.currentTimeMillis();
+        //创建目录
+        try &#123;
+            Files.deleteFile(&quot;/userCF&quot;);
+            Files.mkdirFolder(&quot;/userCF&quot;);
+            for (int i = 1; i &lt; 6; i++) &#123;
+                Files.mkdirFolder(&quot;/userCF/step&quot; + i);
+                Files.mkdirFolder(&quot;/userCF/step&quot; + i + &quot;/step&quot; + i + &quot;_input&quot;);
+                Files.mkdirFolder(&quot;/userCF/step&quot; + i + &quot;/step&quot; + i + &quot;_output&quot;);
+            &#125;
+        &#125; catch (Exception e) &#123;
+            logger.error(e.getMessage(), e);
+        &#125;
+        //上传文件
+        Files.uploadFile(&quot;D:\\Hadoop\\upload\\&quot;, &quot;userCF.txt&quot;, &quot;/userCF/step1/step1_input/&quot;);
+
+        //执行第一步
+        int step1 = MR1.run();
+        if (step1 == 1) &#123;
+            //执行成功后打印文件
+            Files.readOutFile(&quot;/userCF/step1/step1_output/part-r-00000&quot;);
+
+        &#125;
+        //执行第二步
+        int step2 = MR2.run();
+        if (step2 == 1) &#123;
+            //执行成功后打印文件
+            Files.readOutFile(&quot;/userCF/step2/step2_output/part-r-00000&quot;);
+
+        &#125;
+        //执行第三步
+        int step3 = MR3.run();
+        if (step3 == 1) &#123;
+            //执行成功后打印文件
+            Files.readOutFile(&quot;/userCF/step3/step3_output/part-r-00000&quot;);
+        &#125;
+        //执行第四步
+        int step4 = MR4.run();
+        if (step4 == 1) &#123;
+            //执行成功后打印文件
+            Files.readOutFile(&quot;/userCF/step4/step4_output/part-r-00000&quot;);
+        &#125;
+        //执行第五步
+        int step5 = MR5.run();
+        if (step5 == 1) &#123;
+            //执行成功后打印文件
+            Files. readOutFile(&quot;/userCF/step5/step5_output/part-r-00000&quot;);
+        &#125;
+        //结束时间
+        long endTime = System.currentTimeMillis();
+        logger.info(&quot;任务用时：&quot;+(endTime-startTime)/1000+&quot;秒&quot;);
+    &#125;
+
+&#125;
+</code></pre>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%90%86%E8%AE%BA"><span class="toc-number">1.</span> <span class="toc-text">理论</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%8E%B0%E6%9C%89%E5%A6%82%E4%B8%8B%E7%94%A8%E6%88%B7%E3%80%81%E5%95%86%E5%93%81%E3%80%81%E8%A1%8C%E4%B8%BA%E3%80%81%E6%9D%83%E9%87%8D"><span class="toc-number">1.1.</span> <span class="toc-text">现有如下用户、商品、行为、权重</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A1%8C%E4%B8%BA%E5%88%97%E8%A1%A8"><span class="toc-number">1.2.</span> <span class="toc-text">行为列表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%97%E6%B3%95%E6%AD%A5%E9%AA%A4"><span class="toc-number">1.3.</span> <span class="toc-text">算法步骤</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E7%9B%B8%E4%BC%BC%E5%BA%A6%E7%9F%A9%E9%98%B5-X-%E8%AF%84%E5%88%86%E7%9F%A9%E9%98%B5-%E6%8E%A8%E8%8D%90%E5%88%97%E8%A1%A8"><span class="toc-number">1.4.</span> <span class="toc-text">3.相似度矩阵 X 评分矩阵 &#x3D; 推荐列表</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="toc-number">2.</span> <span class="toc-text">代码实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Step1-%E6%A0%B9%E6%8D%AE%E7%94%A8%E6%88%B7%E8%A1%8C%E4%B8%BA%E5%88%97%E8%A1%A8%E6%9E%84%E5%BB%BA%E8%AF%84%E5%88%86%E7%9F%A9%E9%98%B5"><span class="toc-number">2.1.</span> <span class="toc-text">Step1 根据用户行为列表构建评分矩阵</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Step2-%E5%88%A9%E7%94%A8%E8%AF%84%E5%88%86%E7%9F%A9%E9%98%B5%EF%BC%8C%E6%9E%84%E5%BB%BA%E7%94%A8%E6%88%B7%E4%B8%8E%E7%94%A8%E6%88%B7%E7%9A%84%E7%9B%B8%E4%BC%BC%E5%BA%A6%E7%9F%A9%E9%98%B5"><span class="toc-number">2.2.</span> <span class="toc-text">Step2 利用评分矩阵，构建用户与用户的相似度矩阵</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Step3-%E5%B0%86%E8%AF%84%E5%88%86%E7%9F%A9%E9%98%B5%E8%BD%AC%E7%BD%AE"><span class="toc-number">2.3.</span> <span class="toc-text">Step3 将评分矩阵转置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Step4-%E7%94%A8%E6%88%B7%E4%B8%8E%E7%94%A8%E6%88%B7%E7%9B%B8%E4%BC%BC%E5%BA%A6%E7%9F%A9%E9%98%B5-X-%E8%AF%84%E5%88%86%E7%9F%A9%E9%98%B5"><span class="toc-number">2.4.</span> <span class="toc-text">Step4 用户与用户相似度矩阵 X 评分矩阵</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Step5-%E6%A0%B9%E6%8D%AE%E8%AF%84%E5%88%86%E7%9F%A9%E9%98%B5%E5%B0%86%E5%9C%A8%E6%AD%A5%E9%AA%A44%E7%9A%84%E8%BE%93%E5%87%BA%E4%B8%AD%EF%BC%8C%E7%94%A8%E6%88%B7%E5%B7%B2%E7%BB%8F%E7%94%A8%E8%BF%87%E8%A1%8C%E4%B8%BA%E7%9A%84%E5%95%86%E5%93%81%E8%AF%84%E5%88%86%E7%BD%AE0"><span class="toc-number">2.5.</span> <span class="toc-text">Step5 根据评分矩阵将在步骤4的输出中，用户已经用过行为的商品评分置0</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8userCF%E5%8C%85%E4%B8%8B%E5%88%9B%E5%BB%BARunUserCF%E7%B1%BB%EF%BC%8C%E7%94%A8%E6%88%B7%E6%89%A7%E8%A1%8C%E5%90%84%E4%B8%AA%E6%AD%A5%E9%AA%A4%E6%96%B9%E6%B3%95"><span class="toc-number">2.6.</span> <span class="toc-text">在userCF包下创建RunUserCF类，用户执行各个步骤方法</span></a></li></ol></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

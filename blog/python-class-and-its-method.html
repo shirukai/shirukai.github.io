@@ -1,0 +1,701 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>python的类及其方法 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="一、python中的类在python中，面向对象编程主要有两个主题，就是类和类实例
+类与实例：
+类与实例相互关联着：类是对象的定义，而实例是”真正的实物”，它存放了类中所定义的对象的具体信息
+类的优,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">python的类及其方法</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/8.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/Python"><b>「
+                    </b>PYTHON<b> 」</b></a>
+                
+                August 20, 2018
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/python-class-and-its-method.html" title="python的类及其方法" class="">python的类及其方法</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    9.3k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    8 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Python/" rel="tag">Python</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <h2 id="一、python中的类"><a href="#一、python中的类" class="headerlink" title="一、python中的类"></a>一、python中的类</h2><p>在python中，面向对象编程主要有两个主题，就是类和类实例</p>
+<p>类与实例：</p>
+<p>类与实例相互关联着：类是对象的定义，而实例是”真正的实物”，它存放了类中所定义的对象<br>的具体信息</p>
+<p>类的优点：</p>
+<blockquote>
+<p>1、类对象是多态的：也就是多种形态，这意味着我们可以对不同的类对象使用同样的操作方法，而不需要额外写代码。</p>
+</blockquote>
+<blockquote>
+<p>2、类的封装：封装之后，可以直接调用类的对象，来操作内部的一些类方法，不需要让使用者看到代码工作的细节。</p>
+</blockquote>
+<blockquote>
+<p>3、类的继承：类可以从其它类或者元类中继承它们的方法，直接使用。</p>
+</blockquote>
+<h2 id="二、类的定义"><a href="#二、类的定义" class="headerlink" title="二、类的定义"></a>二、类的定义</h2><h3 id="1-定义类（class）的语法"><a href="#1-定义类（class）的语法" class="headerlink" title="1. 定义类（class）的语法"></a>1. 定义类（class）的语法</h3><pre><code>class LearnClass:
+    def __init__(self):
+        self.content = &quot;how to use python class&quot;
+
+    def learn_content(self):
+        print self.content
+</code></pre>
+<h3 id="2-初始化对象"><a href="#2-初始化对象" class="headerlink" title="2. 初始化对象"></a>2. 初始化对象</h3><p>创建类时，需要定义一个特定的方法，名为<code>__init__()</code>,只要创建这个类的实例，就会运行这个方法。如：我们在初始化方法里设置一个变量 content =“how to use python class”</p>
+<pre><code>    def __init__(self):
+        self.content = &quot;how to use python class&quot;
+</code></pre>
+<p>调用<code>__init__()</code>  里的参数,用self.content即可</p>
+<pre><code>    def learn_content(self):
+        print self.content
+</code></pre>
+<h3 id="3-其他专用方法"><a href="#3-其他专用方法" class="headerlink" title="3.其他专用方法"></a>3.其他专用方法</h3><blockquote>
+<p>像<code>__init__()</code> 这样python类里专用的方法，还有<code>__del__、__repr__、__str__、__cmp__、__getitem__、__setitem__、__delitem__</code>  等</p>
+</blockquote>
+<h4 id="del-（）-："><a href="#del-（）-：" class="headerlink" title="__del__（） ："></a><code>__del__（）</code> ：</h4><p>与<code>__init__()</code> 方法相反，该方法是类的实例被销毁的时候会触发。例如：</p>
+<pre><code>class LearnClass:
+    def __init__(self):
+        print (&#39;hello!&#39;)
+
+    def __del__(self):
+        print(&#39;goodbye!&#39;)
+
+
+if __name__ == &quot;__main__&quot;:
+    learn = LearnClass()
+    del learn # 销毁实例
+</code></pre>
+<p><img src="https://shirukai.gitee.io/images/201802021508_560.png"></p>
+<h4 id="repr"><a href="#repr" class="headerlink" title="__repr__():"></a><code>__repr__()</code>:</h4><p>当使用repr(obj)的时候，会调用该类的<code>__repr__</code> 函数，该函数返回对象字符串表达式</p>
+<p>如果没有定义这个函数，会返回如下信息：</p>
+<pre><code>&lt;__main__.LearnClass instance at 0x0000000003DE4BC8&gt;
+</code></pre>
+<p>如果定义这个函数，如：</p>
+<pre><code>class LearnClass:
+    def __init__(self):
+        print (&#39;hello!&#39;)
+
+    def __del__(self):
+        print(&#39;goodbye!&#39;)
+
+    def __repr__(self):
+        return &quot;the class is learn&quot;
+
+
+if __name__ == &quot;__main__&quot;:
+    learn = LearnClass()
+    print(repr(learn))
+</code></pre>
+<p><img src="https://shirukai.gitee.io/images/201802021520_316.png"></p>
+<p>可以用于重构对象</p>
+<pre><code>class LearnClass:
+    def __init__(self):
+        print (&#39;hello!&#39;)
+
+    def __del__(self):
+        print(&#39;goodbye!&#39;)
+
+    def __repr__(self):
+        return &quot;LearnClass()&quot;
+
+    def test(self):
+        print(&#39;________test___&#39;)
+
+
+if __name__ == &quot;__main__&quot;:
+    learn = LearnClass()
+    new_learn = eval(repr(learn))
+    new_learn.test()
+</code></pre>
+<h4 id="str"><a href="#str" class="headerlink" title="__str__():"></a><code>__str__()</code>:</h4><p>Python能用print语句输出内建数据类型。有时，程序员希望定义一个类，要求它的对象也能用print语句输出。Python类可定义特殊方法<code>__str__</code>，为类的对象提供一个不正式的字符串表示。</p>
+<pre><code>class LearnClass:
+    def __init__(self, params):
+        self.username = params[&#39;username&#39;]
+        self.password = params[&#39;password&#39;]
+        self.phone = params[&#39;phone&#39;]
+
+    def __str__(self):
+        return &quot;name:%s password:%s phone:%s&quot; % (self.username, self.password, self.phone)
+
+
+if __name__ == &quot;__main__&quot;:
+    params = &#123;
+        &#39;username&#39;: &#39;shirukai&#39;,
+        &#39;password&#39;: &#39;123456a?&#39;,
+        &#39;phone&#39;: &#39;15552211520&#39;
+    &#125;
+    learn = LearnClass(params)
+    print(learn)
+</code></pre>
+<p><img src="https://shirukai.gitee.io/images/201802021532_875.png"></p>
+<h4 id="cmp"><a href="#cmp" class="headerlink" title="__cmp__():"></a><code>__cmp__()</code>:</h4><p>比较运算符</p>
+<pre><code>class LearnClass:
+    def __init__(self):
+        pass
+
+    def __cmp__(self, other):
+        print(other) # 10
+        return -1 # False
+
+
+if __name__ == &quot;__main__&quot;:
+    learn = LearnClass()
+    print(learn &gt; 10)
+</code></pre>
+<h4 id="getitem"><a href="#getitem" class="headerlink" title="__getitem__():"></a><code>__getitem__()</code>:</h4><p>使用方法跟获取字典值一样，通过   对象[‘key’] 的方式获取</p>
+<pre><code>class LearnClass:
+    def __init__(self):
+        pass
+
+    def __getitem__(self, item):
+        return item
+
+
+if __name__ == &quot;__main__&quot;:
+    learn = LearnClass()
+    print learn[&#39;getitem&#39;]
+    print learn[&#39;1&#39;]
+</code></pre>
+<pre><code>C:\Python27\python.exe D:/Repository/testapi/learnclass/LearnClass.py
+getitem
+1
+
+Process finished with exit code 0
+</code></pre>
+<h4 id="getitem-1"><a href="#getitem-1" class="headerlink" title="__getitem__():"></a><code>__getitem__()</code>:</h4><p>使用方法跟设置字典key、value一样</p>
+<pre><code>class LearnClass:
+    def __init__(self):
+        self.my_dict = &#123;
+
+        &#125;
+        pass
+
+    def __getitem__(self, item):
+        return self.my_dict[item]
+
+    def __setitem__(self, key, value):
+        self.my_dict[key] = value
+
+
+if __name__ == &quot;__main__&quot;:
+    learn = LearnClass()
+    learn[&#39;a&#39;] = 1
+    learn[&#39;b&#39;] = 2
+    print(learn[&#39;a&#39;])
+    print(learn[&#39;b&#39;])
+</code></pre>
+<p>运行结果：</p>
+<pre><code>C:\Python27\python.exe D:/Repository/testapi/learnclass/LearnClass.py
+1
+2
+
+Process finished with exit code 0
+</code></pre>
+<h4 id="delitem"><a href="#delitem" class="headerlink" title="__delitem__():"></a><code>__delitem__()</code>:</h4><p>当使用del 对象[key] 时，会触发这个函数，如：</p>
+<pre><code>class LearnClass:
+    def __init__(self):
+        self.my_dict = &#123;
+
+        &#125;
+        pass
+
+    def __getitem__(self, item):
+        return self.my_dict[item]
+
+    def __setitem__(self, key, value):
+        self.my_dict[key] = value
+
+    def __delitem__(self, key):
+        self.my_dict.pop(key)
+
+
+if __name__ == &quot;__main__&quot;:
+    learn = LearnClass()
+    learn[&#39;a&#39;] = 1
+    learn[&#39;b&#39;] = 2
+    print(learn[&#39;a&#39;])
+    print(learn[&#39;b&#39;])
+    del learn[&#39;a&#39;]
+    print(learn[&#39;a&#39;])
+</code></pre>
+<p>运行结果：</p>
+<pre><code>C:\Python27\python.exe D:/Repository/testapi/learnclass/LearnClass.py
+1
+Traceback (most recent call last):
+2
+  File &quot;D:/Repository/testapi/learnclass/LearnClass.py&quot;, line 25, in &lt;module&gt;
+    print(learn[&#39;a&#39;])
+  File &quot;D:/Repository/testapi/learnclass/LearnClass.py&quot;, line 9, in __getitem__
+    return self.my_dict[item]
+KeyError: &#39;a&#39;
+
+Process finished with exit code 1
+</code></pre>
+<p>由于删除了 a，所以print(learn[‘a’])的时候就会报错了。</p>
+<h3 id="4-类的私有属性"><a href="#4-类的私有属性" class="headerlink" title="4.类的私有属性"></a>4.类的私有属性</h3><p>　　<code>__private_attrs</code> 两个下划线开头，声明该属性为私有，不能在类地外部被使用或直接访问。在类内部的方法中使用时 self.__private_attrs<br>类的方法<br>　　在类地内部，使用def关键字可以为类定义一个方法，与一般函数定义不同，类方法必须包含参数self,且为第一个参数<br>私有的类方法<br>　　<code>__private_method</code> 两个下划线开头，声明该方法为私有方法，不能在类地外部调用。在类的内部调用slef.__private_methods</p>
+<h3 id="5-classmethod类方法"><a href="#5-classmethod类方法" class="headerlink" title="5.classmethod类方法"></a>5.classmethod类方法</h3><p>python用@classmethod修饰符来表示一个类方法，类方法的参数是cls。类方法既可以用类直接调用，也可以类实例化后调用。常见参数为self的是实例方法， 只能在类被实例化后调用。</p>
+<p>类方法中的变量，cls是将整个类当做参数传入。当有子类继承时，调用该类方法时，闯入的类变量cls是子类，而非父类。</p>
+<h5 id="定义类方法："><a href="#定义类方法：" class="headerlink" title="定义类方法："></a>定义类方法：</h5><pre><code>    @classmethod
+    def class_method(cls):
+        print(cls)
+</code></pre>
+<h5 id="调用类方法"><a href="#调用类方法" class="headerlink" title="调用类方法"></a>调用类方法</h5><pre><code>if __name__ == &quot;__main__&quot;:
+    learn = LearnClass()
+    LearnClass.class_method()
+    learn.class_method()
+</code></pre>
+<h5 id="输出结果"><a href="#输出结果" class="headerlink" title="输出结果:"></a>输出结果:</h5><pre><code>C:\Python27\python.exe D:/Repository/testapi/learnclass/LearnClass.py
+__main__.LearnClass
+__main__.LearnClass
+
+Process finished with exit code 0
+</code></pre>
+<h3 id="6-staticmethod静态方法"><a href="#6-staticmethod静态方法" class="headerlink" title="6.staticmethod静态方法"></a>6.staticmethod静态方法</h3><p>静态方法可以用@staticmethod来修饰，静态方法没有特定的参数self或者cls，静态方法跟类方法一样，有两种调用方式，一种是直接调用，另一种是实例化调用。</p>
+<pre><code>    @staticmethod
+    def static_method():
+        print(&#39;this is static method&#39;)
+</code></pre>
+<h3 id="7-property-装饰"><a href="#7-property-装饰" class="headerlink" title="7.@property 装饰"></a>7.@property 装饰</h3><p>使用@property最简单的方法之一是将它作为一个方法的装饰器来使用，可以将一个类里的方法转变成一个类里的属性。</p>
+<p>定义：</p>
+<pre><code>    @property
+    def score(self):
+        return 100
+</code></pre>
+<p>使用：</p>
+<pre><code>if __name__ == &quot;__main__&quot;:
+    learn = LearnClass()
+    print(learn.score)
+</code></pre>
+<p>使用@property的setter、getter方法</p>
+<pre><code>    @property
+    def score(self):
+        return self.score
+
+    @score.setter
+    def score(self, value):
+        self.score = value
+</code></pre>
+<pre><code>    learn = LearnClass()
+    print(learn.score)
+    learn.score = 90
+    print(learn.score)
+</code></pre>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81python%E4%B8%AD%E7%9A%84%E7%B1%BB"><span class="toc-number">1.</span> <span class="toc-text">一、python中的类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E7%B1%BB%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="toc-number">2.</span> <span class="toc-text">二、类的定义</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%AE%9A%E4%B9%89%E7%B1%BB%EF%BC%88class%EF%BC%89%E7%9A%84%E8%AF%AD%E6%B3%95"><span class="toc-number">2.1.</span> <span class="toc-text">1. 定义类（class）的语法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%88%9D%E5%A7%8B%E5%8C%96%E5%AF%B9%E8%B1%A1"><span class="toc-number">2.2.</span> <span class="toc-text">2. 初始化对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%85%B6%E4%BB%96%E4%B8%93%E7%94%A8%E6%96%B9%E6%B3%95"><span class="toc-number">2.3.</span> <span class="toc-text">3.其他专用方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E7%B1%BB%E7%9A%84%E7%A7%81%E6%9C%89%E5%B1%9E%E6%80%A7"><span class="toc-number">2.4.</span> <span class="toc-text">4.类的私有属性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-classmethod%E7%B1%BB%E6%96%B9%E6%B3%95"><span class="toc-number">2.5.</span> <span class="toc-text">5.classmethod类方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-staticmethod%E9%9D%99%E6%80%81%E6%96%B9%E6%B3%95"><span class="toc-number">2.6.</span> <span class="toc-text">6.staticmethod静态方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-property-%E8%A3%85%E9%A5%B0"><span class="toc-number">2.7.</span> <span class="toc-text">7.@property 装饰</span></a></li></ol></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

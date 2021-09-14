@@ -1,0 +1,534 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>从CDH Agent错误日志学习Python拆包语法 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="国庆七天长假回来上班，迟迟没有进入工作状态，可能祖国的强大，让我不自觉的也飘了起来，哈哈，该收拾收拾心情，为祖国之繁荣而努力加班挣money了。今天通过解决公司开发环境的一个问题，让我瞬间进入了战斗,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">从CDH Agent错误日志学习Python拆包语法</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/1.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/Python"><b>「
+                    </b>PYTHON<b> 」</b></a>
+                
+                August 24, 2020
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/learn-python-unpacking-syntax-from-cdh-agent-error-log.html" title="从CDH Agent错误日志学习Python拆包语法" class="">从CDH Agent错误日志学习Python拆包语法</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    5.2k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    5 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Python/" rel="tag">Python</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <p>国庆七天长假回来上班，迟迟没有进入工作状态，可能祖国的强大，让我不自觉的也飘了起来，哈哈，该收拾收拾心情，为祖国之繁荣而努力加班挣money了。今天通过解决公司开发环境的一个问题，让我瞬间进入了战斗状态，并且顺便学了一下Python拆包的一些语法，还是挺有意思的。</p>
+<h1 id="1-CDH-Agent错误日志解决"><a href="#1-CDH-Agent错误日志解决" class="headerlink" title="1 CDH Agent错误日志解决"></a>1 CDH Agent错误日志解决</h1><p>放假回来，同事发现公司开发环境的CDH集群挂了，好长时间没关注了，可能早就挂了吧。挂成什么样了呢？两台节点与Manager失去心跳，所有服务都起不来了，简直废了，处于不可用状态。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/8120ab66d82cf9d4746ec2ad6edcd2fe.jpg"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/21bfff66ec99e2e2337ee641d36405d6.jpg"></p>
+<p>当时但看服务状态以为没啥问题，可能是放假期间重启服务器导致的，于是便心不在焉的重启了一下集群，结果可想而知，服务根本起不来。再一看有两台节点已经飘红了，心想问题就出在这了，于是跑到这两台节点上，分别重启了cloudera-scm-agent服务，没想到还是不行。再去/var/log/cloudera-scm-agent/下查看一下agent的日志，发现日志里报错了。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/243fab51833ca101693aec88336cd3fe.jpg"></p>
+<p>当时没有细看错误信息，看了一句unexpected exception in main loop，心想之前没遇到过这个错误啊，先google一下，没想到还真有类似的问题。<a target="_blank" rel="noopener" href="https://community.cloudera.com/t5/Support-Questions/ERROR-MESSAGE-This-host-is-not-in-contact-with-the-Host/td-p/52279/page/2">https://community.cloudera.com/t5/Support-Questions/ERROR-MESSAGE-This-host-is-not-in-contact-with-the-Host/td-p/52279/page/2</a></p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/e6a76d5e2033c0f14f41d281d6e92846.jpg"></p>
+<p>参照网上的说法，在细看一下报错信息，确实是代码中一个地方出错了，原来的写法是对的，但是可能会出现问题，所以就参考网上说的改了一下，重启Agent服务，结果主机正常了。</p>
+<p>查看vusr/lib64/cmf/agent/build/env/lib/python2.7/site-packages/cmf-5.11.0-py2.7.egg/cmf/client_configs.py代码446行</p>
+<pre><code class="python">def _parse_alternatives(self, name, output):
+         &quot;&quot;&quot;
+         Parses output from &quot;update-alternatives --display&quot;. Returns a dictionary
+         mapping ClientConfigKey to ClientConfigValue.
+     
+         Alternatives not managed by CM are ignored.
+         &quot;&quot;&quot;
+         ret = &#123;&#125;
+         for line in output.splitlines():
+           if line.startswith(&quot;/&quot;):
+             path, _, _, priority_str = line.rstrip().split(&quot; &quot;)
+     
+             # Ignore the alternative if it&#39;s not managed by CM.
+             if CM_MAGIC_PREFIX not in os.path.basename(path):
+               continue
+     
+             try:
+               priority = int(priority_str)
+             except ValueError:
+               THROTTLED_LOG.info(&quot;Failed to parse %s: %s&quot;, name, line)
+     
+             key = ClientConfigKey(name, path)
+             value = ClientConfigValue(priority, self._read_generation(path))
+             ret[key] = value
+     
+         return ret
+</code></pre>
+<p>该部分代码如上所示，报错行为 path, _, _, priority_str = line.rstrip().split(“ “)，错误信息是</p>
+<p>ValueError: too many values to unpack。我猜测可能是line.rstrip().split(“ “)之后的元素个数超过了四个，导致此错误。这个语法很有意思，之前遇到过，但是没有深入研究，先记得这个语法在python里叫做拆包，后面后详细介绍。</p>
+<p>既然问题出在这里，那我们简单暴力的参考网上的改法，修改一下，修改之后如下所示：</p>
+<pre><code class="python">             # path, _, _, priority_str = line.rstrip().split(&quot; &quot;)
+             thisLine = line.rstrip().split(&quot; &quot;)
+             path = thisLine[0]
+             priority_str = thisLine[-1]
+</code></pre>
+<p>显而易见，只是取第一个元素和最后一个元素即可。</p>
+<p>通过这种方式，依次将两台失联的主机都修改了，然后重启了集群，很ok。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/480069fc10714491f2ff14e7e2fea56c.jpg"></p>
+<h1 id="2-Python-拆包语法"><a href="#2-Python-拆包语法" class="headerlink" title="2 Python 拆包语法"></a>2 Python 拆包语法</h1><p>上面分析到了错误是由于拆包时，元素个数超过预期导致的。但是path, _, _, priority_str = line.rstrip().split(“ “)这种代码写法，确实值得学习，很装逼有没有。于是我来好好学习一下这个写法。</p>
+<p>假设，我有一个数组array_1，里面有3个元素10，20，30，我想把这三个元素分别赋值给a，b，c，通常写法是：</p>
+<pre><code class="python">array_1 = [10,20,30]
+a = array_1[0]
+b = array_1[1]
+c = array_1[2]
+</code></pre>
+<p>这样没毛病，老铁。但是我们可以通过拆包语法更装逼的写一下：</p>
+<pre><code class="python">array_1 = [10,20,30]
+a,b,c = array_1
+</code></pre>
+<p>很nice有没有，人家Cloudera团队就是这样写的，但是同样这样写会有一个问题，如果我的数组里有四个元素的话，你这样写是不是会有问题？</p>
+<pre><code class="python">&gt;&gt;&gt; array_2 = [10,20,30,40]
+&gt;&gt;&gt; a,b,c = array_2
+Traceback (most recent call last):
+  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
+ValueError: too many values to unpack (expected 3)
+</code></pre>
+<p>发现了没有，这个错误有没有很相似，与CDH Agent日志里的错误如出一辙。那么问题来，如果你数组个数不确定，而你又使用这种方式，很容易出错，那我们就没法使用该语法装逼了吗，答案是可以的。</p>
+<p>假如，无论数组多长，我们只想取数组的前三个元素赋值给a,b,c，可以这样写：</p>
+<pre><code class="python">array_3 = [10,20,30,40,50]
+a,b,c,*_ = array_3
+</code></pre>
+<p>那么问题又来了，如果我们只想取第一个，第二个，以及最后一个元素赋值给a,b,c该怎么写呢？</p>
+<pre><code class="python">array_3 = [10,20,30,40,50]
+a,b,*_,c = array_3
+</code></pre>
+<p>是不是很舒服？我们还可以这样玩，第一个、第二个元素赋值给a,b,剩下所有的元素以list的形式赋值给c</p>
+<pre><code class="python">&gt;&gt;&gt; a,b,*c = array_3
+&gt;&gt;&gt; type(c)
+&lt;class &#39;list&#39;&gt;
+</code></pre>
+<h1 id="3-总结"><a href="#3-总结" class="headerlink" title="3 总结"></a>3 总结</h1><p>接触Python有一段时间了，对于这个语法第一次碰到，还是挺新鲜的。类似的语法在不同的编程语言中都有体现，比如scala里也有类似的写法，叫做提取器，如下所示：</p>
+<pre><code class="scala">scala&gt; val array1 = Array(10,20,30,40)
+array1: Array[Int] = Array(10, 20, 30, 40)
+
+scala&gt; val Array(a,b,c,_*) = array1
+a: Int = 10
+b: Int = 20
+c: Int = 30
+
+scala&gt; val Array(a,b,c @_*) = array1
+a: Int = 10
+b: Int = 20
+c: Seq[Int] = Vector(30, 40)
+</code></pre>
+<p>总的来说，今天通过与老师一起排查问题，到学习新的语法，沉淀了一下浮躁的心情，今天开始步入正轨，好好学习，天天向上。</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-CDH-Agent%E9%94%99%E8%AF%AF%E6%97%A5%E5%BF%97%E8%A7%A3%E5%86%B3"><span class="toc-number">1.</span> <span class="toc-text">1 CDH Agent错误日志解决</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-Python-%E6%8B%86%E5%8C%85%E8%AF%AD%E6%B3%95"><span class="toc-number">2.</span> <span class="toc-text">2 Python 拆包语法</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E6%80%BB%E7%BB%93"><span class="toc-number">3.</span> <span class="toc-text">3 总结</span></a></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

@@ -1,0 +1,824 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Hive大数据仓库入门 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="
+什么是Hiv？
+
+Hive是构建在hadoop HDFS上的一个数据仓库
+1 数据仓库1.1基本概念数据仓库是一个面向主题的、集成的、不可更新的、随时间不变化的数据集合，它用于支持企业活组织的决策,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">Hive大数据仓库入门</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/1.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/Hadoop"><b>「
+                    </b>HADOOP<b> 」</b></a>
+                
+                January 19, 2021
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/hive-big-data-warehouse-entry.html" title="Hive大数据仓库入门" class="">Hive大数据仓库入门</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    20k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    18 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Hadoop/" rel="tag">Hadoop</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <blockquote>
+<p>什么是Hiv？</p>
+</blockquote>
+<p>Hive是构建在hadoop HDFS上的一个数据仓库</p>
+<h2 id="1-数据仓库"><a href="#1-数据仓库" class="headerlink" title="1 数据仓库"></a>1 数据仓库</h2><h3 id="1-1基本概念"><a href="#1-1基本概念" class="headerlink" title="1.1基本概念"></a>1.1基本概念</h3><p>数据仓库是一个面向主题的、集成的、不可更新的、随时间不变化的数据集合，它用于支持企业活组织的决策分析处理。</p>
+<h3 id="1-2数据仓库的结构和构建过程"><a href="#1-2数据仓库的结构和构建过程" class="headerlink" title="1.2数据仓库的结构和构建过程"></a>1.2数据仓库的结构和构建过程</h3><p><img src="https://shirukai.gitee.io/images/201711210920_648.png"></p>
+<h3 id="1-3OLTP应用与OLAP应用"><a href="#1-3OLTP应用与OLAP应用" class="headerlink" title="1.3OLTP应用与OLAP应用"></a>1.3OLTP应用与OLAP应用</h3><p>OLTP（On line Transaction Processing）:连接事务处理（银行转账）面向事务</p>
+<p>OLAP（On line Analytical Processing）:连接分析处理（商品推荐系统）</p>
+<h3 id="1-4数据仓库中数据模型"><a href="#1-4数据仓库中数据模型" class="headerlink" title="1.4数据仓库中数据模型"></a>1.4数据仓库中数据模型</h3><h4 id="1-4-1星型模型"><a href="#1-4-1星型模型" class="headerlink" title="1.4.1星型模型"></a>1.4.1星型模型</h4><p><img src="https://shirukai.gitee.io/images/201711210923_3.png"></p>
+<h4 id="1-4-2-雪花模型"><a href="#1-4-2-雪花模型" class="headerlink" title="1.4.2 雪花模型"></a>1.4.2 雪花模型</h4><p>基于星型模型</p>
+<p><img src="https://shirukai.gitee.io/images/201711210925_508.png"></p>
+<h2 id="2-Hive"><a href="#2-Hive" class="headerlink" title="2 Hive"></a>2 Hive</h2><h3 id="2-1什么是Hive？"><a href="#2-1什么是Hive？" class="headerlink" title="2.1什么是Hive？"></a>2.1什么是Hive？</h3><ul>
+<li>Hive是简历在Hadoop HDFS上的数据仓库基础架构</li>
+<li>Hive可以用来进行数据提取转化加载（ETL）</li>
+<li>Hive定义了简单的类似SQL查询语言，HQL它允许熟悉SQL的用户查询数据</li>
+<li>Hive允许数据MapReduce开发者的开发自动以的mapper和reducer来处理内置的mapper和reducer无法完成的复杂的分析工作。</li>
+<li>Hive是SQL解析引擎，他将SQL语句转移成M/R Job ,然后在Hadoop执行</li>
+<li>Hive的表其实就是HDFS的目录/文件</li>
+</ul>
+<h3 id="2-2-Hive的体系结构"><a href="#2-2-Hive的体系结构" class="headerlink" title="2.2 Hive的体系结构"></a>2.2 Hive的体系结构</h3><h4 id="2-2-1-Hive的元数据"><a href="#2-2-1-Hive的元数据" class="headerlink" title="2.2.1 Hive的元数据"></a>2.2.1 Hive的元数据</h4><ul>
+<li>Hive将元数据存储在数据库中（metastore），支持Mysql、derby等数据库，默认的是保存在derby数据库中。</li>
+<li>Hive中的元数据包括表的名字，标的列和分区及其属性，表的属性（是否诶外部表等），表的数据所在目录等</li>
+</ul>
+<h4 id="2-2-2-一条HQL语句如何在Hive中进行查询的？"><a href="#2-2-2-一条HQL语句如何在Hive中进行查询的？" class="headerlink" title="2.2.2 一条HQL语句如何在Hive中进行查询的？"></a>2.2.2 一条HQL语句如何在Hive中进行查询的？</h4><p>解释器、编译器、优化器完成HQL查询语句从词法分析、语法分析、编译、优化以及查询计划（Plan）的生成。生成的查询计划存储在HDFS中，并在随后有MapReduce调用执行</p>
+<p><img src="https://shirukai.gitee.io/images/201711210936_886.png"></p>
+<h4 id="2-2-3Hive具体的体系结构"><a href="#2-2-3Hive具体的体系结构" class="headerlink" title="2.2.3Hive具体的体系结构"></a>2.2.3Hive具体的体系结构</h4><p><img src="https://shirukai.gitee.io/images/201711210941_566.png"></p>
+<h2 id="3-Hive安装"><a href="#3-Hive安装" class="headerlink" title="3 Hive安装"></a>3 Hive安装</h2><h3 id="3-1-安装模式"><a href="#3-1-安装模式" class="headerlink" title="3.1 安装模式"></a>3.1 安装模式</h3><h4 id="3-1-1嵌入模式"><a href="#3-1-1嵌入模式" class="headerlink" title="3.1.1嵌入模式"></a>3.1.1嵌入模式</h4><ul>
+<li>元数据信息被存储在Hive自带的Derby数据库中</li>
+<li>只允许创建一个连接</li>
+<li>多用于Demo</li>
+</ul>
+<h4 id="3-1-2本地模式"><a href="#3-1-2本地模式" class="headerlink" title="3.1.2本地模式"></a>3.1.2本地模式</h4><ul>
+<li>元数据信息被存储在MySql数据库中</li>
+<li>mysql数据库与Hive运行在同一台物理机上</li>
+<li>多用于开发和测试</li>
+</ul>
+<h4 id="3-1-3远程模式"><a href="#3-1-3远程模式" class="headerlink" title="3.1.3远程模式"></a>3.1.3远程模式</h4><ul>
+<li>元数据信息被存储在MySql数据库中</li>
+<li>mysql数据库与Hive运行不在同一台物理机上</li>
+</ul>
+<h3 id="3-2-Hive本地模式安装（在hadoop环境下）"><a href="#3-2-Hive本地模式安装（在hadoop环境下）" class="headerlink" title="3.2 Hive本地模式安装（在hadoop环境下）"></a>3.2 Hive本地模式安装（在hadoop环境下）</h3><p>下载官网：<a target="_blank" rel="noopener" href="http://mirrors.hust.edu.cn/apache/hive/hive-2.3.2/">http://mirrors.hust.edu.cn/apache/hive/hive-2.3.2/</a></p>
+<h4 id="3-2-1-下载Hive-安装文件"><a href="#3-2-1-下载Hive-安装文件" class="headerlink" title="3.2.1 下载Hive 安装文件"></a>3.2.1 下载Hive 安装文件</h4><pre><code>cd /usr/lib
+wget http://mirrors.hust.edu.cn/apache/hive/hive-2.3.2/apache-hive-2.3.2-bin.tar.gz
+</code></pre>
+<h4 id="3-2-2-下载Hive-源码文件"><a href="#3-2-2-下载Hive-源码文件" class="headerlink" title="3.2.2 下载Hive 源码文件"></a>3.2.2 下载Hive 源码文件</h4><pre><code>wget http://mirrors.hust.edu.cn/apache/hive/hive-2.3.2/apache-hive-2.3.2-src.tar.gz
+</code></pre>
+<h4 id="3-2-3-解压"><a href="#3-2-3-解压" class="headerlink" title="3.2.3 解压"></a>3.2.3 解压</h4><pre><code>tar -zxvf apache-hive-2.3.2-bin.tar.gz
+tar -zxvf apache-hive-2.3.2-src.tar.gz
+</code></pre>
+<h4 id="3-2-4-配置环境变量"><a href="#3-2-4-配置环境变量" class="headerlink" title="3.2.4 配置环境变量"></a>3.2.4 配置环境变量</h4><pre><code>vim /etc/profile
+</code></pre>
+<p>添加如下环境变量</p>
+<pre><code>#set hive
+export HIVE_HOME=/usr/lib/apache-hive-2.3.2-bin
+export PATH=$HIVE_HOME/bin:$PATH
+</code></pre>
+<p>使改变生效</p>
+<pre><code>. /etc/profile
+</code></pre>
+<h4 id="3-2-5-配置数据库-前提是已经安装好mysql数据库"><a href="#3-2-5-配置数据库-前提是已经安装好mysql数据库" class="headerlink" title="3.2.5 配置数据库 (前提是已经安装好mysql数据库)"></a>3.2.5 配置数据库 (前提是已经安装好mysql数据库)</h4><p>切换到配置文件目录</p>
+<pre><code>cd /usr/lib/apache-hive-2.3.2-bin/conf
+</code></pre>
+<p>创建一个hive-site.xml文件,里面是数据库的相关信息，详细配置可以参考官网文档</p>
+<p><a target="_blank" rel="noopener" href="https://cwiki.apache.org/confluence/display/Hive/AdminManual+MetastoreAdmin#AdminManualMetastoreAdmin-RemoteMetastoreServer">https://cwiki.apache.org/confluence/display/Hive/AdminManual+MetastoreAdmin#AdminManualMetastoreAdmin-RemoteMetastoreServer</a></p>
+<pre><code>&lt;configuration&gt;
+        &lt;property&gt;
+                &lt;name&gt;javax.jdo.option.ConnectionURL&lt;/name&gt;
+                &lt;value&gt;jdbc:mysql://localhost/hive?createDatabaseIfNotExist=true&lt;/value&gt;
+        &lt;/property&gt;
+
+        &lt;property&gt;
+                &lt;name&gt;javax.jdo.option.ConnectionDriverName&lt;/name&gt;
+                &lt;value&gt;com.mysql.jdbc.Driver&lt;/value&gt;
+        &lt;/property&gt;
+
+
+        &lt;property&gt;
+                &lt;name&gt;javax.jdo.option.ConnectionUserName&lt;/name&gt;
+                &lt;value&gt;root&lt;/value&gt;
+        &lt;/property&gt;
+
+        &lt;property&gt;
+                &lt;name&gt;javax.jdo.option.ConnectionPassword&lt;/name&gt;
+                &lt;value&gt;root&lt;/value&gt;
+        &lt;/property&gt;
+
+&lt;/configuration&gt;
+</code></pre>
+<h4 id="3-2-6-初始化数据库"><a href="#3-2-6-初始化数据库" class="headerlink" title="3.2.6 初始化数据库"></a>3.2.6 初始化数据库</h4><pre><code>schematool -dbType mysql -initSchema
+</code></pre>
+<h2 id="4-Hive的管理"><a href="#4-Hive的管理" class="headerlink" title="4 Hive的管理"></a>4 Hive的管理</h2><h3 id="4-1-Hive的启动方式"><a href="#4-1-Hive的启动方式" class="headerlink" title="4.1 Hive的启动方式"></a>4.1 Hive的启动方式</h3><ul>
+<li>CLI（命令行）方式</li>
+<li>Web界面方式</li>
+<li>远程服务启动方式</li>
+</ul>
+<h3 id="4-2-Hive命令行"><a href="#4-2-Hive命令行" class="headerlink" title="4.2 Hive命令行"></a>4.2 Hive命令行</h3><pre><code>#进入
+hive
+#退出
+exit;
+</code></pre>
+<h4 id="4-2-1-清屏"><a href="#4-2-1-清屏" class="headerlink" title="4.2.1 清屏"></a>4.2.1 清屏</h4><p>Ctrl+ L 或者</p>
+<pre><code>! clear
+</code></pre>
+<h4 id="4-2-2-查看数据仓库中的表"><a href="#4-2-2-查看数据仓库中的表" class="headerlink" title="4.2.2 查看数据仓库中的表"></a>4.2.2 查看数据仓库中的表</h4><pre><code>show tables;
+</code></pre>
+<h4 id="4-2-3-查看数据仓库中内置的函数"><a href="#4-2-3-查看数据仓库中内置的函数" class="headerlink" title="4.2.3 查看数据仓库中内置的函数"></a>4.2.3 查看数据仓库中内置的函数</h4><pre><code>show functions;
+</code></pre>
+<h4 id="4-2-4-查看表结构"><a href="#4-2-4-查看表结构" class="headerlink" title="4.2.4 查看表结构"></a>4.2.4 查看表结构</h4><pre><code>desc 表名
+</code></pre>
+<h4 id="4-2-5-查看HDFS上的文件"><a href="#4-2-5-查看HDFS上的文件" class="headerlink" title="4.2.5 查看HDFS上的文件"></a>4.2.5 查看HDFS上的文件</h4><pre><code>dfs -ls 目录
+</code></pre>
+<h4 id="4-2-6-执行操作系统的命令"><a href="#4-2-6-执行操作系统的命令" class="headerlink" title="4.2.6 执行操作系统的命令"></a>4.2.6 执行操作系统的命令</h4><pre><code>! 命令
+</code></pre>
+<h4 id="4-2-7-执行HQL语句"><a href="#4-2-7-执行HQL语句" class="headerlink" title="4.2.7 执行HQL语句"></a>4.2.7 执行HQL语句</h4><pre><code>select * from ***
+</code></pre>
+<p>例如：查询test1中的数据</p>
+<pre><code>select * from test1;
+</code></pre>
+<h4 id="4-2-8-执行SQL的脚本"><a href="#4-2-8-执行SQL的脚本" class="headerlink" title="4.2.8 执行SQL的脚本"></a>4.2.8 执行SQL的脚本</h4><pre><code>source SQL文件
+</code></pre>
+<h4 id="4-2-9-直接在系统命令行运行"><a href="#4-2-9-直接在系统命令行运行" class="headerlink" title="4.2.9 直接在系统命令行运行"></a>4.2.9 直接在系统命令行运行</h4><pre><code>hive -e &#39;show tables&#39;;
+</code></pre>
+<h3 id="4-3-web界面方式-在2-2-0之后已经废除这个功能"><a href="#4-3-web界面方式-在2-2-0之后已经废除这个功能" class="headerlink" title="4.3 web界面方式(在2.2.0之后已经废除这个功能)"></a>4.3 web界面方式(在2.2.0之后已经废除这个功能)</h3><h3 id="4-4-HiveServer2"><a href="#4-4-HiveServer2" class="headerlink" title="4.4 HiveServer2"></a>4.4 HiveServer2</h3><h4 id="4-4-1-什么是HiveServer2"><a href="#4-4-1-什么是HiveServer2" class="headerlink" title="4.4.1 什么是HiveServer2"></a>4.4.1 什么是HiveServer2</h4><p><a target="_blank" rel="noopener" href="https://cwiki.apache.org/confluence/display/Hive/HiveServer2+Overview">HiveServer2</a>（HS2）是服务器接口，使远程客户端执行对蜂巢的查询和检索结果（更详细的介绍<a target="_blank" rel="noopener" href="https://cwiki.apache.org/confluence/display/Hive/HiveServer2+Overview">这里</a>）。目前基于Thrift RPC的实现是<a target="_blank" rel="noopener" href="https://cwiki.apache.org/confluence/display/Hive/HiveServer">HiveServer</a>的改进版本，支持多客户端并发和身份验证。它旨在为JDBC和ODBC等开放API客户端提供更好的支持。</p>
+<h4 id="4-4-2配置"><a href="#4-4-2配置" class="headerlink" title="4.4.2配置"></a>4.4.2配置</h4><h4 id="4-4-3-启动"><a href="#4-4-3-启动" class="headerlink" title="4.4.3 启动"></a>4.4.3 启动</h4><pre><code>hiveserver2
+</code></pre>
+<h2 id="5-Hive-的数据类型"><a href="#5-Hive-的数据类型" class="headerlink" title="5 Hive 的数据类型"></a>5 Hive 的数据类型</h2><h3 id="5-1-基本数据类型"><a href="#5-1-基本数据类型" class="headerlink" title="5.1 基本数据类型"></a>5.1 基本数据类型</h3><ul>
+<li>tinyint/smallint/int/bigint : 整数类型</li>
+<li>float/double : 浮点数类型</li>
+<li>boolean: 布尔类型</li>
+<li>string : 字符串类型</li>
+</ul>
+<p>创建一个表</p>
+<pre><code>hive&gt; create table person
+    &gt; (prd int,
+    &gt; pname string,
+    &gt; married boolean,
+    &gt; salary 
+</code></pre>
+<p>查看表结构</p>
+<pre><code>hive&gt; desc person;
+OK
+prd                     int                                         
+pname                   string                                      
+married                 boolean                                     
+salary                  double                                      
+Time taken: 0.274 seconds, Fetched: 4 row(s)
+</code></pre>
+<h3 id="5-2-复杂数据类型"><a href="#5-2-复杂数据类型" class="headerlink" title="5.2 复杂数据类型"></a>5.2 复杂数据类型</h3><ul>
+<li>Array : 数组类型，由一系列相同数据类型的元数据组成</li>
+<li>Map: 集合类型，包含key-value键值对，可以通过key来访问元素</li>
+<li>Struct: 结构类型，可以包含不同数据类型的元素，这些元素可以通过“点语法”的方式来得到所需要的元素</li>
+</ul>
+<h5 id="Array"><a href="#Array" class="headerlink" title="Array"></a>Array</h5><p>创建表</p>
+<pre><code>hive&gt; create table student
+    &gt; (sid int,
+    &gt; sname string,
+    &gt; grade array&lt;float&gt;);
+OK
+Time taken: 0.173 seconds
+</code></pre>
+<p>查看表结构</p>
+<pre><code>hive&gt; desc student
+    &gt; ;
+OK
+sid                     int                                         
+sname                   string                                      
+grade                   array&lt;float&gt;                                
+Time taken: 0.139 seconds, Fetched: 3 row(s)
+</code></pre>
+<h5 id="Map"><a href="#Map" class="headerlink" title="Map"></a>Map</h5><p>创建表</p>
+<pre><code>hive&gt; create table student1
+    &gt; (sid int,
+    &gt; sname string,
+    &gt; grade map&lt;string,float&gt;);
+OK
+Time taken: 9.566 seconds
+</code></pre>
+<p>查看表结构</p>
+<pre><code>hive&gt; desc student1;
+OK
+sid                     int                                         
+sname                   string                                      
+grade                   map&lt;string,float&gt;                           
+Time taken: 0.349 seconds, Fetched: 3 row(s)
+</code></pre>
+<h5 id="Struct"><a href="#Struct" class="headerlink" title="Struct"></a>Struct</h5><p>创建表</p>
+<pre><code>hive&gt; create table student4
+    &gt; (sid int,
+    &gt; info struct&lt;name:string,age:int,sex:string&gt;);
+OK
+Time taken: 0.178 seconds
+</code></pre>
+<p>查看表结构</p>
+<pre><code>hive&gt; desc student4;
+OK
+sid                     int                                         
+info                    struct&lt;name:string,age:int,sex:string&gt;                        
+Time taken: 0.115 seconds, Fetched: 2 row(s)
+</code></pre>
+<h3 id="5-3-时间类型"><a href="#5-3-时间类型" class="headerlink" title="5.3 时间类型"></a>5.3 时间类型</h3><ul>
+<li>Date： 从Hvie0.12.0开始支持</li>
+<li>Timestamp：从Hive0.8.0开始支持</li>
+</ul>
+<h2 id="6-Hive的数据存储"><a href="#6-Hive的数据存储" class="headerlink" title="6 Hive的数据存储"></a>6 Hive的数据存储</h2><ul>
+<li>基于HDFS</li>
+<li>没有专门的数据存储格式</li>
+<li>存储结构主要包括：数据库、文件、表、视图</li>
+<li>可以直接加载文本文件（.txt文件等）</li>
+<li>创建表时，指定Hive数据的列分隔符与行分隔符</li>
+</ul>
+<h3 id="6-1表"><a href="#6-1表" class="headerlink" title="6.1表"></a>6.1表</h3><ul>
+<li>Table 内部表</li>
+<li>Partition 分区表</li>
+<li>External Table 外部表</li>
+<li>Bucket Table 桶表</li>
+</ul>
+<h3 id="6-2-视图"><a href="#6-2-视图" class="headerlink" title="6.2 视图"></a>6.2 视图</h3><h3 id="6-3-内部表"><a href="#6-3-内部表" class="headerlink" title="6.3 内部表"></a>6.3 内部表</h3><ul>
+<li>与数据库中的Table 在概念上是类似</li>
+<li>每一个Table在Hive中都有一个相应的目录存储数据</li>
+<li>所有的Table数据（不包括 External Table ）都保存在这个目录中</li>
+<li>删除表时，元数据与数据都会被删除</li>
+</ul>
+<h4 id="6-3-1-创建内部表"><a href="#6-3-1-创建内部表" class="headerlink" title="6.3.1 创建内部表"></a>6.3.1 创建内部表</h4><p>不指定位置创建表：</p>
+<pre><code>hive&gt; create table t1
+    &gt; (tid int,tname string,age int);
+OK
+Time taken: 0.185 seconds
+</code></pre>
+<p>如果没有指定位置他会在hdfs中的/user/hive/warehouse中生成一个目录</p>
+<p><img src="https://shirukai.gitee.io/images/201711222024_673.png"></p>
+<p>指定位置创建表：</p>
+<pre><code>hive&gt; create table t2
+    &gt; (tid int, tname string, age int)
+    &gt; location &#39;/mytables/t2&#39;;
+OK
+Time taken: 0.162 seconds
+</code></pre>
+<p>创建以逗号分隔的表：</p>
+<pre><code>hive&gt; create table t3
+    &gt; (tid int,tname string,age int)
+    &gt; row format delimited fields terminated by &#39;,&#39;;
+OK
+Time taken: 8.122 seconds
+</code></pre>
+<p>删除表</p>
+<pre><code>drop table
+</code></pre>
+<h3 id="6-4-分区表（提高查询效率）"><a href="#6-4-分区表（提高查询效率）" class="headerlink" title="6.4 分区表（提高查询效率）"></a>6.4 分区表（提高查询效率）</h3><p><a target="_blank" rel="noopener" href="http://blog.csdn.net/skywalker_only/article/details/30224309">http://blog.csdn.net/skywalker_only/article/details/30224309</a></p>
+<ul>
+<li>Partition对应于数据库的Partition列的密集索引</li>
+<li>在HIve中，表中的一个Partition对应于表下的一个目录，所有的Partition的数据都存储在对应的目录中</li>
+</ul>
+<h4 id="创建分区表"><a href="#创建分区表" class="headerlink" title="创建分区表"></a>创建分区表</h4><pre><code>hive&gt; create table partition_table
+    &gt; (sid int, name string)
+    &gt; partitioned by (gender string)
+    &gt; row format delimited fields terminated by &#39;,&#39;;
+OK
+Time taken: 0.384 seconds
+</code></pre>
+<h4 id="查看表结构"><a href="#查看表结构" class="headerlink" title="查看表结构"></a>查看表结构</h4><pre><code>hive&gt; desc partition_table;
+OK
+sid                     int                                         
+name                    string                                      
+gender                  string                                      
+          
+# Partition Information          
+# col_name                data_type               comment             
+          
+gender                  string                                      
+Time taken: 0.281 seconds, Fetched: 8 row(s)
+</code></pre>
+<h4 id="向表中插入数据"><a href="#向表中插入数据" class="headerlink" title="向表中插入数据"></a>向表中插入数据</h4><p>插入sex为M的数据</p>
+<pre><code>hive&gt; insert into table partition_table partition(gender=&#39;M&#39;) select sid,sname from sample_data where sex=&#39;M&#39;;
+</code></pre>
+<p>插入sex为F的数据</p>
+<pre><code>hive&gt; insert into table partition_table partition(gender=&#39;F&#39;) select sid,sname from sample_data where sex=&#39;F&#39;;
+</code></pre>
+<p>在HDFS的/user/hive/warehouse/partition_table目录下，会生成两个文件</p>
+<p><img src="https://shirukai.gitee.io/images/201711230942_344.png"></p>
+<h4 id="通过查看执行计划，对比分区表和普通表的查询效率"><a href="#通过查看执行计划，对比分区表和普通表的查询效率" class="headerlink" title="通过查看执行计划，对比分区表和普通表的查询效率"></a>通过查看执行计划，对比分区表和普通表的查询效率</h4><p>普通表查询性别为M的数据</p>
+<pre><code>hive&gt; explain select * from sample_data where sex=&#39;M&#39;;
+OK
+STAGE DEPENDENCIES:
+  Stage-0 is a root stage
+STAGE PLANS:
+  Stage: Stage-0
+    Fetch Operator
+      limit: -1
+      Processor Tree:
+        TableScan
+          alias: sample_data
+          Statistics: Num rows: 1 Data size: 45 Basic stats: COMPLETE Column stats: NONE
+          Filter Operator
+            predicate: (sex = &#39;M&#39;) (type: boolean)
+            Statistics: Num rows: 1 Data size: 45 Basic stats: COMPLETE Column stats: NONE
+            Select Operator
+              expressions: sid (type: int), sname (type: string), &#39;M&#39; (type: string)
+              outputColumnNames: _col0, _col1, _col2
+              Statistics: Num rows: 1 Data size: 45 Basic stats: COMPLETE Column stats: NONE
+              ListSink
+Time taken: 0.949 seconds, Fetched: 20 row(s)
+</code></pre>
+<p>分区表查询性别为M的数据</p>
+<pre><code>hive&gt; explain select * from partition_table where gender=&#39;M&#39;;
+OK
+STAGE DEPENDENCIES:
+  Stage-0 is a root stage
+STAGE PLANS:
+  Stage: Stage-0
+    Fetch Operator
+      limit: -1
+      Processor Tree:
+        TableScan
+          alias: partition_table
+          Statistics: Num rows: 3 Data size: 18 Basic stats: COMPLETE Column stats: NONE
+          Select Operator
+            expressions: sid (type: int), name (type: string), &#39;M&#39; (type: string)
+            outputColumnNames: _col0, _col1, _col2
+            Statistics: Num rows: 3 Data size: 18 Basic stats: COMPLETE Column stats: NONE
+            ListSink
+Time taken: 0.84 seconds, Fetched: 17 row(s)
+</code></pre>
+<h3 id="6-5-外部表"><a href="#6-5-外部表" class="headerlink" title="6.5 外部表"></a>6.5 外部表</h3><ul>
+<li>指向已经在HDFS中存在的数据，可以创建Partition</li>
+<li>它和内部表示在元数据的组织上是相同的，而实际数据的存储则有较大的差异</li>
+<li>外部表只有一个过程，加载数据和创建表同时完成，并不会移动到数据仓库中，知识外部数据建立一个连接。当伤处一个外部表时 ，仅伤处该连接。</li>
+</ul>
+<h4 id="6-5-1-创建外部表"><a href="#6-5-1-创建外部表" class="headerlink" title="6.5.1 创建外部表"></a>6.5.1 创建外部表</h4><h5 id="在linux下创建三个文件"><a href="#在linux下创建三个文件" class="headerlink" title="在linux下创建三个文件"></a>在linux下创建三个文件</h5><p>student01.txt</p>
+<pre><code>[root@Master hadoop_practice]# cat student01.txt
+Tom,23
+Mary,20
+</code></pre>
+<p>student02.txt</p>
+<pre><code>[root@Master hadoop_practice]# cat student02.txt
+Mike,25
+</code></pre>
+<p>student03.txt</p>
+<pre><code>[root@Master hadoop_practice]# cat student03.txt
+Scott,21
+King,20
+</code></pre>
+<h5 id="在hdfs中创建-student目录"><a href="#在hdfs中创建-student目录" class="headerlink" title="在hdfs中创建/student目录"></a>在hdfs中创建/student目录</h5><pre><code>[root@Master hadoop_practice]# hdfs dfs -mkdir /student
+</code></pre>
+<h5 id="上传文件到hdfs的-student目录下"><a href="#上传文件到hdfs的-student目录下" class="headerlink" title="上传文件到hdfs的/student目录下"></a>上传文件到hdfs的/student目录下</h5><pre><code>hdfs dfs -put student01.txt /student
+hdfs dfs -put student02.txt /student
+hdfs dfs -put student03.txt /student
+</code></pre>
+<h5 id="创建外部表"><a href="#创建外部表" class="headerlink" title="创建外部表"></a>创建外部表</h5><pre><code>hive&gt; create external table external_student
+    &gt; (sname string,age int)
+    &gt; row format delimited fields terminated by &#39;,&#39;
+    &gt; location &#39;/student&#39;;
+OK
+Time taken: 0.187 seconds
+</code></pre>
+<h5 id="查看外部表数据"><a href="#查看外部表数据" class="headerlink" title="查看外部表数据"></a>查看外部表数据</h5><pre><code>hive&gt; select * from external_student;
+OK
+Tom    23
+Mary    20
+Mike    25
+Scott    21
+King    20
+Time taken: 0.699 seconds, Fetched: 5 row(s)
+</code></pre>
+<h3 id="6-6-桶表"><a href="#6-6-桶表" class="headerlink" title="6.6 桶表"></a>6.6 桶表</h3><ul>
+<li>桶表是对数据进行哈希取值，然后放到不同文件中存储</li>
+</ul>
+<h4 id="创建桶表"><a href="#创建桶表" class="headerlink" title="创建桶表"></a>创建桶表</h4><pre><code>hive&gt; create table bucket_table
+    &gt; (sid int,sname string,age int)
+    &gt; clustered by (sname) into 5 buckets;
+OK
+Time taken: 0.294 seconds
+</code></pre>
+<h3 id="6-7-视图"><a href="#6-7-视图" class="headerlink" title="6.7 视图"></a>6.7 视图</h3><ul>
+<li>视图是一种需表，是一个逻辑概念；可以跨越多张表</li>
+<li>视图建立在已有表的基础上，视图赖以建立的这些表称为基表</li>
+<li>视图可以简化复杂的查询</li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>数据仓库的基本概念</p>
+<p>什么是Hive？Hive的体系结构</p>
+<p>Hive的安装和管理</p>
+<p>Hive的数据模型</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93"><span class="toc-number">1.</span> <span class="toc-text">1 数据仓库</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-number">1.1.</span> <span class="toc-text">1.1基本概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93%E7%9A%84%E7%BB%93%E6%9E%84%E5%92%8C%E6%9E%84%E5%BB%BA%E8%BF%87%E7%A8%8B"><span class="toc-number">1.2.</span> <span class="toc-text">1.2数据仓库的结构和构建过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3OLTP%E5%BA%94%E7%94%A8%E4%B8%8EOLAP%E5%BA%94%E7%94%A8"><span class="toc-number">1.3.</span> <span class="toc-text">1.3OLTP应用与OLAP应用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-4%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93%E4%B8%AD%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.4.</span> <span class="toc-text">1.4数据仓库中数据模型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Hive"><span class="toc-number">2.</span> <span class="toc-text">2 Hive</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1%E4%BB%80%E4%B9%88%E6%98%AFHive%EF%BC%9F"><span class="toc-number">2.1.</span> <span class="toc-text">2.1什么是Hive？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-Hive%E7%9A%84%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 Hive的体系结构</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-Hive%E5%AE%89%E8%A3%85"><span class="toc-number">3.</span> <span class="toc-text">3 Hive安装</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E5%AE%89%E8%A3%85%E6%A8%A1%E5%BC%8F"><span class="toc-number">3.1.</span> <span class="toc-text">3.1 安装模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-Hive%E6%9C%AC%E5%9C%B0%E6%A8%A1%E5%BC%8F%E5%AE%89%E8%A3%85%EF%BC%88%E5%9C%A8hadoop%E7%8E%AF%E5%A2%83%E4%B8%8B%EF%BC%89"><span class="toc-number">3.2.</span> <span class="toc-text">3.2 Hive本地模式安装（在hadoop环境下）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-Hive%E7%9A%84%E7%AE%A1%E7%90%86"><span class="toc-number">4.</span> <span class="toc-text">4 Hive的管理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-Hive%E7%9A%84%E5%90%AF%E5%8A%A8%E6%96%B9%E5%BC%8F"><span class="toc-number">4.1.</span> <span class="toc-text">4.1 Hive的启动方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-Hive%E5%91%BD%E4%BB%A4%E8%A1%8C"><span class="toc-number">4.2.</span> <span class="toc-text">4.2 Hive命令行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-web%E7%95%8C%E9%9D%A2%E6%96%B9%E5%BC%8F-%E5%9C%A82-2-0%E4%B9%8B%E5%90%8E%E5%B7%B2%E7%BB%8F%E5%BA%9F%E9%99%A4%E8%BF%99%E4%B8%AA%E5%8A%9F%E8%83%BD"><span class="toc-number">4.3.</span> <span class="toc-text">4.3 web界面方式(在2.2.0之后已经废除这个功能)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-HiveServer2"><span class="toc-number">4.4.</span> <span class="toc-text">4.4 HiveServer2</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-Hive-%E7%9A%84%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-number">5.</span> <span class="toc-text">5 Hive 的数据类型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-number">5.1.</span> <span class="toc-text">5.1 基本数据类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-%E5%A4%8D%E6%9D%82%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-number">5.2.</span> <span class="toc-text">5.2 复杂数据类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-%E6%97%B6%E9%97%B4%E7%B1%BB%E5%9E%8B"><span class="toc-number">5.3.</span> <span class="toc-text">5.3 时间类型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-Hive%E7%9A%84%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8"><span class="toc-number">6.</span> <span class="toc-text">6 Hive的数据存储</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#6-1%E8%A1%A8"><span class="toc-number">6.1.</span> <span class="toc-text">6.1表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-2-%E8%A7%86%E5%9B%BE"><span class="toc-number">6.2.</span> <span class="toc-text">6.2 视图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-3-%E5%86%85%E9%83%A8%E8%A1%A8"><span class="toc-number">6.3.</span> <span class="toc-text">6.3 内部表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-4-%E5%88%86%E5%8C%BA%E8%A1%A8%EF%BC%88%E6%8F%90%E9%AB%98%E6%9F%A5%E8%AF%A2%E6%95%88%E7%8E%87%EF%BC%89"><span class="toc-number">6.4.</span> <span class="toc-text">6.4 分区表（提高查询效率）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-5-%E5%A4%96%E9%83%A8%E8%A1%A8"><span class="toc-number">6.5.</span> <span class="toc-text">6.5 外部表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-6-%E6%A1%B6%E8%A1%A8"><span class="toc-number">6.6.</span> <span class="toc-text">6.6 桶表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-7-%E8%A7%86%E5%9B%BE"><span class="toc-number">6.7.</span> <span class="toc-text">6.7 视图</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">7.</span> <span class="toc-text">总结</span></a></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

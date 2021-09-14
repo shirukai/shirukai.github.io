@@ -1,0 +1,1179 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>RPC框架初体验之入门 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="
+项目地址：https://github.com/shirukai/learn-demo-rpc.git
+
+RPC全称Remote Procedure Call，顾名思义，远程过程调用的意思。关于R,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">RPC框架初体验之入门</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/2.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/RPC"><b>「
+                    </b>RPC<b> 」</b></a>
+                
+                August 24, 2020
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/getting-started-with-rpc-framework.html" title="RPC框架初体验之入门" class="">RPC框架初体验之入门</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    26k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    24 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/RPC/" rel="tag">RPC</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <blockquote>
+<p>项目地址：<a target="_blank" rel="noopener" href="https://github.com/shirukai/learn-demo-rpc.git">https://github.com/shirukai/learn-demo-rpc.git</a></p>
+</blockquote>
+<p>RPC全称Remote Procedure Call，顾名思义，远程过程调用的意思。关于RPC的介绍，可以参考一下简书上<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/2accc2840a1b">《如何给老婆解释什么是RPC》</a>这篇文章，很有趣。RPC这个概念，我第一次接触是在《Spark内核设计的艺术》这本书里。后来在看微服务的时候，也提及到了几款RPC框架，比如Thrift、Dubbo、gRPC。所以决定认真的学习一下RPC以及这几种框架。下面将会在本篇文章里入门RPC，动手实现一个简单的RPC，再基于Netty实现一个RPC，最后简单介绍一下几款常见的RPC框架，以及它们的优缺点。后面将会以系列的形式分别介绍这几款常见的RPC框架的使用。</p>
+<h1 id="1-动手实现一个简单的RPC"><a href="#1-动手实现一个简单的RPC" class="headerlink" title="1 动手实现一个简单的RPC"></a>1 动手实现一个简单的RPC</h1><p>为了深入理解RPC，这里动手实现了一个简单的RPC，服务之前通过简单的socket进行通讯。</p>
+<h2 id="1-1-项目描述"><a href="#1-1-项目描述" class="headerlink" title="1.1 项目描述"></a>1.1 项目描述</h2><p>在learn-demo-rpc项目下有一个simple-rpc的模块，该模块实现了一个简单的RPC，其中包括四个子模块</p>
+<pre><code>simple-rpc/
+├── simple-rpc-api
+├── simple-rpc-consumer
+├── simple-rpc-core
+└── simple-rpc-provider
+</code></pre>
+<ul>
+<li>simple-rpc-api: 该模块提供服务接口</li>
+<li>simple-rpc-core: RPC核心实现</li>
+<li>simple-rpc-consumer: RPC消费者服务</li>
+<li>simple-rpc-provider: RPC提供者服务</li>
+</ul>
+<p>simple-rpc-provider 模块实现simple-rpc-api定义的相关接口，并通过simple-rpc-core模块创建提供者服务。</p>
+<p>simple-rpc-consumer通过simple-rpc-core模块创建消费者服务，并通过simple-rpc-api模块的接口进行RPC。</p>
+<p>项目演示：</p>
+<p>启动simple-rpc-provider模块里的DemoServiceProvider</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/f946758e45f4ac6dcdba1425533f599f.jpg"></p>
+<p>启动simple-rpc-consumer里的DemoServiceConsumer</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/3d234598c9353fb8f14463983a3be776.jpg"></p>
+<h2 id="1-2-simple-rpc-core模块"><a href="#1-2-simple-rpc-core模块" class="headerlink" title="1.2 simple-rpc-core模块"></a>1.2 simple-rpc-core模块</h2><p>该模块为核心模块，分别提供了服务者、消费者服务创建。如下所示，主要包括四个功能。request包定义RPC请求数据类型，response包定义RPC响应数据类型，server提供RPC的provider服务，client提供RPC的consumer服务。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shirukai/images/c3c0bc4e435e6662c78eca22f1225c02.jpg"></p>
+<h3 id="1-2-1-request"><a href="#1-2-1-request" class="headerlink" title="1.2.1 request"></a>1.2.1 request</h3><p>在该包下创建RpcRequest类，用来定义请求数据类型实体，该实体主要包含，远程调用的方法名称、参数列表、参数类型列表。</p>
+<pre><code class="java">package learn.demo.rpc.simple.core.request;
+
+import java.io.Serializable;
+import java.util.Arrays;
+
+/**
+ * Created by shirukai on 2019-06-21 15:02
+ * RPC 请求
+ */
+public class RpcRequest implements Serializable &#123;
+    private static final long serialVersionUID = 4932007273709224551L;
+    /**
+     * 方法名称
+     */
+    private String methodName;
+
+    /**
+     * 参数列表
+     */
+    private Object[] parameters;
+
+    /**
+     * 参数类型
+     */
+    private Class&lt;?&gt;[] parameterTypes;
+    /**
+     * 省略get、set方法。
+     */
+&#125;
+</code></pre>
+<h3 id="1-2-2-response"><a href="#1-2-2-response" class="headerlink" title="1.2.2 response"></a>1.2.2 response</h3><p>在该包下创建RpcResponse类，用来定义RPC响应的数据类型，其中包含响应状态status，用来描述请求是否执行成功，它有两个状态succeed和failed。响应信息message主要存放异常响应时的错误信息。响应数据data，远程调用方法的返回值。</p>
+<pre><code class="java">public class RpcResponse implements Serializable &#123;
+    public static String SUCCEED = &quot;succeed&quot;;
+    public static String FAILED = &quot;failed&quot;;
+    private static final long serialVersionUID = 6595683424889346485L;
+
+    /**
+     * 响应状态
+     */
+    private String status = &quot;succeed&quot;;
+    /**
+     * 响应信息，如异常信息
+     */
+    private String message;
+
+    /**
+     * 响应数据，返回值
+     */
+    private Object data;
+    /**
+     * 省略get、set方法
+     */
+&#125;
+</code></pre>
+<h3 id="1-2-3-server"><a href="#1-2-3-server" class="headerlink" title="1.2.3 server"></a>1.2.3 server</h3><p>在该包下创建RpcProvider类，用来定义创建Provider服务的方法。原理很简单，根据指定的端口创建ServerSocket，监听客户端发送数据。接收到客户端发送数据后，反序列化成Request，获取其中的方法名和参数类型及参数列表，根据传入的接口class和实例，通过反射机制，调用该方法，拿到执行结果后封装成RpcResponse返回给客户端。具体实现如下：</p>
+<pre><code class="java">package learn.demo.rpc.simple.core.server;
+
+import learn.demo.rpc.simple.core.request.RpcRequest;
+import learn.demo.rpc.simple.core.response.RpcResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.lang.reflect.Method;
+import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+/**
+ * Created by shirukai on 2019-06-21 16:26
+ * RPC provider
+ */
+public class RpcProvider&lt;T&gt; &#123;
+    private static final Logger log = LoggerFactory.getLogger(RpcProvider.class);
+    private T ref;
+
+    private Class&lt;?&gt; interfaceClass;
+
+    public void setRef(T ref) &#123;
+        this.ref = ref;
+    &#125;
+
+    public RpcProvider&lt;T&gt; setInterfaceClass(Class&lt;?&gt; interfaceClass) &#123;
+        this.interfaceClass = interfaceClass;
+        return this;
+    &#125;
+
+    public void export(int port) &#123;
+        try &#123;
+            log.info(&quot;The RPC Server is starting, address:&#123;&#125;, bind:&#123;&#125;&quot;, InetAddress.getLocalHost().getHostAddress(), port);
+            ServerSocket listener = new ServerSocket(port);
+            while (true) &#123;
+                Socket socket = listener.accept();
+                // 接收数据并进行反序列化
+                ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
+
+                // 获取请求对象
+                Object object = objectInputStream.readObject();
+
+                if (object instanceof RpcRequest) &#123;
+                    RpcRequest request = (RpcRequest) object;
+                    log.info(&quot;Received request:&#123;&#125;&quot;, request);
+                    // 处理请求
+                    RpcResponse response = handleRequest(request);
+                    // 将结果返回给客户端
+                    log.info(&quot;Send response to client.&#123;&#125;&quot;, response);
+                    ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
+                    objectOutputStream.writeObject(response);
+                &#125;
+                socket.close();
+            &#125;
+        &#125; catch (Exception e) &#123;
+            e.printStackTrace();
+        &#125;
+
+    &#125;
+
+    private RpcResponse handleRequest(RpcRequest request) &#123;
+        RpcResponse response = new RpcResponse();
+        try &#123;
+            log.info(&quot;The server is handling request.&quot;);
+            Method method = interfaceClass.getMethod(request.getMethodName(), request.getParameterTypes());
+            Object data = method.invoke(ref, request.getParameters());
+            response.setData(data);
+        &#125; catch (Exception e) &#123;
+            response.setStatus(RpcResponse.FAILED).setMessage(e.getMessage());
+        &#125;
+        return response;
+    &#125;
+&#125;
+</code></pre>
+<h3 id="1-2-4-client"><a href="#1-2-4-client" class="headerlink" title="1.2.4 client"></a>1.2.4 client</h3><p>客户端的实现比较有趣，包含如下内容</p>
+<pre><code class="shell">client/
+├── RpcClient.java
+├── RpcConsumer.java
+└── proxy
+    └── RpcInvocationHandler.java
+</code></pre>
+<p>原理也不复杂，通过上面的结构可以看出，我们clien里包含了一个proxy包，该包主要实现的是一个动态代理。客户端实现API接口的动态代理，生成接口实例，表面上调用的接口方法，通过代理后，经过RpcClient进行的远程调用，也就是我们的定义的RPC，拿到结果后再返回。</p>
+<h4 id="1-2-4-1-RpcClient"><a href="#1-2-4-1-RpcClient" class="headerlink" title="1.2.4.1 RpcClient"></a>1.2.4.1 RpcClient</h4><p>RpcClient主要是与远程ServerSocket进行通讯的，创建根据IP和端口创建Socket，将RpcRequest进行序列化之后，发送给远程服务。</p>
+<pre><code class="java">package learn.demo.rpc.simple.core.client;
+
+import learn.demo.rpc.simple.core.request.RpcRequest;
+import learn.demo.rpc.simple.core.response.RpcResponse;
+
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
+
+/**
+ * Created by shirukai on 2019-06-21 15:42
+ * Rpc客户端
+ */
+public class RpcClient &#123;
+    /**
+     * 服务地址
+     */
+    private String address;
+
+    /**
+     * 服务端口
+     */
+    private int port;
+
+
+    public RpcResponse send(RpcRequest rpcRequest) throws Exception &#123;
+
+        Socket socket = new Socket(address, port);
+
+        //请求序列化
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
+
+        //将请求发给服务提供方
+        objectOutputStream.writeObject(rpcRequest);
+
+        // 将响应体反序列化
+        ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
+
+        Object response = objectInputStream.readObject();
+        if (response instanceof RpcResponse) &#123;
+            return (RpcResponse) response;
+        &#125;
+        throw new RuntimeException(&quot;Return error&quot;);
+    &#125;
+
+    public String getAddress() &#123;
+        return address;
+    &#125;
+
+    public void setAddress(String address) &#123;
+        this.address = address;
+    &#125;
+
+    public int getPort() &#123;
+        return port;
+    &#125;
+
+    public void setPort(int port) &#123;
+        this.port = port;
+    &#125;
+&#125;
+</code></pre>
+<h4 id="1-2-4-2-RpcInvocationHandler"><a href="#1-2-4-2-RpcInvocationHandler" class="headerlink" title="1.2.4.2 RpcInvocationHandler"></a>1.2.4.2 RpcInvocationHandler</h4><p>在proxy下创建RpcInvocationHandler，调用处理器，继承InvocationHandler接口并实现其invoke方法。实现代理逻辑。如下所示：</p>
+<pre><code class="java">package learn.demo.rpc.simple.core.client.proxy;
+
+import learn.demo.rpc.simple.core.client.RpcClient;
+import learn.demo.rpc.simple.core.request.RpcRequest;
+import learn.demo.rpc.simple.core.response.RpcResponse;
+
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+
+/**
+ * Created by shirukai on 2019-06-21 15:43
+ * RPC 代理处理器
+ */
+public class RpcInvocationHandler implements InvocationHandler &#123;
+    private RpcClient client;
+
+    public RpcInvocationHandler(RpcClient client) &#123;
+        this.client = client;
+    &#125;
+
+    @Override
+    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable &#123;
+
+        // 构建请求对象
+        RpcRequest rpcRequest = new RpcRequest();
+        rpcRequest.setMethodName(method.getName())
+                .setParameterTypes(method.getParameterTypes())
+                .setParameters(args);
+        // 使用客户端发送请求
+        RpcResponse response = client.send(rpcRequest);
+
+        // 响应成功返回结果
+        if (RpcResponse.SUCCEED.equals(response.getStatus())) &#123;
+            return response.getData();
+        &#125;
+        throw new RuntimeException(response.getMessage());
+    &#125;
+&#125;
+</code></pre>
+<h4 id="1-2-4-3-RpcConsumer"><a href="#1-2-4-3-RpcConsumer" class="headerlink" title="1.2.4.3 RpcConsumer"></a>1.2.4.3 RpcConsumer</h4><p>该类通过实例化RpcClient以及创建代理实例来构建生产者</p>
+<pre><code class="java">package learn.demo.rpc.simple.core.client;
+
+import learn.demo.rpc.simple.core.client.proxy.RpcInvocationHandler;
+
+import java.lang.reflect.Proxy;
+
+/**
+ * Created by shirukai on 2019-06-21 16:11
+ * 生产者构建器
+ */
+public class RpcConsumer &#123;
+    private String address;
+    private int port;
+
+    private Class&lt;?&gt; interfaceClass;
+
+    public RpcConsumer setAddress(String address) &#123;
+        this.address = address;
+        return this;
+    &#125;
+
+    public RpcConsumer setPort(int port) &#123;
+        this.port = port;
+        return this;
+    &#125;
+
+    public RpcConsumer setInterface(Class&lt;?&gt; interfaceClass) &#123;
+        this.interfaceClass = interfaceClass;
+        return this;
+    &#125;
+
+    public &lt;T&gt; T get() &#123;
+        RpcClient client = new RpcClient();
+        client.setAddress(address);
+        client.setPort(port);
+        // 实例化RPC代理处理器
+        RpcInvocationHandler handler = new RpcInvocationHandler(client);
+        return (T) Proxy.newProxyInstance(interfaceClass.getClassLoader(), new Class[]&#123;interfaceClass&#125;, handler);
+    &#125;
+&#125;
+</code></pre>
+<h2 id="1-3-simple-rpc-api模块"><a href="#1-3-simple-rpc-api模块" class="headerlink" title="1.3 simple-rpc-api模块"></a>1.3 simple-rpc-api模块</h2><p>上文也提到，该模块只是提供一个公用的接口API，没有特殊方法。如下提供一个名为DemoService的接口，定义如下接口：</p>
+<pre><code class="java">package learn.demo.rpc.simple.api;
+
+/**
+ * Created by shirukai on 2019-06-21 10:54
+ * DemoService 接口
+ */
+public interface DemoService &#123;
+    String sayHello(String name);
+
+    String sayGoodbye(String name);
+&#125;
+</code></pre>
+<h2 id="1-4-simple-rpc-provider模块"><a href="#1-4-simple-rpc-provider模块" class="headerlink" title="1.4 simple-rpc-provider模块"></a>1.4 simple-rpc-provider模块</h2><p>上面我们已经实现了核心模块core以及接口api，这里我们调用这两个模块进行提供者服务的创建。分为接口实现，和服务创建两部分。</p>
+<h3 id="1-4-1-API接口实现"><a href="#1-4-1-API接口实现" class="headerlink" title="1.4.1 API接口实现"></a>1.4.1 API接口实现</h3><p>引入我们创建的simple-rpc-api模块</p>
+<pre><code class="xml">        &lt;dependency&gt;
+            &lt;groupId&gt;learn.demo&lt;/groupId&gt;
+            &lt;artifactId&gt;simple-rpc-api&lt;/artifactId&gt;
+            &lt;version&gt;1.0&lt;/version&gt;
+            &lt;scope&gt;compile&lt;/scope&gt;
+        &lt;/dependency&gt;
+</code></pre>
+<p>创建DemoServiceImpl实现DemoService接口</p>
+<pre><code class="shell">package learn.demo.rpc.simple.provider;
+
+import learn.demo.rpc.simple.api.DemoService;
+
+/**
+ * Created by shirukai on 2019-06-21 10:55
+ * 接口实现类
+ */
+public class DemoServiceImpl implements DemoService &#123;
+    @Override
+    public String sayHello(String name) &#123;
+        return &quot;This is simple RPC service.\nHello &quot; + name;
+    &#125;
+
+    @Override
+    public String sayGoodbye(String name) &#123;
+        return &quot;This is simple RPC service.\nGoodbye &quot; + name;
+    &#125;
+&#125;
+</code></pre>
+<h3 id="1-4-2-RPC-Provider服务创建"><a href="#1-4-2-RPC-Provider服务创建" class="headerlink" title="1.4.2 RPC Provider服务创建"></a>1.4.2 RPC Provider服务创建</h3><p>使用simple-rpc-core模块创建RpcProvider实例，然后启动服务。这里向外暴露端口9090。</p>
+<pre><code class="java">package learn.demo.rpc.simple.provider;
+
+
+import learn.demo.rpc.simple.api.DemoService;
+import learn.demo.rpc.simple.core.server.RpcProvider;
+
+/**
+ * Created by shirukai on 2019-06-21 10:56
+ * 服务提供者
+ */
+public class DemoServiceProvider &#123;
+
+    public static void main(String[] args) &#123;
+        DemoServiceImpl demoService = new DemoServiceImpl();
+
+        RpcProvider&lt;DemoService&gt; provider = new RpcProvider&lt;&gt;();
+        provider.setInterfaceClass(DemoService.class)
+                .setRef(demoService);
+
+        provider.export(9090);
+    &#125;
+&#125;
+</code></pre>
+<h2 id="1-5-simple-rpc-consumer模块"><a href="#1-5-simple-rpc-consumer模块" class="headerlink" title="1.5 simple-rpc-consumer模块"></a>1.5 simple-rpc-consumer模块</h2><p>通过simple-rpc-cor模块创建RpcConsumer实例，设置Provider地址和端口，然后获取接口实例，调用相关方法。</p>
+<pre><code class="java">package learn.demo.rpc.simple.consumer;
+
+import learn.demo.rpc.simple.api.DemoService;
+import learn.demo.rpc.simple.core.client.RpcConsumer;
+
+/**
+ * Created by shirukai on 2019-06-21 11:29
+ * 消费者
+ */
+public class DemoServiceConsumer &#123;
+    public static void main(String[] args) &#123;
+        RpcConsumer consumer = new RpcConsumer();
+        consumer.setAddress(&quot;127.0.0.1&quot;);
+        consumer.setPort(9090);
+        consumer.setInterface(DemoService.class);
+
+        DemoService service = consumer.get();
+
+        System.out.println(service.sayGoodbye(&quot;hahah&quot;));
+    &#125;
+&#125;
+</code></pre>
+<h1 id="2-基于ZooKeeper注册中心的RPC实现"><a href="#2-基于ZooKeeper注册中心的RPC实现" class="headerlink" title="2 基于ZooKeeper注册中心的RPC实现"></a>2 基于ZooKeeper注册中心的RPC实现</h1><p>上面我们介绍了通过直连的方式，实现了一个简单RPC，我们也可以通过注册中心的形式去实现RPC，这涉及到了服务注册和服务发现。这里使用ZooKeeper作为注册中心，也简单的进行了RPC的实现，其中有些地方没有进行详细实现，比如服务的负载均衡。该部分的代码在learn-demo-rpc下的zk-registry-rpc模块下，目录结构如simple-rpc相同，如下所示：</p>
+<pre><code class="shell">zk-registry-rpc/
+├── zk-registry-rpc-api
+├── zk-registry-rpc-consumer
+├── zk-registry-rpc-core
+└── zk-registry-rpc-provider
+</code></pre>
+<p>内容改动不大，主要在core的实现上，加入了注册中心，进行服务发现和服务注册。在Rpc的请求上，也加入了ID字段，用来表示需要调用哪个服务。下面将对几处修改的地方进行讲解。</p>
+<h2 id="2-1-zk-registry-rpc-core模块"><a href="#2-1-zk-registry-rpc-core模块" class="headerlink" title="2.1 zk-registry-rpc-core模块"></a>2.1 zk-registry-rpc-core模块</h2><h3 id="2-1-1-request"><a href="#2-1-1-request" class="headerlink" title="2.1.1 request"></a>2.1.1 request</h3><p>上面提到对RpcRequest进行简单修改，加入Id字段，用来描述调用的是那个接口下的服务，所以此id是使用接口名生成的。</p>
+<pre><code class="java">    /**
+     * 请求ID，接口类名
+     */
+    private String id;
+</code></pre>
+<h3 id="2-1-2-registry"><a href="#2-1-2-registry" class="headerlink" title="2.1.2 registry"></a>2.1.2 registry</h3><p>这里主要是对注册中心的实现，其中包括ProviderInfo实体类，用来描述提供者信息，如id、address、port。另外包括RpcZKRegistryService注册中心服务。</p>
+<h4 id="2-1-2-1-ProviderInfo"><a href="#2-1-2-1-ProviderInfo" class="headerlink" title="2.1.2.1 ProviderInfo"></a>2.1.2.1 ProviderInfo</h4><pre><code class="java">package learn.demo.rpc.zk.core.registry;
+
+import com.alibaba.fastjson.JSON;
+
+/**
+ * Created by shirukai on 2019-06-25 16:34
+ * Provider信息
+ */
+public class ProviderInfo &#123;
+    /**
+     * 提供者ID
+     */
+    private String id;
+    /**
+     * 提供者地址
+     */
+    private String address;
+    /**
+     * 提供者端口
+     */
+    private int port;
+
+    public String getId() &#123;
+        return id;
+    &#125;
+
+    public ProviderInfo setId(String id) &#123;
+        this.id = id;
+        return this;
+    &#125;
+
+    public String getAddress() &#123;
+        return address;
+    &#125;
+
+    public ProviderInfo setAddress(String address) &#123;
+        this.address = address;
+        return this;
+    &#125;
+
+    public int getPort() &#123;
+        return port;
+    &#125;
+
+    public ProviderInfo setPort(int port) &#123;
+        this.port = port;
+        return this;
+    &#125;
+
+    public String toJSONString() &#123;
+        return JSON.toJSONString(this);
+    &#125;
+
+    @Override
+    public String toString() &#123;
+        return &quot;ProviderInfo&#123;&quot; +
+                &quot;id=&#39;&quot; + id + &#39;\&#39;&#39; +
+                &quot;, address=&#39;&quot; + address + &#39;\&#39;&#39; +
+                &quot;, port=&quot; + port +
+                &#39;&#125;&#39;;
+    &#125;
+&#125;
+</code></pre>
+<h4 id="2-1-2-2-RpcZKRegistryService"><a href="#2-1-2-2-RpcZKRegistryService" class="headerlink" title="2.1.2.2 RpcZKRegistryService"></a>2.1.2.2 RpcZKRegistryService</h4><p>注册中心的实现，主要包括三个功能：服务注册、服务发现、服务监听。Provider通过调用注册中的服务注册，将自己的信息注册到ZK中，Consumer通过调用注册中心的服务发现，查找自己想要请求的服务列表，并通过服务监听，更新服务列表。具体实现如下所示：</p>
+<pre><code class="java">package learn.demo.rpc.zk.core.registry;
+
+import com.alibaba.fastjson.JSON;
+import org.apache.curator.RetryPolicy;
+import org.apache.curator.framework.CuratorFramework;
+import org.apache.curator.framework.CuratorFrameworkFactory;
+import org.apache.curator.framework.recipes.cache.PathChildrenCache;
+import org.apache.curator.framework.recipes.cache.PathChildrenCacheEvent;
+import org.apache.curator.retry.RetryNTimes;
+import org.apache.zookeeper.CreateMode;
+import org.apache.zookeeper.ZooDefs;
+import org.apache.zookeeper.data.Stat;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+
+/**
+ * Created by shirukai on 2019-06-25 16:42
+ * Rpc注册服务
+ */
+public class RpcZKRegistryService &#123;
+    private static final Logger log = LoggerFactory.getLogger(RpcZKRegistryService.class);
+    private static final String NAMESPACE = &quot;zk-rpc&quot;;
+    private static final String RPC_PROVIDER_NODE = &quot;/provider&quot;;
+
+
+    private final Map&lt;String, ProviderInfo&gt; remoteProviders = new HashMap&lt;&gt;();
+    private CuratorFramework zkClient;
+
+    public RpcZKRegistryService(String zkConnectString) &#123;
+        RetryPolicy retryPolicy = new RetryNTimes(3, 5000);
+        // 获取客户端
+        this.zkClient = CuratorFrameworkFactory.builder()
+                .connectString(zkConnectString)
+                .sessionTimeoutMs(10000)
+                .retryPolicy(retryPolicy)
+                .namespace(NAMESPACE)
+                .build();
+        this.zkClient.start();
+    &#125;
+
+    /**
+     * 注册服务
+     *
+     * @param providerInfo 提供者信息
+     */
+    public void register(ProviderInfo providerInfo) &#123;
+        String nodePath = RPC_PROVIDER_NODE + &quot;/&quot; + providerInfo.getId();
+        try &#123;
+            // 判断节点存不存在，不存在则创建，存在则报异常
+            Stat stat = zkClient.checkExists().forPath(nodePath);
+            if (stat == null) &#123;
+                // 创建临时节点
+                zkClient.create()
+                        .creatingParentsIfNeeded()
+                        .withMode(CreateMode.EPHEMERAL_SEQUENTIAL)
+                        .withACL(ZooDefs.Ids.OPEN_ACL_UNSAFE)
+                        .forPath(nodePath, providerInfo.toJSONString().getBytes());
+            &#125; else &#123;
+                log.error(&quot;The provider already exists.&#123;&#125;&quot;, providerInfo.toJSONString());
+            &#125;
+        &#125; catch (Exception e) &#123;
+            log.error(&quot;Registration provider failed.&#123;&#125;&quot;, e.getMessage());
+        &#125;
+    &#125;
+
+
+    /**
+     * 订阅服务
+     *
+     * @param id 提供者ID,接口名字
+     */
+    public void subscribe(String id) &#123;
+        try &#123;
+            // 获取所有的Provider
+            List&lt;String&gt; providerIds = zkClient.getChildren().forPath(RPC_PROVIDER_NODE);
+            for (String providerId : providerIds) &#123;
+                // 如果与订阅服务相同，则获取节点信息
+                if (providerId.contains(id)) &#123;
+                    String nodePath = RPC_PROVIDER_NODE + &quot;/&quot; + providerId;
+                    byte[] data = zkClient.getData().forPath(nodePath);
+                    ProviderInfo info = JSON.parseObject(data, ProviderInfo.class);
+                    this.remoteProviders.put(providerId, info);
+                &#125;
+            &#125;
+
+            // 添加监听事件
+            addProviderWatch(id);
+        &#125; catch (Exception e) &#123;
+            log.error(&quot;Subscription provider failed.&quot;);
+        &#125;
+
+    &#125;
+
+    /**
+     * 添加监听事件
+     *
+     * @param id 提供者ID，接口名字
+     */
+    private void addProviderWatch(String id) throws Exception &#123;
+        // 创建子节点缓存
+        final PathChildrenCache childrenCache = new PathChildrenCache(this.zkClient, RPC_PROVIDER_NODE, true);
+        childrenCache.start(PathChildrenCache.StartMode.BUILD_INITIAL_CACHE);
+
+        // 添加子节点监听事件
+        childrenCache.getListenable().addListener((client, event) -&gt; &#123;
+            String nodePath = event.getData().getPath();
+            // 如果监听节点为订阅的ProviderID
+            if (nodePath.contains(id)) &#123;
+
+                if (event.getType().equals(PathChildrenCacheEvent.Type.CHILD_REMOVED)) &#123;
+                    // 节点移除
+                    this.remoteProviders.remove(nodePath);
+
+                &#125; else if (event.getType().equals(PathChildrenCacheEvent.Type.CHILD_ADDED)) &#123;
+                    byte[] data = event.getData().getData();
+                    ProviderInfo info = JSON.parseObject(data, ProviderInfo.class);
+                    // 节点添加
+                    this.remoteProviders.put(nodePath, info);
+                &#125;
+            &#125;
+        &#125;);
+    &#125;
+
+    public Map&lt;String, ProviderInfo&gt; getRemoteProviders() &#123;
+        return remoteProviders;
+    &#125;
+&#125;
+</code></pre>
+<h3 id="2-1-3-server"><a href="#2-1-3-server" class="headerlink" title="2.1.3 server"></a>2.1.3 server</h3><p>server的改动不大，主要是加入了设置zk连接的方法，以及将自己的信息通过注册中心注册到zk的逻辑。</p>
+<pre><code class="java">// 设置zk连接    
+public RpcProvider&lt;T&gt; setZKConnectString(String zkConnectString) &#123;
+        this.registryService = new RpcZKRegistryService(zkConnectString);
+        return this;
+    &#125;
+</code></pre>
+<pre><code class="java">// 生成服务信息
+ProviderInfo providerInfo = new ProviderInfo();
+providerInfo.setAddress(InetAddress.getLocalHost().getHostAddress())
+        .setPort(port)
+        .setId(interfaceClass.getName());
+// 创建服务
+ServerSocket listener = new ServerSocket(port);
+
+// 服务创建完成后将信息注册到zk
+registryService.register(providerInfo);
+</code></pre>
+<h3 id="2-1-4-client"><a href="#2-1-4-client" class="headerlink" title="2.1.4 client"></a>2.1.4 client</h3><p>客户端主要修改了RpcConsumer，添加了服务发现，和模拟负载均衡的两个方法。</p>
+<pre><code class="java">    /**
+     * 获取所有Providers
+     *
+     * @return list
+     */
+    private List&lt;ProviderInfo&gt; lookupProviders() &#123;
+        // 订阅服务
+        registryService.subscribe(interfaceClass.getName());
+        // 获取所有Provider
+        Map&lt;String, ProviderInfo&gt; providers = registryService.getRemoteProviders();
+        return new ArrayList&lt;&gt;(providers.values());
+    &#125;
+
+    /**
+     * 模拟负载均衡
+     *
+     * @param providers provider 列表
+     * @return ProviderInfo
+     */
+    private static ProviderInfo chooseTarget(List&lt;ProviderInfo&gt; providers) &#123;
+        if (providers == null || providers.isEmpty()) &#123;
+            throw new RuntimeException(&quot;providers has not exits!&quot;);
+        &#125;
+        return providers.get(0);
+    &#125;
+</code></pre>
+<p>然后再创建代理实例之前调用服务发现和负载均衡方法</p>
+<pre><code class="java">    public &lt;T&gt; T get() &#123;
+        List&lt;ProviderInfo&gt; providers = lookupProviders();
+
+        ProviderInfo provider = chooseTarget(providers);
+
+        RpcClient client = new RpcClient();
+        client.setAddress(provider.getAddress());
+        client.setPort(provider.getPort());
+        // 实例化RPC代理处理器
+        RpcInvocationHandler handler = new RpcInvocationHandler(client);
+        return (T) Proxy.newProxyInstance(interfaceClass.getClassLoader(), new Class[]&#123;interfaceClass&#125;, handler);
+    &#125;
+</code></pre>
+<h1 id="3-常见RPC框架"><a href="#3-常见RPC框架" class="headerlink" title="3 常见RPC框架"></a>3 常见RPC框架</h1><p>上面通过动手实现一个简单的RPC，大体对RPC的工作流程有了一定的了解，当然我们写的只是一个简单的RPC，Demo级别的，只能玩玩不能用于生产。如果想提高性能，可以考虑使用NIO Socket进行通信，也可以基于Netty进行RPC通信，也可以通过利用一下已有的RPC框架，这里就简单对比一下几款常见的RPC框架。</p>
+<table>
+<thead>
+<tr>
+<th>PRC对比</th>
+<th>Dubbo</th>
+<th>Motan</th>
+<th>Thrift</th>
+<th>Grpc</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>开发语言</td>
+<td>java</td>
+<td>java</td>
+<td>跨语言</td>
+<td>跨语言</td>
+</tr>
+<tr>
+<td>服务治理</td>
+<td>✓</td>
+<td>✓</td>
+<td>✗</td>
+<td>✗</td>
+</tr>
+<tr>
+<td>多种序列化</td>
+<td>✓</td>
+<td>✓</td>
+<td>只支持thrift</td>
+<td>只支持protobuf</td>
+</tr>
+<tr>
+<td>多种注册中心</td>
+<td>✓</td>
+<td>✓</td>
+<td>✗</td>
+<td>✗</td>
+</tr>
+<tr>
+<td>管理中心</td>
+<td>✓</td>
+<td>✓</td>
+<td>✗</td>
+<td>✗</td>
+</tr>
+<tr>
+<td>跨语言通讯</td>
+<td>✗</td>
+<td>✗</td>
+<td>✓</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>整体性能</td>
+<td>3</td>
+<td>4</td>
+<td>5</td>
+<td>3</td>
+</tr>
+</tbody></table>
+<p>等有时间整理一下Dubbo以及Thrift的简单使用。</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E5%8A%A8%E6%89%8B%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84RPC"><span class="toc-number">1.</span> <span class="toc-text">1 动手实现一个简单的RPC</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-%E9%A1%B9%E7%9B%AE%E6%8F%8F%E8%BF%B0"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 项目描述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-simple-rpc-core%E6%A8%A1%E5%9D%97"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 simple-rpc-core模块</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-1-request"><span class="toc-number">1.2.1.</span> <span class="toc-text">1.2.1 request</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-2-response"><span class="toc-number">1.2.2.</span> <span class="toc-text">1.2.2 response</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-3-server"><span class="toc-number">1.2.3.</span> <span class="toc-text">1.2.3 server</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-4-client"><span class="toc-number">1.2.4.</span> <span class="toc-text">1.2.4 client</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3-simple-rpc-api%E6%A8%A1%E5%9D%97"><span class="toc-number">1.3.</span> <span class="toc-text">1.3 simple-rpc-api模块</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-4-simple-rpc-provider%E6%A8%A1%E5%9D%97"><span class="toc-number">1.4.</span> <span class="toc-text">1.4 simple-rpc-provider模块</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-4-1-API%E6%8E%A5%E5%8F%A3%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.4.1.</span> <span class="toc-text">1.4.1 API接口实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-4-2-RPC-Provider%E6%9C%8D%E5%8A%A1%E5%88%9B%E5%BB%BA"><span class="toc-number">1.4.2.</span> <span class="toc-text">1.4.2 RPC Provider服务创建</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-5-simple-rpc-consumer%E6%A8%A1%E5%9D%97"><span class="toc-number">1.5.</span> <span class="toc-text">1.5 simple-rpc-consumer模块</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E5%9F%BA%E4%BA%8EZooKeeper%E6%B3%A8%E5%86%8C%E4%B8%AD%E5%BF%83%E7%9A%84RPC%E5%AE%9E%E7%8E%B0"><span class="toc-number">2.</span> <span class="toc-text">2 基于ZooKeeper注册中心的RPC实现</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-zk-registry-rpc-core%E6%A8%A1%E5%9D%97"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 zk-registry-rpc-core模块</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-1-request"><span class="toc-number">2.1.1.</span> <span class="toc-text">2.1.1 request</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-2-registry"><span class="toc-number">2.1.2.</span> <span class="toc-text">2.1.2 registry</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-3-server"><span class="toc-number">2.1.3.</span> <span class="toc-text">2.1.3 server</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-4-client"><span class="toc-number">2.1.4.</span> <span class="toc-text">2.1.4 client</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E5%B8%B8%E8%A7%81RPC%E6%A1%86%E6%9E%B6"><span class="toc-number">3.</span> <span class="toc-text">3 常见RPC框架</span></a></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

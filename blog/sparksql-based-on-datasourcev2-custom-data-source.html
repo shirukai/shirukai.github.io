@@ -1,0 +1,1195 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SparkSQL基于DataSourceV2自定义数据源 - Rukey</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="
+版本说明：Spark 2.3
+前言：之前在SparkSQL数据源操作文章中整理了一些SparkSQL内置数据源的使用，总的来说SparkSQL支持的数据源还是挺丰富的，但业务上可能不拘束于这几种数,"> 
+    <meta name="author" content="shirukai"> 
+    <link rel="alternative" href="atom.xml" title="Rukey" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Rukey</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://shirukai.github.io">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">SparkSQL基于DataSourceV2自定义数据源</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/covers/3.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/Spark"><b>「
+                    </b>SPARK<b> 」</b></a>
+                
+                February 02, 2019
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/blog/sparksql-based-on-datasourcev2-custom-data-source.html" title="SparkSQL基于DataSourceV2自定义数据源" class="">SparkSQL基于DataSourceV2自定义数据源</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    30k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    28 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Spark/" rel="tag">Spark</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <blockquote>
+<p>版本说明：Spark 2.3</p>
+<p>前言：之前在<a href="https://shirukai.github.io/2018/09/17/SparkSQL%E6%95%B0%E6%8D%AE%E6%BA%90%E6%93%8D%E4%BD%9C/">SparkSQL数据源操作</a>文章中整理了一些SparkSQL内置数据源的使用，总的来说SparkSQL支持的数据源还是挺丰富的，但业务上可能不拘束于这几种数据源，比如将HBase作为SparkSQL的数据源，REST数据源等。这里主要讲一下在Spark2.3版本之后推出的DataSourceV2，基于DataSourceV2实现自定义数据源</p>
+</blockquote>
+<h1 id="1-DataSourceV1-VS-DataSourceV2"><a href="#1-DataSourceV1-VS-DataSourceV2" class="headerlink" title="1 DataSourceV1 VS DataSourceV2"></a>1 DataSourceV1 VS DataSourceV2</h1><p>自Spark1.3版本之后，引入了数据源API，我们可以实现自定义数据源。2.3版本之后又引入的新版API，关于V1与V2的区别以及使用可以参考<a target="_blank" rel="noopener" href="https://blog.csdn.net/zjerryj/article/details/84922369%E4%B8%8Ehttps://developer.ibm.com/code/2018/04/16/introducing-apache-spark-data-sources-api-v2/%E8%BF%99%E4%B8%A4%E7%AF%87%E6%96%87%E7%AB%A0%E3%80%82%E8%BF%99%E9%87%8C%E7%AE%80%E5%8D%95%E7%9A%84%E6%80%BB%E7%BB%93%E4%B8%80%E4%B8%8BV1%E7%9A%84%E7%BC%BA%E7%82%B9%EF%BC%8C%E4%BB%A5%E5%8F%8AV2%E7%9A%84%E6%96%B0%E7%89%B9%E6%80%A7%E3%80%82">https://blog.csdn.net/zjerryj/article/details/84922369与https://developer.ibm.com/code/2018/04/16/introducing-apache-spark-data-sources-api-v2/这两篇文章。这里简单的总结一下V1的缺点，以及V2的新特性。</a></p>
+<h2 id="1-1-DataSourceV1缺点"><a href="#1-1-DataSourceV1缺点" class="headerlink" title="1.1 DataSourceV1缺点"></a>1.1 DataSourceV1缺点</h2><ul>
+<li>依赖上层API</li>
+<li>难以添加新的优化算子</li>
+<li>难以传递分区信息</li>
+<li>缺少事务性的写操作</li>
+<li>缺少列存储和流式计算支持</li>
+</ul>
+<h2 id="1-2-DataSourceV2优点"><a href="#1-2-DataSourceV2优点" class="headerlink" title="1.2 DataSourceV2优点"></a>1.2 DataSourceV2优点</h2><ul>
+<li>DataSourceV2 API使用Java编写</li>
+<li>不依赖于上层API（DataFrame/RDD）</li>
+<li>易于扩展，可以添加新的优化，同时保持向后兼容</li>
+<li>提供物理信息，如大小、分区等</li>
+<li>支持Streamin Source/Sink</li>
+<li>灵活、强大和事务性的写入API</li>
+</ul>
+<h2 id="1-3-Spark2-3中V2的功能"><a href="#1-3-Spark2-3中V2的功能" class="headerlink" title="1.3 Spark2.3中V2的功能"></a>1.3 Spark2.3中V2的功能</h2><ul>
+<li>支持列扫描和行扫描</li>
+<li>列裁剪和过滤条件下推</li>
+<li>可以提供基本统计和数据分区</li>
+<li>事务写入API</li>
+<li>支持微批和连续的Streaming Source/Sink</li>
+</ul>
+<h1 id="2-基于DataSourceV2实现输入源"><a href="#2-基于DataSourceV2实现输入源" class="headerlink" title="2 基于DataSourceV2实现输入源"></a>2 基于DataSourceV2实现输入源</h1><p>SparkSQL的DataSourceV2的实现与StructuredStreaming自定义数据源如出一辙，思想是一样的，但是具体实现有所不同，主要步骤如下：</p>
+<p>第一步：继承DataSourceV2和ReadSupport创建XXXDataSource类，重写ReadSupport的creatReader方法，用来返回自定义的DataSourceReader类，如返回自定义XXXDataSourceReader实例</p>
+<p>第二步：继承DataSourceReader创建XXXDataSourceReader类，重写DataSourceReader的readSchema方法用来返回数据源的schema，重写DataSourceReader的createDataReaderFactories用来返回多个自定义DataReaderFactory实例</p>
+<p>第三步：继承DataReaderFactory创建DataReader工厂类，如XXXDataReaderFactory，重写DataReaderFactory的createDataReader方法，返回自定义DataRader实例</p>
+<p>第四步：继承DataReader类创建自定义的DataReader，如XXXDataReader，重写DataReader的next()方法，用来告诉Spark是否有下条数据，用来触发get()方法，重写DataReader的get()方法获取数据，重写DataReader的close()方法用来关闭资源</p>
+<h2 id="2-1-继承DataSourceV2和ReadSupport创建XXXDataSource类"><a href="#2-1-继承DataSourceV2和ReadSupport创建XXXDataSource类" class="headerlink" title="2.1 继承DataSourceV2和ReadSupport创建XXXDataSource类"></a>2.1 继承DataSourceV2和ReadSupport创建XXXDataSource类</h2><p>这里以创建CustomDataSourceV2类为例</p>
+<h3 id="2-1-1-创建CustomDataSourceV2类"><a href="#2-1-1-创建CustomDataSourceV2类" class="headerlink" title="2.1.1 创建CustomDataSourceV2类"></a>2.1.1 创建CustomDataSourceV2类</h3><pre><code class="scala">/**
+  * 创建DataSource提供类
+  * 1.继承DataSourceV2向Spark注册数据源
+  * 2.继承ReadSupport支持读数据
+  */
+class CustomDataSourceV2 extends DataSourceV2
+  with ReadSupport &#123;
+      // todo
+&#125;
+</code></pre>
+<h3 id="2-1-2-重写ReadSupport的createReader方法"><a href="#2-1-2-重写ReadSupport的createReader方法" class="headerlink" title="2.1.2 重写ReadSupport的createReader方法"></a>2.1.2 重写ReadSupport的createReader方法</h3><p>该方法用来返回一个用户自定义的DataSourceReader实例</p>
+<pre><code class="scala">  /**
+    * 创建Reader
+    *
+    * @param options 用户定义的options
+    * @return 自定义的DataSourceReader
+    */
+  override def createReader(options: DataSourceOptions): DataSourceReader = new CustomDataSourceV2Reader(options)
+</code></pre>
+<h2 id="2-2-继承DataSourceReader创建XXXDataSourceReader类"><a href="#2-2-继承DataSourceReader创建XXXDataSourceReader类" class="headerlink" title="2.2 继承DataSourceReader创建XXXDataSourceReader类"></a>2.2 继承DataSourceReader创建XXXDataSourceReader类</h2><p>该类用来自定义DataSourceReader，需要继承DataSourceReader，并重写readSchema和createDataReaderFactories方法。</p>
+<h3 id="2-2-1-创建CustomDataSourceV2Reader类"><a href="#2-2-1-创建CustomDataSourceV2Reader类" class="headerlink" title="2.2.1 创建CustomDataSourceV2Reader类"></a>2.2.1 创建CustomDataSourceV2Reader类</h3><pre><code class="scala">/**
+  * 自定义的DataSourceReader
+  * 继承DataSourceReader
+  * 重写readSchema方法用来生成schema
+  * 重写createDataReaderFactories,用来根据条件，创建多个工厂实例
+  *
+  * @param options options
+  */
+class CustomDataSourceV2Reader(options: DataSourceOptions) extends DataSourceReader &#123;
+    // Override some functions
+&#125;
+</code></pre>
+<h3 id="2-2-2-重写DataSourceReader的readSchema方法"><a href="#2-2-2-重写DataSourceReader的readSchema方法" class="headerlink" title="2.2.2 重写DataSourceReader的readSchema方法"></a>2.2.2 重写DataSourceReader的readSchema方法</h3><p>该方法用来返回数据源的schema</p>
+<pre><code class="scala">/**
+  * 生成schema
+  *
+  * @return schema
+  */
+override def readSchema(): StructType = ???
+</code></pre>
+<h3 id="2-2-3-重写DataSourceReader的createDataReaderFactories方法"><a href="#2-2-3-重写DataSourceReader的createDataReaderFactories方法" class="headerlink" title="2.2.3 重写DataSourceReader的createDataReaderFactories方法"></a>2.2.3 重写DataSourceReader的createDataReaderFactories方法</h3><p>实现该方法，可以根据不同的条件，创建多个createDataReader工厂实例，用来并发获取数据？(暂且这么理解的，或者是按照分区获取数据？)</p>
+<pre><code class="scala">  /**
+    * 创建DataReader工厂实例
+    *
+    * @return 多个工厂类实例
+    */
+  override def createDataReaderFactories(): util.List[DataReaderFactory[Row]] = &#123;
+    import collection.JavaConverters._
+    Seq(
+      new CustomDataSourceV2ReaderFactory().asInstanceOf[DataReaderFactory[Row]]
+    ).asJava
+  &#125;
+</code></pre>
+<h2 id="2-3-继承DataReaderFactory创建DataReader工厂类"><a href="#2-3-继承DataReaderFactory创建DataReader工厂类" class="headerlink" title="2.3 继承DataReaderFactory创建DataReader工厂类"></a>2.3 继承DataReaderFactory创建DataReader工厂类</h2><p>该类是DataReader的工厂来，用来返回DataReader实例</p>
+<h3 id="2-3-1-创建CustomDataSourceV2Factory类"><a href="#2-3-1-创建CustomDataSourceV2Factory类" class="headerlink" title="2.3.1 创建CustomDataSourceV2Factory类"></a>2.3.1 创建CustomDataSourceV2Factory类</h3><pre><code class="scala">/**
+  * 自定义DataReaderFactory类
+  */
+class CustomDataSourceV2ReaderFactory extends DataReaderFactory[Row] &#123;
+   // Override some functions
+&#125;
+</code></pre>
+<h3 id="2-3-2-重写DataReaderFactory的createDataReader方法"><a href="#2-3-2-重写DataReaderFactory的createDataReader方法" class="headerlink" title="2.3.2 重写DataReaderFactory的createDataReader方法"></a>2.3.2 重写DataReaderFactory的createDataReader方法</h3><p>该方法用来实例化自定义的DataReader</p>
+<pre><code class="scala">  /**
+    * 重写createDataReader方法，用来实例化自定义的DataReader
+    *
+    * @return 自定义的DataReader
+    */
+  override def createDataReader(): DataReader[Row] = new CustomDataReader
+</code></pre>
+<h2 id="2-4-继承DataReader类创建自定义的DataReader"><a href="#2-4-继承DataReader类创建自定义的DataReader" class="headerlink" title="2.4 继承DataReader类创建自定义的DataReader"></a>2.4 继承DataReader类创建自定义的DataReader</h2><p>该类为重点实现部分，用来自定义获取数据的方式</p>
+<h3 id="2-4-1-创建CustomDataReader类"><a href="#2-4-1-创建CustomDataReader类" class="headerlink" title="2.4.1 创建CustomDataReader类"></a>2.4.1 创建CustomDataReader类</h3><pre><code class="scala">/**
+  * 自定义DataReader类
+  */
+class CustomDataReader extends DataReader[Row] &#123;
+    // Override some functions
+&#125;
+</code></pre>
+<h3 id="2-4-2-重写CustomDataReader的next-方法"><a href="#2-4-2-重写CustomDataReader的next-方法" class="headerlink" title="2.4.2 重写CustomDataReader的next()方法"></a>2.4.2 重写CustomDataReader的next()方法</h3><p>该方法返回一个布尔值，来告诉Spark是否含有下条数据，以便触发get()方法获取数据</p>
+<pre><code class="scala">  /**
+    * 是否有下一条数据
+    *
+    * @return boolean
+    */
+  override def next(): Boolean = ???
+</code></pre>
+<h3 id="2-4-3-重写CustomDataReader的get-方法"><a href="#2-4-3-重写CustomDataReader的get-方法" class="headerlink" title="2.4.3 重写CustomDataReader的get()方法"></a>2.4.3 重写CustomDataReader的get()方法</h3><p>该方法用来获取数据，返回类型是在继承DataReader时指定的泛型</p>
+<pre><code class="scala">  /**
+    * 获取数据
+    * 当next为true时会调用get方法获取数据
+    *
+    * @return Row
+    */
+  override def get(): Row = ???
+</code></pre>
+<h3 id="2-4-4-重写CustomDataReader的close-方法"><a href="#2-4-4-重写CustomDataReader的close-方法" class="headerlink" title="2.4.4 重写CustomDataReader的close()方法"></a>2.4.4 重写CustomDataReader的close()方法</h3><p>该方法用来关闭相应的资源</p>
+<pre><code class="scala">  /**
+    * 关闭资源
+    */
+  override def close(): Unit = ???
+</code></pre>
+<h2 id="2-5-以REST为例，实现自定义的数据源"><a href="#2-5-以REST为例，实现自定义的数据源" class="headerlink" title="2.5 以REST为例，实现自定义的数据源"></a>2.5 以REST为例，实现自定义的数据源</h2><p>这里主要是从REST接口里获取JSON格式的数据，然后生成DataFrame数据源</p>
+<h3 id="2-5-1-创建RestDataSource类"><a href="#2-5-1-创建RestDataSource类" class="headerlink" title="2.5.1 创建RestDataSource类"></a>2.5.1 创建RestDataSource类</h3><pre><code class="scala">class RestDataSource extends DataSourceV2 with ReadSupport with WriteSupport &#123;
+
+  override def createReader(options: DataSourceOptions): DataSourceReader =
+    new RestDataSourceReader(
+      options.get(&quot;url&quot;).get(),
+      options.get(&quot;params&quot;).get(),
+      options.get(&quot;xPath&quot;).get(),
+      options.get(&quot;schema&quot;).get()
+    )
+&#125;
+</code></pre>
+<h3 id="2-5-2-创建RestDataSourceReader类"><a href="#2-5-2-创建RestDataSourceReader类" class="headerlink" title="2.5.2 创建RestDataSourceReader类"></a>2.5.2 创建RestDataSourceReader类</h3><pre><code class="scala">/**
+  * 创建RestDataSourceReader
+  *
+  * @param url          REST服务的的api
+  * @param params       请求需要的参数
+  * @param xPath        JSON数据的xPath
+  * @param schemaString 用户传入的schema字符串
+  */
+class RestDataSourceReader(url: String, params: String, xPath: String, schemaString: String)
+  extends DataSourceReader &#123;
+  // 使用StructType.fromDDL方法将schema字符串转成StructType类型
+  var requiredSchema: StructType = StructType.fromDDL(schemaString)
+
+  /**
+    * 生成schema
+    *
+    * @return schema
+    */
+  override def readSchema(): StructType = requiredSchema
+
+  /**
+    * 创建工厂类
+    *
+    * @return List[实例]
+    */
+  override def createDataReaderFactories(): util.List[DataReaderFactory[Row]] = &#123;
+    import collection.JavaConverters._
+    Seq(
+      new RestDataReaderFactory(url, params, xPath).asInstanceOf[DataReaderFactory[Row]]
+    ).asJava
+  &#125;
+&#125;
+</code></pre>
+<h3 id="2-5-3-创建RestDataReaderFactory"><a href="#2-5-3-创建RestDataReaderFactory" class="headerlink" title="2.5.3 创建RestDataReaderFactory"></a>2.5.3 创建RestDataReaderFactory</h3><pre><code class="scala">/**
+  * RestDataReaderFactory工厂类
+  *
+  * @param url    REST服务的的api
+  * @param params 请求需要的参数
+  * @param xPath  JSON数据的xPath
+  */
+class RestDataReaderFactory(url: String, params: String, xPath: String) extends DataReaderFactory[Row] &#123;
+  override def createDataReader(): DataReader[Row] = new RestDataReader(url, params, xPath)
+&#125;
+</code></pre>
+<h3 id="2-5-4-创建RestDataReader"><a href="#2-5-4-创建RestDataReader" class="headerlink" title="2.5.4 创建RestDataReader"></a>2.5.4 创建RestDataReader</h3><pre><code class="scala">/**
+  * RestDataReader类
+  *
+  * @param url    REST服务的的api
+  * @param params 请求需要的参数
+  * @param xPath  JSON数据的xPath
+  */
+class RestDataReader(url: String, params: String, xPath: String) extends DataReader[Row] &#123;
+  // 使用Iterator模拟数据
+  val data: Iterator[Seq[AnyRef]] = getIterator
+
+  override def next(): Boolean = &#123;
+    data.hasNext
+  &#125;
+
+  override def get(): Row = &#123;
+    val seq = data.next().map &#123;
+      // 浮点类型会自动转为BigDecimal，导致Spark无法转换
+      case decimal: BigDecimal =&gt;
+        decimal.doubleValue()
+      case x =&gt; x
+    &#125;
+    Row(seq: _*)
+  &#125;
+
+  override def close(): Unit = &#123;
+    println(&quot;close source&quot;)
+  &#125;
+
+  def getIterator: Iterator[Seq[AnyRef]] = &#123;
+    import scala.collection.JavaConverters._
+    val res: List[AnyRef] = RestDataSource.requestData(url, params, xPath)
+    res.map(r =&gt; &#123;
+      r.asInstanceOf[JSONObject].asScala.values.toList
+    &#125;).toIterator
+  &#125;
+&#125;
+</code></pre>
+<h3 id="2-5-5-测试RestDataSource"><a href="#2-5-5-测试RestDataSource" class="headerlink" title="2.5.5 测试RestDataSource"></a>2.5.5 测试RestDataSource</h3><pre><code class="scala">object RestDataSourceTest &#123;
+  def main(args: Array[String]): Unit = &#123;
+    val spark = SparkSession
+      .builder()
+      .master(&quot;local[2]&quot;)
+      .appName(this.getClass.getSimpleName)
+      .getOrCreate()
+
+    val df = spark.read
+      .format(&quot;com.hollysys.spark.sql.datasource.rest.RestDataSource&quot;)
+      .option(&quot;url&quot;, &quot;http://model-opcua-hollysysdigital-test.hiacloud.net.cn/aggquery/query/queryPointHistoryData&quot;)
+      .option(&quot;params&quot;, &quot;&#123;\n    \&quot;startTime\&quot;: \&quot;1543887720000\&quot;,\n    \&quot;endTime\&quot;: \&quot;1543891320000\&quot;,\n    \&quot;maxSizePerNode\&quot;: 1000,\n    \&quot;nodes\&quot;: [\n        &#123;\n            \&quot;uri\&quot;: \&quot;/SymLink-10000012030100000-device/5c174da007a54e0001035ddd\&quot;\n        &#125;\n    ]\n&#125;&quot;)
+      .option(&quot;xPath&quot;, &quot;$.result.historyData&quot;)
+      //`response` ARRAY&lt;STRUCT&lt;`historyData`:ARRAY&lt;STRUCT&lt;`s`:INT,`t`:LONG,`v`:FLOAT&gt;&gt;&gt;&gt;
+      .option(&quot;schema&quot;, &quot;`s` INT,`t` LONG,`v` DOUBLE&quot;)
+      .load()
+    df.printSchema()
+    df.show(false)
+ 
+  &#125;
+&#125;
+</code></pre>
+<p><img src="http://shirukai.gitee.io/images/30a68af718db1637780fd7e07ab711f9.jpg"></p>
+<h1 id="3-基于DataSourceV2实现输出源"><a href="#3-基于DataSourceV2实现输出源" class="headerlink" title="3 基于DataSourceV2实现输出源"></a>3 基于DataSourceV2实现输出源</h1><p>基于DataSourceV2实现自定义的输出源，需要以下几个步骤：</p>
+<p>第一步：继承DataSourceV2和WriteSupport创建XXXDataSource，重写createWriter方法用来返回自定义的DataSourceWriter</p>
+<p>第二步：继承DataSourceWriter创建XXXDataSourceWriter类，重写createWriterFactory返回自定义的DataWriterFactory，重写commit方法，用来提交整个事务。重写abort方法，用来做事务回滚</p>
+<p>第三步：继承DataWriterFactory创建XXXDataWriterFactory类，重写createWriter方法返回自定义的DataWriter</p>
+<p>第四步：继承DataWriter创建XXXDataWriter类，重写write方法，用来将数据写出，重写commit方法用来提交事务，重写abort方法用来做事务回滚</p>
+<h2 id="3-1-继承DataSourceV和WriterSupport创建XXXDataSource类"><a href="#3-1-继承DataSourceV和WriterSupport创建XXXDataSource类" class="headerlink" title="3.1 继承DataSourceV和WriterSupport创建XXXDataSource类"></a>3.1 继承DataSourceV和WriterSupport创建XXXDataSource类</h2><h3 id="3-1-1-创建CustomDataSourceV2类"><a href="#3-1-1-创建CustomDataSourceV2类" class="headerlink" title="3.1.1 创建CustomDataSourceV2类"></a>3.1.1 创建CustomDataSourceV2类</h3><pre><code class="scala">/**
+  * 创建DataSource提供类
+  * 1.继承DataSourceV2向Spark注册数据源
+  * 2.继承WriteSupport支持读数据
+  */
+class CustomDataSourceV2 extends DataSourceV2
+  with WriteSupport &#123;
+      // todo
+&#125;
+</code></pre>
+<h3 id="3-1-2-重写createWriter方法"><a href="#3-1-2-重写createWriter方法" class="headerlink" title="3.1.2 重写createWriter方法"></a>3.1.2 重写createWriter方法</h3><pre><code class="scala">  /**
+    * 创建Writer
+    *
+    * @param jobId   jobId
+    * @param schema  schema
+    * @param mode    保存模式
+    * @param options 用于定义的option
+    * @return Optional[自定义的DataSourceWriter]
+    */
+  override def createWriter(jobId: String,
+                            schema: StructType,
+                            mode: SaveMode,
+                            options: DataSourceOptions): Optional[DataSourceWriter] = Optional.of(new CustomDataSourceV2Writer)
+</code></pre>
+<h2 id="3-2-继承DataSourceWriter创建XXXDataSourceWriter类"><a href="#3-2-继承DataSourceWriter创建XXXDataSourceWriter类" class="headerlink" title="3.2 继承DataSourceWriter创建XXXDataSourceWriter类"></a>3.2 继承DataSourceWriter创建XXXDataSourceWriter类</h2><h3 id="3-2-1-创建CustomDataSourceV2Writer"><a href="#3-2-1-创建CustomDataSourceV2Writer" class="headerlink" title="3.2.1 创建CustomDataSourceV2Writer"></a>3.2.1 创建CustomDataSourceV2Writer</h3><p>需要继承DataSourceWriter</p>
+<pre><code class="scala">/**
+  * 自定义DataSourceWriter
+  * 继承DataSourceWriter
+  */
+class CustomDataSourceV2Writer extends DataSourceWriter &#123;
+    // Override some functions
+&#125;
+</code></pre>
+<h2 id="3-3-继承DataWriterFactory创建XXXDataWriterFactory类"><a href="#3-3-继承DataWriterFactory创建XXXDataWriterFactory类" class="headerlink" title="3.3 继承DataWriterFactory创建XXXDataWriterFactory类"></a>3.3 继承DataWriterFactory创建XXXDataWriterFactory类</h2><h3 id="3-3-1-创建CustomDataWriterFactory"><a href="#3-3-1-创建CustomDataWriterFactory" class="headerlink" title="3.3.1 创建CustomDataWriterFactory"></a>3.3.1 创建CustomDataWriterFactory</h3><pre><code class="scala">class CustomDataWriterFactory extends DataWriterFactory[Row] &#123;
+    // Override some functions
+&#125;
+</code></pre>
+<h3 id="3-3-2-重写createDataWriter方法"><a href="#3-3-2-重写createDataWriter方法" class="headerlink" title="3.3.2 重写createDataWriter方法"></a>3.3.2 重写createDataWriter方法</h3><p>该方法返回一个自定义的DataWriter</p>
+<pre><code class="scala">  /**
+    * 创建DataWriter
+    *
+    * @param partitionId   分区ID
+    * @param attemptNumber 重试次数
+    * @return DataWriter
+    *         每个分区创建一个RestDataWriter实例
+    */
+  override def createDataWriter(partitionId: Int, attemptNumber: Int): DataWriter[Row] = ???
+</code></pre>
+<h2 id="3-4-继承DataWriter创建XXXDataWriter类"><a href="#3-4-继承DataWriter创建XXXDataWriter类" class="headerlink" title="3.4 继承DataWriter创建XXXDataWriter类"></a>3.4 继承DataWriter创建XXXDataWriter类</h2><h3 id="3-4-1-创建CustomDataWriter类"><a href="#3-4-1-创建CustomDataWriter类" class="headerlink" title="3.4.1 创建CustomDataWriter类"></a>3.4.1 创建CustomDataWriter类</h3><pre><code class="scala">class CustomDataWriter extends DataWriter[Row] &#123;
+    // Overrride some functions
+&#125;
+</code></pre>
+<h3 id="3-4-2-重写write方法"><a href="#3-4-2-重写write方法" class="headerlink" title="3.4.2 重写write方法"></a>3.4.2 重写write方法</h3><p>该方法用来写出单条数据，每条数据都会触发该方法</p>
+<pre><code class="scala">/**
+  * write
+  *
+  * @param record 单条记录
+  *               每条记录都会触发该方法
+  */
+override def write(record: Row): Unit = ???
+</code></pre>
+<h3 id="3-4-3-重写commit方法"><a href="#3-4-3-重写commit方法" class="headerlink" title="3.4.3 重写commit方法"></a>3.4.3 重写commit方法</h3><p>该方法一般用于事务提交，每个分区触发一次</p>
+<pre><code class="scala">/**
+    * commit
+    *
+    * @return commit message
+    *         每个分区触发一次
+    */
+  override def commit(): WriterCommitMessage = ???
+</code></pre>
+<h3 id="3-4-4-重写abort方法"><a href="#3-4-4-重写abort方法" class="headerlink" title="3.4.4 重写abort方法"></a>3.4.4 重写abort方法</h3><p>该方法用于事务回滚，当write方法发生异常之后触发该方法</p>
+<pre><code class="scala">
+  /**
+    * 回滚：当write发生异常时触发该方法
+    */
+  override def abort(): Unit = ???
+</code></pre>
+<h1 id="4-完整代码"><a href="#4-完整代码" class="headerlink" title="4 完整代码"></a>4 完整代码</h1><h2 id="4-1-自定义DataSource示例代码："><a href="#4-1-自定义DataSource示例代码：" class="headerlink" title="4.1 自定义DataSource示例代码："></a>4.1 自定义DataSource示例代码：</h2><pre><code class="scala">package com.hollysys.spark.sql.datasource
+
+import java.util
+import java.util.Optional
+
+import org.apache.spark.sql.&#123;Row, SaveMode&#125;
+import org.apache.spark.sql.sources.v2.reader.&#123;DataReader, DataReaderFactory, DataSourceReader&#125;
+import org.apache.spark.sql.sources.v2.writer.&#123;DataSourceWriter, DataWriter, DataWriterFactory, WriterCommitMessage&#125;
+import org.apache.spark.sql.sources.v2.&#123;DataSourceOptions, DataSourceV2, ReadSupport, WriteSupport&#125;
+import org.apache.spark.sql.types.StructType
+
+/**
+  * @author : shirukai
+  * @date : 2019-01-30 10:37
+  *       Spark SQL 基于DataSourceV2接口实现自定义数据源
+  */
+
+/**
+  * 创建DataSource提供类
+  * 1.继承DataSourceV2向Spark注册数据源
+  * 2.继承ReadSupport支持读数据
+  * 3.继承WriteSupport支持读数据
+  */
+class CustomDataSourceV2 extends DataSourceV2
+  with ReadSupport
+  with WriteSupport &#123;
+
+  /**
+    * 创建Reader
+    *
+    * @param options 用户定义的options
+    * @return 自定义的DataSourceReader
+    */
+  override def createReader(options: DataSourceOptions): DataSourceReader = new CustomDataSourceV2Reader(options)
+
+  /**
+    * 创建Writer
+    *
+    * @param jobId   jobId
+    * @param schema  schema
+    * @param mode    保存模式
+    * @param options 用于定义的option
+    * @return Optional[自定义的DataSourceWriter]
+    */
+  override def createWriter(jobId: String,
+                            schema: StructType,
+                            mode: SaveMode,
+                            options: DataSourceOptions): Optional[DataSourceWriter] = Optional.of(new CustomDataSourceV2Writer)
+&#125;
+
+
+/**
+  * 自定义的DataSourceReader
+  * 继承DataSourceReader
+  * 重写readSchema方法用来生成schema
+  * 重写createDataReaderFactories,用来根据条件，创建多个工厂实例
+  *
+  * @param options options
+  */
+class CustomDataSourceV2Reader(options: DataSourceOptions) extends DataSourceReader &#123;
+  /**
+    * 生成schema
+    *
+    * @return schema
+    */
+  override def readSchema(): StructType = ???
+
+  /**
+    * 创建DataReader工厂实例
+    *
+    * @return 多个工厂类实例
+    */
+  override def createDataReaderFactories(): util.List[DataReaderFactory[Row]] = &#123;
+    import collection.JavaConverters._
+    Seq(
+      new CustomDataSourceV2ReaderFactory().asInstanceOf[DataReaderFactory[Row]]
+    ).asJava
+  &#125;
+&#125;
+
+
+/**
+  * 自定义DataReaderFactory类
+  */
+class CustomDataSourceV2ReaderFactory extends DataReaderFactory[Row] &#123;
+  /**
+    * 重写createDataReader方法，用来实例化自定义的DataReader
+    *
+    * @return 自定义的DataReader
+    */
+  override def createDataReader(): DataReader[Row] = new CustomDataReader
+&#125;
+
+
+/**
+  * 自定义DataReader类
+  */
+class CustomDataReader extends DataReader[Row] &#123;
+  /**
+    * 是否有下一条数据
+    *
+    * @return boolean
+    */
+  override def next(): Boolean = ???
+
+  /**
+    * 获取数据
+    * 当next为true时会调用get方法获取数据
+    *
+    * @return Row
+    */
+  override def get(): Row = ???
+
+  /**
+    * 关闭资源
+    */
+  override def close(): Unit = ???
+&#125;
+
+/**
+  * 自定义DataSourceWriter
+  * 继承DataSourceWriter
+  */
+class CustomDataSourceV2Writer extends DataSourceWriter &#123;
+  /**
+    * 创建WriterFactory
+    *
+    * @return 自定义的DataWriterFactory
+    */
+  override def createWriterFactory(): DataWriterFactory[Row] = ???
+
+  /**
+    * commit
+    *
+    * @param messages 所有分区提交的commit信息
+    *                 触发一次
+    */
+  override def commit(messages: Array[WriterCommitMessage]): Unit = ???
+
+  /** *
+    * abort
+    *
+    * @param messages 当write异常时调用
+    */
+  override def abort(messages: Array[WriterCommitMessage]): Unit = ???
+&#125;
+
+/**
+  * DataWriterFactory工厂类
+  */
+class CustomDataWriterFactory extends DataWriterFactory[Row] &#123;
+  /**
+    * 创建DataWriter
+    *
+    * @param partitionId   分区ID
+    * @param attemptNumber 重试次数
+    * @return DataWriter
+    *         每个分区创建一个RestDataWriter实例
+    */
+  override def createDataWriter(partitionId: Int, attemptNumber: Int): DataWriter[Row] = ???
+&#125;
+/**
+  * DataWriter
+  */
+class CustomDataWriter extends DataWriter[Row] &#123;
+  /**
+    * write
+    *
+    * @param record 单条记录
+    *               每条记录都会触发该方法
+    */
+  override def write(record: Row): Unit = ???
+  /**
+    * commit
+    *
+    * @return commit message
+    *         每个分区触发一次
+    */
+  override def commit(): WriterCommitMessage = ???
+
+
+  /**
+    * 回滚：当write发生异常时触发该方法
+    */
+  override def abort(): Unit = ???
+&#125;
+</code></pre>
+<h2 id="4-2-自定义RestDataSource代码"><a href="#4-2-自定义RestDataSource代码" class="headerlink" title="4.2 自定义RestDataSource代码"></a>4.2 自定义RestDataSource代码</h2><pre><code class="SCALA">package com.hollysys.spark.sql.datasource.rest
+
+import java.math.BigDecimal
+import java.util
+import java.util.Optional
+
+import com.alibaba.fastjson.&#123;JSONArray, JSONObject, JSONPath&#125;
+import org.apache.http.client.fluent.Request
+import org.apache.http.entity.ContentType
+import org.apache.spark.sql.&#123;Row, SaveMode, SparkSession&#125;
+import org.apache.spark.sql.sources.v2.reader.&#123;DataReader, DataReaderFactory, DataSourceReader, SupportsPushDownRequiredColumns&#125;
+import org.apache.spark.sql.sources.v2.writer.&#123;DataSourceWriter, DataWriter, DataWriterFactory, WriterCommitMessage&#125;
+import org.apache.spark.sql.sources.v2.&#123;DataSourceOptions, DataSourceV2, ReadSupport, WriteSupport&#125;
+import org.apache.spark.sql.types.StructType
+
+/**
+  * @author : shirukai
+  * @date : 2019-01-09 16:53
+  *       基于Rest的Spark SQL DataSource
+  */
+class RestDataSource extends DataSourceV2 with ReadSupport with WriteSupport &#123;
+
+  override def createReader(options: DataSourceOptions): DataSourceReader =
+    new RestDataSourceReader(
+      options.get(&quot;url&quot;).get(),
+      options.get(&quot;params&quot;).get(),
+      options.get(&quot;xPath&quot;).get(),
+      options.get(&quot;schema&quot;).get()
+    )
+
+  override def createWriter(jobId: String,
+                            schema: StructType,
+                            mode: SaveMode,
+                            options: DataSourceOptions): Optional[DataSourceWriter] = Optional.of(new RestDataSourceWriter)
+&#125;
+
+/**
+  * 创建RestDataSourceReader
+  *
+  * @param url          REST服务的的api
+  * @param params       请求需要的参数
+  * @param xPath        JSON数据的xPath
+  * @param schemaString 用户传入的schema字符串
+  */
+class RestDataSourceReader(url: String, params: String, xPath: String, schemaString: String)
+  extends DataSourceReader &#123;
+  // 使用StructType.fromDDL方法将schema字符串转成StructType类型
+  var requiredSchema: StructType = StructType.fromDDL(schemaString)
+
+  /**
+    * 生成schema
+    *
+    * @return schema
+    */
+  override def readSchema(): StructType = requiredSchema
+
+  /**
+    * 创建工厂类
+    *
+    * @return List[实例]
+    */
+  override def createDataReaderFactories(): util.List[DataReaderFactory[Row]] = &#123;
+    import collection.JavaConverters._
+    Seq(
+      new RestDataReaderFactory(url, params, xPath).asInstanceOf[DataReaderFactory[Row]]
+    ).asJava
+  &#125;
+
+
+&#125;
+
+/**
+  * RestDataReaderFactory工厂类
+  *
+  * @param url    REST服务的的api
+  * @param params 请求需要的参数
+  * @param xPath  JSON数据的xPath
+  */
+class RestDataReaderFactory(url: String, params: String, xPath: String) extends DataReaderFactory[Row] &#123;
+  override def createDataReader(): DataReader[Row] = new RestDataReader(url, params, xPath)
+&#125;
+
+/**
+  * RestDataReader类
+  *
+  * @param url    REST服务的的api
+  * @param params 请求需要的参数
+  * @param xPath  JSON数据的xPath
+  */
+class RestDataReader(url: String, params: String, xPath: String) extends DataReader[Row] &#123;
+  // 使用Iterator模拟数据
+  val data: Iterator[Seq[AnyRef]] = getIterator
+
+  override def next(): Boolean = &#123;
+    data.hasNext
+  &#125;
+
+  override def get(): Row = &#123;
+    val seq = data.next().map &#123;
+      // 浮点类型会自动转为BigDecimal，导致Spark无法转换
+      case decimal: BigDecimal =&gt;
+        decimal.doubleValue()
+      case x =&gt; x
+    &#125;
+    Row(seq: _*)
+  &#125;
+
+  override def close(): Unit = &#123;
+    println(&quot;close source&quot;)
+  &#125;
+
+  def getIterator: Iterator[Seq[AnyRef]] = &#123;
+    import scala.collection.JavaConverters._
+    val res: List[AnyRef] = RestDataSource.requestData(url, params, xPath)
+    res.map(r =&gt; &#123;
+      r.asInstanceOf[JSONObject].asScala.values.toList
+    &#125;).toIterator
+  &#125;
+&#125;
+
+/** *
+  * RestDataSourceWriter
+  */
+class RestDataSourceWriter extends DataSourceWriter &#123;
+  /**
+    * 创建RestDataWriter工厂类
+    *
+    * @return RestDataWriterFactory
+    */
+  override def createWriterFactory(): DataWriterFactory[Row] = new RestDataWriterFactory
+
+  /**
+    * commit
+    *
+    * @param messages 所有分区提交的commit信息
+    *                 触发一次
+    */
+  override def commit(messages: Array[WriterCommitMessage]): Unit = ???
+
+  /** *
+    * abort
+    *
+    * @param messages 当write异常时调用
+    */
+  override def abort(messages: Array[WriterCommitMessage]): Unit = ???
+
+&#125;
+
+/**
+  * DataWriterFactory工厂类
+  */
+class RestDataWriterFactory extends DataWriterFactory[Row] &#123;
+  /**
+    * 创建DataWriter
+    *
+    * @param partitionId   分区ID
+    * @param attemptNumber 重试次数
+    * @return DataWriter
+    *         每个分区创建一个RestDataWriter实例
+    */
+  override def createDataWriter(partitionId: Int, attemptNumber: Int): DataWriter[Row] = new RestDataWriter(partitionId, attemptNumber)
+&#125;
+
+/**
+  * RestDataWriter
+  *
+  * @param partitionId   分区ID
+  * @param attemptNumber 重试次数
+  */
+class RestDataWriter(partitionId: Int, attemptNumber: Int) extends DataWriter[Row] &#123;
+  /**
+    * write
+    *
+    * @param record 单条记录
+    *               每条记录都会触发该方法
+    */
+  override def write(record: Row): Unit = &#123;
+
+    println(record)
+  &#125;
+
+  /**
+    * commit
+    *
+    * @return commit message
+    *         每个分区触发一次
+    */
+  override def commit(): WriterCommitMessage = &#123;
+    RestWriterCommitMessage(partitionId, attemptNumber)
+  &#125;
+
+  /**
+    * 回滚：当write发生异常时触发该方法
+    */
+  override def abort(): Unit = &#123;
+    println(&quot;abort 方法被出发了&quot;)
+  &#125;
+&#125;
+
+case class RestWriterCommitMessage(partitionId: Int, attemptNumber: Int) extends WriterCommitMessage
+
+object RestDataSource &#123;
+  def requestData(url: String, params: String, xPath: String): List[AnyRef] = &#123;
+    import scala.collection.JavaConverters._
+    val response = Request.Post(url).bodyString(params, ContentType.APPLICATION_JSON).execute()
+    JSONPath.read(response.returnContent().asString(), xPath)
+      .asInstanceOf[JSONArray].asScala.toList
+  &#125;
+&#125;
+
+object RestDataSourceTest &#123;
+  def main(args: Array[String]): Unit = &#123;
+    val spark = SparkSession
+      .builder()
+      .master(&quot;local[2]&quot;)
+      .appName(this.getClass.getSimpleName)
+      .getOrCreate()
+
+    val df = spark.read
+      .format(&quot;com.hollysys.spark.sql.datasource.rest.RestDataSource&quot;)
+      .option(&quot;url&quot;, &quot;http://model-opcua-hollysysdigital-test.hiacloud.net.cn/aggquery/query/queryPointHistoryData&quot;)
+      .option(&quot;params&quot;, &quot;&#123;\n    \&quot;startTime\&quot;: \&quot;1543887720000\&quot;,\n    \&quot;endTime\&quot;: \&quot;1543891320000\&quot;,\n    \&quot;maxSizePerNode\&quot;: 1000,\n    \&quot;nodes\&quot;: [\n        &#123;\n            \&quot;uri\&quot;: \&quot;/SymLink-10000012030100000-device/5c174da007a54e0001035ddd\&quot;\n        &#125;\n    ]\n&#125;&quot;)
+      .option(&quot;xPath&quot;, &quot;$.result.historyData&quot;)
+      //`response` ARRAY&lt;STRUCT&lt;`historyData`:ARRAY&lt;STRUCT&lt;`s`:INT,`t`:LONG,`v`:FLOAT&gt;&gt;&gt;&gt;
+      .option(&quot;schema&quot;, &quot;`s` INT,`t` LONG,`v` DOUBLE&quot;)
+      .load()
+
+
+    df.printSchema()
+    df.show(false)
+//    df.repartition(5).write.format(&quot;com.hollysys.spark.sql.datasource.rest.RestDataSource&quot;)
+//      .save()
+  &#125;
+&#125;
+</code></pre>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/Otokaze - Mallow Flower.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="http://shirukai.gitee.io/images/a2199f66b2599b9ee3c7bba89fbac4b4.jpg" height=300 width=300></img>
+                    <p>shirukai</p>
+                    <span>Alway believe that something wonderful is about to happen</span>
+                    <dl>
+                        <dd><a href="https://github.com/shirukai" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">285 <p>Articles</p></a></li>
+                    <li><a href="/categories">25 <p>Categories</p></a></li>
+                    <li><a href="/tags">46 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-DataSourceV1-VS-DataSourceV2"><span class="toc-number">1.</span> <span class="toc-text">1 DataSourceV1 VS DataSourceV2</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-DataSourceV1%E7%BC%BA%E7%82%B9"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 DataSourceV1缺点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-DataSourceV2%E4%BC%98%E7%82%B9"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 DataSourceV2优点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3-Spark2-3%E4%B8%ADV2%E7%9A%84%E5%8A%9F%E8%83%BD"><span class="toc-number">1.3.</span> <span class="toc-text">1.3 Spark2.3中V2的功能</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E5%9F%BA%E4%BA%8EDataSourceV2%E5%AE%9E%E7%8E%B0%E8%BE%93%E5%85%A5%E6%BA%90"><span class="toc-number">2.</span> <span class="toc-text">2 基于DataSourceV2实现输入源</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-%E7%BB%A7%E6%89%BFDataSourceV2%E5%92%8CReadSupport%E5%88%9B%E5%BB%BAXXXDataSource%E7%B1%BB"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 继承DataSourceV2和ReadSupport创建XXXDataSource类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-1-%E5%88%9B%E5%BB%BACustomDataSourceV2%E7%B1%BB"><span class="toc-number">2.1.1.</span> <span class="toc-text">2.1.1 创建CustomDataSourceV2类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-2-%E9%87%8D%E5%86%99ReadSupport%E7%9A%84createReader%E6%96%B9%E6%B3%95"><span class="toc-number">2.1.2.</span> <span class="toc-text">2.1.2 重写ReadSupport的createReader方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-%E7%BB%A7%E6%89%BFDataSourceReader%E5%88%9B%E5%BB%BAXXXDataSourceReader%E7%B1%BB"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 继承DataSourceReader创建XXXDataSourceReader类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-1-%E5%88%9B%E5%BB%BACustomDataSourceV2Reader%E7%B1%BB"><span class="toc-number">2.2.1.</span> <span class="toc-text">2.2.1 创建CustomDataSourceV2Reader类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-2-%E9%87%8D%E5%86%99DataSourceReader%E7%9A%84readSchema%E6%96%B9%E6%B3%95"><span class="toc-number">2.2.2.</span> <span class="toc-text">2.2.2 重写DataSourceReader的readSchema方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-3-%E9%87%8D%E5%86%99DataSourceReader%E7%9A%84createDataReaderFactories%E6%96%B9%E6%B3%95"><span class="toc-number">2.2.3.</span> <span class="toc-text">2.2.3 重写DataSourceReader的createDataReaderFactories方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-%E7%BB%A7%E6%89%BFDataReaderFactory%E5%88%9B%E5%BB%BADataReader%E5%B7%A5%E5%8E%82%E7%B1%BB"><span class="toc-number">2.3.</span> <span class="toc-text">2.3 继承DataReaderFactory创建DataReader工厂类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-1-%E5%88%9B%E5%BB%BACustomDataSourceV2Factory%E7%B1%BB"><span class="toc-number">2.3.1.</span> <span class="toc-text">2.3.1 创建CustomDataSourceV2Factory类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-2-%E9%87%8D%E5%86%99DataReaderFactory%E7%9A%84createDataReader%E6%96%B9%E6%B3%95"><span class="toc-number">2.3.2.</span> <span class="toc-text">2.3.2 重写DataReaderFactory的createDataReader方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4-%E7%BB%A7%E6%89%BFDataReader%E7%B1%BB%E5%88%9B%E5%BB%BA%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9A%84DataReader"><span class="toc-number">2.4.</span> <span class="toc-text">2.4 继承DataReader类创建自定义的DataReader</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-1-%E5%88%9B%E5%BB%BACustomDataReader%E7%B1%BB"><span class="toc-number">2.4.1.</span> <span class="toc-text">2.4.1 创建CustomDataReader类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-2-%E9%87%8D%E5%86%99CustomDataReader%E7%9A%84next-%E6%96%B9%E6%B3%95"><span class="toc-number">2.4.2.</span> <span class="toc-text">2.4.2 重写CustomDataReader的next()方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-3-%E9%87%8D%E5%86%99CustomDataReader%E7%9A%84get-%E6%96%B9%E6%B3%95"><span class="toc-number">2.4.3.</span> <span class="toc-text">2.4.3 重写CustomDataReader的get()方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-4-%E9%87%8D%E5%86%99CustomDataReader%E7%9A%84close-%E6%96%B9%E6%B3%95"><span class="toc-number">2.4.4.</span> <span class="toc-text">2.4.4 重写CustomDataReader的close()方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-5-%E4%BB%A5REST%E4%B8%BA%E4%BE%8B%EF%BC%8C%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9A%84%E6%95%B0%E6%8D%AE%E6%BA%90"><span class="toc-number">2.5.</span> <span class="toc-text">2.5 以REST为例，实现自定义的数据源</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-1-%E5%88%9B%E5%BB%BARestDataSource%E7%B1%BB"><span class="toc-number">2.5.1.</span> <span class="toc-text">2.5.1 创建RestDataSource类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-2-%E5%88%9B%E5%BB%BARestDataSourceReader%E7%B1%BB"><span class="toc-number">2.5.2.</span> <span class="toc-text">2.5.2 创建RestDataSourceReader类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-3-%E5%88%9B%E5%BB%BARestDataReaderFactory"><span class="toc-number">2.5.3.</span> <span class="toc-text">2.5.3 创建RestDataReaderFactory</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-4-%E5%88%9B%E5%BB%BARestDataReader"><span class="toc-number">2.5.4.</span> <span class="toc-text">2.5.4 创建RestDataReader</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-5-%E6%B5%8B%E8%AF%95RestDataSource"><span class="toc-number">2.5.5.</span> <span class="toc-text">2.5.5 测试RestDataSource</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E5%9F%BA%E4%BA%8EDataSourceV2%E5%AE%9E%E7%8E%B0%E8%BE%93%E5%87%BA%E6%BA%90"><span class="toc-number">3.</span> <span class="toc-text">3 基于DataSourceV2实现输出源</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-%E7%BB%A7%E6%89%BFDataSourceV%E5%92%8CWriterSupport%E5%88%9B%E5%BB%BAXXXDataSource%E7%B1%BB"><span class="toc-number">3.1.</span> <span class="toc-text">3.1 继承DataSourceV和WriterSupport创建XXXDataSource类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-1-%E5%88%9B%E5%BB%BACustomDataSourceV2%E7%B1%BB"><span class="toc-number">3.1.1.</span> <span class="toc-text">3.1.1 创建CustomDataSourceV2类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-2-%E9%87%8D%E5%86%99createWriter%E6%96%B9%E6%B3%95"><span class="toc-number">3.1.2.</span> <span class="toc-text">3.1.2 重写createWriter方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-%E7%BB%A7%E6%89%BFDataSourceWriter%E5%88%9B%E5%BB%BAXXXDataSourceWriter%E7%B1%BB"><span class="toc-number">3.2.</span> <span class="toc-text">3.2 继承DataSourceWriter创建XXXDataSourceWriter类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-1-%E5%88%9B%E5%BB%BACustomDataSourceV2Writer"><span class="toc-number">3.2.1.</span> <span class="toc-text">3.2.1 创建CustomDataSourceV2Writer</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-%E7%BB%A7%E6%89%BFDataWriterFactory%E5%88%9B%E5%BB%BAXXXDataWriterFactory%E7%B1%BB"><span class="toc-number">3.3.</span> <span class="toc-text">3.3 继承DataWriterFactory创建XXXDataWriterFactory类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-1-%E5%88%9B%E5%BB%BACustomDataWriterFactory"><span class="toc-number">3.3.1.</span> <span class="toc-text">3.3.1 创建CustomDataWriterFactory</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-2-%E9%87%8D%E5%86%99createDataWriter%E6%96%B9%E6%B3%95"><span class="toc-number">3.3.2.</span> <span class="toc-text">3.3.2 重写createDataWriter方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-4-%E7%BB%A7%E6%89%BFDataWriter%E5%88%9B%E5%BB%BAXXXDataWriter%E7%B1%BB"><span class="toc-number">3.4.</span> <span class="toc-text">3.4 继承DataWriter创建XXXDataWriter类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-1-%E5%88%9B%E5%BB%BACustomDataWriter%E7%B1%BB"><span class="toc-number">3.4.1.</span> <span class="toc-text">3.4.1 创建CustomDataWriter类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-2-%E9%87%8D%E5%86%99write%E6%96%B9%E6%B3%95"><span class="toc-number">3.4.2.</span> <span class="toc-text">3.4.2 重写write方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-3-%E9%87%8D%E5%86%99commit%E6%96%B9%E6%B3%95"><span class="toc-number">3.4.3.</span> <span class="toc-text">3.4.3 重写commit方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-4-%E9%87%8D%E5%86%99abort%E6%96%B9%E6%B3%95"><span class="toc-number">3.4.4.</span> <span class="toc-text">3.4.4 重写abort方法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%E5%AE%8C%E6%95%B4%E4%BB%A3%E7%A0%81"><span class="toc-number">4.</span> <span class="toc-text">4 完整代码</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-%E8%87%AA%E5%AE%9A%E4%B9%89DataSource%E7%A4%BA%E4%BE%8B%E4%BB%A3%E7%A0%81%EF%BC%9A"><span class="toc-number">4.1.</span> <span class="toc-text">4.1 自定义DataSource示例代码：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-%E8%87%AA%E5%AE%9A%E4%B9%89RestDataSource%E4%BB%A3%E7%A0%81"><span class="toc-number">4.2.</span> <span class="toc-text">4.2 自定义RestDataSource代码</span></a></li></ol></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            shirukai
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Alway believe that something wonderful is about to happen", "心之所向，素履以往。"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>
